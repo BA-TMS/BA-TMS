@@ -1,0 +1,39 @@
+h1 {
+    color: green;
+    text-align: center;
+}
+
+.container {
+    text-align: center;
+}
+
+#my-button {
+    background-color: white;
+    border-color: black;
+    height: 50px;
+    width: 100px;
+    font-size: 16px;
+    font-weight: 700;
+    font-style: italic;
+}
+
+div > h2 {
+    text-align: center;
+    color: green;
+}
+
+form {
+    text-align: center;
+}
+
+table, th, td {
+    border: 2px solid black;
+}
+
+th {
+    color: purple;
+}
+
+td {
+    color: purple;
+}
