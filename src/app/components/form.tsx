@@ -1,3 +1,66 @@
+// array of states for dropdown
+const states = [
+  'Alabama',
+  'Alaska',
+  'American Samoa',
+  'Arizona',
+  'Arkansas',
+  'California',
+  'Colorado',
+  'Connecticut',
+  'Delaware',
+  'District of Columbia',
+  'Federated States of Micronesia',
+  'Florida',
+  'Georgia',
+  'Guam',
+  'Hawaii',
+  'Idaho',
+  'Illinois',
+  'Indiana',
+  'Iowa',
+  'Kansas',
+  'Kentucky',
+  'Louisiana',
+  'Maine',
+  'Marshall Islands',
+  'Maryland',
+  'Massachusetts',
+  'Michigan',
+  'Minnesota',
+  'Mississippi',
+  'Missouri',
+  'Montana',
+  'Nebraska',
+  'Nevada',
+  'New Hampshire',
+  'New Jersey',
+  'New Mexico',
+  'New York',
+  'North Carolina',
+  'North Dakota',
+  'Northern Mariana Islands',
+  'Ohio',
+  'Oklahoma',
+  'Oregon',
+  'Palau',
+  'Pennsylvania',
+  'Puerto Rico',
+  'Rhode Island',
+  'South Carolina',
+  'South Dakota',
+  'Tennessee',
+  'Texas',
+  'Utah',
+  'Vermont',
+  'Virgin Island',
+  'Virginia',
+  'Washington',
+  'West Virginia',
+  'Wisconsin',
+  'Wyoming',
+];
+
 // reusable form component
 
 export default function Form() {
@@ -79,7 +142,14 @@ export default function Form() {
               className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="grid-state"
             >
-              <option>California</option>
+              <option value="">Select</option>
+              {/* map through array of states to populate dropdown */}
+              {states.map((state, index) => (
+                <option key={index} value={state}>
+                  {state}
+                </option>
+              ))}
+              {/* <option>California</option> */}
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
               <svg
