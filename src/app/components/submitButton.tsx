@@ -1,20 +1,24 @@
 'use client';
 
 export default function SubmitButton() {
-  function handleClick() {
-    const firstName = (
+  function handleClick(): void {
+    const firstName: string = (
       document.getElementById('grid-first-name') as HTMLInputElement
     ).value;
-    const lastName = (
+    const lastName: string = (
       document.getElementById('grid-last-name') as HTMLInputElement
     ).value;
-    const city = (document.getElementById('grid-city') as HTMLInputElement)
-      .value;
-    const stateElement = document.getElementById(
+    const city: string = (
+      document.getElementById('grid-city') as HTMLInputElement
+    ).value;
+    const stateElement: HTMLSelectElement = document.getElementById(
       'grid-state'
     ) as HTMLSelectElement;
-    const state = stateElement.options[stateElement.selectedIndex].value;
-    const zip = (document.getElementById('grid-zip') as HTMLInputElement).value;
+    const state: string =
+      stateElement.options[stateElement.selectedIndex].value;
+    const zip: string = (
+      document.getElementById('grid-zip') as HTMLInputElement
+    ).value;
 
     console.log('First Name:', firstName);
     console.log('Last Name:', lastName);
