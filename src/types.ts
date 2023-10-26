@@ -1,7 +1,6 @@
 export interface FormProps {
   firstName: string;
   lastName: string;
-  password: string;
   city: string;
   state: string;
   zip: string;
