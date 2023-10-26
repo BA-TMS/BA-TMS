@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Form from './components/form';
+import { FormProps } from '@/types';
 
 export default function Home() {
   return (

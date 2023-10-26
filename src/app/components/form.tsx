@@ -1,3 +1,5 @@
+import { FormProps } from '../../types';
+
 // array of states for dropdown
 const states: string[] = [
   'Alabama',
@@ -63,7 +65,11 @@ const states: string[] = [
 
 // reusable form component
 
-export default function Form(): JSX.Element {
+export default function Form() {
+  function handleClick() {
+    console.log('clicked');
+  }
+
   return (
     <div>
       <form className="w-full max-w-lg">
@@ -173,7 +179,7 @@ export default function Form(): JSX.Element {
               Zip
             </label>
             <input
-              className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mb-4"
               id="grid-zip"
               type="text"
               placeholder="90210"
@@ -182,9 +188,9 @@ export default function Form(): JSX.Element {
         </div>
       </form>
       <button
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        className="block uppercase font-bold tracking-wide bg-blue-500 hover:bg-blue-700 text-white-700 py-3 px-4 rounded"
         type="submit"
-        onClick={null}
+        // onClick={handleClick}
       >
         Submit
       </button>
