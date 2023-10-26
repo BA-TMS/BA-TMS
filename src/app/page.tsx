@@ -3,6 +3,32 @@ import Form from './components/form';
 import { FormProps } from '@/types';
 
 export default function Home() {
+  function handleClick() {
+    const firstName = (
+      document.getElementById('grid-first-name') as HTMLInputElement
+    ).value;
+    const lastName = (
+      document.getElementById('grid-last-name') as HTMLInputElement
+    ).value;
+    const password = (
+      document.getElementById('grid-password') as HTMLInputElement
+    ).value;
+    const city = (document.getElementById('grid-city') as HTMLInputElement)
+      .value;
+    const stateElement = document.getElementById(
+      'grid-state'
+    ) as HTMLSelectElement;
+    const state = stateElement.options[stateElement.selectedIndex].value;
+    const zip = (document.getElementById('grid-zip') as HTMLInputElement).value;
+
+    console.log('First Name:', firstName);
+    console.log('Last Name:', lastName);
+    console.log('Password:', password);
+    console.log('City:', city);
+    console.log('State:', state);
+    console.log('Zip:', zip);
+  }
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
@@ -20,8 +46,15 @@ export default function Home() {
         />
       </div>
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left"></div>
+      <div className="grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left"></div>
       <Form></Form>
+      <button
+        className="block uppercase font-bold tracking-wide bg-blue-500 hover:bg-blue-700 text-white-700 py-3 px-4 rounded"
+        type="submit"
+        // onClick={handleClick}
+      >
+        Submit
+      </button>
     </main>
   );
 }
