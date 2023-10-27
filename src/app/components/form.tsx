@@ -1,6 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import SubmitButton from './submitButton';
+import Table from './table';
+import { FormData } from '@/types';
 
 // array of states for dropdown
 const states: string[] = [
@@ -65,9 +68,16 @@ const states: string[] = [
   'Wyoming',
 ];
 
-// reusable form component
-
 export default function Form() {
+  // state
+  const [formData, setFormData] = useState<FormData>({
+    firstName: '',
+    lastName: '',
+    city: '',
+    state: '',
+    zip: '',
+  });
+
   function handleClick(): void {
     const firstNameInput = document.getElementById(
       'grid-first-name'
@@ -90,11 +100,13 @@ export default function Form() {
 
     // do not submit if all fields are not filled
     if (firstName && lastName && city && state && zip) {
-      console.log('First Name:', firstName);
-      console.log('Last Name:', lastName);
-      console.log('City:', city);
-      console.log('State:', state);
-      console.log('Zip:', zip);
+      setFormData({
+        firstName,
+        lastName,
+        city,
+        state,
+        zip,
+      });
 
       // clear input fields
       firstNameInput.value = '';
@@ -105,6 +117,7 @@ export default function Form() {
       alert('Please fill out all the required fields.');
     }
   }
+
   return (
     <div className="flex flex-col">
       <form className="w-full max-w-lg">
@@ -204,6 +217,7 @@ export default function Form() {
         </div>
       </form>
       <SubmitButton onClick={handleClick}></SubmitButton>
+      <Table formData={formData} />
     </div>
   );
 }
