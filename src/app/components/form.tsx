@@ -1,4 +1,3 @@
-import { FormProps } from '../../types';
 import SubmitButton from './submitButton';
 
 // array of states for dropdown
