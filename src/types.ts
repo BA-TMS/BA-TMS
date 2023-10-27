@@ -1,3 +1,7 @@
+export interface ButtonProps {
+  onClick: () => void;
+}
+
 export interface TableData {
   firstName: string;
   lastName: string;
