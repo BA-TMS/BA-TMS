@@ -15,10 +15,14 @@ type CellList = {
 export default function Table({ columns, tableData }: TableProps) {
   return (
     <table>
-      <tr>
-        {columns.map((columnName: string) => <th>{columnName}</th>)}
-      </tr>
-      {tableData.map((currRow: object) => <TableRow columns={columns} rowData={currRow} />)}
+      <thead>
+        <tr>
+          {columns.map((columnName: string) => <th>{columnName}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {tableData.map((currRow: object) => <TableRow columns={columns} rowData={currRow} />)}
+      </tbody>
     </table>
   );
 }
