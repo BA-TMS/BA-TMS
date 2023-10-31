@@ -5,6 +5,9 @@ import Button from './button';
 import Table from './table';
 import { FormData } from '@/types';
 
+// with more time, modal could be a separate component
+// get buttons to look better
+
 // array of states for dropdown
 const states: string[] = [
   'Alabama',
@@ -127,8 +130,8 @@ export default function Form() {
   }
 
   return (
-    <div className="flex flex-col content-center items-center ">
-      <form className="w-full max-w-lg ">
+    <div className="flex flex-col content-center items-center">
+      <form className="w-full max-w-lg border border-blue-300 p-6 rounded-lg">
         <div className="flex flex-wrap -mx-3 mb-3">
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             <label className="form-label" htmlFor="grid-first-name">
@@ -215,8 +218,8 @@ export default function Form() {
             className="fixed inset-0 bg-black bg-opacity-75"
             onClick={showModal}
           ></div>
-          <div className="bg-black border border-blue-500 p-6 rounded-lg z-10">
-            <h2 className="text-lg font-bold mb-4">Secret Customer Data</h2>
+          <div className="flex flex-col content-center items-center bg-black border border-blue-500 p-6 rounded-lg z-10">
+            <h2 className="text-lg font-bold">Secret Customer Data</h2>
             <Table formData={formData} />
             <Button type="button" name="Close" onClick={showModal} />
           </div>
