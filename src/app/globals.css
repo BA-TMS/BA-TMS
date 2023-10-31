@@ -3,19 +3,20 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 0, 0, 0;
+  --background-end-rgb: 0, 0, 0;
   --accent-blue: #2ec3f3;
 }
 
-@media (prefers-color-scheme: dark) {
+/* come back to this, need the site to not look ugly in light mode */
+/* @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
   }
-}
+} */
 
 /* custom utility classes */
 @layer utilities {
@@ -51,5 +52,5 @@ body {
 }
 
 .table-auto td {
-  @apply border rounded px-4 py-2 tracking-wide text-white-700 text-xs font-bold mb-2;
+  @apply border rounded px-4 py-2 tracking-wide text-white-700 text-xs mb-2;
 }

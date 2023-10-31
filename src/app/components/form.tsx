@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import SubmitButton from './submitButton';
+import Button from './button';
 import Table from './table';
 import { FormData } from '@/types';
 
@@ -198,7 +198,7 @@ export default function Form() {
           </div>
         </div>
       </form>
-      <SubmitButton onClick={handleClick}></SubmitButton>
+      <Button type="submit" name="Submit" onClick={handleClick}></Button>
       <Table formData={formData} />
     </div>
   );
