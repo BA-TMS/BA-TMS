@@ -118,6 +118,14 @@ export default function Form() {
     }
   }
 
+  // handling modal functionality
+  const [openModal, setOpenModal] = useState(false);
+
+  function showModal(): void {
+    setOpenModal(openModal ? false : true);
+    console.log(openModal);
+  }
+
   return (
     <div className="flex flex-col content-center items-center ">
       <form className="w-full max-w-lg ">
@@ -199,7 +207,21 @@ export default function Form() {
         </div>
       </form>
       <Button type="submit" name="Submit" onClick={handleClick}></Button>
-      <Table formData={formData} />
+      <Button type="button" name="View Table" onClick={showModal}></Button>
+      {/* Modal */}
+      {openModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div
+            className="fixed inset-0 bg-black bg-opacity-75"
+            onClick={showModal}
+          ></div>
+          <div className="bg-black border border-blue-500 p-6 rounded-lg z-10">
+            <h2 className="text-lg font-bold mb-4">Secret Customer Data</h2>
+            <Table formData={formData} />
+            <Button type="button" name="Close" onClick={showModal} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
