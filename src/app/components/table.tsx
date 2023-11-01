@@ -3,9 +3,17 @@
 // also would make new rows be added to table each time form is filled out
 // table needs to be more rounded to fit with design aesthetic
 
+import { useEffect, useState } from 'react';
 import { TableProps } from '@/types';
 
+// table makes get request
+
 export default function Table(props: TableProps) {
+  // state is going to hold the data to create the table
+  const [tableData, setTableData] = useState([]);
+
+  //useEffect request for data
+
   return (
     <div className="mt-4">
       <table className="table-auto">
