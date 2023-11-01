@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Button from './button';
 import Table from './table';
+import Modal from './modal';
 import { FormData } from '@/types';
 
 // with more time, modal could be a separate component
@@ -218,11 +219,12 @@ export default function Form() {
             className="fixed inset-0 bg-black bg-opacity-75"
             onClick={showModal}
           ></div>
-          <div className="flex flex-col content-center items-center bg-black border border-blue-500 p-6 rounded-lg z-10">
+          <Modal formData={formData} onClick={showModal}></Modal>
+          {/* <div className="flex flex-col content-center items-center bg-black border border-blue-500 p-6 rounded-lg z-10">
             <h2 className="text-lg font-bold">Secret Customer Data</h2>
             <Table formData={formData} />
             <Button type="button" name="Close" onClick={showModal} />
-          </div>
+          </div> */}
         </div>
       )}
     </div>
