@@ -1,7 +1,12 @@
+'use client';
+
 // table to display form data
 // if i had more time, this could be a modal that pops up
 // also would make new rows be added to table each time form is filled out
 // table needs to be more rounded to fit with design aesthetic
+
+// move components out of app
+// "use-client"
 
 import { useEffect, useState } from 'react';
 import { TableProps } from '@/types';

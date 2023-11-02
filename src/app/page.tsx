@@ -1,4 +1,6 @@
-import Form from './components/form';
+import Form from '../components/form';
+
+// localhost:3000
 
 export default function Home() {
   return (

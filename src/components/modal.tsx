@@ -1,3 +1,5 @@
+'use client';
+
 import Button from './button';
 import Table from './table';
 import { ModalProps } from '@/types';
