@@ -4,5 +4,26 @@
       "first_name": "Marrilee",
       "last_name": "Le Clercq",
       "country": "United States"
+    },
+
+    {
+      "id": 2,
+      "first_name": "Samuel",
+      "last_name": "Ortega Gonzalez",
+      "country": "United States"
+    },
+
+    {
+      "id": 3,
+      "first_name": "Pau",
+      "last_name": "Caire",
+      "country": "Spain"
+    },
+
+    {
+      "id": 4,
+      "first_name": "Takuto",
+      "last_name": "Ono",
+      "country": "Japan"
     }
 ]
