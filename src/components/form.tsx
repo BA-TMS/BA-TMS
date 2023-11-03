@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Button from './button';
-import Table from './table';
 import Modal from './modal';
 import { FormData } from '@/types';
 
@@ -129,7 +128,6 @@ export default function Form() {
 
   function showModal(): void {
     setOpenModal(openModal ? false : true);
-    console.log(openModal);
   }
 
   return (
