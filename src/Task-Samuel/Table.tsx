@@ -1,3 +1,4 @@
+"use client";
 import { MouseEventHandler, useCallback, useState } from "react";
 import data from "./data.json";
 
