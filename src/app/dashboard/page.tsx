@@ -8,7 +8,7 @@ import Table from '../../components/Table';
 function App() {
   return (
     <div>
-      <Table_Title title="Donation Form" />
+      <Table_Title title="FUTURE" />
       <Table />
     </div>
   );

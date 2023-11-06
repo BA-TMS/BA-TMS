@@ -4,6 +4,10 @@ interface TableTitleProps {
   title: string;
 }
 
+TableTitle.propTypes = {
+  title: PropTypes.string.isRequired,
+};
+
 function TableTitle({ title }: TableTitleProps) {
   return (
     <div className="p-4 border-b-4 border-red-500 rounded shadow bg-black z-50 opacity-70 text-center">
@@ -12,9 +16,6 @@ function TableTitle({ title }: TableTitleProps) {
   );
 }
 
-TableTitle.propTypes = {
-  title: PropTypes.string.isRequired,
-};
 
 export default TableTitle;
 
