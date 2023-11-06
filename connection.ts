@@ -16,6 +16,7 @@ export async function query({ query, values }: Params): Promise<any> {
   });
 
   try {
+    // RowDataPacket represents row of data returned from db query
     const results = await dbconnection.execute<RowDataPacket[]>(query, values);
     console.log('Query Results, ', results);
     dbconnection.end();
