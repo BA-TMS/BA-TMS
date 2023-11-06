@@ -40,7 +40,7 @@ function TableRow({ rowData, columns }: RowProps) {
 function Cell({ content }: any) { // B/c there's a failover, we can accept anything here.
   let processedContent;
   // Check is content is a string, or array.
-  if ((typeof content) === 'string') {
+  if ((typeof content) === 'string' || (typeof content) === 'number') {
     processedContent = content;
   } else if (Array.isArray(content)) {
     if (content.length === 0) {
