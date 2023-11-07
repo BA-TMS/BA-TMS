@@ -1,67 +1,80 @@
 'use client';
 
-// table to display form data
-// does a fetch request on the client side
-// using SWR library for data fetching- provides a synchronous API for fetching in client components
-
 // future updates: table needs to be more rounded to fit with design aesthetic
 
 import { useEffect, useState } from 'react';
 import { TableProps } from '@/types';
-
-import useSWR from 'swr';
 import { Suspense } from 'react';
 
-// function for fetch request
-const fetcher = (path: string) =>
-  fetch(`https://rickandmortyapi.com/${path}`).then((res) => res.json());
+type CharacterData = {
+  id: number;
+  name: string;
+  species: string;
+  status: string;
+};
 
 export default function Table(props: TableProps) {
-  // useSWR will automatically orchestrate data fetching and return it to component
-  const characters = useSWR('api/character', fetcher);
+  const [data, setData] = useState<CharacterData[]>([]);
+  const [loading, setLoading] = useState<Boolean>(true);
+
+  useEffect(() => {
+    fetch('../api/data')
+      .then((response) => response.json())
+      .then((usefulData) => {
+        console.log('useful data ', usefulData);
+        setLoading(false);
+        setData(usefulData);
+      })
+      .catch((err) => {
+        console.log('Error in get request: ', err);
+      });
+  }, []);
 
   return (
     <div className="h-96 mt-4 overflow-y-auto">
-      <Suspense fallback={<>Loading...</>}>
-        <table className="table-auto">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Species</th>
-              <th>Gender</th>
-            </tr>
-          </thead>
-          <tbody>
-            {characters.data?.results?.map((c: any) => (
-              <tr key={c.id}>
-                <td>{c.name}</td>
-                <td>{c.species}</td>
-                <td>{c.gender}</td>
+      {data && (
+        <div>
+          <h1 className="text-blue-700">DATA RECIEVED</h1>
+          <table className="table-auto">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Species</th>
+                <th>Status</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-        <table className="table-auto">
-          <thead>
-            <tr>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>City</th>
-              <th>State</th>
-              <th>Zip</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{props.formData.firstName}</td>
-              <td>{props.formData.lastName}</td>
-              <td>{props.formData.city}</td>
-              <td>{props.formData.state}</td>
-              <td>{props.formData.zip}</td>
-            </tr>
-          </tbody>
-        </table>
-      </Suspense>
+            </thead>
+            <tbody>
+              {data.map((c: any) => (
+                <tr key={c.id}>
+                  <td>{c.name}</td>
+                  <td>{c.species}</td>
+                  <td>{c.status}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <table className="table-auto">
+            <thead>
+              <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Zip</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{props.formData.firstName}</td>
+                <td>{props.formData.lastName}</td>
+                <td>{props.formData.city}</td>
+                <td>{props.formData.state}</td>
+                <td>{props.formData.zip}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }
