@@ -2,9 +2,8 @@
 
 // future updates: table needs to be more rounded to fit with design aesthetic
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { TableProps } from '@/types';
-import { Suspense } from 'react';
 
 type CharacterData = {
   id: number;
@@ -16,6 +15,9 @@ type CharacterData = {
 export default function Table(props: TableProps) {
   const [data, setData] = useState<CharacterData[]>([]);
   const [loading, setLoading] = useState<Boolean>(true);
+
+  // the console.log is showing up twice- thinking there is something on the render here
+  // wondering if it has to do with this component conditionally rendering
 
   useEffect(() => {
     fetch('../api/data')
