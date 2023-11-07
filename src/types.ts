@@ -24,6 +24,13 @@ export interface TableProps {
 }
 
 export interface ModalProps {
-  formData: FormData;
+  // formData: FormData;
   onClick: () => void;
 }
+
+export type CharacterData = {
+  id: number;
+  name: string;
+  species: string;
+  status: string;
+};

@@ -1,3 +1,4 @@
+import { stat } from 'fs';
 import { NextResponse } from 'next/server';
 
 type Character = {
@@ -26,6 +27,28 @@ export async function GET() {
   return NextResponse.json(filteredResults);
 }
 
+// rick & morty API doesn't support post requests but here is what it might look like
+export async function POST(request: Request) {
+  const { name, species, status }: Partial<Character> = await request.json();
+
+  if (!name || !species || !status)
+    return NextResponse.json({
+      message: 'Missing required data in post request',
+    });
+
+  const res = await fetch(DATA_SOURCE_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json()',
+      'API-Key': API_KEY,
+    },
+    body: JSON.stringify({ name, species, status }),
+  });
+  const newCharacter: CharacterData = await res.json();
+  console.log(newCharacter);
+  return NextResponse.json(newCharacter);
+}
+
 // export async function DELETE(request: Request) {
 //   const { id }: Partial<Todo> = await request.json();
 
@@ -38,30 +61,6 @@ export async function GET() {
 //     },
 //   });
 //   return NextResponse.json({ message: `Todo ${id} deleted` });
-// }
-
-// // not sure if response is returning everything
-// // could have something to do with the API
-// export async function POST(request: Request) {
-//   const { userId, title }: Partial<Todo> = await request.json();
-
-//   if (!userId || !title)
-//     return NextResponse.json({
-//       message: 'Missing required data in post request',
-//     });
-
-//   const res = await fetch(DATA_SOURCE_URL, {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json()',
-//       'API-Key': API_KEY,
-//     },
-//     body: JSON.stringify({ userId, title, completed: false }),
-//   });
-//   const newTodo: Todo = await res.json();
-//   console.log(newTodo);
-//   return NextResponse.json(newTodo);
-//   // returns only the id???
 // }
 
 // export async function PUT(request: Request) {

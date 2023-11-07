@@ -5,8 +5,8 @@ import Button from './button';
 import Modal from './modal';
 import { FormData } from '@/types';
 
-// with more time, modal could be a separate component
 // get buttons to look better
+// make sure modal only renders when clicked?
 
 // array of states for dropdown
 const states: string[] = [
@@ -219,7 +219,7 @@ export default function Form() {
             className="fixed inset-0 bg-black bg-opacity-75"
             onClick={showModal}
           ></div>
-          <Modal formData={formData} onClick={showModal}></Modal>
+          <Modal onClick={showModal}></Modal>
         </div>
       )}
     </div>

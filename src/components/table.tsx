@@ -4,13 +4,7 @@
 
 import { useEffect, useState, useMemo } from 'react';
 import { TableProps } from '@/types';
-
-type CharacterData = {
-  id: number;
-  name: string;
-  species: string;
-  status: string;
-};
+import { CharacterData } from '@/types';
 
 export default function Table(props: TableProps) {
   const [data, setData] = useState<CharacterData[]>([]);
@@ -18,7 +12,6 @@ export default function Table(props: TableProps) {
 
   // the console.log is showing up twice- thinking there is something on the render here
   // wondering if it has to do with this component conditionally rendering
-
   useEffect(() => {
     fetch('../api/data')
       .then((response) => response.json())
@@ -55,7 +48,7 @@ export default function Table(props: TableProps) {
               ))}
             </tbody>
           </table>
-          <table className="table-auto">
+          {/* <table className="table-auto">
             <thead>
               <tr>
                 <th>First Name</th>
@@ -74,7 +67,7 @@ export default function Table(props: TableProps) {
                 <td>{props.formData.zip}</td>
               </tr>
             </tbody>
-          </table>
+          </table> */}
         </div>
       )}
     </div>
