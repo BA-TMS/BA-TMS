@@ -31,6 +31,6 @@ export interface ModalProps {
 export type CharacterData = {
   id: number;
   name: string;
-  species: string;
-  status: string;
+  salary: string;
+  age: string;
 };

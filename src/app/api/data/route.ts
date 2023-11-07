@@ -1,5 +1,6 @@
 import { stat } from 'fs';
 import { NextResponse } from 'next/server';
+import { CharacterData } from '@/types';
 
 type Character = {
   id: number;
@@ -12,6 +13,7 @@ type Character = {
 // move to .env and make it a database connection instead
 const DATA_SOURCE_URL: string = 'https://rickandmortyapi.com/api/character';
 const API_KEY: string = process.env.DATA_API_KEY as string;
+const DUMMY_API: string = 'https://dummy.restapiexample.com/api/v1';
 
 export async function GET() {
   const res = await fetch(DATA_SOURCE_URL);
@@ -27,28 +29,28 @@ export async function GET() {
   return NextResponse.json(filteredResults);
 }
 
-// rick & morty API doesn't support post requests but here is what it might look like
 export async function POST(request: Request) {
-  const { name, species, status }: Partial<Character> = await request.json();
+  const { name, salary, age }: Partial<CharacterData> = await request.json();
 
-  if (!name || !species || !status)
+  if (!name || !salary || !age)
     return NextResponse.json({
       message: 'Missing required data in post request',
     });
 
-  const res = await fetch(DATA_SOURCE_URL, {
+  const res = await fetch(`${DUMMY_API}/create`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json()',
       'API-Key': API_KEY,
     },
-    body: JSON.stringify({ name, species, status }),
+    body: JSON.stringify({ name, salary, age }),
   });
   const newCharacter: CharacterData = await res.json();
   console.log(newCharacter);
   return NextResponse.json(newCharacter);
 }
 
+// recycled code from a tutorial
 // export async function DELETE(request: Request) {
 //   const { id }: Partial<Todo> = await request.json();
 
