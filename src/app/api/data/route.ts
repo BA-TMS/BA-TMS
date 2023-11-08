@@ -2,7 +2,7 @@ import { stat } from 'fs';
 import { NextResponse } from 'next/server';
 import { CharacterData } from '@/types';
 
-type Character = {
+type RickandMorty = {
   id: number;
   name: string;
   status: string;
@@ -21,7 +21,7 @@ export async function GET() {
   const response = await res.json();
 
   // destructure to return only needed info
-  const filteredResults = response.results.map((item: Character) => {
+  const filteredResults = response.results.map((item: RickandMorty) => {
     const { name, id, species, status } = item;
     return { name, id, species, status };
   });
@@ -50,20 +50,19 @@ export async function POST(request: Request) {
   return NextResponse.json(newCharacter);
 }
 
-// recycled code from a tutorial
-// export async function DELETE(request: Request) {
-//   const { id }: Partial<Todo> = await request.json();
+export async function DELETE(request: Request) {
+  const { id }: Partial<CharacterData> = await request.json();
 
-//   if (!id) return NextResponse.json({ message: 'Todo id required' });
-//   await fetch(`${DATA_SOURCE_URL}/${id}`, {
-//     method: 'DELETE',
-//     headers: {
-//       'Content-Type': 'application/json()',
-//       'API-Key': API_KEY,
-//     },
-//   });
-//   return NextResponse.json({ message: `Todo ${id} deleted` });
-// }
+  if (!id) return NextResponse.json({ message: 'id required' });
+  await fetch(`${DUMMY_API}/delete/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json()',
+      'API-Key': API_KEY,
+    },
+  });
+  return NextResponse.json({ message: `Entry ${id} deleted` });
+}
 
 // export async function PUT(request: Request) {
 //   const { userId, id, title, completed }: Todo = await request.json();
