@@ -64,25 +64,24 @@ export async function DELETE(request: Request) {
   return NextResponse.json({ message: `Entry ${id} deleted` });
 }
 
-// export async function PUT(request: Request) {
-//   const { userId, id, title, completed }: Todo = await request.json();
+export async function PUT(request: Request) {
+  const { id, name, salary, age }: CharacterData = await request.json();
 
-//   // if we do not have these things...
-//   if (!userId || !id || !title || typeof completed !== 'boolean')
-//     return NextResponse.json({
-//       message: 'Missing required data in put request',
-//     });
+  // if we do not have these things...
+  if (!id || !name || !salary || !age)
+    return NextResponse.json({
+      message: 'Missing required data in PUT request',
+    });
 
-//   const res = await fetch(`${DATA_SOURCE_URL}/${id}`, {
-//     method: 'PUT',
-//     headers: {
-//       'Content-Type': 'application/json()',
-//       'API-Key': API_KEY,
-//     },
-//     body: JSON.stringify({ userId, title, completed }),
-//   });
-//   const updatedTodo: Todo = await res.json();
-//   console.log(updatedTodo);
-//   return NextResponse.json(updatedTodo);
-//   // also just returns the id apparently
-// }
+  const res = await fetch(`${DUMMY_API}/update/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json()',
+      'API-Key': API_KEY,
+    },
+    body: JSON.stringify({ id, name, salary, age }),
+  });
+  const updatedEntry: CharacterData = await res.json();
+  console.log(updatedEntry);
+  return NextResponse.json(updatedEntry);
+}
