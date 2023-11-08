@@ -1,5 +1,5 @@
 "use client";
-import { MouseEventHandler, useCallback, useState } from "react";
+import { MouseEventHandler, useCallback, useEffect, useState } from "react";
 import data from "./data.json";
 
 type Data = typeof data;
@@ -43,6 +43,8 @@ function SortButton({
     sortKey: SortKeys;
     onClick: MouseEventHandler<HTMLButtonElement>;
 }) {
+
+
     return (
         <button
             onClick= { onClick }
@@ -56,6 +58,8 @@ function SortButton({
         </button>
     );
 }
+
+
 
 
 // Sort our table
@@ -80,6 +84,20 @@ function SortableTable({ data }: { data: Data }) {
 
         setSortKey(key);
     }
+
+    const fetchTableData = async ()=>{
+      const response = await fetch('/api/v1/user',{
+        method:"get"
+      }
+        )
+
+        const data = await response.json()
+        console.log(data)
+    }
+    
+      useEffect(()=>{
+       fetchTableData()
+      },[])
 
     return (
         <table>

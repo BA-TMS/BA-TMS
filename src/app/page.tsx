@@ -1,5 +1,7 @@
 import Greeting from '../components/Greeting';
 import SortableTable from '../Task-Samuel/Table'
+import Table from '../components/Table';
+
 
 export default function Home() {
   const data = [
