@@ -10,8 +10,11 @@ export default function Table(props: TableProps) {
   const [data, setData] = useState<CharacterData[]>([]);
   const [loading, setLoading] = useState<Boolean>(true);
 
-  // the console.log is showing up twice- thinking there is something on the render here
-  // wondering if it has to do with this component conditionally rendering
+  // initial fetch to Rick and Morty API route
+  // update to fetch to database
+  // the console.log is showing up twice- so it is definitely re-rendering
+  // figure out how to use devtools with next.js
+
   useEffect(() => {
     fetch('../api/data')
       .then((response) => response.json())
@@ -29,9 +32,8 @@ export default function Table(props: TableProps) {
     <div className="h-96 mt-4 overflow-y-auto">
       {data && (
         <div>
-          <h1 className="text-blue-700">DATA RECIEVED</h1>
-          <table className="table-auto">
-            <thead>
+          <table className="table-auto mx-auto rounded-lg text-left border-separate border-1 w-full">
+            <thead className="rounded-tl-sm bg-blue-900 pl-12">
               <tr>
                 <th>Name</th>
                 <th>Species</th>
@@ -48,8 +50,9 @@ export default function Table(props: TableProps) {
               ))}
             </tbody>
           </table>
-          {/* <table className="table-auto">
-            <thead>
+          {/* table that accepts the form data */}
+          <table className="table-auto mx-auto rounded-lg text-left border-separate border-1 w-full">
+            <thead className="rounded-tl-sm bg-blue-900 pl-12">
               <tr>
                 <th>First Name</th>
                 <th>Last Name</th>
@@ -67,7 +70,7 @@ export default function Table(props: TableProps) {
                 <td>{props.formData.zip}</td>
               </tr>
             </tbody>
-          </table> */}
+          </table>
         </div>
       )}
     </div>

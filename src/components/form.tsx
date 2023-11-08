@@ -72,7 +72,7 @@ const states: string[] = [
 ];
 
 export default function Form() {
-  // state
+  // state but maybe could do useRef instead
   const [formData, setFormData] = useState<FormData>({
     firstName: '',
     lastName: '',
@@ -219,7 +219,7 @@ export default function Form() {
             className="fixed inset-0 bg-black bg-opacity-75"
             onClick={showModal}
           ></div>
-          <Modal onClick={showModal}></Modal>
+          <Modal formData={formData} onClick={showModal}></Modal>
         </div>
       )}
     </div>

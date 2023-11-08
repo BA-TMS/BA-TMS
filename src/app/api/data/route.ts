@@ -1,6 +1,8 @@
-import { stat } from 'fs';
 import { NextResponse } from 'next/server';
 import { CharacterData } from '@/types';
+
+// importing the funciton that should connect to database
+import { query } from '@/../../connection';
 
 type RickandMorty = {
   id: number;

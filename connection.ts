@@ -1,13 +1,14 @@
 // mySQL database connection
 
-import mysql, { RowDataPacket } from 'mysql2';
+import mysql from 'mysql2/promise';
 
 interface Params {
   query: string;
   values?: any[];
 }
 
-export async function query({ query, values }: Params): Promise<any> {
+// how to connect to a mySQL database (hopefully)
+export async function query({ query, values = [] }: Params): Promise<any> {
   const dbconnection = await mysql.createConnection({
     host: process.env.MYSQL_HOST,
     database: process.env.MYSQL_DATABASE,
@@ -16,8 +17,7 @@ export async function query({ query, values }: Params): Promise<any> {
   });
 
   try {
-    // RowDataPacket represents row of data returned from db query
-    const results = await dbconnection.execute<RowDataPacket[]>(query, values);
+    const results = await dbconnection.execute(query, values);
     console.log('Query Results, ', results);
     dbconnection.end();
     return results;

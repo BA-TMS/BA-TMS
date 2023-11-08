@@ -24,7 +24,7 @@ export interface TableProps {
 }
 
 export interface ModalProps {
-  // formData: FormData;
+  formData: FormData;
   onClick: () => void;
 }
 
