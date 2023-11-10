@@ -1,18 +1,10 @@
-type TableProps = {
-  columns: string[],
-  tableData: object[]
-}
+import { getAllTodos } from '@/lib/dbactions';
+import { TableProps, RowProps,CellList } from '@/lib/types';
 
-type RowProps = {
-  rowData: object,
-  columns: string[]
-}
+export default async function Table() {
+  const columns = ['id', 'userid', 'title', 'completed'];
+  const tableData = await getAllTodos();
 
-type CellList = {
-  items: string[]
-}
-
-export default function Table({ columns, tableData }: TableProps) {
   return (
     <table>
       <thead>
