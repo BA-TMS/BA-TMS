@@ -1,11 +1,24 @@
 const fs = require('fs');
 const mysql = require('mysql2/promise');
+require('dotenv').confi();
 
 type ToDo = {
   userId: number,
   id: number,
   title: string,
   completed: boolean
+}
+
+async function getConn() {
+  const props = {
+    host: process.env.DB_HOST, 
+    user: process.env.DB_USER, 
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
+  };
+
+  const connection = await mysql.createConnection(props);
+  return connection;
 }
 
 function readSeedData() {
@@ -19,7 +32,7 @@ function readSeedData() {
   return parsedTodos;
 }
 
-function buildQueryString(items: ToDo[]) {
+function buildCreateString(items: ToDo[]) {
   const baseString = 'INSERT INTO todos (userid, title) VALUES';
   const valuesValues: string[] = [];
   for (const item of items) {
@@ -28,14 +41,10 @@ function buildQueryString(items: ToDo[]) {
   return [baseString, valuesValues.join()].join(' ');
 }
 
-function dbSeed() {
-  const queryString: string = buildQueryString(readSeedData());
+async function dbSeed() {
+  const queryString: string = buildCreateString(readSeedData());
 
-  const conn = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    database: 'a2ztms'
-  });
+  const conn = await getConn();
 
   conn.connect(function(err: object) {
     if (err) throw err;
@@ -50,11 +59,7 @@ function dbSeed() {
 async function dbTest() {
   let response: string;
 
-  const conn = await mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    database: 'a2ztms'
-  });
+  const conn = await getConn();
 
   const [rows] = await conn.execute('select * from todos');
   // console.log(rows);
