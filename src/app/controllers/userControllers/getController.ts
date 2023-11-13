@@ -1,4 +1,4 @@
-import { db } from "@/database.ts/connection"
+import { db } from "@/database/connection"
 
 export const getUsers =async ()=>{
 try{

@@ -1,0 +1,14 @@
+#MYSQL_ROOT_PASSWORD: ${PASSWORD}
+#MYSQL_ALLOW_EMPTY_PASSWORD: ${MYSQL_ALLOW_EMPTY_PASSWORD}
+#MYSQL_RANDOM_ROOT_PASSWORD:  ${MYSQL_RANDOM_ROOT_PASSWORD}
+
+version: '3'
+services:
+   app:
+    build: 
+      context: .
+      dockerfile: DockerFile
+    ports:
+      -"3000:3000"
+    env_file:
+      - .env  

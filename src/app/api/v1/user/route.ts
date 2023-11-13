@@ -1,5 +1,5 @@
 import { NextRequest,NextResponse } from "next/server";
-import { db } from "@/database.ts/connection";
+import { db } from "@/database/connection";
 import { getUsers } from "@/app/controllers/userControllers/getController";
 
 export  async function GET (req:NextRequest){

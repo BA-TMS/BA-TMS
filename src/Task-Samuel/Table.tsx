@@ -67,6 +67,8 @@ function SortableTable({ data }: { data: Data }) {
     const [sortKey, setSortKey] = useState<SortKeys>("last_name");
     const [sortOrder, setSortOrder] = useState<SortOrder>("ascn");
 
+    console.log(process.env.NEXT_PUBLIC_DB_USER)
+
     const headers: { key: SortKeys; label: string }[] = [
         { key: "id", label: "ID" },
         { key: "first_name", label: "First name" },
