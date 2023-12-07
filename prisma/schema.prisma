@@ -1,0 +1,203 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Organization { // This is a collection of TMS users
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  name          String
+  address       String
+  addressAddOn  String?
+  city          String
+  state         String
+  postCountry   Int
+  postCode      Int
+  telCountry    Int
+  telephone     Int
+  loads         Load[]
+  users         User[]
+}
+
+model User { // Individual users at an organization
+  id            Int           @id @default(autoincrement())
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  email         String
+  password      String
+  organization  Organization  @relation(fields: [orgId], references: [id])
+  orgId         Int
+  role          Int
+}
+
+model Load {
+  id          Int           @id @default(autoincrement())
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  owner       Organization  @relation(fields: [ownerId], references: [id])
+  ownerId     Int           
+  loadNum     Int
+  carrier     Carrier       @relation(fields: [carrierId], references: [id])
+  carrierId   Int
+  driver      Driver?       @relation(fields: [driverId], references: [id])
+  driverId    Int?          // If blank, display only carrier info
+  customer    Customer      @relation(fields: [customerId], references: [id])
+  customerId  Int
+  // Can shippers and consigness be in a single table with fields indicating if they fill each role?
+  shipper     Shipper?      @relation(fields: [originId], references: [id])
+  originId    Int?
+  consignee   Consignee?    @relation(fields: [destId], references: [id])
+  destId      Int?
+  status      Int           @default(1) // Should there be a status id -> label table?
+}
+
+model Carrier {
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  name          String
+  address       String
+  addressAddOn  String?   // E.g. suite or floor
+  city          String
+  state         String
+  postCountry   String
+  postCode      Int       // Cram all digits together and format based on country
+  telCountry    Int
+  telephone     Int       // Cram all digits together and format based on country
+  dotId         Int
+  factor        Factor?  @relation(fields: [factorId], references: [id])
+  factorId      Int?
+  loads         Load[]
+  drivers       Driver[]
+}
+
+model Driver {
+  // Do drivers need their own insurance info, or is that attached to carriers?
+  id          Int       @id @default(autoincrement())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  name        String
+  license     Int
+  telCountry  Int
+  telephone   Int
+  employer    Carrier   @relation(fields: [employerId], references: [id])
+  employerId  Int       // Are drivers always associated with a carrier?
+  loads       Load[]
+}
+
+model Customer {
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  name          String
+  address       String
+  addressAddOn  String?
+  city          String
+  state         String
+  postCountry   Int
+  postCode      Int
+  telCountry    Int
+  telephone     Int
+  loads         Load[]
+}
+
+model Shipper {
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  name          String
+  address       String
+  addressAddOn  String?
+  city          String
+  state         String
+  postCountry   Int
+  postCode      Int
+  telCountry    Int
+  telephone     Int
+  loads         Load[]
+}
+
+model Consignee {
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  name          String
+  address       String
+  addressAddOn  String?
+  city          String
+  state         String
+  postCountry   Int
+  postCode      Int
+  telCountry    Int
+  telephone     Int
+  loads         Load[]
+}
+
+// If, as noted in Load table, shippers and consigness can be combined, it
+// might look like this.
+model Location {
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  name          String
+  address       String
+  addressAddOn  String?
+  city          String
+  state         String
+  postCountry   Int
+  postCode      Int
+  telCountry    Int
+  telephone     Int
+  isShipper     Boolean
+  isConsignee   Boolean
+  // loads         Load[]
+}
+
+model Factor {
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  name          String
+  address       String
+  addressAddOn  String?
+  city          String
+  state         String
+  postCountry   Int
+  postCode      Int
+  telCountry    Int
+  telephone     Int
+  carriers      Carrier[]
+}
+
+model Insurer {
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  name          String
+  address       String
+  addressAddOn  String?
+  city          String
+  state         String
+  postCountry   Int
+  postCode      Int
+  telCountry    Int
+  telephone     Int  
+}
+
+model CoverageMatrix {
+  id                Int       @id @default(autoincrement())
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  carrierId         Int
+  insurerId         Int
+  // How many categories of insurance need noting? Is this an enum of a table of categories?
+  coverageCategory  Int
+}
