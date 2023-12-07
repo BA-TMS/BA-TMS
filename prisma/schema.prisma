@@ -10,23 +10,53 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Organization { // This is a collection of TMS users
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  name          String
+  address       String
+  addressAddOn  String?
+  city          String
+  state         String
+  postCountry   Int
+  postCode      Int
+  telCountry    Int
+  telephone     Int
+  loads         Load[]
+  users         User[]
+}
+
+model User { // Individual users at an organization
+  id            Int           @id @default(autoincrement())
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  email         String
+  password      String
+  organization  Organization  @relation(fields: [orgId], references: [id])
+  orgId         Int
+  role          Int
+}
+
 model Load {
-  id          Int         @id @default(autoincrement())
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  id          Int           @id @default(autoincrement())
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  owner       Organization  @relation(fields: [ownerId], references: [id])
+  ownerId     Int           
   loadNum     Int
-  carrier     Carrier     @relation(fields: [carrierId], references: [id])
+  carrier     Carrier       @relation(fields: [carrierId], references: [id])
   carrierId   Int
-  driver      Driver?     @relation(fields: [driverId], references: [id])
-  driverId    Int?        // If blank, display only carrier info
-  customer    Customer    @relation(fields: [customerId], references: [id])
+  driver      Driver?       @relation(fields: [driverId], references: [id])
+  driverId    Int?          // If blank, display only carrier info
+  customer    Customer      @relation(fields: [customerId], references: [id])
   customerId  Int
   // Can shippers and consigness be in a single table with fields indicating if they fill each role?
-  shipper     Shipper?    @relation(fields: [originId], references: [id])
+  shipper     Shipper?      @relation(fields: [originId], references: [id])
   originId    Int?
-  consignee   Consignee?  @relation(fields: [destId], references: [id])
+  consignee   Consignee?    @relation(fields: [destId], references: [id])
   destId      Int?
-  status      Int         @default(1) // Should there be a status id -> label table?
+  status      Int           @default(1) // Should there be a status id -> label table?
 }
 
 model Carrier {
@@ -145,4 +175,29 @@ model Factor {
   telCountry    Int
   telephone     Int
   carriers      Carrier[]
+}
+
+model Insurer {
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  name          String
+  address       String
+  addressAddOn  String?
+  city          String
+  state         String
+  postCountry   Int
+  postCode      Int
+  telCountry    Int
+  telephone     Int  
+}
+
+model CoverageMatrix {
+  id                Int       @id @default(autoincrement())
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  carrierId         Int
+  insurerId         Int
+  // How many categories of insurance need noting? Is this an enum of a table of categories?
+  coverageCategory  Int
 }
