@@ -8,8 +8,8 @@ import { bgBlur } from '../../../../utils/cssStyles';
 // config
 import { NAV } from '../../../../config-global';
 // components
-import Iconify from '../../../../components/iconify';
-import { useSettingsContext } from '../../../../components/settings';
+import Iconify from '../../../iconify';
+import { useSettingsContext } from '../../../settings';
 
 // ----------------------------------------------------------------------
 

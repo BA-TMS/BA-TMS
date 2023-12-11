@@ -1,3 +1,5 @@
+"use client"
+
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Stack, AppBar, Toolbar, IconButton } from '@mui/material';
@@ -10,7 +12,7 @@ import useResponsive from '../../../../hooks/utils/useResponsive';
 import { HEADER, NAV } from '../../../../config-global';
 // components
 // import Logo from '../../../components/logo';     ADD LOGO LATER, See Line 41
-import Iconify from '../../../../components/iconify';   
+import Iconify from '../../../iconify';   
 import { useSettingsContext } from '../../../settings';
 //
 // import AccountPopover from './AccountPopover';     USER ACCOUNT LINE 65

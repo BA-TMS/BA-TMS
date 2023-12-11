@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Header from './header';
-import { useSettingsContext } from '../../../components/settings';
+import { useSettingsContext } from '../../settings';
 import { Box } from '@mui/material';
 import NavVertical from './nav/NavVertical';
 import NavMini from './nav/NavMini';

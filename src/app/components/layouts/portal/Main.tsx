@@ -5,7 +5,7 @@ import useResponsive from '../../../hooks/utils/useResponsive';
 // config
 import { HEADER, NAV } from '../../../config-global';
 // components
-import { useSettingsContext } from '../../../components/settings';
+import { useSettingsContext } from '../../settings';
 
 // ----------------------------------------------------------------------
 

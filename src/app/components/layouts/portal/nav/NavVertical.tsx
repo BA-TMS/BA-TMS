@@ -9,8 +9,8 @@ import useResponsive from '../../../../hooks/utils/useResponsive';
 import { NAV } from '../../../../config-global';
 // components
 // import Logo from '../../../components/logo';
-import Scrollbar from '../../../../components/scrollbar';
-import { NavSectionVertical } from '../../../../components/nav-section';
+import Scrollbar from '../../../scrollbar';
+import { NavSectionVertical } from '../../../nav-section';
 //
 import useGetNavConfig from './config-navigation';
 // import NavDocs from './NavDocs';
