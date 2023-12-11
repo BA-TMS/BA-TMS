@@ -10,7 +10,7 @@ import useResponsive from '../../../../hooks/utils/useResponsive';
 import { HEADER, NAV } from '../../../../config-global';
 // components
 // import Logo from '../../../components/logo';     ADD LOGO LATER, See Line 41
-// import Iconify from '../../../components/iconify';    Determine later, See Line 49
+import Iconify from '../../../../components/iconify';   
 import { useSettingsContext } from '../../../settings';
 //
 // import AccountPopover from './AccountPopover';     USER ACCOUNT LINE 65
@@ -46,7 +46,7 @@ export default function Header({ onOpenNav }: Props) {
           sx={{ mr: 1, color: 'text.primary' }}
           data-test="mobile-nav-toggler"
         >
-          {/* <Iconify icon="eva:menu-2-fill" /> */}
+          <Iconify icon="eva:menu-2-fill" />
         </IconButton>
       )}
 
