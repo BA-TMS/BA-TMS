@@ -1,3 +1,5 @@
+"use client";
+
 import { StackProps, ListItemButtonProps } from '@mui/material';
 
 // ----------------------------------------------------------------------

@@ -13,7 +13,7 @@ import { HEADER, NAV } from '../../../../config-global';
 // components
 // import Logo from '../../../components/logo';     ADD LOGO LATER, See Line 41
 import Iconify from '../../../iconify/page';   
-import { useSettingsContext } from '../../../settings';
+import { useSettingsContext } from '../../../settings/page';
 //
 // import AccountPopover from './AccountPopover';     USER ACCOUNT LINE 65
 // import LanguagePopover from './LanguagePopover';   LINE 62

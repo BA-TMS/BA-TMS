@@ -1,3 +1,5 @@
+"use client";
+
 import { memo } from 'react';
 // @mui
 import { Stack } from '@mui/material';

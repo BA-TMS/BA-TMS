@@ -1,3 +1,4 @@
+"use client";
 
 type ColorVariants = {
     name: string;

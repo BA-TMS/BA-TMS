@@ -1,3 +1,5 @@
+"use client";
+
 import ThemeContrast from './ThemeContrast';
 import ThemeColorPresets from './ThemeColorPresets';
 

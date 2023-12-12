@@ -12,7 +12,7 @@ import { bgBlur } from '../../../../utils/cssStyles';
 import { NAV } from '../../../../config-global';
 // components
 import Iconify from '../../../iconify/page';
-import { useSettingsContext } from '../../../settings';
+import { useSettingsContext } from '../../../settings/page';
 
 // ----------------------------------------------------------------------
 

@@ -2,7 +2,7 @@
 // PortalLayout contains the hamburger open and close.
 // Header.tsx contains the IconButton
 
-import PortalLayout from '../../components/layouts/portal/PortalLayoutout';
+import PortalLayout from '../../../../components/layouts/portal/PortalLayoutout';
 import { Button, Container, Grid, TextField } from '@mui/material';
 import { useSettingsContext } from '../../components/settingsngs';
 import { SeoIllustration } from '../../assets/illustrations';

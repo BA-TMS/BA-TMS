@@ -9,7 +9,7 @@ import { hideScrollbarX } from '../../../../utils/cssStyles';
 // components
 // import Logo from '../../../components/logo';
 import A2ZMini from '../../../../public/a2zIcon.svg';
-import { NavSectionMini } from '../../../nav-section';
+import { NavSectionMini } from '../../../nav-section/page';
 //
 import NavToggleButton from './NavToggleButton';
 import useGetNavConfig from './config-navigation';

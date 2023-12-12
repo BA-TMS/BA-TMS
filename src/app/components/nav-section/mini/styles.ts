@@ -1,3 +1,5 @@
+"use client";
+
 // @mui
 import { alpha, styled } from '@mui/material/styles';
 import { Popover, ListItemButton, ListItemIcon } from '@mui/material';

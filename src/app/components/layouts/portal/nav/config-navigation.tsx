@@ -3,7 +3,7 @@
 // routes
 import { PATH } from '../../../routes/paths';
 // componentssvg-color
-import SvgColor from '../../../svg-color';
+import SvgColor from '../../../svg-color/page';
 import { useLocales } from '../../../locales/page';
 
 // ----------------------------------------------------------------------

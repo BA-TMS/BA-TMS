@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from 'react';
-import Header from './header';
-import { useSettingsContext } from '../../settings';
+import Header from './header/page';
+import { useSettingsContext } from '../../settings/page';
 import { Box } from '@mui/material';
 import NavVertical from './nav/NavVertical';
 import NavMini from './nav/NavMini';

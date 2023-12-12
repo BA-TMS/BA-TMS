@@ -1,3 +1,5 @@
+"use client";
+
 import { atom, selector } from 'recoil';
 import { generateKey } from '../../utils/recoil';
 import { hooksState } from './hooks';

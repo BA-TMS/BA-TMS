@@ -1,3 +1,5 @@
+"use client";
+
 // components
 import { SettingsValueProps } from './types';
 

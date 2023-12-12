@@ -1,3 +1,5 @@
+"use client";
+
 // @mui
 import { alpha, styled } from '@mui/material/styles';
 import { ListItemIcon, ListSubheader, ListItemButton } from '@mui/material';

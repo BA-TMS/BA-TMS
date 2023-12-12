@@ -1,3 +1,5 @@
+"use client";
+
 // @mui
 import { useTheme, Breakpoint } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
