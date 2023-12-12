@@ -8,7 +8,7 @@ import { useLocales } from '../../../locales';
 // auth
 import RoleBasedGuard from "../../../sections/auth/RoleBasedGuard";
 //
-import Iconify from '../../iconify';
+import Iconify from '../../iconify/page';
 import { NavItemProps } from '../types';
 import { StyledItem, StyledIcon } from './styles';
 

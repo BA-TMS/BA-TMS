@@ -1,3 +1,6 @@
+"use client";
+
+
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { IconButton, IconButtonProps } from '@mui/material';
@@ -8,7 +11,7 @@ import { bgBlur } from '../../../../utils/cssStyles';
 // config
 import { NAV } from '../../../../config-global';
 // components
-import Iconify from '../../../iconify';
+import Iconify from '../../../iconify/page';
 import { useSettingsContext } from '../../../settings';
 
 // ----------------------------------------------------------------------

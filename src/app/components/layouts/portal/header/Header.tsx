@@ -12,7 +12,7 @@ import useResponsive from '../../../../hooks/utils/useResponsive';
 import { HEADER, NAV } from '../../../../config-global';
 // components
 // import Logo from '../../../components/logo';     ADD LOGO LATER, See Line 41
-import Iconify from '../../../iconify';   
+import Iconify from '../../../iconify/page';   
 import { useSettingsContext } from '../../../settings';
 //
 // import AccountPopover from './AccountPopover';     USER ACCOUNT LINE 65

@@ -5,7 +5,7 @@ import { Box, Link, ListItemText, Tooltip } from '@mui/material';
 // auth
 import RoleBasedGuard from '../../../sections/auth/RoleBasedGuard';
 //
-import Iconify from '../../iconify';
+import Iconify from '../../iconify/page';
 //
 import { NavItemProps } from '../types';
 import { StyledDotIcon, StyledIcon, StyledItem } from './styles';

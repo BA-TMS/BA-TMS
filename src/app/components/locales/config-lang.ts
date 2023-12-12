@@ -1,3 +1,5 @@
+"use client";
+
 // @mui
 import {enUS, esES} from '@mui/material/locale';
 

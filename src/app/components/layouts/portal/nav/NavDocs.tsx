@@ -1,5 +1,7 @@
+"use client";
+
 import { Stack, Button, Typography, Box } from '@mui/material';
-import { useLocales } from '../../../locales';
+import { useLocales } from '../../../locales/page';
 
 import { useRecoilValue } from 'recoil';
 import { userState } from '../../../store/user';

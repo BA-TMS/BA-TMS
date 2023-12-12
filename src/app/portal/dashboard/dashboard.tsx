@@ -1,5 +1,3 @@
-"use client"
-
 // NavItem.tsx sections for the navpanel
 // PortalLayout contains the hamburger open and close.
 // Header.tsx contains the IconButton

@@ -1,3 +1,6 @@
+"use client";
+
+
 import { forwardRef } from 'react';
 // next
 import NextLink from 'next/link';
@@ -6,10 +9,10 @@ import { Box, Tooltip, ListItemText, Link } from '@mui/material';
 // locales
 // auth
 //
-import Iconify from '../../iconify';
+import Iconify from '../../iconify/page';
 import { NavItemProps } from '../types';
 import { StyledItem, StyledIcon } from './styles';
-import RoleBasedGuard from "../../../sections/auth/RoleBasedGuard";
+// import RoleBasedGuard from "../../../sections/auth/RoleBasedGuard";
 
 // ----------------------------------------------------------------------
 
@@ -81,7 +84,7 @@ const NavItem = forwardRef<HTMLDivElement, NavItemProps>(
       );
     };
 
-    return <RoleBasedGuard roles={roles}> {renderItem()} </RoleBasedGuard>;
+    return renderItem();
   }
 );
 

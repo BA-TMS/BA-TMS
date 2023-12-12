@@ -1,9 +1,11 @@
+"use client";
+
 // @mui
 import { styled, alpha } from '@mui/material/styles';
 import { Box, Link, Typography } from '@mui/material';
 // auth
 // components
-import { CustomAvatar } from '../../../components/custom-avatar';
+// import { CustomAvatar } from '../../components/custom-avatar';
 import { useRecoilValue } from 'recoil';
 import { userState } from '../../../store/user';
 
@@ -26,11 +28,11 @@ export default function NavAccount() {
   return (
     <Link underline="none" color="inherit">
       <StyledRoot>
-        <CustomAvatar
+        {/* <CustomAvatar
           src={user?.profileUrl || ''}
           alt={user?.name || ''}
           name={user?.name || ''}
-        />
+        /> */}
 
         <Box sx={{ ml: 2, minWidth: 0 }}>
           <Typography variant="subtitle2" noWrap>

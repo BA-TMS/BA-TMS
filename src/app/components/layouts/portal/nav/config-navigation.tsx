@@ -1,8 +1,10 @@
+"use client";
+
 // routes
 import { PATH } from '../../../routes/paths';
 // componentssvg-color
 import SvgColor from '../../../svg-color';
-import { useLocales } from '../../../locales';
+import { useLocales } from '../../../locales/page';
 
 // ----------------------------------------------------------------------
 
