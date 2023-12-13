@@ -1,5 +1,4 @@
-"use client";
-
+'use client';
 
 // @mui
 import { useTheme } from '@mui/material/styles';
@@ -11,8 +10,8 @@ import { bgBlur } from '../../../../utils/cssStyles';
 // config
 import { NAV } from '../../../../config-global';
 // components
-import Iconify from '../../../iconify/page';
-import { useSettingsContext } from '../../../settings/page';
+import Iconify from '../../../../components/iconify/page';
+import { useSettingsContext } from '../../../../components/settings/page';
 
 // ----------------------------------------------------------------------
 

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 // next
 import NextLink from 'next/link';
@@ -104,5 +104,6 @@ export default function NavItem({
     );
   };
 
-  return <RoleBasedGuard roles={roles}> {renderItem()} </RoleBasedGuard>;
+  // return <RoleBasedGuard roles={roles}> {renderItem()} </RoleBasedGuard>;
+  return renderItem();
 }

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
 // routes
-import { PATH } from './pages/routes/paths';
+import { PATH } from './routes/paths';
 
 
 // ROOT PATH AFTER LOGIN SUCCESSFUL

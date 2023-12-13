@@ -1,13 +1,18 @@
-"use client";
+// Header contains the mini window navpanel.
+// Navmini is for fullscreen shrinking.
+// useResponsive is for breakpoints.
+// MessagePopover...idk.
+
+'use client';
 
 import { useState } from 'react';
-import Header from './header/page';
-import { useSettingsContext } from '../../settings/page';
+// import Header from './header';
+import { useSettingsContext } from '../../../components/settings/page';
 import { Box } from '@mui/material';
 import NavVertical from './nav/NavVertical';
-import NavMini from './nav/NavMini';
+// import NavMini from './nav/NavMini';
 import Main from './Main';
-import useResponsive from '../../../hooks/utils/useResponsive';
+// import useResponsive from '../../hooks/utils/useResponsive';
 import Head from 'next/head';
 // import MessagePopover from './header/MessagePopover';
 
@@ -18,11 +23,11 @@ type Props = {
 export default function PortalLayout({ children, pageTitle }: Props) {
   const { themeLayout } = useSettingsContext();
   const [open, setOpen] = useState(false);
-  const isDesktop = useResponsive('up', 'lg');
+  // const isDesktop = useResponsive('up', 'lg');
 
   const handleOpen = () => {
     setOpen(true);
-  }; 
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -35,7 +40,7 @@ export default function PortalLayout({ children, pageTitle }: Props) {
       <Head>
         <title>{pageTitle}</title>
       </Head>
-      <Header onOpenNav={handleOpen} />
+      {/* <Header onOpenNav={handleOpen} /> */}
 
       <Box
         sx={{
@@ -43,11 +48,11 @@ export default function PortalLayout({ children, pageTitle }: Props) {
           minHeight: { lg: 1 },
         }}
       >
-        {isNavMini && isDesktop ? (
+        {/* {isNavMini && isDesktop ? (
           <NavMini />
-        ) : (
+        ) : ( */}
           <NavVertical openNav={open} onCloseNav={handleClose} />
-        )}
+        {/* )} */}
 
         <Main>
           {/* <MessagePopover /> */}

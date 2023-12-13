@@ -1,3 +1,5 @@
+'use config';
+
 // theme
 import palette from '../../theme/palette';
 //

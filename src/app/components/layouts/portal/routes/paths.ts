@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 function path(root: string, sublink: string) {
     return `${root}${sublink}`;

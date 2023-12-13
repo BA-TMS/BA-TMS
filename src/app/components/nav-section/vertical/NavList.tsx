@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
 import { useState, useEffect } from 'react';
 // next
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 // @mui
 import { Collapse } from '@mui/material';
 // hooks
@@ -20,7 +20,7 @@ type NavListRootProps = {
 };
 
 export default function NavList({ data, depth, hasChild }: NavListRootProps) {
-  const { pathname } = useRouter();
+  // const { pathname } = useRouter();
 
   const { active, isExternalLink } = useActiveLink(data.path);
 
@@ -31,7 +31,7 @@ export default function NavList({ data, depth, hasChild }: NavListRootProps) {
       handleClose();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, []); // Commented out pathname
 
   const handleToggle = () => {
     setOpen(!open);

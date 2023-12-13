@@ -1,5 +1,4 @@
-"use client";
-
+'use client';
 
 // @mui
 import { ThemeProvider, createTheme, useTheme } from '@mui/material/styles';

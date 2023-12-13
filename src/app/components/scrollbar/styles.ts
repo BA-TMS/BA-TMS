@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import SimpleBar from 'simplebar-react';
 // @mui

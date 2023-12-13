@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 // @mui
 import { alpha, styled } from '@mui/material/styles';

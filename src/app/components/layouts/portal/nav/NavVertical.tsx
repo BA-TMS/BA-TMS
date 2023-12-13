@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
 import { useEffect } from 'react';
 // next
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 // @mui
 import { Box, Stack, Drawer } from '@mui/material';
 // hooks
@@ -11,14 +11,14 @@ import useResponsive from '../../../../hooks/utils/useResponsive';
 import { NAV } from '../../../../config-global';
 // components
 // import Logo from '../../../components/logo';
-import Scrollbar from '../../../scrollbar/page';
-import { NavSectionVertical } from '../../../nav-section/page';
+import Scrollbar from '../../../../components/scrollbar/page';
+import { NavSectionVertical } from '../../../../components/nav-section/page';
 //
 import useGetNavConfig from './config-navigation';
 // import NavDocs from './NavDocs';
 // import NavAccount from './NavAccount';
 import NavToggleButton from './NavToggleButton';
-import A2Z from '../../../../public/a2zLogo.svg';
+// import A2Z from '../../../../public/a2zLogo.svg';
 
 // ----------------------------------------------------------------------
 
@@ -28,7 +28,7 @@ type Props = {
 };
 
 export default function NavVertical({ openNav, onCloseNav }: Props) {
-  const { pathname } = useRouter();
+  // const { pathname } = useRouter();
 
   const navConfig: any = useGetNavConfig();
 
@@ -39,7 +39,7 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
       onCloseNav();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, []); // removed pathname from dependencies
 
   const renderContent = (
     <Scrollbar

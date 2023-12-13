@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { Props } from 'simplebar-react';
 import { Theme } from '@mui/material/styles';

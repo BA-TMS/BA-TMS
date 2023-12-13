@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 // @mui
 import { useTheme, Breakpoint } from '@mui/material/styles';

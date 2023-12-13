@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 export { default as useLocales } from './useLocales';
 
