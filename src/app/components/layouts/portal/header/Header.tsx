@@ -4,20 +4,20 @@
 import { useTheme } from '@mui/material/styles';
 import { Stack, AppBar, Toolbar, IconButton } from '@mui/material';
 // utils
-import { bgBlur } from '../../../utils/cssStyles';
+import { bgBlur } from '../../../../utils/cssStyles';
 // hooks
-import useOffSetTop from '../../../hooks/utils/useOffSetTop';
-import useResponsive from '../../../hooks/utils/useResponsive';
+import useOffSetTop from '../../../../hooks/utils/useOffSetTop';
+import useResponsive from '../../../../hooks/utils/useResponsive';
 // config
-import { HEADER, NAV } from '../../../config-global';
+import { HEADER, NAV } from '../../../../config-global';
 // components
-import Logo from '../../../components/logo';
-import Iconify from '../../../components/iconify';
-import { useSettingsContext } from '../../../components/settings';
+import Logo from '../../../../components/logo/page';
+import Iconify from '../../../../components/iconify/page';
+import { useSettingsContext } from '../../../../components/settings/page';
 //
-import AccountPopover from './AccountPopover';
-import LanguagePopover from './LanguagePopover';
-import Searchbar from './Searchbar';
+// import AccountPopover from './AccountPopover';
+// import LanguagePopover from './LanguagePopover';
+// import Searchbar from './Searchbar';
 
 // ----------------------------------------------------------------------
 
@@ -52,7 +52,7 @@ export default function Header({ onOpenNav }: Props) {
         </IconButton>
       )}
 
-      <Searchbar />
+      {/* <Searchbar /> */}
 
       <Stack
         flexGrow={1}
