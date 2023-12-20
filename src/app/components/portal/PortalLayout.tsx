@@ -7,12 +7,12 @@
 
 import { useState } from 'react';
 import Header from './header/page';
-import { useSettingsContext } from '../../../components/settings/page';
+import { useSettingsContext } from '../settings/page';
 import { Box } from '@mui/material';
 import NavVertical from './nav/NavVertical';
 import NavMini from './nav/NavMini';
 import Main from './Main';
-import useResponsive from '../../../hooks/utils/useResponsive';
+import useResponsive from '../../hooks/utils/useResponsive';
 import Head from 'next/head';
 // import MessagePopover from './header/MessagePopover';
 

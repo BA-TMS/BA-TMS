@@ -1,9 +1,9 @@
 'use client';
 
 // routes
-import { PATH } from '../../../../routes/paths';
+import { PATH } from '../../../routes/paths';
 // componentssvg-color
-import SvgColor from '../../../../components/svg-color/page';
+import SvgColor from '../../svg-color/page';
 import { useLocales } from '../locales/page';
 
 // ----------------------------------------------------------------------

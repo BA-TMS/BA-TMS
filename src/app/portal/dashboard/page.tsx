@@ -1,4 +1,4 @@
-import PortalLayout from '../../components/layouts/portal/PortalLayout';
+import PortalLayout from '../../components/portal/PortalLayout';
 import { ReactNode } from 'react';
 
 const Dashboard: any = () => {

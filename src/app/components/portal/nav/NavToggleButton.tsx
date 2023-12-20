@@ -4,14 +4,14 @@
 import { useTheme } from '@mui/material/styles';
 import { IconButton, IconButtonProps } from '@mui/material';
 // hooks
-import useResponsive from '../../../../hooks/utils/useResponsive';
+import useResponsive from '../../../hooks/utils/useResponsive';
 // utils
-import { bgBlur } from '../../../../utils/cssStyles';
+import { bgBlur } from '../../../utils/cssStyles';
 // config
-import { NAV } from '../../../../config-global';
+import { NAV } from '../../../config-global';
 // components
-import Iconify from '../../../../components/iconify/page';
-import { useSettingsContext } from '../../../../components/settings/page';
+import Iconify from '../../iconify/page';
+import { useSettingsContext } from '../../settings/page';
 
 // ----------------------------------------------------------------------
 

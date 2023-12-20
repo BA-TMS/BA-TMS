@@ -4,16 +4,16 @@
 import { useTheme } from '@mui/material/styles';
 import { Stack, AppBar, Toolbar, IconButton } from '@mui/material';
 // utils
-import { bgBlur } from '../../../../utils/cssStyles';
+import { bgBlur } from '../../../utils/cssStyles';
 // hooks
-import useOffSetTop from '../../../../hooks/utils/useOffSetTop';
-import useResponsive from '../../../../hooks/utils/useResponsive';
+import useOffSetTop from '../../../hooks/utils/useOffSetTop';
+import useResponsive from '../../../hooks/utils/useResponsive';
 // config
-import { HEADER, NAV } from '../../../../config-global';
+import { HEADER, NAV } from '../../../config-global';
 // components
-import Logo from '../../../../components/logo/page';
-import Iconify from '../../../../components/iconify/page';
-import { useSettingsContext } from '../../../../components/settings/page';
+import Logo from '../../logo/page';
+import Iconify from '../../iconify/page';
+import { useSettingsContext } from '../../settings/page';
 //
 // import AccountPopover from './AccountPopover';
 // import LanguagePopover from './LanguagePopover';
