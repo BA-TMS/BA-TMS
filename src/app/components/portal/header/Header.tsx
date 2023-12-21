@@ -17,7 +17,7 @@ import { useSettingsContext } from '../../settings/page';
 //
 // import AccountPopover from './AccountPopover';
 // import LanguagePopover from './LanguagePopover';
-// import Searchbar from './Searchbar';
+import Searchbar from './Searchbar';
 
 // ----------------------------------------------------------------------
 
@@ -52,7 +52,7 @@ export default function Header({ onOpenNav }: Props) {
         </IconButton>
       )}
 
-      {/* <Searchbar /> */}
+      <Searchbar />
 
       <Stack
         flexGrow={1}
@@ -75,6 +75,7 @@ export default function Header({ onOpenNav }: Props) {
         boxShadow: 'none',
         height: HEADER.H_MOBILE,
         zIndex: theme.zIndex.appBar + 1,
+        color: 'black',
         ...bgBlur({
           color: theme.palette.background.default,
         }),
