@@ -8,6 +8,7 @@ import { useSettingsContext } from '../components/settings/page';
 //
 import { allLangs, defaultLang } from './config-lang';
 
+
 // ----------------------------------------------------------------------
 
 export default function useLocales() {
@@ -36,4 +37,4 @@ export default function useLocales() {
     currentLang,
     allLangs,
   };
-}
+} 

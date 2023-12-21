@@ -15,7 +15,7 @@ import Scrollbar from '../../../../components/scrollbar/page';
 import { NavSectionVertical } from '../../../../components/nav-section/page';
 //
 import useGetNavConfig from './config-navigation';
-// import NavDocs from './NavDocs';
+import NavDocs from './NavDocs';
 // import NavAccount from './NavAccount';
 import NavToggleButton from './NavToggleButton';
 // import A2Z from '../../../../public/a2zLogo.svg';
@@ -70,7 +70,7 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
 
       <Box sx={{ flexGrow: 1 }} />
 
-      {/* <NavDocs /> */}
+      <NavDocs />
     </Scrollbar>
   );
 
