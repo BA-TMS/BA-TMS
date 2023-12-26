@@ -8,7 +8,7 @@ import { Box, Stack, Drawer } from '@mui/material';
 // hooks
 import useResponsive from '../../../hooks/utils/useResponsive';
 // config
-import { NAV } from '../../../config-global';
+import { NAV } from '../../../app/config-global';
 // components
 // import Logo from '../../../components/logo';
 import Scrollbar from '../../scrollbar/page';

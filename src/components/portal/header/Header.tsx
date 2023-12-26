@@ -9,7 +9,7 @@ import { bgBlur } from '../../../utils/cssStyles';
 import useOffSetTop from '../../../hooks/utils/useOffSetTop';
 import useResponsive from '../../../hooks/utils/useResponsive';
 // config
-import { HEADER, NAV } from '../../../config-global';
+import { HEADER, NAV } from '../../../app/config-global';
 // components
 import Logo from '../../logo/page';
 import Iconify from '../../iconify/page';

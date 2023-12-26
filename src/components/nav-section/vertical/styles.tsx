@@ -4,7 +4,7 @@
 import { alpha, styled } from '@mui/material/styles';
 import { ListItemIcon, ListSubheader, ListItemButton } from '@mui/material';
 // config
-import { ICON, NAV } from '../../../config-global';
+import { ICON, NAV } from '../../../app/config-global';
 //
 import { NavItemProps } from '../types';
 
@@ -24,7 +24,10 @@ export const StyledItem = styled(ListItemButton, {
 
   const activeStyle = {
     color: theme.palette.primary.main,
-    backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
+    backgroundColor: alpha(
+      theme.palette.primary.main,
+      theme.palette.action.selectedOpacity
+    ),
     ...(!isLight && {
       color: theme.palette.primary.light,
     }),

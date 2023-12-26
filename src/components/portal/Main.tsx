@@ -5,7 +5,7 @@ import { Box, BoxProps } from '@mui/material';
 // hooks
 import useResponsive from '../../hooks/utils/useResponsive';
 // config
-import { HEADER, NAV } from '../../config-global';
+import { HEADER, NAV } from '../../app/config-global';
 // components
 import { useSettingsContext } from '../settings/page';
 

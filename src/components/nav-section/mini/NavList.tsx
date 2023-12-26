@@ -35,7 +35,9 @@ export default function NavList({ data, depth, hasChild }: NavListRootProps) {
   }, [pathname]);
 
   useEffect(() => {
-    const appBarEl = Array.from(document.querySelectorAll('.MuiAppBar-root')) as Array<HTMLElement>;
+    const appBarEl = Array.from(
+      document.querySelectorAll('.MuiAppBar-root')
+    ) as Array<HTMLElement>;
 
     // Reset styles when hover
     const styles = () => {

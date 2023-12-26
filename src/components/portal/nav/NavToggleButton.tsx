@@ -8,7 +8,7 @@ import useResponsive from '../../../hooks/utils/useResponsive';
 // utils
 import { bgBlur } from '../../../utils/cssStyles';
 // config
-import { NAV } from '../../../config-global';
+import { NAV } from '../../../app/config-global';
 // components
 import Iconify from '../../iconify/page';
 import { useSettingsContext } from '../../settings/page';

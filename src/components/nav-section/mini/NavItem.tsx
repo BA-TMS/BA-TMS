@@ -6,7 +6,7 @@ import NextLink from 'next/link';
 // @mui
 import { Tooltip, Link, ListItemText } from '@mui/material';
 // locales
-import { useLocales } from '../../../locales/page';
+import { useLocales } from '../../../app/locales/page';
 // auth
 // import RoleBasedGuard from "../../../sections/auth/RoleBasedGuard";
 //
