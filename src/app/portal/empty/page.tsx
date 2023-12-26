@@ -4,7 +4,6 @@
  ************************************************************************/
 import 'tailwindcss/tailwind.css';
 
-import PortalLayout from '../../../components/portal/PortalLayout';
 import CustomBreadcrumbs from '../../../components/custom-breadcrumbs/page';
 import { PATH } from '../../../routes/paths';
 import { Container } from '@mui/material';
