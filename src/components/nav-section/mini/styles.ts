@@ -6,7 +6,7 @@ import { Popover, ListItemButton, ListItemIcon } from '@mui/material';
 // utils
 import { bgBlur } from '../../../utils/cssStyles';
 // config
-import { ICON } from '../../../config-global';
+import { ICON } from '../../../app/config-global';
 //
 import { NavItemProps } from '../types';
 
@@ -23,7 +23,10 @@ export const StyledItem = styled(ListItemButton, {
 
   const activeStyle = {
     color: theme.palette.primary.main,
-    backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
+    backgroundColor: alpha(
+      theme.palette.primary.main,
+      theme.palette.action.selectedOpacity
+    ),
     ...(!isLight && {
       color: theme.palette.primary.light,
     }),

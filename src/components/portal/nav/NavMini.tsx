@@ -3,13 +3,13 @@
 // @mui
 import { Stack, Box } from '@mui/material';
 // config
-import { NAV } from '../../../../config-global';
+import { NAV } from '../../../app/config-global';
 // utils
-import { hideScrollbarX } from '../../../../utils/cssStyles';
+import { hideScrollbarX } from '../../../utils/cssStyles';
 // components
 // import Logo from '../../../components/logo';
 // import A2ZMini from '../../../../public/a2zIcon.svg';
-import { NavSectionMini } from '../../../../components/nav-section/page';  // horizontal
+import { NavSectionMini } from '../../nav-section/page'; // horizontal
 //
 import NavToggleButton from './NavToggleButton';
 import useGetNavConfig from './config-navigation';

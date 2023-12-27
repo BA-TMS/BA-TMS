@@ -6,13 +6,18 @@
 'use client';
 
 import { useState } from 'react';
-import Header from './header/page';
-import { useSettingsContext } from '../../../components/settings/page';
+// import Header from './header/page';
+import Header from '../../components/portal/header/Header';
+// // import { useSettingsContext } from '../settings/page';
+import { useSettingsContext } from '@/components/settings/SettingsContext';
 import { Box } from '@mui/material';
-import NavVertical from './nav/NavVertical';
-import NavMini from './nav/NavMini';
-import Main from './Main';
-import useResponsive from '../../../hooks/utils/useResponsive';
+// import NavVertical from './nav/NavVertical';
+import NavVertical from '../../components/portal/nav/NavVertical';
+// import NavMini from './nav/NavMini';
+import NavMini from '../../components/portal/nav/NavMini';
+// import Main from './Main';
+import Main from '../../components/portal/Main';
+import useResponsive from '../../hooks/utils/useResponsive';
 import Head from 'next/head';
 // import MessagePopover from './header/MessagePopover';
 
