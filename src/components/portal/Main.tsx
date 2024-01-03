@@ -3,11 +3,11 @@
 // @mui
 import { Box, BoxProps } from '@mui/material';
 // hooks
-import useResponsive from '../../../hooks/utils/useResponsive';
+import useResponsive from '../../hooks/utils/useResponsive';
 // config
-import { HEADER, NAV } from '../../../config-global';
+import { HEADER, NAV } from '../../app/config-global';
 // components
-import { useSettingsContext } from '../../../components/settings/page';
+import { useSettingsContext } from '../settings/page';
 
 // ----------------------------------------------------------------------
 

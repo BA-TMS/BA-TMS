@@ -1,8 +1,7 @@
 'use client';
 
 // routes
-import { PATH } from './routes/paths';
-
+import { PATH } from '../routes/paths';
 
 // ROOT PATH AFTER LOGIN SUCCESSFUL
 export const PATH_AFTER_LOGIN = PATH.dashboard;

@@ -6,13 +6,13 @@ import { useEffect } from 'react';
 // @mui
 import { Box, Stack, Drawer } from '@mui/material';
 // hooks
-import useResponsive from '../../../../hooks/utils/useResponsive';
+import useResponsive from '../../../hooks/utils/useResponsive';
 // config
-import { NAV } from '../../../../config-global';
+import { NAV } from '../../../app/config-global';
 // components
 // import Logo from '../../../components/logo';
-import Scrollbar from '../../../../components/scrollbar/page';
-import { NavSectionVertical } from '../../../../components/nav-section/page';
+import Scrollbar from '../../scrollbar/page';
+import { NavSectionVertical } from '../../nav-section/page';
 //
 import useGetNavConfig from './config-navigation';
 import NavDocs from './NavDocs';
