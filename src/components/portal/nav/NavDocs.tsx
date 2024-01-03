@@ -3,7 +3,8 @@
 // State management of users will display the user on the support of navbar
 
 import { Stack, Button, Typography, Box } from '@mui/material';
-import { useLocales } from '../../../../locales/page';
+// import { useLocales } from '../locales/page';
+import useLocales from '../locales/useLocales';
 
 // import { useRecoilValue } from 'recoil';
 // import { userState } from '../../../store/user';
@@ -11,8 +12,8 @@ import { useLocales } from '../../../../locales/page';
 export default function NavDocs() {
   // const user = useRecoilValue(userState);
   const { translate } = useLocales();
-  
-  console.log(translate('docs.hi')); 
+
+  console.log(translate('docs.hi'));
 
   const handleEmailButtonClick = () => {
     const emailAddress = 'support@a2zport.com';
@@ -21,9 +22,9 @@ export default function NavDocs() {
     //   ? `${translate('docs_email.user')} ${user.name},`
     //   : '';
     // const userEmail = user?.email ? `${user.email}.` : '';
-    const emailBody = `${translate(
-      'docs_email.body'
-    )} ${translate('docs_email.email_body')}`;
+    const emailBody = `${translate('docs_email.body')} ${translate(
+      'docs_email.email_body'
+    )}`;
     const mailtoLink = `mailto:${encodeURIComponent(
       emailAddress
     )}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(
@@ -65,4 +66,3 @@ export default function NavDocs() {
     </Stack>
   );
 }
-
