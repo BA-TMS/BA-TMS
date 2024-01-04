@@ -57,6 +57,7 @@ model Load {
   consignee   Consignee?    @relation(fields: [destId], references: [id])
   destId      Int?
   status      Int           @default(1) // Should there be a status id -> label table?
+  @@unique([ownerId, loadNum])  // Loads can be numbered by user, but a user can't have two loads with the same number
 }
 
 model Carrier {
