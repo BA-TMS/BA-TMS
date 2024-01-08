@@ -4,7 +4,7 @@
 
 import { Stack, Button, Typography, Box } from '@mui/material';
 // import { useLocales } from '../locales/page';
-import useLocales from '../locales/useLocales';
+import useLocales from '../../locales/useLocales';
 
 // import { useRecoilValue } from 'recoil';
 // import { userState } from '../../../store/user';

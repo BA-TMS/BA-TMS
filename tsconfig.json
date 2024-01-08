@@ -28,6 +28,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/components/custom-breadcrumbs"
+    // "src/components/locales/i18n.ts"
   ],
   "exclude": ["node_modules"]
 }
