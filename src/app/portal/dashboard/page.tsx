@@ -1,11 +1,12 @@
-import { ReactNode } from 'react';
+import nav from '../../../components/dashboard/nav';
 
-const Dashboard: any = () => {
+export default function Home() {
   return (
-    <>
-      <h1>Welcome to the Dashboard</h1>
-    </>
-  );
-};
+    <main>
+      
 
-export default Dashboard;
+
+      
+    </main>
+  )
+}
