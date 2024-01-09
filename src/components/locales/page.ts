@@ -1,5 +1,5 @@
-'use client';
+// 'use client';
 
-export { default as useLocales } from './useLocales';
+// export { default as useLocales } from './useLocales';
 
-export { default } from './ThemeLocalization';
+// export { default } from './ThemeLocalization';

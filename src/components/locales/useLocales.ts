@@ -9,8 +9,15 @@ import { useSettingsContext } from '../settings/page';
 import { allLangs, defaultLang } from './config-lang';
 
 // ----------------------------------------------------------------------
+// this is a custom hook
+// not sure if we will end up needing it
+// provides access to the i18n object and translation function (t)
+// looks like this initializes it?
 
 export default function useLocales() {
+  // useTranslation is a hook from react-i18next
+  // The purpose of this hook is to enable translation functionality in a React component
+  // how can we use a hook in a custom hook?
   const { i18n, t: translate } = useTranslation();
 
   const { onChangeDirectionByLang } = useSettingsContext();
@@ -30,6 +37,7 @@ export default function useLocales() {
     onChangeDirectionByLang(newlang);
   };
 
+  // returning an object
   return {
     onChangeLang: handleChangeLanguage,
     translate: (text: any, options?: any) => String(translate(text, options)),

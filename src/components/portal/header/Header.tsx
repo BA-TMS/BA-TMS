@@ -1,5 +1,6 @@
 'use client';
 
+import { useContext } from 'react';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Stack, AppBar, Toolbar, IconButton } from '@mui/material';
@@ -18,6 +19,7 @@ import { useSettingsContext } from '../../settings/page';
 // import AccountPopover from './AccountPopover';
 // import LanguagePopover from './LanguagePopover';
 import Searchbar from './Searchbar';
+import { useLocale } from '@/components/locales/LocalesContext';
 
 // ----------------------------------------------------------------------
 
@@ -27,6 +29,8 @@ type Props = {
 
 export default function Header({ onOpenNav }: Props) {
   const theme = useTheme();
+
+  const { currentLocale, toggleLocale } = useLocale();
 
   const { themeLayout } = useSettingsContext();
 
@@ -62,6 +66,8 @@ export default function Header({ onOpenNav }: Props) {
         spacing={{ xs: 0.5, sm: 1.5 }}
       >
         {/* <LanguagePopover /> */}
+        {/* this is where the flag icon would go */}
+        <p>{currentLocale.label}</p>
 
         {/*<NotificationsPopover />*/}
         {/* <AccountPopover /> */}

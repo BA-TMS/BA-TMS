@@ -21,6 +21,11 @@ import useResponsive from '../../hooks/utils/useResponsive';
 import Head from 'next/head';
 // import MessagePopover from './header/MessagePopover';
 
+// wrapping settings provider idk if we needed it
+import { SettingsProvider } from '@/components/settings/SettingsContext';
+// wrapping new language context
+import { LocalesProvider } from '@/components/locales/LocalesContext';
+
 type Props = {
   children?: React.ReactNode;
   pageTitle?: string;
@@ -41,29 +46,31 @@ export default function PortalLayout({ children, pageTitle }: Props) {
   const isNavMini = themeLayout === 'mini';
 
   return (
-    <>
-      <Head>
-        <title>{pageTitle}</title>
-      </Head>
-      <Header onOpenNav={handleOpen} />
+    <SettingsProvider>
+      <LocalesProvider>
+        <Head>
+          <title>{pageTitle}</title>
+        </Head>
+        <Header onOpenNav={handleOpen} />
 
-      <Box
-        sx={{
-          display: { lg: 'flex' },
-          minHeight: { lg: 1 },
-        }}
-      >
-        {isNavMini && isDesktop ? (
-          <NavMini />
-        ) : (
-          <NavVertical openNav={open} onCloseNav={handleClose} />
-        )}
+        <Box
+          sx={{
+            display: { lg: 'flex' },
+            minHeight: { lg: 1 },
+          }}
+        >
+          {isNavMini && isDesktop ? (
+            <NavMini />
+          ) : (
+            <NavVertical openNav={open} onCloseNav={handleClose} />
+          )}
 
-        <Main>
-          {/* <MessagePopover /> */}
-          {children}
-        </Main>
-      </Box>
-    </>
+          <Main>
+            {/* <MessagePopover /> */}
+            {children}
+          </Main>
+        </Box>
+      </LocalesProvider>
+    </SettingsProvider>
   );
 }

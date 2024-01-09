@@ -3,15 +3,19 @@
 // State management of users will display the user on the support of navbar
 
 import { Stack, Button, Typography, Box } from '@mui/material';
-// import { useLocales } from '../locales/page';
-import useLocales from '../../locales/useLocales';
+// import { useLocales } from '../../locales/page';
+// import useLocales from '../../locales/useLocales';
 
 // import { useRecoilValue } from 'recoil';
 // import { userState } from '../../../store/user';
 
+// trying out not using custom hook
+import { useTranslation } from 'react-i18next';
+
 export default function NavDocs() {
   // const user = useRecoilValue(userState);
-  const { translate } = useLocales();
+  // const { translate } = useLocales();
+  const { i18n, t: translate } = useTranslation();
 
   console.log(translate('docs.hi'));
 

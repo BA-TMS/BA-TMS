@@ -6,7 +6,8 @@ import NextLink from 'next/link';
 // @mui
 import { Tooltip, Link, ListItemText } from '@mui/material';
 // locales
-import { useLocales } from '../../locales/page';
+// import { useLocales } from '../../locales/page';
+import { useTranslation } from 'react-i18next';
 // auth
 // import RoleBasedGuard from "../../../sections/auth/RoleBasedGuard";
 //
@@ -18,7 +19,8 @@ import { StyledItem, StyledIcon } from './styles';
 
 const NavItem = forwardRef<HTMLDivElement, NavItemProps>(
   ({ item, depth, open, active, isExternalLink, ...other }, ref) => {
-    const { translate } = useLocales();
+    // const { translate } = useLocales();
+    const { i18n, t: translate } = useTranslation();
 
     const { title, path, icon, children, disabled, caption, roles } = item;
 

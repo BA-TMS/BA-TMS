@@ -4,7 +4,10 @@
 import { PATH } from '../../../routes/paths';
 // componentssvg-color
 import SvgColor from '../../svg-color/page';
-import { useLocales } from '../../locales/page';
+// import { useLocales } from '../../locales/page';
+
+// trying out not custom hook
+import { useTranslation } from 'react-i18next';
 
 // ----------------------------------------------------------------------
 
@@ -31,7 +34,8 @@ const ICONS = {
 };
 
 const useGetNavConfig = () => {
-  const { translate } = useLocales();
+  // const { translate } = useLocales();
+  const { i18n, t: translate } = useTranslation();
 
   const navConfig = [
     // GENERAL
