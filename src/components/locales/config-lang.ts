@@ -23,5 +23,4 @@ export const allLangs = [
 
 export const defaultLang = allLangs[0]; // English
 
-// This file somehow handles language localization- how and what exactly is it doing
-// allLangs/ defaultLang was used in the useLocales custom hook
+// defaultLang sets default language to English in LocalesContext.tsx

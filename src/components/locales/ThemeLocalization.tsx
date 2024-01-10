@@ -1,5 +1,7 @@
 'use client';
 
+// are we implementing this anywhere?
+
 // @mui
 import { ThemeProvider, createTheme, useTheme } from '@mui/material/styles';
 //
@@ -24,8 +26,6 @@ export default function ThemeLocalization({ children }: Props) {
   const outerTheme = useTheme();
 
   // getting current language
-  // i think we are doing this without custom hook now...
-  // const { currentLang } = useLocales();
   const storageAvailable = localStorageAvailable();
 
   const langStorage =
