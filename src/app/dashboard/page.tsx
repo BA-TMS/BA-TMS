@@ -5,8 +5,8 @@ import Header from "@/components/Header";
 const CrmPage = () => {
   return (
     <>
-      <Sidebar />
-      <Header />
+      {/* <Sidebar />
+      <Header /> */}
     </>
   );
 };
