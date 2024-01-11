@@ -39,8 +39,8 @@ function initialState(): Locale {
 
   // doing this manually without i18next LanguageDetector
   // detect browser language and slice
-  const browserLng = navigator.language.slice(0, 2);
-  localStorage.setItem('i18nextLng', browserLng);
+  const browserLng = navigator.language ? navigator.language.slice(0, 2) : '';
+  window.localStorage.setItem('i18nextLng', browserLng);
 
   // if we have localStorage and window is a browser
   const langStorage =
@@ -64,15 +64,11 @@ export const LocalesProvider: React.FC<LocalesProviderProps> = ({
   children,
 }) => {
   const [currentLocale, setCurrentLocale] = useState<Locale>(initialState());
-  console.log('current locale state', currentLocale);
-  console.log('navigator language', navigator.language);
 
   // placeholder
   function toggleLocale() {
     // setCurrentLocale(currentLang);
   }
-
-  console.log('currentLocale', currentLocale.value);
 
   // i18next instance
   const storageAvailable = localStorageAvailable();
