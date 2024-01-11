@@ -13,8 +13,6 @@ export default function NavDocs() {
   // const user = useRecoilValue(userState);
   const { i18n, t: translate } = useTranslation();
 
-  console.log(translate('docs.hi'));
-
   const handleEmailButtonClick = () => {
     const emailAddress = 'support@a2zport.com';
     const emailSubject = `${translate('docs_email.subject')}`;
