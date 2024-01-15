@@ -2,7 +2,15 @@ import { useEffect } from 'react';
 import useLocalStorage from './useLocalStorage';
 
 const useColorMode = () => {
-  const [colorMode, setColorMode] = useLocalStorage('color-theme', 'light');
+  const userPrefers: boolean = window.matchMedia(
+    '(prefers-color-scheme: dark)'
+  ).matches;
+
+  // default to browser setting
+  const [colorMode, setColorMode] = useLocalStorage(
+    'color-theme',
+    userPrefers ? 'dark' : 'light'
+  );
 
   useEffect(() => {
     const className = 'dark';
