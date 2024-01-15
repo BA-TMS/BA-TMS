@@ -1,3 +1,5 @@
+/* This layout is just for the landing page to see next.js, this is temporary */
+
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
