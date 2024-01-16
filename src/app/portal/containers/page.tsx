@@ -15,6 +15,28 @@ import Popup from 'reactjs-popup';
 
 const Containers: any = () => {
   const customers = [
+    { code: '1', consignee: 'AT&T', address: '424 Yeeter Drive', city: 'Houston', zip: '39450', state: 'Texas', phoneNumber: "(123)456-7890" },
+    { code: '2', consignee: 'Walmart', address: '123 Main Street', city: 'New York', zip: '10001', state: 'New York', phoneNumber: "(123)098-7654" },
+    { code: '3', consignee: 'Amazon', address: '456 Elm Street', city: 'Los Angeles', zip: '90001', state: 'California', phoneNumber: "(123)123-4567" },
+    { code: '4', consignee: 'Google', address: '789 Oak Street', city: 'Chicago', zip: '60601', state: 'Illinois', phoneNumber: "(123)987-6543" },
+    { code: '5', consignee: 'Apple', address: '101 Pine Street', city: 'Houston', zip: '39450', state: 'Texas', phoneNumber: "(123)111-2222" },
+    { code: '6', consignee: 'Microsoft', address: '202 Cedar Street', city: 'New York', zip: '10001', state: 'New York', phoneNumber: "(123)333-4444" },
+    { code: '7', consignee: 'Facebook', address: '303 Maple Street', city: 'Los Angeles', zip: '90001', state: 'California', phoneNumber: "(123)555-6666" },
+    { code: '8', consignee: 'Twitter', address: '404 Birch Street', city: 'Chicago', zip: '60601', state: 'Illinois', phoneNumber: "(123)777-8888" },
+    { code: '9', consignee: 'Netflix', address: '505 Walnut Street', city: 'Houston', zip: '39450', state: 'Texas', phoneNumber: "(123)999-0000" },
+    { code: '10', consignee: 'Uber', address: '606 Spruce Street', city: 'New York', zip: '10001', state: 'New York', phoneNumber: "(123)101-1122" },
+    { code: '11', consignee: 'Airbnb', address: '707 Pine Street', city: 'Los Angeles', zip: '90001', state: 'California', phoneNumber: "(123)131-4151" },
+    { code: '12', consignee: 'LinkedIn', address: '808 Elm Street', city: 'Chicago', zip: '60601', state: 'Illinois', phoneNumber: "(123)617-2813" },
+    { code: '13', consignee: 'Salesforce', address: '909 Oak Street', city: 'Houston', zip: '39450', state: 'Texas', phoneNumber: "(123)192-8374" },
+    { code: '14', consignee: 'Oracle', address: '1010 Cedar Street', city: 'New York', zip: '10001', state: 'New York', phoneNumber: "(123)384-7192" },
+    { code: '15', consignee: 'IBM', address: '1111 Maple Street', city: 'Los Angeles', zip: '90001', state: 'California', phoneNumber: "(123)947-1928" },
+    { code: '16', consignee: 'Intel', address: '1212 Birch Street', city: 'Chicago', zip: '60601', state: 'Illinois', phoneNumber: "(123)819-2736" },
+    { code: '17', consignee: 'HP', address: '1313 Walnut Street', city: 'Houston', zip: '39450', state: 'Texas', phoneNumber: "(123)928-3647" },
+    { code: '18', consignee: 'Dell', address: '1414 Spruce Street', city: 'New York', zip: '10001', state: 'New York', phoneNumber: "(123)364-7192" },
+    { code: '19', consignee: 'Cisco', address: '1515 Pine Street', city: 'Los Angeles', zip: '90001', state: 'California', phoneNumber: "(123)719-2736" },
+    { code: '20', consignee: 'Adobe', address: '1616 Elm Street', city: 'Chicago', zip: '60601', state: 'Illinois', phoneNumber: "(123)273-6471" },
+    
+    /*
     { code: '1', name: 'Jacob Reola', email: 'jacob@a2zport.com', phoneNumber: "(123)456-7890" },
     { code: '2', name: 'Samuel Ortega Gonzalez', email: 'samuel@a2zport', phoneNumber: "(123)098-7654" },
     // Add more products as needed.
@@ -36,6 +58,7 @@ const Containers: any = () => {
     { code: '18', name: 'Emma Torres', email: 'emma@a2zport.com', phoneNumber: "(123)364-7192" },
     { code: '19', name: 'Logan Scott', email: 'logan@a2zport.com', phoneNumber: "(123)719-2736" },
     { code: '20', name: 'Avery Price', email: 'avery@a2zport.com', phoneNumber: "(123)273-6471" },
+    */
   ]
 
   // This block of code creates the filter icon that when
@@ -53,6 +76,12 @@ const Containers: any = () => {
   // when searching for specific elements in the Customers list.
   const [filters, setFilters] = useState<DataTableFilterMeta>({
     'code': { matchMode: 'contains', value: ''},
+    'consignee': { matchMode: 'contains', value: ''},
+    'address': { matchMode: 'contains', value: ''},
+    'country': { matchMode: 'contains', value: ''},
+    'state': { matchMode: 'contains', value: '' },
+    'city': { matchMode: 'contains', value: '' },
+    'zip': { matchMode: 'contains', value: '' },
     'name': { matchMode: 'contains', value: '' },
     'email': { matchMode: 'contains', value: ''},
     'phoneNumber': { matchMode: 'contains', value: ''},
@@ -80,7 +109,18 @@ const Containers: any = () => {
 
   function handleSave(data: unknown) {
     // Convince TypeScript that we know what the data is.
-    const extractedData = data as { code: string; name: string, email: string, phoneNumber: string };
+    const extractedData = data as {
+      code: string;
+      consignee: string;
+      address: string;
+      country: string;
+      state: string;
+      city: string;
+      zip: number;
+      name: string;
+      email:string;
+      phoneNumber: string
+    };
     console.log(extractedData);
     customForm.current?.clear(); // Current could be null, so add a ?.
 
@@ -91,16 +131,60 @@ const Containers: any = () => {
     customers.push(extractedData);
   }
 
+  // Create a Dynamic Country-Region Select Drop down.
+  /*
+  const [selectedCountry, setSelectedCountry] = useState('');
+  const [selectedRegion, setSelectedRegion] = useState('');
+
+  const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCountry(event.target.value);
+    // Reset the selected region when a new country is selected
+    setSelectedRegion('');
+  };
+
+  const handleRegionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedRegion(event.target.value);
+  };*/
+
   return (
     <PortalLayout pageTitle="Containers">
       <h1>Welcome to the Containers screen</h1>
 
       {/*<input type="text" onChange={handleInputChange} />*/}
-      <Popup trigger= {<button id="modal-button">New Customer</button>} modal nested>
+      <Popup trigger= {<button id="modal-button">+Add</button>} modal nested>
         <div id="input-box">
+          <h1 id="line-text">New Consignee</h1>
           <Form onSave={handleSave} ref={customForm}>
-            <Input type="text" label="Name" id="name" />
-            <Input type="text" label="Email" id="email" />
+            <Input type="text" label="Consignee Name" id="consignee" />
+            <Input type="text" label="Address" id="address" />
+
+            <div className="flex-container">
+              <div className="flex-child">
+                <Input type="text" label="Country" id="country" />
+              </div>
+              <div className="flex-child">
+                <Input type="text" label="State" id="state" />
+              </div>
+            </div>
+
+            <div className="flex-container">
+              <div className="flex-child">
+                <Input type="text" label="City" id="city" />
+              </div>
+              <div className="flex-child">
+                <Input type="text" label="Postal/Zip" id="zip" />
+              </div>
+            </div>
+
+            <div className="flex-container">
+              <div className="flex-child">
+                <Input type="text" label="Name" id="name" />
+              </div>
+              <div className="flex-child">
+                <Input type="email" label="Email" id="email" />
+              </div>
+            </div>
+
             <Input type="tel" label="Phone number" id="phoneNumber" />
             <p>
               <Button>Save</Button>
@@ -110,11 +194,19 @@ const Containers: any = () => {
       </Popup>
 
       <DataTable value={customers} paginator stripedRows rows={5} dataKey="id" filters={filters}
-        filterDisplay='row' loading={loading} globalFilterFields={['code', 'name', 'email', 'phoneNumber']} header={header} emptyMessage="No customers found.">
-        <Column field="code" header="ID" filter filterPlaceholder="Search by ID" style={{ width: '25%' }}></Column>
-        <Column field="name" header="Name" filter filterPlaceholder="Search by name" style={{ width: '25%' }}></Column>
-        <Column field="email" header="email" filter filterPlaceholder="Search by email" style={{ width: '25%' }}></Column>
-        <Column field="phoneNumber" header="Phone Number" filter filterPlaceholder="Search by number" style={{ width: '25%' }}></Column>
+        filterDisplay='row' loading={loading} globalFilterFields={['code', 'consignee', 'name', 'email', 'phoneNumber']} header={header} emptyMessage="No customers found.">
+        <Column field="code" header="ID" filter filterPlaceholder="Search by ID" style={{ width: '14%' }}></Column>
+        <Column field='consignee' header="Consignee" filter filterPlaceholder='Search by consignee' style={{ width: '14%' }}></Column>
+        <Column field="address" header="Address" filter filterPlaceholder='Search by address' style={{ width: '14%' }}></Column>
+        <Column field="city" header="City" filter filterPlaceholder='Search by city' style={{ width: '14%' }}></Column>
+        <Column field="zip" header="Postal/Zip" filter filterPlaceholder='Search by zip' style={{ width: '14%' }}></Column>
+        <Column field="state" header="State" filter filterPlaceholder='Search by state' style={{ width: '14%' }}></Column>
+        <Column field="phoneNumber" header="Phone Number" filter filterPlaceholder="Search by number" style={{ width: '14%' }}></Column>
+        {/*
+        <Column field="name" header="Name" filter filterPlaceholder="Search by name" style={{ width: '17%' }}></Column>
+        <Column field="email" header="email" filter filterPlaceholder="Search by email" style={{ width: '17%' }}></Column>
+        <Column field="phoneNumber" header="Phone Number" filter filterPlaceholder="Search by number" style={{ width: '17%' }}></Column>
+        */}
       </DataTable>
       {/*<Paginator first={0} rows={10} totalRecords={customers.length} rowsPerPageOptions={[5, 10, 20]} onPageChange={(e) => {
         setLoading(true);
