@@ -1,7 +1,7 @@
 import { ApexOptions } from 'apexcharts';
 import React, { useState } from 'react';
-import dynamic from "next/dynamic";
-const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
+import dynamic from 'next/dynamic';
+const ApexCharts = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 interface ChartSevenState {
   series: {
@@ -33,6 +33,7 @@ const ChartSeven: React.FC = () => {
   };
   updateState;
 
+  // options needs to have width and height added or it will error
   const options: ApexOptions = {
     legend: {
       show: false,
@@ -61,6 +62,7 @@ const ChartSeven: React.FC = () => {
         options: {
           chart: {
             height: 300,
+            width: '100%',
           },
         },
       },
@@ -69,6 +71,7 @@ const ChartSeven: React.FC = () => {
         options: {
           chart: {
             height: 320,
+            width: '100%',
           },
         },
       },
@@ -111,7 +114,6 @@ const ChartSeven: React.FC = () => {
         title: {
           formatter: function (e) {
             return '';
-            e
           },
         },
       },
@@ -195,7 +197,8 @@ const ChartSeven: React.FC = () => {
             options={options}
             series={state.series}
             type="area"
-            height={310}
+            height={options.chart?.height}
+            width={options.chart?.height}
           />
         </div>
       </div>

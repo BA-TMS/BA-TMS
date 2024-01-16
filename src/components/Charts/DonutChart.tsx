@@ -21,6 +21,7 @@ const DonutChart: React.FC = () => {
   };
   updateState;
 
+  // options needs to have width and height added or it will error
   const options: ApexOptions = {
     chart: {
       type: 'donut',

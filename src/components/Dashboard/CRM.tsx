@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import DataStatsThree from '../DataStats/DataStatsThree';
-import ChartSeven from '../Charts/ChartSeven';
+import ChartSeven from '../Charts/CRMAreaChart';
 import DonutChart from '../Charts/DonutChart';
 // import ChartNine from "../Charts/ChartNine";
 // import LeadsReport from "../LeadsReport";
@@ -10,7 +10,7 @@ import DonutChart from '../Charts/DonutChart';
 const CRM: React.FC = () => {
   return (
     <>
-      {/* <DataStatsThree /> */}
+      <DataStatsThree />
 
       <div className="mt-7.5 grid grid-cols-12 gap-4 md:gap-6 2xl:gap-7.5">
         <div className="col-span-12 xl:col-span-7">
