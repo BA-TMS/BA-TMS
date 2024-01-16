@@ -116,7 +116,7 @@ const Containers: any = () => {
       country: string;
       state: string;
       city: string;
-      zip: number;
+      zip: string;
       name: string;
       email:string;
       phoneNumber: string
