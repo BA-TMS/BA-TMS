@@ -187,7 +187,7 @@ const Containers: any = () => {
 
             <Input type="tel" label="Phone number" id="phoneNumber" />
             <p>
-              <Button>Save</Button>
+              <Button>Add</Button>
             </p>
           </Form>
         </div>
