@@ -3,7 +3,7 @@ import React from 'react';
 import DataStatsThree from '../DataStats/DataStatsThree';
 import CRMAreaChart from '../Charts/CRMAreaChart';
 import DonutChart from '../Charts/DonutChart';
-// import ChartNine from "../Charts/ChartNine";
+import ChartNine from '../Charts/ChartNine';
 // import LeadsReport from "../LeadsReport";
 // import ToDoList from "../Todo/ToDoList";
 
@@ -14,20 +14,20 @@ const CRM: React.FC = () => {
 
       <div className="mt-7.5 grid grid-cols-12 gap-4 md:gap-6 2xl:gap-7.5">
         <div className="col-span-12 xl:col-span-7">
-          {/* <CRMAreaChart /> */}
+          <CRMAreaChart />
         </div>
 
         <div className="col-span-12 xl:col-span-5">
           <DonutChart />
         </div>
 
-        {/* <LeadsReport />
+        {/* <LeadsReport /> */}
 
         <div className="col-span-12 xl:col-span-5">
           <ChartNine />
         </div>
 
-        <ToDoList /> */}
+        {/* <ToDoList /> */}
       </div>
     </>
   );
