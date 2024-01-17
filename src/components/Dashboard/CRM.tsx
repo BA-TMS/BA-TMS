@@ -6,7 +6,6 @@ import DonutChart from '../Charts/DonutChart';
 // import ChartNine from "../Charts/ChartNine";
 // import LeadsReport from "../LeadsReport";
 // import ToDoList from "../Todo/ToDoList";
-import BarChart from '../Charts/BarChart';
 
 const CRM: React.FC = () => {
   return (
@@ -20,10 +19,6 @@ const CRM: React.FC = () => {
 
         <div className="col-span-12 xl:col-span-5">
           <DonutChart />
-        </div>
-
-        <div className="col-span-12 xl:col-span-5">
-          <BarChart />
         </div>
 
         {/* <LeadsReport />
