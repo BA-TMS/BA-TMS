@@ -14,7 +14,7 @@ const CRM: React.FC = () => {
 
       <div className="mt-7.5 grid grid-cols-12 gap-4 md:gap-6 2xl:gap-7.5">
         <div className="col-span-12 xl:col-span-7">
-          <CRMAreaChart />
+          {/* <CRMAreaChart /> */}
         </div>
 
         <div className="col-span-12 xl:col-span-5">
