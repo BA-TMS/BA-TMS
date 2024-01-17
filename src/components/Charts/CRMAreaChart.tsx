@@ -1,17 +1,17 @@
 import { ApexOptions } from 'apexcharts';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import dynamic from 'next/dynamic';
 const ApexCharts = dynamic(() => import('react-apexcharts'), { ssr: false });
 
-interface ChartSevenState {
+interface CRMAreaChartState {
   series: {
     name: string;
     data: number[];
   }[];
 }
 
-const ChartSeven: React.FC = () => {
-  const [state, setState] = useState<ChartSevenState>({
+const CRMAreaChart: React.FC = () => {
+  const [state, setState] = useState<CRMAreaChartState>({
     series: [
       {
         name: 'Received Amount',
@@ -198,7 +198,7 @@ const ChartSeven: React.FC = () => {
             series={state.series}
             type="area"
             height={options.chart?.height}
-            width={options.chart?.height}
+            width={options.chart?.width}
           />
         </div>
       </div>
@@ -221,4 +221,4 @@ const ChartSeven: React.FC = () => {
   );
 };
 
-export default ChartSeven;
+export default CRMAreaChart;
