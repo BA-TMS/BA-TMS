@@ -9,8 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@iconify/react": "^4.1.1",
+    "@mui/material": "^5.15.5",
     "apexcharts": "^3.45.1",
     "next": "^14.0.4",
+    "primeicons": "^6.0.1",
+    "primereact": "^10.3.2",
     "react": "^18",
     "react-apexcharts": "^1.4.1",
     "react-dom": "^18"
