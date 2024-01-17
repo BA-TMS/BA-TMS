@@ -1,7 +1,6 @@
-import Sidebar from '@/components/Sidebar';
+import Sidebar from '@/components/Sidebar/Sidebar';
 import Header from '@/components/Header/Header';
-import CRM from "@/components/Dashboard/CRM";
-
+import CRM from '@/components/Dashboard/CRM';
 
 const CrmPage = () => {
   return (
@@ -22,7 +21,7 @@ const CrmPage = () => {
             {str.repeat(100)}
           </p>
         ))} */}
-        <CRM />
+      <CRM />
     </>
   );
 };
