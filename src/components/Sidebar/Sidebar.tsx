@@ -219,19 +219,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                               </span>
                             </Link>
                           </li>
-                          <li>
-                            <Link
-                              href="/dashboard/crm"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white  ${
-                                pathname === '/dashboard/crm' && 'text-white'
-                              }`}
-                            >
-                              CRM
-                              <span className="absolute right-4 block rounded bg-primary px-2 py-1 text-xs font-medium text-white">
-                                Pro
-                              </span>
-                            </Link>
-                          </li>
                         </ul>
                       </div>
                       {/* <!-- Dropdown Menu End --> */}
