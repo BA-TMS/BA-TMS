@@ -3,7 +3,6 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function main() {
-  // Keep track of FKs when generating loads.
   const orgIds = [];
   const carrierIds = [];
   const customerIds = [];
@@ -17,8 +16,8 @@ async function main() {
       create: currOrg,
     });
     orgIds.push(resp.id);
-    // console.log(resp);
   }
+  console.log("Seed: Organization table populated");
 
   for (const currCarrier of carriers) {
     const resp = await prisma.carrier.upsert({
@@ -27,8 +26,8 @@ async function main() {
       create: currCarrier,
     });
     carrierIds.push(resp.id);
-    // console.log(resp);
   }
+  console.log("Seed: Carrier table populated");
 
   for (const currCustomer of customers) {
     const resp = await prisma.customer.upsert({
@@ -37,8 +36,8 @@ async function main() {
       create: currCustomer,
     });
     customerIds.push(resp.id);
-    // console.log(resp);
   }
+  console.log("Seed: Customer table populated");
 
   for (const currLoad of loads) {
     currLoad.ownerId = orgIds[loadPos % orgIds.length];
@@ -54,13 +53,9 @@ async function main() {
       update: {},
       create: currLoad,
     });
-    console.log(resp);
     loadPos += 1;
   }
-
-  console.log(orgIds);
-  console.log(carrierIds);
-  console.log(customerIds);
+  console.log("Seed: Load table populated");
 }
 
 const orgs = [
