@@ -1,4 +1,3 @@
-// import { PrismaClient } from '@prisma/client';
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
@@ -7,7 +6,6 @@ async function main() {
   const carrierIds = [];
   const customerIds = [];
   let loadPos = 0;
-  // TODO: Is there a less crufty approach to this?
 
   for (const currOrg of orgs) {
     const resp = await prisma.organization.upsert({
@@ -17,7 +15,6 @@ async function main() {
     });
     orgIds.push(resp.id);
   }
-  console.log("Seed: Organization table populated");
 
   for (const currCarrier of carriers) {
     const resp = await prisma.carrier.upsert({
@@ -27,7 +24,6 @@ async function main() {
     });
     carrierIds.push(resp.id);
   }
-  console.log("Seed: Carrier table populated");
 
   for (const currCustomer of customers) {
     const resp = await prisma.customer.upsert({
@@ -37,7 +33,6 @@ async function main() {
     });
     customerIds.push(resp.id);
   }
-  console.log("Seed: Customer table populated");
 
   for (const currLoad of loads) {
     currLoad.ownerId = orgIds[loadPos % orgIds.length];
@@ -55,7 +50,6 @@ async function main() {
     });
     loadPos += 1;
   }
-  console.log("Seed: Load table populated");
 }
 
 const orgs = [

@@ -22,28 +22,19 @@ function createRunString() {
 }
 
 function dbSetup() {
-  console.log("Starting Prisma migration");
   const migrateResp = execSync("npx prisma migrate reset -f");
-  console.log(migrateResp.toString());
   const seedResp = execSync('npx ts-node prisma/seed.ts');
-  console.log(seedResp.toString());
 }
 
 function startOrCreateContainer() {
   if (containerQuery()) {
-    console.log("Found existing container");
     const restartResp = execSync(`docker restart ${CONTAINER_NAME}`);
-    console.log(restartResp.toString());
   } else {
-    console.log("No existing container; creating. . .");
     const runString = createRunString();
     const runResp = execSync(runString);
-    console.log(runResp.toString());
     // Left to its own devices, Docker returns success before Prisma can access it :(.
     setTimeout(() => dbSetup(), 1000);
   }
 }
 
 startOrCreateContainer();
-// console.log(containerQuery());
-// console.log(createRunString());
