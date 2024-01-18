@@ -43,7 +43,6 @@ const ChartTen: React.FC = () => {
   const options: ApexOptions = {
     colors: ['#3C50E0', '#13C296', '#F2994A'],
     chart: {
-      fontFamily: 'Satoshi, sans-serif',
       type: 'bar',
       height: 318,
       width: '100%',
@@ -80,7 +79,6 @@ const ChartTen: React.FC = () => {
       show: true,
       position: 'top',
       horizontalAlign: 'left',
-      fontFamily: 'Satoshi',
       fontSize: '16px',
       fontWeight: 500,
       offsetY: -5,

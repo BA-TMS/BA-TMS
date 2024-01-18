@@ -18,7 +18,6 @@ const options: ApexOptions = {
     //     chart.windowResizeHandler();
     //   },
     // },
-    fontFamily: 'Satoshi, sans-serif',
     height: 335,
     width: '100%',
     type: 'area',

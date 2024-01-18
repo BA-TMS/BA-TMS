@@ -18,7 +18,6 @@ const options: ApexOptions = {
     //     chart.windowResizeHandler();
     //   },
     // },
-    fontFamily: 'Satoshi, sans-serif',
     type: 'bar',
     height: 335,
     width: '100%',
@@ -63,7 +62,6 @@ const options: ApexOptions = {
   legend: {
     position: 'top',
     horizontalAlign: 'left',
-    fontFamily: 'Satoshi',
     fontWeight: 500,
     fontSize: '14px',
 

@@ -9,7 +9,6 @@ interface AnalyticsDonutState {
 
 const options: ApexOptions = {
   chart: {
-    fontFamily: 'Satoshi, sans-serif',
     type: 'donut',
     // events: {
     //   mounted: (chart) => {

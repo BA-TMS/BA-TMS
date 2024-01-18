@@ -33,7 +33,6 @@ const ChartNine: React.FC = () => {
   const options: ApexOptions = {
     colors: ['#3C50E0', '#80CAEE'],
     chart: {
-      fontFamily: 'Satoshi, sans-serif',
       type: 'bar',
       height: 250,
       width: '100%',
@@ -70,7 +69,6 @@ const ChartNine: React.FC = () => {
       show: false,
       position: 'top',
       horizontalAlign: 'left',
-      fontFamily: 'Satoshi',
 
       markers: {
         radius: 99,

@@ -64,7 +64,6 @@ const CampaignBar: React.FC = () => {
       show: true,
       position: 'top',
       horizontalAlign: 'left',
-      fontFamily: 'Satoshi',
 
       markers: {
         radius: 99,

@@ -43,7 +43,6 @@ const CRMAreaChart: React.FC = () => {
     },
     colors: ['#3C50E0', '#C7D2E2'],
     chart: {
-      fontFamily: 'Satoshi, sans-serif',
       height: 310,
       width: '100%',
       type: 'area',
