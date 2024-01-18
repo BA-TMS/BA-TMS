@@ -1,3 +1,15 @@
+# Auto-formatting
+
+All of the code in this repo should be automatically formatted & linted.
+
+A lot of that should be accomplished by use of two VSCode extensions, plus two config files:
+
+- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) ([archive](https://web.archive.org/web/20231114192610/https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)). Config file: `/.prettierrc.json`
+
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) ([archive](https://web.archive.org/web/20231120210105/https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)). Config file `/.eslintrc.json`
+
+# From `npx create-next-app`
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
