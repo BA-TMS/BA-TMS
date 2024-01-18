@@ -7,7 +7,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "start": "next start",
     "docker": "npx ts-node docker/dockerscript.ts",
     "seed": "npx ts-node prisma/seed.ts"
   },
