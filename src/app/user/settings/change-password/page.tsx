@@ -1,50 +1,93 @@
-'use client'
-import { ReactNode, useState } from 'react';
-import "primereact/resources/themes/lara-light-indigo/theme.css";
-
-// TESTING
+'use client';
+import React, { useState } from 'react';
 import Input from '../../../../components/Settings-General/Input';
-import Form, { type FormHandle } from '../../../../components/Settings-General/Form';
 import Button from '../../../../components/Settings-General/Button';
-import { useRef } from 'react';
+import Iconify from '@/components/iconify/Iconify';
 
+// Icon variables
+import {Icon} from 'react-icons-kit';
+import {eyeOff} from 'react-icons-kit/feather/eyeOff';
+import {eye} from 'react-icons-kit/feather/eye';
 
+const PasswordReset = () => {
+    const [oldPassword, setOldPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
 
-const SettingsPage = () => {
-    const customers = [
-        { code: 'string', address: 'string', city: 'string', zip: 'string', state: 'string', phoneNumber: "string" }
-    ];
-
-    // Need a ref that we connect to our custom component.
-    const customForm = useRef<FormHandle>(null);
-
-    function handleSave(data: unknown) {
-        // Convince TypeScript that we know what the data is.
-        const extractedData = data as {
-          code: string;
-          address: string;
-          country: string;
-          state: string;
-          city: string;
-          zip: string;
-          name: string;
-          email:string;
-          phoneNumber: string
-        };
-        console.log(extractedData);
-        customForm.current?.clear(); // Current could be null, so add a ?.
+    // Show/Hide Password variables
+    const [showOldPassword, setShowOldPassword] = useState<boolean>(false);
+    const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
     
-        // Add new ID to the new customer and put them at the end of the list.
-        // First, convert the last value of 'code' into an int, add 1, then turn it
-        // back into a string, then set that as the new ID for the newest customer.
-        extractedData.code = String(parseInt(customers[customers.length - 1].code) + 1);
-        customers.push(extractedData);
-      }
+
+    const handleOldPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setOldPassword(e.target.value);
+    };
+
+    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setNewPassword(e.target.value);
+    };
+
+    const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setConfirmPassword(e.target.value);
+    };
+
+    const handleResetPassword = () => {
+        // Add logic to reset password
+        if (newPassword === confirmPassword) {
+            // Call API to reset password
+            console.log('Password reset successful');
+        } else {
+            console.error('Passwords do not match');
+        }
+    };
+
+    // Show/Hide Password
 
 
     return (
-        <h1>Change Password Here!</h1>
+        <>
+            <Iconify
+                icon={`${showOldPassword ? 'mdi:eye' : 'mdi:eye-closed'}`}
+                onClick={() => setShowOldPassword(!showOldPassword)}
+            />
+            <Input
+                type={showOldPassword ? "text" : "password"}
+                label="Old Password"
+                id="oldPassword"
+                value={oldPassword}
+                onChange={handleOldPassword}
+            />
+            
+            
+            <Iconify
+                icon={`${showNewPassword ? 'mdi:eye' : 'mdi:eye-closed'}`}
+                onClick={() => setShowNewPassword(!showNewPassword)}
+            />
+            <Input
+                type={showNewPassword ? "text" : "password"}
+                label="New Password"
+                id="newPassword"
+                value={newPassword}
+                onChange={handlePasswordChange}
+            />
+
+
+            
+            <Iconify
+                icon={`${showConfirmPassword ? 'mdi:eye' : 'mdi:eye-closed'}`}
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            />
+            <Input
+                type={showConfirmPassword ? "text" : "password"}
+                label="Confirm Password"
+                id="confirmPassword"
+                value={confirmPassword}
+                onChange={handleConfirmPasswordChange}
+            />
+            <Button onClick={handleResetPassword}>Reset Password</Button>
+        </>
     );
 };
 
-export default SettingsPage;
+export default PasswordReset;
