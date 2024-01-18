@@ -43,8 +43,8 @@ const CampaignAreaChart: React.FC = () => {
     },
     colors: ['#13C296', '#3C50E0'],
     chart: {
-      fontFamily: 'Satoshi, sans-serif',
       height: 200,
+      width: '100%',
       type: 'area',
       toolbar: {
         show: false,

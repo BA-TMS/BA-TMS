@@ -28,7 +28,6 @@ const CampaignBar: React.FC = () => {
   const options: ApexOptions = {
     colors: ['#3C50E0'],
     chart: {
-      fontFamily: 'Satoshi, sans-serif',
       type: 'bar',
       height: 350,
       width: '100%',

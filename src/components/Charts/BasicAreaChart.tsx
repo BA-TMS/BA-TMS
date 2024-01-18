@@ -20,6 +20,7 @@ const options: ApexOptions = {
     // },
     fontFamily: 'Satoshi, sans-serif',
     height: 335,
+    width: '100%',
     type: 'area',
     dropShadow: {
       enabled: true,

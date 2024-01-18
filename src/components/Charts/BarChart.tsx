@@ -76,7 +76,7 @@ const options: ApexOptions = {
   },
 };
 
-const ChartTwo: React.FC = () => {
+const BarChart: React.FC = () => {
   const [state, setState] = useState<BarChartState>({
     series: [
       {
@@ -154,4 +154,4 @@ const ChartTwo: React.FC = () => {
   );
 };
 
-export default ChartTwo;
+export default BarChart;

@@ -34,6 +34,7 @@ const CRMAreaChart: React.FC = () => {
   updateState;
 
   // options needs to have width and height added or it will error
+  // will also error if undefined at time of rendering
   const options: ApexOptions = {
     legend: {
       show: false,
@@ -44,6 +45,7 @@ const CRMAreaChart: React.FC = () => {
     chart: {
       fontFamily: 'Satoshi, sans-serif',
       height: 310,
+      width: '100%',
       type: 'area',
       toolbar: {
         show: false,
