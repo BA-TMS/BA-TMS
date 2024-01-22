@@ -126,7 +126,7 @@ const ChartTen: React.FC = () => {
         </div>
         <div className="flex items-center">
           <p className="font-medium uppercase text-black dark:text-white">
-            Short by:
+            Sort by:
           </p>
           <div className="relative z-20 inline-block">
             <select

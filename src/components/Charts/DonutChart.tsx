@@ -77,7 +77,7 @@ const DonutChart: React.FC = () => {
         </div>
         <div className="mt-2 flex items-center sm:mt-0">
           <p className="font-medium uppercase text-black dark:text-white">
-            Short by:
+            Sort by:
           </p>
           <div className="relative z-20 inline-block">
             <select
