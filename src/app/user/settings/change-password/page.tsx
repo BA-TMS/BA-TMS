@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import Input from '../../../../components/Settings-General/Input';
 import Button from '../../../../components/Settings-General/Button';
 import Iconify from '@/components/iconify/Iconify';
+import { Stack } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 // Icon variables
 import {Icon} from 'react-icons-kit';
@@ -18,6 +20,8 @@ const PasswordReset = () => {
     const [showOldPassword, setShowOldPassword] = useState<boolean>(false);
     const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
+
+    const { t: translate } = useTranslation();
     
 
     const handleOldPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,6 +75,10 @@ const PasswordReset = () => {
                 value={newPassword}
                 onChange={handlePasswordChange}
             />
+            <Stack component="span" direction="row" alignItems="center">
+                <Iconify icon="eva:info-fill" width={16} sx={{ mr: 0.5 }} />{' '}
+                {`${translate('Password must contain: At least 8 characters, 1 Uppercase, 1 Lowercase, 1 Special Character, and 1 Number')}`}
+              </Stack>
 
 
             
