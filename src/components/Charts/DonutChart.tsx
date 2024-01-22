@@ -1,15 +1,14 @@
+import { ApexOptions } from 'apexcharts';
+import { useState } from 'react';
+import dynamic from 'next/dynamic';
+const ApexCharts = dynamic(() => import('react-apexcharts'), { ssr: false });
 
-import { ApexOptions } from "apexcharts";
-import React, { useState } from "react";
-import dynamic from "next/dynamic";
-const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
-
-interface ChartEightState {
+interface DonutChartState {
   series: number[];
 }
 
-const ChartEight: React.FC = () => {
-  const [state, setState] = useState<ChartEightState>({
+const DonutChart: React.FC = () => {
+  const [state, setState] = useState<DonutChartState>({
     series: [70, 20, 10],
   });
 
@@ -22,22 +21,23 @@ const ChartEight: React.FC = () => {
   };
   updateState;
 
+  // options needs to have width and height added or it will error
   const options: ApexOptions = {
     chart: {
-      type: "donut",
+      type: 'donut',
     },
-    colors: ["#0FADCF", "#80CAEE", "#3C50E0"],
-    labels: ["Desktop", "Tablet", "Mobile"],
+    colors: ['#0FADCF', '#80CAEE', '#3C50E0'],
+    labels: ['Desktop', 'Tablet', 'Mobile'],
     legend: {
       show: false,
-      position: "bottom",
+      position: 'bottom',
     },
 
     plotOptions: {
       pie: {
         donut: {
-          size: "75%",
-          background: "transparent",
+          size: '75%',
+          background: 'transparent',
         },
       },
     },
@@ -51,6 +51,7 @@ const ChartEight: React.FC = () => {
         options: {
           chart: {
             width: 380,
+            height: 'auto',
           },
         },
       },
@@ -59,6 +60,7 @@ const ChartEight: React.FC = () => {
         options: {
           chart: {
             width: 250,
+            height: 'auto',
           },
         },
       },
@@ -75,7 +77,7 @@ const ChartEight: React.FC = () => {
         </div>
         <div className="mt-2 flex items-center sm:mt-0">
           <p className="font-medium uppercase text-black dark:text-white">
-            Short by:
+            Sort by:
           </p>
           <div className="relative z-20 inline-block">
             <select
@@ -105,7 +107,13 @@ const ChartEight: React.FC = () => {
       </div>
       <div className="mb-2">
         <div id="chartEight" className="mx-auto flex justify-center">
-          <ApexCharts options={options} series={state.series} type="donut" />
+          <ApexCharts
+            options={options}
+            series={state.series}
+            type="donut"
+            width={options.chart?.width}
+            height={options.chart?.height}
+          />
         </div>
       </div>
 
@@ -153,4 +161,4 @@ const ChartEight: React.FC = () => {
   );
 };
 
-export default ChartEight;
+export default DonutChart;

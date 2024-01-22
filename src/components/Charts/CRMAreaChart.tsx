@@ -1,17 +1,17 @@
 import { ApexOptions } from 'apexcharts';
-import React, { useState } from 'react';
-import dynamic from "next/dynamic";
-const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
+import { useState } from 'react';
+import dynamic from 'next/dynamic';
+const ApexCharts = dynamic(() => import('react-apexcharts'), { ssr: false });
 
-interface ChartSevenState {
+interface CRMAreaChartState {
   series: {
     name: string;
     data: number[];
   }[];
 }
 
-const ChartSeven: React.FC = () => {
-  const [state, setState] = useState<ChartSevenState>({
+const CRMAreaChart: React.FC = () => {
+  const [state, setState] = useState<CRMAreaChartState>({
     series: [
       {
         name: 'Received Amount',
@@ -33,6 +33,8 @@ const ChartSeven: React.FC = () => {
   };
   updateState;
 
+  // options needs to have width and height added or it will error
+  // will also error if undefined at time of rendering
   const options: ApexOptions = {
     legend: {
       show: false,
@@ -41,8 +43,8 @@ const ChartSeven: React.FC = () => {
     },
     colors: ['#3C50E0', '#C7D2E2'],
     chart: {
-      fontFamily: 'Satoshi, sans-serif',
       height: 310,
+      width: '100%',
       type: 'area',
       toolbar: {
         show: false,
@@ -61,6 +63,7 @@ const ChartSeven: React.FC = () => {
         options: {
           chart: {
             height: 300,
+            width: '100%',
           },
         },
       },
@@ -69,6 +72,7 @@ const ChartSeven: React.FC = () => {
         options: {
           chart: {
             height: 320,
+            width: '100%',
           },
         },
       },
@@ -111,7 +115,6 @@ const ChartSeven: React.FC = () => {
         title: {
           formatter: function (e) {
             return '';
-            e
           },
         },
       },
@@ -161,7 +164,7 @@ const ChartSeven: React.FC = () => {
         </div>
         <div className="flex items-center">
           <p className="font-medium uppercase text-black dark:text-white">
-            Short by:
+            Sort by:
           </p>
           <div className="relative z-20 inline-block">
             <select
@@ -195,7 +198,8 @@ const ChartSeven: React.FC = () => {
             options={options}
             series={state.series}
             type="area"
-            height={310}
+            height={options.chart?.height}
+            width={options.chart?.width}
           />
         </div>
       </div>
@@ -218,4 +222,4 @@ const ChartSeven: React.FC = () => {
   );
 };
 
-export default ChartSeven;
+export default CRMAreaChart;

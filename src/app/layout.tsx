@@ -1,11 +1,9 @@
 'use client';
 import './globals.css';
 // import "./data-tables-css.css";
-// import "./satoshi.css";
 import { useState, useEffect } from 'react';
 import Loader from '@/components/common/Loader';
-
-import Sidebar from '@/components/Sidebar';
+import Sidebar from '@/components/Sidebar/Sidebar';
 import Header from '@/components/Header/Header';
 
 export default function RootLayout({
