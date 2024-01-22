@@ -46,3 +46,23 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Configuring your .env file
+
+Your .env file should include these items:
+
+```
+DB_USER=''
+DB_PASSWORD=''
+DB_NAME=''
+
+DATABASE_URL=''
+```
+
+The first 3 are arbitrary. Whatever you choose will be applied to the database when it is created. DATABASE_URL needs to combine the other elements like thi: `DATABASE_URL='postgresql://${DB_USER}:${DB_PASSWORD}@localhost:5432/$(DB_NAME)`
+
+## Creating a local database container
+
+If your .env file is configured properly, and you have Docker installed, running `yarn docker` will create a Docker container, create a Postgres DB that reflects our Prisma schema and seeds it with some dummy data. Running `yarn docker` again will recognize the container has already been created and start it if it has been stopped.
+
+The seed script (`yarn seed`) can be run at any time to restore dummy DB data. The seed script is non-destrutive.

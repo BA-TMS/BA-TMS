@@ -14,15 +14,15 @@ model Organization { // This is a collection of TMS users
   id            Int       @id @default(autoincrement())
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  name          String
+  name          String    @unique
   address       String
   addressAddOn  String?
   city          String
   state         String
-  postCountry   Int
-  postCode      Int
+  postCountry   String
+  postCode      String
   telCountry    Int
-  telephone     Int
+  telephone     String
   loads         Load[]
   users         User[]
 }
@@ -31,7 +31,7 @@ model User { // Individual users at an organization
   id            Int           @id @default(autoincrement())
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
-  email         String
+  email         String        @unique
   password      String
   organization  Organization  @relation(fields: [orgId], references: [id])
   orgId         Int
@@ -57,21 +57,22 @@ model Load {
   consignee   Consignee?    @relation(fields: [destId], references: [id])
   destId      Int?
   status      Int           @default(1) // Should there be a status id -> label table?
+  @@unique([ownerId, loadNum])  // Loads can be numbered by user, but a user can't have two loads with the same number
 }
 
 model Carrier {
   id            Int       @id @default(autoincrement())
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  name          String
+  name          String    @unique
   address       String
   addressAddOn  String?   // E.g. suite or floor
   city          String
   state         String
   postCountry   String
-  postCode      Int       // Cram all digits together and format based on country
+  postCode      String    // Cram all digits together and format based on country
   telCountry    Int
-  telephone     Int       // Cram all digits together and format based on country
+  telephone     String    // Cram all digits together and format based on country
   dotId         Int
   factor        Factor?  @relation(fields: [factorId], references: [id])
   factorId      Int?
@@ -84,10 +85,10 @@ model Driver {
   id          Int       @id @default(autoincrement())
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  name        String
-  license     Int
+  name        String    @unique
+  license     Int       @unique
   telCountry  Int
-  telephone   Int
+  telephone   String
   employer    Carrier   @relation(fields: [employerId], references: [id])
   employerId  Int       // Are drivers always associated with a carrier?
   loads       Load[]
@@ -97,15 +98,15 @@ model Customer {
   id            Int       @id @default(autoincrement())
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  name          String
+  name          String    @unique
   address       String
   addressAddOn  String?
   city          String
   state         String
-  postCountry   Int
-  postCode      Int
+  postCountry   String
+  postCode      String
   telCountry    Int
-  telephone     Int
+  telephone     String
   loads         Load[]
 }
 
@@ -113,15 +114,15 @@ model Shipper {
   id            Int       @id @default(autoincrement())
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  name          String
+  name          String    @unique
   address       String
   addressAddOn  String?
   city          String
   state         String
-  postCountry   Int
-  postCode      Int
+  postCountry   String
+  postCode      String
   telCountry    Int
-  telephone     Int
+  telephone     String
   loads         Load[]
 }
 
@@ -129,15 +130,15 @@ model Consignee {
   id            Int       @id @default(autoincrement())
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  name          String
+  name          String    @unique
   address       String
   addressAddOn  String?
   city          String
   state         String
-  postCountry   Int
-  postCode      Int
+  postCountry   String
+  postCode      String
   telCountry    Int
-  telephone     Int
+  telephone     String
   loads         Load[]
 }
 
@@ -152,10 +153,10 @@ model Location {
   addressAddOn  String?
   city          String
   state         String
-  postCountry   Int
-  postCode      Int
+  postCountry   String
+  postCode      String
   telCountry    Int
-  telephone     Int
+  telephone     String
   isShipper     Boolean
   isConsignee   Boolean
   // loads         Load[]
@@ -170,10 +171,10 @@ model Factor {
   addressAddOn  String?
   city          String
   state         String
-  postCountry   Int
-  postCode      Int
+  postCountry   String
+  postCode      String
   telCountry    Int
-  telephone     Int
+  telephone     String
   carriers      Carrier[]
 }
 
@@ -186,10 +187,10 @@ model Insurer {
   addressAddOn  String?
   city          String
   state         String
-  postCountry   Int
-  postCode      Int
+  postCountry   String
+  postCode      String
   telCountry    Int
-  telephone     Int  
+  telephone     String
 }
 
 model CoverageMatrix {
