@@ -13,6 +13,8 @@ import Switch from 'react-switch';
 import { DataTable, DataTableFilterMeta } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import ToggleButton from '@/components/Controls/ToggleButton';
+import Iconify from '@/components/iconify/Iconify';
+import Popup from 'reactjs-popup';
 
 type Member = {
   name: string;
@@ -76,16 +78,25 @@ const placeholderMembers = [
   },
 ];
 
+type RoleGroups = {
+  [key: string]: string[];
+};
+
+const roleGroups: RoleGroups = {
+  'Admin roles': ['Administrator', 'IAM Admin'],
+  'Developer roles': ['Developer'],
+  'Other roles': ['Top-up Specialist'],
+};
+
 const SettingsPage = () => {
   const teamMembers: Members = placeholderMembers;
 
   // Need a ref that we connect to our custom component.
   const customForm = useRef<FormHandle>(null);
 
-  // State for filter.
   const [filteredMembers, setFilteredMembers] = useState<Members>(teamMembers);
-
-  /* DATATABLE TESTING */
+  const [filteredRoleGroups, setFilteredRoleGroups] = useState(roleGroups);
+  const [isOpen, setIsOpen] = useState(false);
 
   const nameEmailTemplate = (rowData: Member) => (
     <>
@@ -94,8 +105,6 @@ const SettingsPage = () => {
       {rowData.email}
     </>
   );
-
-  /* END TESTING */
 
   function handleSave(data: Member) {
     // Convince TypeScript that we know what the data is.
@@ -129,8 +138,10 @@ const SettingsPage = () => {
       {/* Filter */}
       <div>
         <input
+          style={{ width: '300px', display: 'inline' }}
           type="text"
           placeholder="Filter by name or email..."
+          className="text-input"
           onChange={(e) => {
             const value = e.target.value;
             // Filter the team members based on the input value
@@ -144,6 +155,114 @@ const SettingsPage = () => {
             setFilteredMembers(filteredMembers);
           }}
         />
+
+        {/* End Filter Block */}
+
+        {/* New Member Block */}
+        <Popup
+          trigger={<button className="modal-button">+ New Member</button>}
+          modal
+          nested
+          open={isOpen}
+          onOpen={() => setIsOpen(!isOpen)}
+        >
+          <div id="input-box">
+            <h1 id="line-text">Invite Team Members</h1>
+            <br />
+            <br />
+
+            <Form onSave={handleSave} ref={customForm}>
+              <div>
+                <p style={{ fontWeight: 'bold' }}>
+                  Enter team member email addresses
+                </p>
+                <input
+                  className="text-input"
+                  placeholder="jacob@a2zport.com, joshua@a2zport.com, etc."
+                ></input>
+              </div>
+
+              <div>
+                <p style={{ fontWeight: 'bold' }}>Select team member Roles</p>
+                <input
+                  className="text-input"
+                  placeholder="Search by role..."
+                  onChange={
+                    (e) => {
+                      const value = e.target.value;
+
+                      // Filter the roles based on the input value
+                      const filteredRoleGroups: RoleGroups = {};
+
+                      for (const key in roleGroups) {
+                        const roles = roleGroups[key];
+
+                        const filteredRoles = roles.filter((role) =>
+                          role.toLowerCase().includes(value.toLowerCase())
+                        );
+
+                        if (filteredRoles.length > 0)
+                          filteredRoleGroups[key] = filteredRoles;
+                      }
+
+                      setFilteredRoleGroups(filteredRoleGroups);
+                    }
+                    // Update the roles list with filtered results
+                    // (Assuming you have a state variable to store the filtered groups)
+                  }
+                ></input>
+              </div>
+
+              <table>
+                <tbody>
+                  {Object.entries(filteredRoleGroups).map((group) => {
+                    const groupName = group[0];
+                    const groupRoles = group[1];
+
+                    return (
+                      <>
+                        <tr className="group-header">
+                          <td>
+                            <span
+                              className="error2"
+                              style={{ display: 'inline' }}
+                            >
+                              {groupName}
+                            </span>
+                          </td>
+                        </tr>
+                        {groupRoles.map((role) => (
+                          <tr className="role">
+                            <td>
+                              <input
+                                className="checkbox-input"
+                                type="checkbox"
+                                style={{ display: 'inline' }}
+                              />
+                              <span>{role}</span>
+                            </td>
+                          </tr>
+                        ))}
+                      </>
+                    );
+                  })}
+                </tbody>
+              </table>
+              <p>
+                <Button>Send Invites</Button>
+              </p>
+            </Form>
+            <button
+              className="button"
+              style={{ marginLeft: '1rem' }}
+              onClick={() => setIsOpen(false)}
+            >
+              Cancel
+            </button>
+          </div>
+        </Popup>
+
+        {/* End New Member Block */}
       </div>
       <div>
         <DataTable
