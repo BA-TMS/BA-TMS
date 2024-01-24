@@ -97,6 +97,7 @@ const SettingsPage = () => {
   const [filteredMembers, setFilteredMembers] = useState<Members>(teamMembers);
   const [filteredRoleGroups, setFilteredRoleGroups] = useState(roleGroups);
   const [isOpen, setIsOpen] = useState(false);
+  const [filterText, setFilterText] = useState('');
 
   const nameEmailTemplate = (rowData: Member) => (
     <>
@@ -106,13 +107,51 @@ const SettingsPage = () => {
     </>
   );
 
-  function handleSave(data: Member) {
+  function updateFilteredMembers(filter: string) {
+    const filteredMembers = teamMembers.filter(
+      (member) =>
+        member.name?.toLowerCase().includes(filter.toLowerCase()) ||
+        member.email?.toLowerCase().includes(filter.toLowerCase())
+    );
+    // Update the team members list with the filtered results
+    // (Assuming you have a state variable to store the filtered members)
+    setFilteredMembers(filteredMembers);
+  }
+
+  function handleSave(data: unknown) {
+    const newMember = data as Member;
+
     // Convince TypeScript that we know what the data is.
     console.log(data);
     customForm.current?.clear(); // Current could be null, so add a ?.
 
+    // First, check if user left the email input field empty.
+    if (newMember.email === '' || newMember.role === undefined) {
+      return;
+    }
+
+    // Prevent duplicate emails. Without this, an error occurs when entering a duplicate email.
+    for (let i = 0; i < teamMembers.length; i++) {
+      if (teamMembers[i].email === newMember.email) {
+        alert(
+          'You cannot have more than one of the same email. Please change it.'
+        );
+        return;
+      }
+    }
+
+    // Success! The email is not null. Add a name for the email.
+    const memberName = newMember.email.substring(
+      0,
+      newMember.email.indexOf('@')
+    );
+    // Get the name of the new member and uppercase the first letter.
+    newMember.name = memberName;
+    newMember.name = newMember.name[0].toUpperCase() + newMember.name.slice(1);
+
     // This code will then add a new member to the Team Members form.
-    teamMembers.push(data);
+    teamMembers.push(newMember);
+    updateFilteredMembers(filterText);
   }
 
   return (
@@ -144,15 +183,8 @@ const SettingsPage = () => {
           className="text-input"
           onChange={(e) => {
             const value = e.target.value;
-            // Filter the team members based on the input value
-            const filteredMembers = teamMembers.filter(
-              (member) =>
-                member.name.toLowerCase().includes(value.toLowerCase()) ||
-                member.email.toLowerCase().includes(value.toLowerCase())
-            );
-            // Update the team members list with the filtered results
-            // (Assuming you have a state variable to store the filtered members)
-            setFilteredMembers(filteredMembers);
+            setFilterText(value);
+            updateFilteredMembers(value);
           }}
         />
 
@@ -171,15 +203,22 @@ const SettingsPage = () => {
             <br />
             <br />
 
-            <Form onSave={handleSave} ref={customForm}>
+            <Form
+              onSave={(data) => {
+                handleSave(data);
+                setIsOpen(false);
+              }}
+              ref={customForm}
+            >
               <div>
-                <p style={{ fontWeight: 'bold' }}>
-                  Enter team member email addresses
-                </p>
-                <input
+                <Input
+                  required
                   className="text-input"
+                  type="text"
+                  label="Enter team member email addresses"
+                  id="email"
                   placeholder="jacob@a2zport.com, joshua@a2zport.com, etc."
-                ></input>
+                />
               </div>
 
               <div>
@@ -235,8 +274,11 @@ const SettingsPage = () => {
                           <tr className="role">
                             <td>
                               <input
+                                required
                                 className="checkbox-input"
-                                type="checkbox"
+                                name="role"
+                                type="radio"
+                                value={role}
                                 style={{ display: 'inline' }}
                               />
                               <span>{role}</span>
@@ -248,9 +290,11 @@ const SettingsPage = () => {
                   })}
                 </tbody>
               </table>
-              <p>
-                <Button>Send Invites</Button>
-              </p>
+              <div style={{ display: 'flex', float: 'left' }}>
+                <p>
+                  <Button>Send Invites</Button>
+                </p>
+              </div>
             </Form>
             <button
               className="button"
@@ -261,9 +305,9 @@ const SettingsPage = () => {
             </button>
           </div>
         </Popup>
-
-        {/* End New Member Block */}
       </div>
+      {/* End New Member Block */}
+
       <div>
         <DataTable
           value={filteredMembers}
