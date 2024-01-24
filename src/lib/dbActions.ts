@@ -19,15 +19,15 @@ export async function addConsignee(consignee: {}) {
   // TODO: Move the form data interface from the form to. . . some central location and import it here.
   const resp = await prisma.consignee.create({
     data: {
-      'name':         consignee.consigneeName,
-      'address':      consignee.address,
-      'city':         consignee.city,
-      'state':        consignee.state,
-      'postCountry':  consignee.country,
-      'postCode':     consignee.zip,
-      'telCountry':   1,
-      'telephone':    consignee.phone
-    }
+      name: consignee.consigneeName,
+      address: consignee.address,
+      city: consignee.city,
+      state: consignee.state,
+      postCountry: consignee.country,
+      postCode: consignee.zip,
+      telCountry: 1,
+      telephone: consignee.phone,
+    },
   });
 
   console.log(resp);
