@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { addConsignee } from '@/lib/dbActions';
 
 // how to make sure this component is reusable?
 // will need form validation
@@ -70,8 +71,9 @@ export default function ConsigneeForm() {
     event.preventDefault();
     // add logic for not submitting if fields are not validated
     // currently just a json object
-    const usefulData = JSON.stringify(formData);
-    console.log(usefulData);
+    // const usefulData = JSON.stringify(formData);
+    // console.log(usefulData);
+    addConsignee(formData);
   };
 
   return (
