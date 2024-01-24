@@ -69,11 +69,20 @@ export default function ConsigneeForm() {
 
   const submitForm = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    // add logic for not submitting if fields are not validated
-    // currently just a json object
-    // const usefulData = JSON.stringify(formData);
-    // console.log(usefulData);
     addConsignee(formData);
+    setFormData((prevState) => ({
+      ...prevState,
+      consigneeName: '',
+      address: '',
+      country: '',
+      state: '',
+      city: '',
+      zip: '',
+      contactName: '',
+      phone: '',
+      email: '',
+      notes: '',
+    }));
   };
 
   return (
