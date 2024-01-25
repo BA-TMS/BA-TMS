@@ -1,7 +1,7 @@
 'use client';
 
 
-import ModalOne from "@/components/Modal/ModalOne";
+import ModalOne from "@/components/Modals/ModalOne";
 import DataTableTwo from "@/components/DataTables/DataTableTwo";
 import { useState } from 'react';
 
