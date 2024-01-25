@@ -2,8 +2,10 @@
 
 
 import ModalOne from "@/components/Modal/ModalOne";
-
+import DataTableTwo from "@/components/DataTables/DataTableTwo";
 import { useState } from 'react';
+
+// Place the modal as an add button to the right side of the screen.
 
 export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -14,7 +16,8 @@ export default function Home() {
   
   return (
     <>
-      <ModalOne />
+    <DataTableTwo />
+      {/* <ModalOne /> */}
     </>
   );
 }
