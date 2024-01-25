@@ -1,8 +1,8 @@
-import { loads } from '@/lib/dbActions';
+import { getLoads } from '@/lib/dbActions';
 import LoadTable from '@/components/Tables/LoadTable';
 
 const LoadsPage = async () => {
-  const data = await loads();
+  const data = await getLoads();
 
   return <LoadTable loads={data} />;
 };
