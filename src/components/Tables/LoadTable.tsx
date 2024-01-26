@@ -3,8 +3,6 @@ import TableActionsPopover from '../Popovers/TableActions';
 
 interface SingleLoad {
   id: number;
-  createdAt: Date;
-  updatedAt: Date;
   ownerId: number;
   loadNum: number;
   carrierId: number;
@@ -12,7 +10,12 @@ interface SingleLoad {
   customerId: number;
   originId: number | null;
   destId: number | null;
-  status: number;
+  status: string
+  carrier: {name: string};
+  driver: {name: string} | null;
+  customer: {name: string};
+  shipper: {name: string} | null;
+  consignee: {name: string} | null;
 }
 
 interface LoadTableProps {
@@ -31,7 +34,7 @@ export default function LoadTable({ loads }: LoadTableProps): JSX.Element {
                   Load Number
                 </th>
                 <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-                  Carrier ID
+                  Carrier
                 </th>
                 <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
                   Driver
@@ -63,26 +66,28 @@ export default function LoadTable({ loads }: LoadTableProps): JSX.Element {
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white">
-                      {load.carrierId}
+                      {load.carrier.name}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white">
-                      {load.driverId}
+                      {load.driver ? load.driver.name : ''}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white">
-                      {load.customerId}
+                      {load.customer.name}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white">
-                      {load.originId}
+                      {load.shipper ? load.shipper.name : ''}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">{load.destId}</p>
+                    <p className="text-black dark:text-white">
+                      {load.consignee ? load.consignee.name : ''}
+                    </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white">{load.status}</p>

@@ -4,7 +4,14 @@ import { PrismaClient } from '@prisma/client';
 
 let prisma = new PrismaClient();
 
-/** Get exosting table data */
+/** Get existing table data */
+async function getter(table: any, relations: any) {
+  const resp = table.findMany({
+    include: relations
+  });
+  return resp;
+}
+
 export async function getCarriers() {
   const carriers = await prisma.carrier.findMany();
   return carriers;
@@ -26,7 +33,15 @@ export async function getDrivers() {
 }
 
 export async function getLoads() {
-  const loads = await prisma.load.findMany();
+  const realtions = {
+    carrier: {select: {name: true}},
+    driver: {select: {name: true}},
+    customer: {select: {name: true}},
+    shipper: {select: {name: true}},
+    consignee: {select: {name: true}}
+  }
+  const loads = await getter(prisma.load, realtions);
+  console.log(loads);
   return loads;
 }
 
