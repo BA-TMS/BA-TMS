@@ -1,12 +1,13 @@
 'use server';
 
 import { PrismaClient } from '@prisma/client';
+import { ConsigneeFormDataState } from '@/types/formTypes';
 
 let prisma = new PrismaClient();
 
 /** Get existing table data */
 async function getter(table: any, relations: any) {
-  const resp = table.findMany({
+  const resp = await table.findMany({
     include: relations
   });
   return resp;
@@ -18,7 +19,7 @@ export async function getCarriers() {
 }
 
 export async function getConsignees() {
-  const consignees = await prisma.consignee.findMany();
+  const consignees = await getter(prisma.consignee, null);
   return consignees;
 }
 
@@ -33,15 +34,14 @@ export async function getDrivers() {
 }
 
 export async function getLoads() {
-  const realtions = {
+  const relations = {
     carrier: {select: {name: true}},
     driver: {select: {name: true}},
     customer: {select: {name: true}},
     shipper: {select: {name: true}},
     consignee: {select: {name: true}}
-  }
-  const loads = await getter(prisma.load, realtions);
-  console.log(loads);
+  };
+  const loads = await getter(prisma.load, relations);
   return loads;
 }
 
@@ -59,9 +59,10 @@ export async function getUsers() {
 // TODO: Create a central location for form types to replace any.
 // TODO: Read resp. to confirm success of write.
 async function creater(table: any, insertData: any) {
-  table.create({
+  const resp = await table.create({
     data: insertData,
   });
+  return resp;
 }
 
 export async function addCarrier(carrier: any) {
@@ -82,19 +83,31 @@ export async function addCarrier(carrier: any) {
   });
 }
 
-export async function addConsignee(consignee: any) {
-  const resp = await prisma.consignee.create({
-    data: {
-      name: consignee.consigneeName,
-      address: consignee.address,
-      city: consignee.city,
-      state: consignee.state,
-      postCountry: consignee.country,
-      postCode: consignee.zip,
-      telCountry: 1,
-      telephone: consignee.phone,
-    },
-  });
+export async function addConsignee(consignee: ConsigneeFormDataState) {
+  // const resp = await prisma.consignee.create({
+  //   data: {
+  //     name: consignee.consigneeName,
+  //     address: consignee.address,
+  //     city: consignee.city,
+  //     state: consignee.state,
+  //     postCountry: consignee.country,
+  //     postCode: consignee.zip,
+  //     telCountry: 1,
+  //     telephone: consignee.phone,
+  //   },
+  // });
+
+  const insertData = {
+    name: consignee.consigneeName,
+    address: consignee.address,
+    city: consignee.city,
+    state: consignee.state,
+    postCountry: consignee.country,
+    postCode: consignee.zip,
+    telCountry: 1,
+    telephone: consignee.phone,
+  }
+  const resp = creater(prisma.consignee, insertData);
 
   console.log(resp);
 }

@@ -2,30 +2,19 @@
 
 import { useState } from 'react';
 import { addConsignee } from '@/lib/dbActions';
+import { ConsigneeFormDataState } from '@/types/formTypes';
 
 // how to make sure this component is reusable?
 // will need form validation
 // action- used for processing form, calls a function to run on the server to get/post data to backend
 
-interface FormDataState {
-  consigneeName: string;
-  address: string;
-  country: string;
-  state: string;
-  city: string;
-  zip: string;
-  contactName: string;
-  phone: string;
-  email: string;
-  notes: string;
-}
 
 type Event = React.ChangeEvent<
   HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
 >;
 
 export default function ConsigneeForm() {
-  const [formData, setFormData] = useState<FormDataState>({
+  const [formData, setFormData] = useState<ConsigneeFormDataState>({
     consigneeName: '',
     address: '',
     country: '',
