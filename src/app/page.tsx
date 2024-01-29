@@ -2,7 +2,6 @@
 
 
 import ModalOne from "@/components/Modals/ModalOne";
-import DataTableTwo from "@/components/DataTables/DataTableTwo";
 import TableThree from "@/components/Table/TableThree";
 import TableJ from "@/components/Table/TableJ";
 
@@ -22,7 +21,6 @@ export default function Home() {
     <>
        <TableJ />
       {/* <TableThree/> */}
-      {/* <DataTableTwo /> */}
       {/* <ModalOne /> */}
     </>
   );
