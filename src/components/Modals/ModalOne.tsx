@@ -1,23 +1,15 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Dispatch, SetStateAction } from 'react';
 
-const ModalOne: React.FC = () => {
-  const [modalOpen, setModalOpen] = useState(false);
+interface ModalOneProps {
+  modalOpen: boolean;
+  setModalOpen: Dispatch<SetStateAction<boolean>>;
+}
 
+const ModalOne: React.FC<ModalOneProps> = ({ modalOpen, setModalOpen }) => {
   const trigger = useRef<any>(null);
   const modal = useRef<any>(null);
-
-  // close on click outside
-  useEffect(() => {
-    const clickHandler = ({ target }: MouseEvent) => {
-      if (!modal.current || modal.current.contains(target)) return;
-      if (!modalOpen || trigger.current.contains(target)) return;
-      setModalOpen(false);
-    };
-    document.addEventListener('click', clickHandler);
-    return () => document.removeEventListener('click', clickHandler);
-  });
 
   // close if the esc key is pressed
   useEffect(() => {
