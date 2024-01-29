@@ -5,7 +5,7 @@
 import ModalOne from "@/components/Modals/ModalOne";
 import { useState } from 'react';
 
-const initialPeople = [
+const people = [
   { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
   // More people...
 ]
@@ -13,19 +13,12 @@ const initialPeople = [
 const tableHeaders = ['Name', 'Title', 'Email', 'Role'];
 
 export default function TableJ() {
-  const [people, setPeople] = useState(initialPeople);
   const [modalOpen, setModalOpen] = useState(false);
-  const [currentPerson, setCurrentPerson] = useState(null);
   
-  const toggleModal = (person) => {
-    setCurrentPerson(person);
+  const toggleModal = () => {
     setModalOpen(!modalOpen);
   };
-
-  const updateUser = (updatedPerson) => {
-    setPeople(people.map(person => person.email === updatedPerson.email ? updatedPerson : person));
-  };
-
+  
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
@@ -36,7 +29,14 @@ export default function TableJ() {
           </p>
         </div>
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-          <ModalOne modalOpen={modalOpen} setModalOpen={setModalOpen} person={currentPerson} updateUser={updateUser} />
+          {/* <button
+            type="button"
+            onClick={toggleModal}
+            className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-md text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            Add user
+          </button> */}
+          <ModalOne modalOpen={modalOpen} setModalOpen={setModalOpen} />
         </div>
       </div>
       
@@ -73,9 +73,9 @@ export default function TableJ() {
                     <td className="whitespace-nowrap px-3 py-4 text-md text-gray-500">{person.email}</td>
                     <td className="whitespace-nowrap px-3 py-4 text-md text-gray-500">{person.role}</td>
                     <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-md sm:pr-0">
-                      <button onClick={() => toggleModal(person)} className="text-indigo-600 hover:text-indigo-900">
+                      <a href="#" className="text-indigo-600 hover:text-indigo-900">
                         Edit<span className="sr-only">, {person.name}</span>
-                      </button>
+                      </a>
                     </td>
                   </tr>
                 ))}
