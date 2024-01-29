@@ -2,12 +2,12 @@
 
 import { useState } from 'react';
 import { addConsignee } from '@/lib/dbActions';
+import { usStates } from '@/assets/data/states';
+
+import * as yup from 'yup';
 import { ConsigneeFormDataState } from '@/types/formTypes';
 
-// how to make sure this component is reusable?
-// will need form validation
 // action- used for processing form, calls a function to run on the server to get/post data to backend
-
 
 type Event = React.ChangeEvent<
   HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -25,6 +25,23 @@ export default function ConsigneeForm() {
     phone: '',
     email: '',
     notes: '',
+  });
+
+  // yup schema object for validation
+  let consigneeSchema = yup.object({
+    consigneeName: yup.string().required('Please enter consignee name'),
+    address: yup.string().required('Please enter consignee address'),
+    country: yup.string().required('Please enter Country'),
+    state: yup.string().required('Please enter State'),
+    city: yup.string().required('Please enter City'),
+    zip: yup.string().required('Please enter Zip/ Postal Code'),
+    contactName: yup.string().required('Please enter consignee contact name'),
+    phone: yup
+      .string()
+      .matches(/^\d{3}-\d{3}-\d{4}$/) // how do we want to do phone format?
+      .required('Please enter contact phone'),
+    email: yup.string().email().required('Please enter contact email'),
+    notes: yup.string(),
   });
 
   const handleChange = (event: Event): void => {
@@ -58,7 +75,16 @@ export default function ConsigneeForm() {
 
   const submitForm = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    addConsignee(formData);
+    // yup validation
+    consigneeSchema
+      .validate(formData)
+      .then((valid) => console.log('form data valid', valid))
+      .catch((error) => {
+        console.log(error);
+      });
+
+    // add to database
+    // addConsignee(formData);
     setFormData((prevState) => ({
       ...prevState,
       consigneeName: '',
@@ -112,18 +138,19 @@ export default function ConsigneeForm() {
                   className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                 />
               </div>
-              {/* need to fix the dropdown symbol here */}
               <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                 <div className="w-full xl:w-1/2">
                   <label className="mb-2.5 block text-black dark:text-white">
                     Country
                   </label>
+                  {/* need to fix the dropdown symbol here */}
                   <select
                     name="country"
                     onChange={handleChange}
                     value={formData.country}
                     className="relative z-20 w-full rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   >
+                    {/* how many country options should we have? Also phone codes */}
                     <option>Select Country</option>
                     <option value="USA">USA</option>
                     <option value="UK">UK</option>
@@ -142,9 +169,12 @@ export default function ConsigneeForm() {
                     className="relative z-20 w-full rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   >
                     <option value="">Select State</option>
-                    <option value="Alabama">Alabama</option>
-                    <option value="Alaska">Alaska</option>
-                    <option value="Arizona">Arizona</option>
+                    {usStates &&
+                      usStates.map((state, index) => (
+                        <option key={index + 1} value={`${state.name}`}>
+                          {`${state.name}`}
+                        </option>
+                      ))}
                   </select>
                 </div>
               </div>
@@ -247,7 +277,7 @@ export default function ConsigneeForm() {
                 <button
                   type="button"
                   onClick={cancelForm}
-                  className="rounded bg-primary p-3 font-medium text-gray ml-2"
+                  className="rounded bg-red p-3 font-medium text-gray ml-2"
                 >
                   Cancel
                 </button>
