@@ -1,8 +1,5 @@
 'use client';
 
-// Temporary note, the modal button display needs to be a form, create a component form. 
-// Button spacing for the modal screen comes from tailwind.config
-
 import React, { useState, useEffect, useRef } from 'react';
 
 const ModalOne: React.FC = () => {
@@ -46,45 +43,69 @@ const ModalOne: React.FC = () => {
       >
         Add user
       </button>
-      <div
-        className={`fixed top-0 left-0 z-999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5 ${
-          modalOpen ? 'block' : 'hidden'
-        }`}
-      >
+      {modalOpen && (
         <div
-          ref={modal}
-          onFocus={() => setModalOpen(true)}
-          onBlur={() => setModalOpen(false)}
-          className="w-full max-w-142.5 rounded-lg bg-white py-12 px-8 text-center dark:bg-boxdark md:py-15 md:px-17.5"
+          className="fixed top-0 left-0 z-999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5"
         >
-          <h3 className="pb-2 text-xl font-bold text-black dark:text-white sm:text-2xl">
-            Your Message Sent Successfully
-          </h3>
-          <span className="mx-auto mb-6 inline-block h-1 w-22.5 rounded bg-primary"></span>
-          <p className="mb-10">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry&apos;s standard dummy text
-            ever since
-          </p>
-          <div className="-mx-3 flex flex-wrap gap-y-4">
-            <div className="w-full px-3 2xsm:w-1/2">
-              <button
-                onClick={() => setModalOpen(false)}
-                className="block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1"
-              >
-                Cancel
-              </button>
-            </div>
-            <div className="w-full px-3 2xsm:w-1/2">
-              <button className="block w-full rounded border border-primary bg-primary p-3 text-center font-medium text-white transition hover:bg-opacity-90">
-                View Details
-              </button>
-            </div>
+          <div
+            ref={modal}
+            onFocus={() => setModalOpen(true)}
+            onBlur={() => setModalOpen(false)}
+            className="w-full max-w-screen-md rounded-lg bg-white py-8 px-8 text-left dark:bg-boxdark md:py-10 md:px-17.5"
+          >
+              <div className="border-b border-stroke px-6.5 dark:border-strokedark">
+                <h3 className="font-medium text-black dark:text-white text-center">
+                  User Form
+                </h3>
+              </div>
+              <form action="#">
+                <div className="p-6.5">
+                  <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+                    <div className="w-full xl:w-1/2">
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        First name
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Enter first name"
+                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                      />
+                    </div>
+
+                    <div className="w-full xl:w-1/2">
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        Last name
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Enter last name"
+                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mb-4.5">
+                    <label className="mb-2.5 block text-black dark:text-white">
+                      Email <span className="text-meta-1">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      placeholder="Enter email address"
+                      className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                    />
+                  </div>
+
+                  <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray">
+                    Send Message
+                  </button>
+                </div>
+              </form>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
 
 export default ModalOne;
+
