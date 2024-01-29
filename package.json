@@ -27,6 +27,7 @@
     "react-dom": "^18",
     "react-i18next": "^14.0.1",
     "react-icons-kit": "^2.0.0",
+    "react-router-dom": "^6.21.3",
     "react-switch": "^7.0.0",
     "reactjs-popup": "^2.0.6"
   },
