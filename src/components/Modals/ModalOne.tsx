@@ -11,13 +11,8 @@ const ModalOne: React.FC = () => {
   // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
-      if (!modal.current) return;
-      if (
-        !modalOpen ||
-        modal.current.contains(target) ||
-        trigger.current.contains(target)
-      )
-        return;
+      if (!modal.current || modal.current.contains(target)) return;
+      if (!modalOpen || trigger.current.contains(target)) return;
       setModalOpen(false);
     };
     document.addEventListener('click', clickHandler);
@@ -49,8 +44,6 @@ const ModalOne: React.FC = () => {
         >
           <div
             ref={modal}
-            onFocus={() => setModalOpen(true)}
-            onBlur={() => setModalOpen(false)}
             className="w-full max-w-screen-md rounded-lg bg-white py-8 px-8 text-left dark:bg-boxdark md:py-10 md:px-17.5"
           >
               <div className="border-b border-stroke px-6.5 dark:border-strokedark">
@@ -95,9 +88,17 @@ const ModalOne: React.FC = () => {
                     />
                   </div>
 
-                  <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray">
-                    Send Message
-                  </button>
+                  <div className="flex w-full justify-between space-x-2">
+                    <button 
+                      onClick={() => setModalOpen(false)}
+                      className="flex w-1/2 justify-center rounded bg-red p-3 font-medium text-gray"
+                    >
+                      Close
+                    </button>
+                    <button className="flex w-1/2 justify-center rounded bg-green p-3 font-medium text-gray bg-green-500">
+                      Save
+                    </button>
+                  </div>
                 </div>
               </form>
           </div>
@@ -108,4 +109,3 @@ const ModalOne: React.FC = () => {
 };
 
 export default ModalOne;
-
