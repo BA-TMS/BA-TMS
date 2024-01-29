@@ -44,7 +44,7 @@ const ModalOne: React.FC = () => {
         onClick={() => setModalOpen(!modalOpen)}
         className="rounded-md bg-primary py-3 px-9 font-medium text-white"
       >
-        Modal 1
+        Add user
       </button>
       <div
         className={`fixed top-0 left-0 z-999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5 ${

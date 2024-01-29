@@ -20,7 +20,7 @@ export default function Home() {
   
   return (
     <>
-    <TableJ />
+       <TableJ />
       {/* <TableThree/> */}
       {/* <DataTableTwo /> */}
       {/* <ModalOne /> */}
