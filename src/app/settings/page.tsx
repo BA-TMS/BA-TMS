@@ -1,13 +1,12 @@
 'use client';
 
 import SettingsPage from '../user/settings/team/page';
-import Example from '@/components/Example';
-import Image from 'next/image';
+import Account from '@/components/User/Account';
 
 const Settings = () => {
   return (
     <>
-      <Example />
+      <Account />
     </>
   );
 };
