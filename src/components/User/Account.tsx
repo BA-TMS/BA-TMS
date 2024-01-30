@@ -10,7 +10,6 @@ const secondaryNavigation = [
   { name: 'Notifications', href: '#', current: false },
   { name: 'Billing', href: '#', current: false },
   { name: 'Teams', href: '#', current: false },
-  { name: 'Integrations', href: '#', current: false },
 ]
 
 export default function Account() {
