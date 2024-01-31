@@ -1,3 +1,5 @@
+// For example purposes only to quickly test the componets
+
 'use client';
 
 import ModalOne from "@/components/Modals/ModalOne";
