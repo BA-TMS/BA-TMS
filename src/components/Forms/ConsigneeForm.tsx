@@ -1,103 +1,57 @@
 'use client';
 
-import { useState } from 'react';
-import { addConsignee } from '@/lib/dbActions';
+import { useForm } from 'react-hook-form';
 import { usStates } from '@/assets/data/states';
-
 import * as yup from 'yup';
-import { ConsigneeFormDataState } from '@/types/formTypes';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { addConsignee } from '@/lib/dbActions';
 
-// action- used for processing form, calls a function to run on the server to get/post data to backend
+const consigneeSchema = yup.object({
+  consigneeName: yup.string().required('Consignee Name is required'),
+  address: yup.string().required('Address is required'),
+  country: yup.string().required('Country is required'),
+  state: yup.string().required('State is required '),
+  city: yup.string().required('City is required '),
+  zip: yup
+    .string()
+    .length(5, 'Zip must be 5 characters')
+    .required('Zip Code is required '),
+  contactName: yup.string().required('Contact Name is required'),
+  phone: yup
+    .string()
+    .matches(/^[0-9]+$/, 'Must use valid phone number')
+    .required('Contact phone number required'),
+  email: yup
+    .string()
+    .email('Must use a valid email')
+    .required('Contact email required'),
+  notes: yup.string().max(250, 'Must be under 250 characters'),
+});
 
-type Event = React.ChangeEvent<
-  HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
->;
+type Consignee = yup.InferType<typeof consigneeSchema>;
 
 export default function ConsigneeForm() {
-  const [formData, setFormData] = useState<ConsigneeFormDataState>({
-    consigneeName: '',
-    address: '',
-    country: '',
-    state: '',
-    city: '',
-    zip: '',
-    contactName: '',
-    phone: '',
-    email: '',
-    notes: '',
-  });
+  const {
+    register, // connect inputs to useForm with register
+    handleSubmit,
+    reset, // for resetting form
+    setError, // async error handling
+    formState: { errors, isSubmitting }, // errors for the errors in validation, isSubmitting is boolean when form is submitting
+  } = useForm({ resolver: yupResolver(consigneeSchema) });
 
-  // yup schema object for validation
-  let consigneeSchema = yup.object({
-    consigneeName: yup.string().required('Please enter consignee name'),
-    address: yup.string().required('Please enter consignee address'),
-    country: yup.string().required('Please enter Country'),
-    state: yup.string().required('Please enter State'),
-    city: yup.string().required('Please enter City'),
-    zip: yup.string().required('Please enter Zip/ Postal Code'),
-    contactName: yup.string().required('Please enter consignee contact name'),
-    phone: yup
-      .string()
-      .matches(/^\d{3}-\d{3}-\d{4}$/) // how do we want to do phone format?
-      .required('Please enter contact phone'),
-    email: yup.string().email().required('Please enter contact email'),
-    notes: yup.string(),
-  });
-
-  const handleChange = (event: Event): void => {
-    const fieldName: string = event.target.name;
-    const fieldValue: string = event.target.value;
-    if (fieldName !== '') {
-      setFormData((prevState) => ({
-        ...prevState,
-        [fieldName]: fieldValue,
-      }));
-    }
-  };
-
-  const cancelForm = (event: React.FormEvent<HTMLButtonElement>): void => {
-    event.preventDefault(); // do we need?
-
-    setFormData((prevState) => ({
-      ...prevState,
-      consigneeName: '',
-      address: '',
-      country: '',
-      state: '',
-      city: '',
-      zip: '',
-      contactName: '',
-      phone: '',
-      email: '',
-      notes: '',
-    }));
-  };
-
-  const submitForm = (event: React.FormEvent<HTMLFormElement>): void => {
-    event.preventDefault();
-    // yup validation
-    consigneeSchema
-      .validate(formData)
-      .then((valid) => console.log('form data valid', valid))
-      .catch((error) => {
-        console.log(error);
+  // add our backend functionality here
+  // may want to clear form after submit, or will we just be closing the popup?
+  const onSubmit = async (data: Consignee) => {
+    try {
+      console.log(data);
+      await new Promise((resolve) => {
+        setTimeout(resolve, 1000);
       });
-
-    // add to database
-    // addConsignee(formData);
-    setFormData((prevState) => ({
-      ...prevState,
-      consigneeName: '',
-      address: '',
-      country: '',
-      state: '',
-      city: '',
-      zip: '',
-      contactName: '',
-      phone: '',
-      email: '',
-      notes: '',
-    }));
+      throw Error;
+      // addConsignee(data);
+    } catch (error) {
+      setError('root', { message: 'Error Submitting Form- Please try Again' }); // root is for errors that belong to form as a whole
+    }
   };
 
   return (
@@ -109,20 +63,23 @@ export default function ConsigneeForm() {
               New Consignee
             </h3>
           </div>
-          <form action={''} onSubmit={submitForm}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="p-6.5">
               <div className="mb-4.5">
                 <label className="mb-2.5 block text-black dark:text-white">
                   Consignee Name
                 </label>
                 <input
+                  {...register('consigneeName')}
                   type="text"
-                  name="consigneeName"
                   placeholder="Consignee Name"
-                  value={formData.consigneeName}
-                  onChange={handleChange}
-                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary "
                 />
+                {errors.consigneeName && (
+                  <p className="mt-1 text-danger">
+                    {errors.consigneeName.message}
+                  </p>
+                )}
               </div>
 
               <div className="mb-4.5">
@@ -130,14 +87,16 @@ export default function ConsigneeForm() {
                   Address
                 </label>
                 <input
+                  {...register('address')}
                   type="text"
-                  name="address"
                   placeholder="Consignee Address"
-                  value={formData.address}
-                  onChange={handleChange}
                   className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                 />
+                {errors.address && (
+                  <p className="mt-1 text-danger">{errors.address.message}</p>
+                )}
               </div>
+
               <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                 <div className="w-full xl:w-1/2">
                   <label className="mb-2.5 block text-black dark:text-white">
@@ -145,17 +104,18 @@ export default function ConsigneeForm() {
                   </label>
                   {/* need to fix the dropdown symbol here */}
                   <select
-                    name="country"
-                    onChange={handleChange}
-                    value={formData.country}
+                    {...register('country')}
                     className="relative z-20 w-full rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   >
                     {/* how many country options should we have? Also phone codes */}
-                    <option>Select Country</option>
+                    <option value="">Select Country</option>
                     <option value="USA">USA</option>
                     <option value="UK">UK</option>
                     <option value="Canada">Canada</option>
                   </select>
+                  {errors.country && (
+                    <p className="mt-1 text-danger">{errors.country.message}</p>
+                  )}
                 </div>
 
                 <div className="w-full xl:w-1/2">
@@ -163,9 +123,7 @@ export default function ConsigneeForm() {
                     State
                   </label>
                   <select
-                    name="state"
-                    onChange={handleChange}
-                    value={formData.state}
+                    {...register('state')}
                     className="relative z-20 w-full rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   >
                     <option value="">Select State</option>
@@ -176,6 +134,9 @@ export default function ConsigneeForm() {
                         </option>
                       ))}
                   </select>
+                  {errors.state && (
+                    <p className="mt-1 text-danger">{errors.state.message}</p>
+                  )}
                 </div>
               </div>
 
@@ -185,13 +146,14 @@ export default function ConsigneeForm() {
                     City
                   </label>
                   <input
+                    {...register('city')}
                     type="text"
-                    name="city"
                     placeholder="City"
-                    value={formData.city}
-                    onChange={handleChange}
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
+                  {errors.city && (
+                    <p className="mt-1 text-danger">{errors.city.message}</p>
+                  )}
                 </div>
 
                 <div className="w-full xl:w-1/2">
@@ -199,13 +161,14 @@ export default function ConsigneeForm() {
                     Postal/ Zip
                   </label>
                   <input
+                    {...register('zip')}
                     type="text"
-                    name="zip"
                     placeholder="Postal/ Zip"
-                    value={formData.zip}
-                    onChange={handleChange}
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
+                  {errors.zip && (
+                    <p className="mt-1 text-danger">{errors.zip.message}</p>
+                  )}
                 </div>
               </div>
 
@@ -215,13 +178,16 @@ export default function ConsigneeForm() {
                     Contact Name
                   </label>
                   <input
+                    {...register('contactName')}
                     type="text"
-                    name="contactName"
                     placeholder="Contact Name"
-                    value={formData.contactName}
-                    onChange={handleChange}
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
+                  {errors.contactName && (
+                    <p className="mt-1 text-danger">
+                      {errors.contactName.message}
+                    </p>
+                  )}
                 </div>
 
                 <div className="w-full xl:w-1/2">
@@ -229,28 +195,30 @@ export default function ConsigneeForm() {
                     Phone Number
                   </label>
                   <input
+                    {...register('phone')}
                     type="text"
-                    name="phone"
                     placeholder="Phone Number"
-                    value={formData.phone}
-                    onChange={handleChange}
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
+                  {errors.phone && (
+                    <p className="mt-1 text-danger">{errors.phone.message}</p>
+                  )}
                 </div>
               </div>
 
               <div className="mb-4.5">
                 <label className="mb-2.5 block text-black dark:text-white">
-                  Email <span className="text-meta-1">*</span>
+                  Email
                 </label>
                 <input
+                  {...register('email')}
                   type="email"
-                  name="email"
                   placeholder="Contact Email Address"
-                  value={formData.email}
-                  onChange={handleChange}
                   className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                 />
+                {errors.email && (
+                  <p className="mt-1 text-danger">{errors.email.message}</p>
+                )}
               </div>
 
               <div className="mb-6">
@@ -258,25 +226,32 @@ export default function ConsigneeForm() {
                   Notes
                 </label>
                 <textarea
+                  {...register('notes')}
                   rows={6}
-                  name="notes"
                   placeholder="Notes"
-                  value={formData.notes}
-                  onChange={handleChange}
                   className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                 ></textarea>
+                {errors.notes && (
+                  <p className="mt-1 text-danger">{errors.notes.message}</p>
+                )}
+                {/* general form submission error display */}
+                {errors.root && (
+                  <p className="mt-1 text-danger">{errors.root.message}</p>
+                )}
               </div>
 
               <div className="flex justify-end">
                 <button
                   type="submit"
+                  disabled={isSubmitting}
                   className="w-1/4 rounded bg-primary p-3 font-medium text-gray"
                 >
-                  Add
+                  {isSubmitting ? 'Submitting' : 'Add'}
                 </button>
                 <button
-                  type="button"
-                  onClick={cancelForm}
+                  type="reset"
+                  onClick={() => reset()}
+                  disabled={isSubmitting}
                   className="rounded bg-red p-3 font-medium text-gray ml-2"
                 >
                   Cancel

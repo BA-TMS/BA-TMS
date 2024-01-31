@@ -1,5 +1,5 @@
 /**
- *  Types meant to facilitate communication with pages and the DB actions they 
+ *  Types meant to facilitate communication with pages and the DB actions they
  *  perform upon submission.
  */
 
@@ -13,5 +13,5 @@ export interface ConsigneeFormDataState {
   contactName: string;
   phone: string;
   email: string;
-  notes: string;
+  notes?: string | undefined;
 }
