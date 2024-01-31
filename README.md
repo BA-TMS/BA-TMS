@@ -1,3 +1,7 @@
+ Green splash page has been fixed. 
+
+
+
 # Auto-formatting
 
 All of the code in this repo should be automatically formatted & linted.
