@@ -1,46 +1,45 @@
 'use client';
 
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import Image from "next/image";
-
-
+import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb';
+import Image from 'next/image';
 
 const secondaryNavigation = [
   { name: 'Account', href: '#', current: true },
   { name: 'Notifications', href: '#', current: false },
   { name: 'Billing', href: '#', current: false },
-  { name: 'Teams', href: '#', current: false },
-]
+  { name: 'Teams', href: '../user/settings/team', current: false },
+];
 
 export default function Account() {
-
   return (
     <>
-          {/* Tabs */}
-          <div>            
-            {/* removed dlassName="border-b border-white/5" */}
-            <div>
-              
-              {/* Secondary navigation */}
-              <nav className="flex overflow-x-auto py-4">
-                <ul
-                  role="list"
-                  className="flex min-w-full flex-none gap-x-6 px-4 text-sm font-semibold leading-6 text-gray-400 sm:px-6 lg:px-8"
-                >
-                  {secondaryNavigation.map((item) => (
-                    <li key={item.name}>
-                      <a href={item.href} className={item.current ? 'text-indigo-400' : ''}>
-                        {item.name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            </div>          
-          </div>
+      {/* Tabs */}
+      <div>
+        {/* removed dlassName="border-b border-white/5" */}
+        <div>
+          {/* Secondary navigation */}
+          <nav className="flex overflow-x-auto py-4">
+            <ul
+              role="list"
+              className="flex min-w-full flex-none gap-x-6 px-4 text-sm font-semibold leading-6 text-gray-400 sm:px-6 lg:px-8"
+            >
+              {secondaryNavigation.map((item) => (
+                <li key={item.name}>
+                  <a
+                    href={item.href}
+                    className={item.current ? 'text-indigo-400' : ''}
+                  >
+                    {item.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+      </div>
 
-        {/* Start of Info form */}
-        <div className="max-w-270 ">
+      {/* Start of Info form */}
+      <div className="max-w-270 ">
         {/* <Breadcrumb pageName="Settings" /> */}
 
         <div className="grid grid-cols-5 gap-8">
@@ -177,8 +176,6 @@ export default function Account() {
                     />
                   </div>
 
-
-
                   <div className="flex justify-end gap-4.5">
                     <button
                       className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
@@ -198,8 +195,6 @@ export default function Account() {
             </div>
           </div>
 
-
-          
           <div className="col-span-5 xl:col-span-2">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
@@ -208,19 +203,18 @@ export default function Account() {
                 </h3>
               </div>
 
-              
               <div className="p-7">
                 <form action="#">
                   <div className="mb-4 flex items-center gap-3">
                     <div className="h-14 w-14 rounded-full">
                       <Image
-                        src={"/images/user/user-03.png"}
+                        src={'/images/user/user-03.png'}
                         width={55}
                         height={55}
                         alt="User"
                       />
                     </div>
-                    
+
                     <div>
                       <span className="mb-1.5 text-black dark:text-white">
                         Edit your photo
@@ -304,7 +298,5 @@ export default function Account() {
         </div>
       </div>
     </>
-  )
+  );
 }
-
-
