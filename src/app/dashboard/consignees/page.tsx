@@ -8,7 +8,7 @@ const ConsigneePage = async () => {
   return (
     <div>
       <ConsigneeForm></ConsigneeForm>
-      <ConsigneeTable data={data} />;
+      <ConsigneeTable data={data} />
     </div>
   );
 };
