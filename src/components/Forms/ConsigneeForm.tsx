@@ -40,15 +40,15 @@ export default function ConsigneeForm() {
   } = useForm({ resolver: yupResolver(consigneeSchema) });
 
   // add our backend functionality here
-  // may want to clear form after submit, or will we just be closing the popup?
   const onSubmit = async (data: Consignee) => {
     try {
-      console.log(data);
+      console.log(data); // see the object being sent
       await new Promise((resolve) => {
         setTimeout(resolve, 1000);
       });
-      throw Error;
-      // addConsignee(data);
+      // throw Error; // for testing
+      // addConsignee(data); // database action
+      reset();
     } catch (error) {
       setError('root', { message: 'Error Submitting Form- Please try Again' }); // root is for errors that belong to form as a whole
     }
