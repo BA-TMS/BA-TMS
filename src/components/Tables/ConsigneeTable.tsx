@@ -1,4 +1,5 @@
 'use client';
+
 import TableActionsPopover from '../Popovers/TableActions';
 
 interface ConsigneeData {
