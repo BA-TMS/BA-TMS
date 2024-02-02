@@ -6,6 +6,7 @@ import DarkModeToggle from './DarkModeToggle';
 // import DropdownNotification from "./DropdownNotification";
 import DropdownUser from './DropdownUser';
 import Image from 'next/image';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
@@ -127,6 +128,12 @@ const Header = (props: {
             {/* <!-- User Area --> */}
           </div>
         </div>
+        <Breadcrumbs
+          root="Home"
+          separator=">"
+          pathComponentClassName="hover:underline mx-2 font-bold"
+          capitalizePathComponents
+        />
       </div>
     </header>
   );
