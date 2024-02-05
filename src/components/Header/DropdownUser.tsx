@@ -9,7 +9,7 @@ import {
   LogoutIcon,
   SettingsIcon,
   UserIcon,
-} from './Headersvg';
+} from '@/assets/SVGs';
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);

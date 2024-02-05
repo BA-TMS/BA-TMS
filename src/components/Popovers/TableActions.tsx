@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 
-import { EditIcon, ElipsisVertical, DeleteIcon } from './Popoversvg';
+import { EditIcon, ElipsisVertical, DeleteIcon } from '@/assets/SVGs';
 
 // should it be a link or a button to get the functionality we want?
 

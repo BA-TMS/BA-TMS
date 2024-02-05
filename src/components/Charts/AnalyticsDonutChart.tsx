@@ -1,7 +1,7 @@
 import { ApexOptions } from 'apexcharts';
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
-import { DropdownIcon } from './Chartsvg';
+import { DropdownIconSmall } from '@/assets/SVGs';
 const ApexCharts = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 interface AnalyticsDonutState {
@@ -89,7 +89,7 @@ const AnalyticsDonut: React.FC = () => {
               <option value="">Yearly</option>
             </select>
             <span className="absolute top-1/2 right-3 z-10 -translate-y-1/2">
-              {DropdownIcon}
+              {DropdownIconSmall}
             </span>
           </div>
         </div>

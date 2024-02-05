@@ -1,7 +1,7 @@
 import { ApexOptions } from 'apexcharts';
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
-import { DropdownIcon } from './Chartsvg';
+import { DropdownIcon } from '@/assets/SVGs';
 const ApexCharts = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 interface BarChartState {
