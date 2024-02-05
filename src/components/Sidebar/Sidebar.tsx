@@ -665,10 +665,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           </li>
                           <li>
                             <Link
-                              href="/pages/data-tables"
+                              href="/pages/dispatch"
                               className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === '/pages/data-tables' &&
-                                'text-white'
+                                pathname === '/pages/dispatch' && 'text-white'
                               } `}
                             >
                               Data Tables
