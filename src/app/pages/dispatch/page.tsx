@@ -52,9 +52,9 @@ const Dispatch = () => {
             border: '1px solid #ccc',
             marginLeft: '600px',
           }}
-          type="text"
+          type="search"
           placeholder="Find"
-          className="text-input"
+          className="datatable-input"
           onChange={(e) => {
             const value = e.target.value;
             setFilterText(value);
@@ -106,16 +106,16 @@ const Dispatch = () => {
 
           <div className="border-b border-stroke px-4 pb-5 dark:border-strokedark md:px-6 xl:px-7.5">
             <div className="flex items-center gap-3">
-              <div className="w-2/12 xl:w-3/12">
+              <div className="w-4/12 2xsm:w-3/12 md:w-2/12 xl:w-1/12">
                 <span className="font-medium">Load #</span>
               </div>
-              <div className="w-6/12 2xsm:w-5/12 md:w-3/12">
-                <span className="font-medium">PO #</span>
+              <div className="w-4/12 2xsm:w-3/12 md:w-2/12 xl:w-1/12">
+                <span className="font-medium  ">PO #</span>
               </div>
               <div className="hidden w-4/12 md:block xl:w-3/12">
                 <span className="font-medium">Driver/Carrier</span>
               </div>
-              <div className="hidden w-4/12 xl:block">
+              <div className="w-4/12 2xsm:w-3/12 md:w-2/12 xl:w-1/12">
                 <span className="font-medium">Ship Date</span>
               </div>
               <div className="w-4/12 2xsm:w-3/12 md:w-2/12 xl:w-1/12">
@@ -140,35 +140,35 @@ const Dispatch = () => {
             <div className="flex flex-col gap-7">
               {filteredMembers.map((lead, key) => (
                 <div className="flex items-center gap-3" key={key}>
-                  <div className="w-2/12 xl:w-3/12">
+                  <div className="w-4/12 2xsm:w-3/12 md:w-2/12 xl:w-1/12">
                     <div className="flex items-center gap-4">
                       <span className="hidden font-medium xl:block">
                         {lead.loadNum}
                       </span>
                     </div>
                   </div>
-                  <div className="w-6/12 2xsm:w-5/12 md:w-3/12">
+                  <div className="w-4/12 2xsm:w-3/12 md:w-2/12 xl:w-1/12">
                     <span className="font-medium">{lead.PONum}</span>
                   </div>
                   <div className="hidden w-4/12 md:block xl:w-3/12">
                     <span className="font-medium">{lead.carrier}</span>
                   </div>
-                  <div className="hidden w-4/12 xl:block">
+                  <div className="w-4/12 2xsm:w-3/12 md:w-2/12 xl:w-1/12">
                     <span className="font-medium">{lead.shipDate}</span>
                   </div>
-                  <div className="hidden w-4/12 xl:block">
+                  <div className="w-4/12 2xsm:w-3/12 md:w-2/12 xl:w-1/12">
                     <span className="font-medium">{lead.delDate}</span>
                   </div>
                   <div className="hidden w-2/12 text-center 2xsm:block md:w-1/12">
                     <span className="font-medium">{lead.customer}</span>
                   </div>
-                  <div className="hidden w-4/12 xl:block">
+                  <div className="hidden w-2/12 text-center 2xsm:block md:w-1/12">
                     <span className="font-medium">{lead.origin}</span>
                   </div>
-                  <div className="hidden w-4/12 xl:block">
+                  <div className="hidden w-2/12 text-center 2xsm:block md:w-1/12">
                     <span className="font-medium">{lead.destination}</span>
                   </div>
-                  <div className="w-4/12 2xsm:w-3/12 md:w-2/12 xl:w-1/12">
+                  <div className="hidden w-2/12 text-center 2xsm:block md:w-1/12">
                     <span
                       className={`inline-block rounded  py-0.5 px-2.5 text-sm font-medium ${
                         lead.status === 'lost'
@@ -178,11 +178,6 @@ const Dispatch = () => {
                     >
                       {lead.status === 'lost' ? 'Lost Lead' : 'Active'}
                     </span>
-                  </div>
-                  <div className="hidden w-2/12 2xsm:block md:w-1/12">
-                    {/*<button className="mx-auto block hover:text-meta-1">*/}
-
-                    {/*</button>*/}
                   </div>
                 </div>
               ))}
