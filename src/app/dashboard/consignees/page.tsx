@@ -2,7 +2,7 @@ import ConsigneeForm from '@/components/Forms/ConsigneeForm';
 import ConsigneeTable from '@/components/Tables/ConsigneeTable';
 import { getConsignees } from '@/lib/dbActions';
 
-import { FormComponent } from '@/components/Forms/Form';
+import { FormComponent } from '@/components/Forms/ConsigneeFormNew';
 
 const ConsigneePage = async () => {
   const data = await getConsignees();

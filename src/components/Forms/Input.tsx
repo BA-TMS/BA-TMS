@@ -1,3 +1,5 @@
+'use client';
+
 import {
   UseControllerProps,
   useController,
@@ -6,151 +8,91 @@ import {
   type FieldValues,
   type UseControllerReturn,
 } from 'react-hook-form';
+import { useEffect, useRef, useState } from 'react';
+// do we need useEffect/ useState here?
 
-type InputBaseProps = {
-  labelProps?: React.HTMLAttributes<HTMLLabelElement | HTMLDivElement>;
-  inputProps?: React.InputHTMLAttributes<
-    HTMLInputElement | HTMLTextAreaElement
-  >;
-  label: string;
-  error?: Merge<FieldError, (FieldError | undefined)[]>;
+type TextInputProps = {
+  icon?: React.ReactNode;
+  label?: string;
+  name: string;
+  autoFocus?: boolean;
+  value?: string;
+  onChange?: (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
+  defaultValue?: string;
+  className?: string;
+  disabled?: boolean;
+  placeholder?: string;
+  fullWidth?: boolean;
+  type?: 'text' | 'password' | 'email' | 'number' | 'textarea';
+  size?: 'sm' | 'md' | 'lg';
+  rounded?: boolean;
+  maxTextareaHeight?: number;
+  error?: Merge<FieldError, (FieldError | undefined)[]>; // check on this
+  control: any; // ugh
 };
 
-type InputProps<TForm extends FieldValues> =
-  | (InputBaseProps & {
-      as?: 'text' | 'textarea';
-      controllerProps: UseControllerProps<TForm>;
-      children?: never;
-    })
-  | (InputBaseProps & {
-      as?: never;
-      children: React.ReactNode;
-      controllerProps?: never;
-    });
+const TextInput = ({ type, control }: UseControllerProps<TextInputProps>) => {
+  // do we need this with react-hook-form?
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
-// Label
-function LabelText<TForm extends FieldValues>({
-  label,
-  error,
-}: Pick<InputProps<TForm>, 'label' | 'error'>) {
+  // field react-hook-form
+  // this is how input gets connected to the form
+  const {
+    field,
+    fieldState: { invalid, isTouched, isDirty },
+    formState: { touchedFields, dirtyFields },
+  } = useController({
+    name,
+    control,
+    rules: { required: true },
+  });
+
   return (
-    <span className="flex items-center justify-between gap-x-3">
-      {label}
-      {error && (
-        <span
-          role="alert"
-          aria-hidden={error === undefined}
-          className="flex items-center gap-1 text-xs text-gray-700 dark:text-gray-400"
-        >
-          {/* <ExclamationCircleIcon className="h-4 text-red-500" /> */}
-          {Array.isArray(error) ? (
-            error.map((error) => (
-              <span key={error.message}>{error.message}</span>
-            ))
-          ) : (
-            <span>{error.message}</span>
-          )}
-        </span>
-      )}
-    </span>
-  );
-}
-
-// controlled input
-function ControlledInput<TForm extends FieldValues>({
-  controller,
-  children,
-}: {
-  controller: NonNullable<InputProps<TForm>['controllerProps']>;
-  children: (props: {
-    field: UseControllerReturn<TForm>['field'];
-  }) => JSX.Element;
-}) {
-  const { field } = useController(controller);
-  return <>{children({ field })}</>;
-}
-
-export function Input<TForm extends FieldValues>({
-  label,
-  inputProps = {},
-  labelProps = {},
-  error,
-  children,
-  controllerProps,
-  as = 'text',
-}: InputProps<TForm>) {
-  const { className: labelClass, ...labelRest } = labelProps;
-  const { className: inputClass, ...inputRest } = inputProps;
-
-  if (controllerProps !== undefined)
-    return (
-      <div
-        className={`flex flex-col gap-y-0.5${
-          label === undefined ? ' flex-col-reverse' : ''
-        }${labelClass ? ` ${labelClass}` : ''}`}
-        {...labelRest}
+    <div className="mb-4.5">
+      <label
+        htmlFor={field.name}
+        className="mb-2.5 block text-black dark:text-white"
       >
-        <div
-          className={`flex items-center justify-between gap-x-3${
-            label === undefined ? ' flex-row-reverse' : ''
-          }`}
-        >
-          <label htmlFor={controllerProps.name}>{label}</label>
-          {/* <Error error={error} /> */}
-        </div>
-        <ControlledInput controller={controllerProps}>
-          {({ field }) => (
-            <div className="relative">
-              {as === 'textarea' ? (
-                <textarea
-                  {...field}
-                  {...inputRest}
-                  aria-invalid={error !== undefined}
-                  onChange={(e) => field.onChange(e.target.value)}
-                  className={`px-4 py-2${inputClass ? ` ${inputClass}` : ''}`}
-                />
-              ) : (
-                <input
-                  {...field}
-                  {...inputRest}
-                  aria-invalid={error !== undefined}
-                  onChange={(e) => {
-                    let value: string | number = e.target.value;
+        {field.name}
+      </label>
 
-                    if (inputProps?.type === 'number') {
-                      const valAsNum = Number(value);
-
-                      if (isNaN(valAsNum)) {
-                        value = 0;
-                      } else {
-                        if (typeof value === 'number') {
-                          if (inputProps.max && valAsNum > inputProps.max) {
-                            value = inputProps.max;
-                          } else if (
-                            inputProps.min &&
-                            valAsNum < inputProps.min
-                          ) {
-                            value = inputProps.min;
-                          }
-                        }
-                      }
-                    }
-                  }}
-                />
-              )}
-              {children}
-            </div>
-          )}
-        </ControlledInput>
-      </div>
-    );
-  return (
-    <div
-      {...labelRest}
-      className={`space-y-0.5${labelClass ? ` ${labelClass}` : ''}`}
-    >
-      <LabelText label={label} error={error} />
-      {children}
+      {/* if type is textarea, render this */}
+      {type === 'textarea' ? (
+        <textarea
+          {...field}
+          // ref={textareaRef}
+          id={field.id}
+          name={field.name} // send down the input name
+          autoFocus={field.autoFocus}
+          onChange={field.onChange} // send value to hook form
+          onBlur={field.onBlur} // notify when input is touched/blur
+          disabled={field.disabled}
+          placeholder={field.placeholder}
+          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+        />
+      ) : (
+        // or render this if not a textarea input
+        <input
+          {...field}
+          // ref={textareaRef}
+          id={field.id}
+          name={field.name} // send down the input name
+          autoFocus={field.autoFocus}
+          onChange={field.onChange} // send value to hook form
+          onBlur={field.onBlur} // notify when input is touched/blur
+          disabled={field.disabled}
+          placeholder={field.placeholder}
+          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+        />
+      )}
+      {/* need to add in errors with react-hook-form */}
+      {field.errors && (
+        <p className="mt-1 text-danger">{field.errors.message}</p>
+      )}
     </div>
   );
-}
+};
+
+export default TextInput;
