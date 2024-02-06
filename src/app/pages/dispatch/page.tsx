@@ -33,8 +33,25 @@ const Dispatch = () => {
   // Variables
   const cargo: CargoLoads = placeholderCargo;
 
-  const [filteredMembers, setFilteredMembers] = useState<CargoLoads>(cargo);
+  const [filteredCargo, setFilteredCargo] = useState<CargoLoads>(cargo);
   const [filterText, setFilterText] = useState('');
+
+  function updateFilteredCargo(filter: string) {
+    const filteredCargo = cargo.filter(
+      (obj) =>
+        obj.loadNum?.toLowerCase().includes(filter.toLowerCase()) ||
+        obj.PONum?.toLowerCase().includes(filter.toLowerCase()) ||
+        obj.carrier?.toLowerCase().includes(filter.toLowerCase()) ||
+        obj.shipDate?.toLowerCase().includes(filter.toLowerCase()) ||
+        obj.delDate?.toLowerCase().includes(filter.toLowerCase()) ||
+        obj.customer?.toLowerCase().includes(filter.toLowerCase()) ||
+        obj.origin?.toLowerCase().includes(filter.toLowerCase()) ||
+        obj.destination?.toLowerCase().includes(filter.toLowerCase()) ||
+        obj.status?.toLowerCase().includes(filter.toLowerCase())
+    );
+    // Update cargo list with filtered results.
+    setFilteredCargo(filteredCargo);
+  }
 
   return (
     <>
@@ -53,14 +70,12 @@ const Dispatch = () => {
             marginLeft: '600px',
           }}
           type="search"
-          placeholder="Find"
+          placeholder="Search..."
           className="datatable-input"
           onChange={(e) => {
             const value = e.target.value;
             setFilterText(value);
-            {
-              /* updateFilteredMembers(value); */
-            }
+            updateFilteredCargo(value);
           }}
         />
         <button
@@ -138,7 +153,7 @@ const Dispatch = () => {
 
           <div className="p-4 md:p-6 xl:p-7.5">
             <div className="flex flex-col gap-7">
-              {filteredMembers.map((lead, key) => (
+              {filteredCargo.map((lead, key) => (
                 <div className="flex items-center gap-3" key={key}>
                   <div className="w-4/12 2xsm:w-3/12 md:w-2/12 xl:w-1/12">
                     <div className="flex items-center gap-4">
