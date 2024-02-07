@@ -4,21 +4,28 @@
 
 // import ModalOne from "@/components/Modals/ModalOne";
 import ModalExample from "@/components/Modals/ModalExample";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getCarriers } from '@/lib/dbActions';
 
 // const people = [
 //   { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
 //   // More people...
 // ]
 
-const tableHeaders = ['Name', 'Title', 'Email', 'Role'];
+const tableHeaders = ['Name', 'Address', 'Address AddOn', 'City', 'State', 'Post Country', 'Post Code', 'Tel Country', 'Telephone', 'DOT ID'];
 
 export default function TableJ() {
   const [modalOpen, setModalOpen] = useState(false);
-  
-  const toggleModal = () => {
-    setModalOpen(!modalOpen);
-  };
+  const [carriers, setCarriers] = useState([]);
+
+  useEffect(() => {
+    const fetchCarriers = async () => {
+      const data = await getCarriers();
+      setCarriers(data);
+    };
+
+    fetchCarriers();
+  }, []);
   
   return (
     <div className="px-4 sm:px-6 lg:px-8">
@@ -57,45 +64,30 @@ export default function TableJ() {
               </thead>
               
               {/* users list */}
-              {/* <tbody className="divide-y divide-gray-200">
-                {people.map((person) => (
-                  <tr key={person.email}>
+              <tbody className="divide-y divide-gray-200">
+                {carriers.map((carrier, index) => (
+                  <tr key={index}>
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-md text-gray-900 sm:pl-0">
-                      {person.name}
+                      {carrier.name}
                     </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-md text-gray-500">{person.title}</td>
-                    <td className="whitespace-nowrap px-3 py-4 text-md text-gray-500">{person.email}</td>
-                    <td className="whitespace-nowrap px-3 py-4 text-md text-gray-500">{person.role}</td>
+                    <td className="whitespace-nowrap px-3 py-4 text-md text-gray-500">{carrier.address}</td>
+                    <td className="whitespace-nowrap px-3 py-4 text-md text-gray-500">{carrier.addressAddOn}</td>
+                    <td className="whitespace-nowrap px-3 py-4 text-md text-gray-500">{carrier.city}</td>
+                    <td className="whitespace-nowrap px-3 py-4 text-md text-gray-500">{carrier.state}</td>
+                    <td className="whitespace-nowrap px-3 py-4 text-md text-gray-500">{carrier.postCountry}</td>
+                    <td className="whitespace-nowrap px-3 py-4 text-md text-gray-500">{carrier.postCode}</td>
+                    <td className="whitespace-nowrap px-3 py-4 text-md text-gray-500">{carrier.telCountry}</td>
+                    <td className="whitespace-nowrap px-3 py-4 text-md text-gray-500">{carrier.telephone}</td>
+                    <td className="whitespace-nowrap px-3 py-4 text-md text-gray-500">{carrier.dotID}</td>
                     <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-md sm:pr-0">
                       {!modalOpen && (
                         <a href="#" className="text-indigo-600 hover:text-indigo-900">
-                          Edit<span className="sr-only">, {person.name}</span>
+                          Edit<span className="sr-only">, {carrier.name}</span>
                         </a>
                       )}
                     </td>
                   </tr>
                 ))}
-              </tbody> */}
-
-              {/* users list EXAMPLE */}
-              <tbody className="divide-y divide-gray-200">
-
-                  <tr >
-                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-md text-gray-900 sm:pl-0">
-              
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-md text-gray-500"></td>
-                    <td className="whitespace-nowrap px-3 py-4 text-md text-gray-500"></td>
-                    <td className="whitespace-nowrap px-3 py-4 text-md text-gray-500"></td>
-                    <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-md sm:pr-0">
-                      {!modalOpen && (
-                        <a href="#" className="text-indigo-600 hover:text-indigo-900">
-                          Edit<span className="sr-only">, </span>
-                        </a>
-                      )}
-                    </td>
-                  </tr>
-
               </tbody>
             </table>
           </div>

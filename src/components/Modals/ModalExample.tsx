@@ -196,3 +196,4 @@ const ModalOne: React.FC<ModalOneProps> = ({ modalOpen, setModalOpen }) => {
 };
 
 export default ModalOne;
+
