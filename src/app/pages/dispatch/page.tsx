@@ -27,6 +27,17 @@ const placeholderCargo = [
     destination: 'Brooklyn, NY',
     status: 'Dispatched',
   },
+  {
+    loadNum: '26554',
+    PONum: 'K0392',
+    carrier: 'Shibata Co. LTD',
+    shipDate: '02/07/24',
+    delDate: '02/13/24',
+    customer: 'Amazon Prime',
+    origin: 'Tokyo, JA',
+    destination: 'Los Angeles, CA',
+    status: 'Open',
+  },
 ];
 
 const Dispatch = () => {
@@ -35,7 +46,6 @@ const Dispatch = () => {
 
   // Use-State variables
   const [filteredCargo, setFilteredCargo] = useState<CargoLoads>(cargo);
-  const [cargoStatus, setCargoStatus] = useState<CargoLoads>(cargo);
   const [filterText, setFilterText] = useState('');
 
   function updateFilteredCargo(filter: string) {
@@ -55,8 +65,28 @@ const Dispatch = () => {
     setFilteredCargo(filteredCargo);
   }
 
-  function updateCargoStatus() {
-    // TODO: Set cargo color based on current status.
+  function updateCargoStatus(cargoStatus: string) {
+    // Set cargo color based on current status.
+    switch (cargoStatus) {
+      case 'Pending':
+        return <div className="box yellow"></div>;
+      case 'Open':
+        return <div className="box red"></div>;
+      case 'Refused':
+        return <div className="box purple"></div>;
+      case 'Covered':
+        return <div className="box blue"></div>;
+      case 'Dispatched':
+        return <div className="box wine"></div>;
+      case 'On Route':
+        return <div className="box green"></div>;
+      case '(Un)Loading':
+        return <div className="box gray"></div>;
+      case 'In Yard':
+        return <div className="box hotpink"></div>;
+      default:
+        break;
+    }
   }
 
   return (
@@ -242,13 +272,13 @@ const Dispatch = () => {
                   </div>
                   <div className="hidden w-2/12 text-center 2xsm:block md:w-1/12">
                     <span
-                      className={`inline-block rounded  py-0.5 px-2.5 text-sm font-medium ${
-                        lead.status === 'lost'
-                          ? 'bg-red/[0.08] text-red'
-                          : 'text-meta-3 bg-meta-3/[0.08]'
-                      } `}
+                      style={{
+                        display: 'table',
+                        margin: 'auto',
+                        paddingTop: '15px',
+                      }}
                     >
-                      {lead.status === 'lost' ? 'Lost Lead' : 'Dispatched'}
+                      {updateCargoStatus(lead.status)}
                     </span>
                   </div>
                 </div>
