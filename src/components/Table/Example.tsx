@@ -7,21 +7,51 @@ import ModalExample from "@/components/Modals/ModalExample";
 import { useState, useEffect } from 'react';
 import { getCarriers } from '@/lib/dbActions';
 
-// const people = [
-//   { name: 'Lindsay Walton', title: 'Front-end Developer', email: 'lindsay.walton@example.com', role: 'Member' },
-//   // More people...
-// ]
+type Carrier = {
+  name: string;
+  address: string;
+  addressAddOn: string;
+  city: string;
+  state: string;
+  postCountry: string;
+  postCode: string;
+  telCountry: string;
+  telephone: string;
+  dotID: string;
+};
 
-const tableHeaders = ['Name', 'Address', 'Address AddOn', 'City', 'State', 'Post Country', 'Post Code', 'Tel Country', 'Telephone', 'DOT ID'];
-
+const tableHeaders = [
+  'Name', 
+  'Address', 
+  'Address AddOn', 
+  'City', 
+  'State', 
+  'Post Country', 
+  'Post Code', 
+  'Tel Country', 
+  'Telephone', 
+  'DOT ID'
+];
 export default function TableJ() {
   const [modalOpen, setModalOpen] = useState(false);
-  const [carriers, setCarriers] = useState([]);
+  const [carriers, setCarriers] = useState<Carrier[]>([]);
 
   useEffect(() => {
     const fetchCarriers = async () => {
       const data = await getCarriers();
-      setCarriers(data);
+      const carriersData: Carrier[] = data.map((item) => ({
+        name: item.name,
+        address: item.address,
+        addressAddOn: item.addressAddOn || '', // Convert null to empty string
+        city: item.city,
+        state: item.state,
+        postCountry: item.postCountry,
+        postCode: item.postCode,
+        telCountry: item.telCountry.toString(), // Convert number to string
+        telephone: item.telephone,
+        dotID: item.dotId.toString(), // Adjust property name and convert number to string if necessary
+      }));
+      setCarriers(carriersData);
     };
 
     fetchCarriers();

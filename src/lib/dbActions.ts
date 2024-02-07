@@ -70,15 +70,14 @@ export async function addCarrier(carrier: any) {
     data: {
       name: carrier.name,
       address: carrier.address,
-      addressAddOn: null,
+      addressAddOn: carrier.addressAddOn,
       city: carrier.city,
       state: carrier.state,
-      postCountry: 'USA',
+      postCountry: carrier.postCountry,
       postCode: carrier.zip,
-      telCountry: 1,
+      telCountry: carrier.telCountry,
       telephone: carrier.telephone,
-      dotId: carrier.totid,
-      factorId: null,
+      dotId: carrier.dotId, // Ensuring dotId is correctly referenced
     },
   });
 }

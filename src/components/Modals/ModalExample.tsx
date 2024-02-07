@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef, Dispatch, SetStateAction } from 'react';
+import { addCarrier } from '../../lib/dbActions'; // Adjust the path as necessary
 
 interface ModalOneProps {
   modalOpen: boolean;
@@ -10,6 +11,40 @@ interface ModalOneProps {
 const ModalOne: React.FC<ModalOneProps> = ({ modalOpen, setModalOpen }) => {
   const trigger = useRef<any>(null);
   const modal = useRef<any>(null);
+
+  const [firstName, setFirstName] = useState('');
+  const [email, setEmail] = useState('');
+  const [address, setAddress] = useState('');
+  const [addressAddOn, setAddressAddOn] = useState('');
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
+  const [postCountry, setPostCountry] = useState('');
+  const [postCode, setPostCode] = useState('');
+  const [telCountryCode, setTelCountryCode] = useState('');
+  const [telephone, setTelephone] = useState('');
+  const [dotId, setDotId] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const carrierData = {
+      name: firstName,
+      email,
+      address,
+      addressAddOn,
+      city,
+      state,
+      postCountry,
+      zip: postCode,
+      telephone,
+      telCountry: parseInt(telCountryCode, 10),
+      dotId: parseInt(dotId, 10) // Placeholder value for dotId
+    };
+
+    await addCarrier(carrierData);
+
+    setModalOpen(false);
+  };
 
   // close if the esc key is pressed
   useEffect(() => {
@@ -43,7 +78,7 @@ const ModalOne: React.FC<ModalOneProps> = ({ modalOpen, setModalOpen }) => {
                   User Form
                 </h3>
               </div>
-              <form action="#">
+              <form onSubmit={handleSubmit}>
                 <div className="p-6.5">
                   <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                     
@@ -54,6 +89,8 @@ const ModalOne: React.FC<ModalOneProps> = ({ modalOpen, setModalOpen }) => {
                       <input
                         type="text"
                         placeholder="Enter first name"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                       />
                     </div>
@@ -77,6 +114,8 @@ const ModalOne: React.FC<ModalOneProps> = ({ modalOpen, setModalOpen }) => {
                     <input
                       type="email"
                       placeholder="Enter email address"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
                   </div>
@@ -88,6 +127,8 @@ const ModalOne: React.FC<ModalOneProps> = ({ modalOpen, setModalOpen }) => {
                     <input
                       type="text"
                       placeholder="Enter address"
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
                   </div>
@@ -99,6 +140,8 @@ const ModalOne: React.FC<ModalOneProps> = ({ modalOpen, setModalOpen }) => {
                     <input
                       type="text"
                       placeholder="Enter additional address info (optional)"
+                      value={addressAddOn}
+                      onChange={(e) => setAddressAddOn(e.target.value)}
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
                   </div>
@@ -111,6 +154,8 @@ const ModalOne: React.FC<ModalOneProps> = ({ modalOpen, setModalOpen }) => {
                       <input
                         type="text"
                         placeholder="Enter city"
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                       />
                     </div>
@@ -122,6 +167,8 @@ const ModalOne: React.FC<ModalOneProps> = ({ modalOpen, setModalOpen }) => {
                       <input
                         type="text"
                         placeholder="Enter state"
+                        value={state}
+                        onChange={(e) => setState(e.target.value)}
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                       />
                     </div>
@@ -135,6 +182,8 @@ const ModalOne: React.FC<ModalOneProps> = ({ modalOpen, setModalOpen }) => {
                       <input
                         type="text"
                         placeholder="Enter post country"
+                        value={postCountry}
+                        onChange={(e) => setPostCountry(e.target.value)}
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                       />
                     </div>
@@ -146,6 +195,8 @@ const ModalOne: React.FC<ModalOneProps> = ({ modalOpen, setModalOpen }) => {
                       <input
                         type="text"
                         placeholder="Enter post code"
+                        value={postCode}
+                        onChange={(e) => setPostCode(e.target.value)}
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                       />
                     </div>
@@ -159,6 +210,8 @@ const ModalOne: React.FC<ModalOneProps> = ({ modalOpen, setModalOpen }) => {
                       <input
                         type="number"
                         placeholder="Enter telephone country code"
+                        value={telCountryCode}
+                        onChange={(e) => setTelCountryCode(e.target.value)}
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                       />
                     </div>
@@ -170,9 +223,24 @@ const ModalOne: React.FC<ModalOneProps> = ({ modalOpen, setModalOpen }) => {
                       <input
                         type="text"
                         placeholder="Enter telephone number"
+                        value={telephone}
+                        onChange={(e) => setTelephone(e.target.value)}
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                       />
                     </div>
+                  </div>
+
+                  <div className="mb-4.5">
+                    <label className="mb-2.5 block text-black dark:text-white">
+                      DOT ID
+                    </label>
+                    <input
+                      type="number"
+                      placeholder="Enter DOT ID"
+                      value={dotId}
+                      onChange={(e) => setDotId(e.target.value)}
+                      className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                    />
                   </div>
 
                   <div className="flex w-full justify-between space-x-2">
@@ -182,7 +250,7 @@ const ModalOne: React.FC<ModalOneProps> = ({ modalOpen, setModalOpen }) => {
                     >
                       Close
                     </button>
-                    <button className="flex w-1/2 justify-center rounded bg-green p-3 font-medium text-gray bg-green-500">
+                    <button type="submit" className="flex w-1/2 justify-center rounded bg-green p-3 font-medium text-gray bg-green-500">
                       Save
                     </button>
                   </div>
@@ -196,4 +264,3 @@ const ModalOne: React.FC<ModalOneProps> = ({ modalOpen, setModalOpen }) => {
 };
 
 export default ModalOne;
-
