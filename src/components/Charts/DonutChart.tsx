@@ -1,15 +1,15 @@
+import { ApexOptions } from 'apexcharts';
+import { useState } from 'react';
+import dynamic from 'next/dynamic';
+import { DropdownIconLarge } from '@/assets/SVGs';
+const ApexCharts = dynamic(() => import('react-apexcharts'), { ssr: false });
 
-import { ApexOptions } from "apexcharts";
-import React, { useState } from "react";
-import dynamic from "next/dynamic";
-const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
-
-interface ChartEightState {
+interface DonutChartState {
   series: number[];
 }
 
-const ChartEight: React.FC = () => {
-  const [state, setState] = useState<ChartEightState>({
+const DonutChart: React.FC = () => {
+  const [state, setState] = useState<DonutChartState>({
     series: [70, 20, 10],
   });
 
@@ -22,22 +22,23 @@ const ChartEight: React.FC = () => {
   };
   updateState;
 
+  // options needs to have width and height added or it will error
   const options: ApexOptions = {
     chart: {
-      type: "donut",
+      type: 'donut',
     },
-    colors: ["#0FADCF", "#80CAEE", "#3C50E0"],
-    labels: ["Desktop", "Tablet", "Mobile"],
+    colors: ['#0FADCF', '#80CAEE', '#3C50E0'],
+    labels: ['Desktop', 'Tablet', 'Mobile'],
     legend: {
       show: false,
-      position: "bottom",
+      position: 'bottom',
     },
 
     plotOptions: {
       pie: {
         donut: {
-          size: "75%",
-          background: "transparent",
+          size: '75%',
+          background: 'transparent',
         },
       },
     },
@@ -51,6 +52,7 @@ const ChartEight: React.FC = () => {
         options: {
           chart: {
             width: 380,
+            height: 'auto',
           },
         },
       },
@@ -59,6 +61,7 @@ const ChartEight: React.FC = () => {
         options: {
           chart: {
             width: 250,
+            height: 'auto',
           },
         },
       },
@@ -75,7 +78,7 @@ const ChartEight: React.FC = () => {
         </div>
         <div className="mt-2 flex items-center sm:mt-0">
           <p className="font-medium uppercase text-black dark:text-white">
-            Short by:
+            Sort by:
           </p>
           <div className="relative z-20 inline-block">
             <select
@@ -87,25 +90,20 @@ const ChartEight: React.FC = () => {
               <option value="">Weekly</option>
             </select>
             <span className="absolute top-1/2 right-1 z-10 -translate-y-1/2">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 18 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M8.99995 12.8249C8.8312 12.8249 8.69058 12.7687 8.54995 12.6562L2.0812 6.2999C1.82808 6.04678 1.82808 5.65303 2.0812 5.3999C2.33433 5.14678 2.72808 5.14678 2.9812 5.3999L8.99995 11.278L15.0187 5.34365C15.2718 5.09053 15.6656 5.09053 15.9187 5.34365C16.1718 5.59678 16.1718 5.99053 15.9187 6.24365L9.44995 12.5999C9.30933 12.7405 9.1687 12.8249 8.99995 12.8249Z"
-                  fill="#64748B"
-                />
-              </svg>
+              {DropdownIconLarge}
             </span>
           </div>
         </div>
       </div>
       <div className="mb-2">
         <div id="chartEight" className="mx-auto flex justify-center">
-          <ApexCharts options={options} series={state.series} type="donut" />
+          <ApexCharts
+            options={options}
+            series={state.series}
+            type="donut"
+            width={options.chart?.width}
+            height={options.chart?.height}
+          />
         </div>
       </div>
 
@@ -153,4 +151,4 @@ const ChartEight: React.FC = () => {
   );
 };
 
-export default ChartEight;
+export default DonutChart;

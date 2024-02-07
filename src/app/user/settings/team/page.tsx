@@ -30,7 +30,7 @@ type Member = {
 };
 
 const secondaryNavigation = [
-  { name: 'Account', href: '/settings', current: true },
+  { name: 'Account', href: '/user/settings', current: true },
   { name: 'Notifications', href: '#', current: false },
   { name: 'Billing', href: '#', current: false },
   { name: 'Teams', href: '#', current: false },
