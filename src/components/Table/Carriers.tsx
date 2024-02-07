@@ -3,7 +3,7 @@
 /* Create search bar and popup modal for edit and add user */
 
 // import ModalOne from "@/components/Modals/ModalOne";
-import ModalExample from "@/components/Modals/ModalExample";
+import CarrierModal from "@/components/Modals/CarrierModal";
 import { useState, useEffect } from 'react';
 import { getCarriers } from '@/lib/dbActions';
 
@@ -67,7 +67,7 @@ export default function TableJ() {
           </p>
         </div>
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-          <ModalExample modalOpen={modalOpen} setModalOpen={setModalOpen} />
+          <CarrierModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
         </div>
       </div>
       
