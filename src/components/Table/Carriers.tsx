@@ -61,9 +61,9 @@ export default function TableJ() {
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
-          <h1 className="text-base leading-6 text-gray-900">Users</h1>
+          <h1 className="text-base leading-6 text-gray-900">Carriers</h1>
           <p className="mt-2 text-md text-gray-700">
-            A list of all the users in your account including their name, title, email and role.
+            A list of all the carrier information.
           </p>
         </div>
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">

@@ -10,8 +10,6 @@ export default function Home() {
   return (
     <>
       <Carriers />
-      {/* <TableThree/> */}
-      {/* <ModalOne /> */}
     </>
   );
 }
