@@ -1,5 +1,4 @@
 import { forwardRef, type ComponentPropsWithoutRef } from 'react';
-import Iconify from '../iconify/Iconify';
 
 type InputProps = {
   label: string;

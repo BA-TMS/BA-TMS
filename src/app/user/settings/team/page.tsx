@@ -6,18 +6,12 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import Input from '../../../../components/Settings-General/Input';
 import Form, {
   type FormHandle,
-} from '../../../../components/Settings-General/Form';
-import Button from '../../../../components/Settings-General/Button';
+} from '@/components/Settings-General/Form';
+import Button from '@/components/Settings-General/Button';
 import { useRef } from 'react';
-import Switch from 'react-switch';
-import { DataTable, DataTableFilterMeta } from 'primereact/datatable';
-import { Column } from 'primereact/column';
 import ToggleButton from '@/components/Controls/ToggleButton';
-import Iconify from '@/components/iconify/Iconify';
 import Popup from 'reactjs-popup';
-import DropdownDefault from '../../../../components/Dropdowns/DropdownDefault';
-import TableActionsPopover from '../../../../components/Popovers/TableActions';
-import { Tag } from 'primereact/tag';
+import TableActionsPopover from '@/components/Popovers/TableActions';
 
 type Member = {
   avatar: string;

@@ -6,11 +6,6 @@ import Iconify from '@/components/iconify/Iconify';
 import { Stack } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
-// Icon variables
-import {Icon} from 'react-icons-kit';
-import {eyeOff} from 'react-icons-kit/feather/eyeOff';
-import {eye} from 'react-icons-kit/feather/eye';
-
 const PasswordReset = () => {
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
