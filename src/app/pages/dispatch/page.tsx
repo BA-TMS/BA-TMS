@@ -33,7 +33,9 @@ const Dispatch = () => {
   // Variables
   const cargo: CargoLoads = placeholderCargo;
 
+  // Use-State variables
   const [filteredCargo, setFilteredCargo] = useState<CargoLoads>(cargo);
+  const [cargoStatus, setCargoStatus] = useState<CargoLoads>(cargo);
   const [filterText, setFilterText] = useState('');
 
   function updateFilteredCargo(filter: string) {
@@ -53,8 +55,13 @@ const Dispatch = () => {
     setFilteredCargo(filteredCargo);
   }
 
+  function updateCargoStatus() {
+    // TODO: Set cargo color based on current status.
+  }
+
   return (
     <>
+      {/* HEADER & SEARCH BAR */}
       <div>
         <h1 style={{ float: 'left', fontSize: '30px', fontWeight: 'bold' }}>
           DISPATCH BOARD
@@ -105,8 +112,58 @@ const Dispatch = () => {
           Show All
         </button>
       </div>
+      {/* END HEADER & SEARCH BAR */}
 
-      {/* Dispatch Table */}
+      {/* ADD LOAD BUTTONS */}
+
+      {/* END ADD LOAD BUTTONS*/}
+
+      {/* STATUS COLORS */}
+      <div style={{ display: 'flex', position: 'absolute' }}>
+        <div>
+          <div className="box yellow"></div>
+          Pending
+        </div>
+
+        <div style={{ paddingLeft: '20px' }}>
+          <div className="box red"></div>
+          Open
+        </div>
+
+        <div style={{ paddingLeft: '20px' }}>
+          <div className="box purple"></div>
+          Refused
+        </div>
+
+        <div style={{ paddingLeft: '20px' }}>
+          <div className="box blue"></div>
+          Covered
+        </div>
+
+        <div style={{ paddingLeft: '20px' }}>
+          <div className="box wine"></div>
+          Dispatched
+        </div>
+
+        <div style={{ paddingLeft: '20px' }}>
+          <div className="box green"></div>
+          On Route
+        </div>
+
+        <div style={{ paddingLeft: '20px' }}>
+          <div className="box gray"></div>
+          (Un)Loading
+        </div>
+
+        <div style={{ paddingLeft: '20px' }}>
+          <div className="box hotpink"></div>
+          In Yard
+        </div>
+      </div>
+      <br />
+      {/* END STATUS COLORS */}
+
+      {/* DISPATCH TABLE */}
       <div className="col-span-12">
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="p-4 md:p-6 xl:p-7.5">
@@ -191,7 +248,7 @@ const Dispatch = () => {
                           : 'text-meta-3 bg-meta-3/[0.08]'
                       } `}
                     >
-                      {lead.status === 'lost' ? 'Lost Lead' : 'Active'}
+                      {lead.status === 'lost' ? 'Lost Lead' : 'Dispatched'}
                     </span>
                   </div>
                 </div>
@@ -200,6 +257,7 @@ const Dispatch = () => {
           </div>
         </div>
       </div>
+      {/* END DISPATCH TABLE */}
     </>
   );
 };
