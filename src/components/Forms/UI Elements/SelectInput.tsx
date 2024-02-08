@@ -2,6 +2,7 @@ import { UseControllerProps, useController } from 'react-hook-form';
 
 interface SelectInputProps extends UseControllerProps {
   options: { name: string; abbreviation?: string }[];
+  control?: any; // this "works"
 }
 
 const SelectInput = (props: SelectInputProps) => {

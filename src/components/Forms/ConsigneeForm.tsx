@@ -1,10 +1,7 @@
 'use client';
 
-import {
-  useForm,
-  type SubmitHandler,
-  UseControllerProps,
-} from 'react-hook-form';
+import { useEffect } from 'react';
+import { useForm, FieldValues } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -15,13 +12,13 @@ import { usStates } from '@/assets/data/states';
 const consigneeSchema = yup.object({
   'Consignee Name': yup.string().required('Consignee Name is required'),
   Address: yup.string().required('Address is required'),
-  // Country: yup.string().required('Country is required'),
   City: yup.string().required('City is required '),
   State: yup.string().required('State is required '),
   Zip: yup
     .string()
     .length(5, 'Zip must be 5 characters')
     .required('Zip Code is required '),
+  Country: yup.string().required('Country is required'),
   'Contact Name': yup.string().required('Contact Name is required'),
   'Phone Number': yup
     .string()
@@ -43,7 +40,7 @@ export const ConsigneeForm = () => {
     setError, // async error handling
     reset, // for resetting form
     control, // seems based on schema
-    formState: { errors, isSubmitting }, // errors for root errors in validation, isSubmitting is boolean when form is submitting
+    formState: { errors, isSubmitting, isSubmitSuccessful }, // boolean values representing form state
   } = useForm<Consignee>({
     defaultValues: {
       'Consignee Name': '',
@@ -51,6 +48,7 @@ export const ConsigneeForm = () => {
       City: '',
       State: '',
       Zip: '',
+      Country: '',
       'Contact Name': '',
       'Phone Number': '',
       Email: '',
@@ -67,11 +65,28 @@ export const ConsigneeForm = () => {
         setTimeout(resolve, 1000);
       });
       // throw Error; // for testing
-      reset();
     } catch (error) {
       setError('root', { message: 'Error Submitting Form- Please try Again' }); // root is for errors that belong to form as a whole
     }
   };
+
+  // found out this is best practice for reset
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset({
+        'Consignee Name': '',
+        Address: '',
+        City: '',
+        State: '',
+        Zip: '',
+        Country: '',
+        'Contact Name': '',
+        'Phone Number': '',
+        Email: '',
+        Notes: '',
+      });
+    }
+  }, [isSubmitSuccessful, reset]);
 
   return (
     <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
@@ -101,9 +116,10 @@ export const ConsigneeForm = () => {
                 </div>
                 <div className="w-full xl:w-1/2">
                   <TextInput control={control} name="Zip" />
-                  <TextInput control={control} name="Phone Number" />
+                  <TextInput control={control} name="Country" />
                 </div>
               </div>
+              <TextInput control={control} name="Phone Number" />
               <TextInput control={control} name="Contact Name" />
               <TextInput control={control} name="Email" />
               <TextInput control={control} name="Notes" isTextArea={true} />
