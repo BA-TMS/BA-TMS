@@ -65,7 +65,7 @@ async function creater(table: any, insertData: any) {
   return resp;
 }
 
-export async function addCarrier(carrier: any) {
+export async function addCarrier({carrier}: {carrier:any}) {
   const resp = await prisma.carrier.create({
     data: {
       name: carrier.name,
