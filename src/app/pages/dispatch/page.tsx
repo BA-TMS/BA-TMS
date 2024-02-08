@@ -92,82 +92,67 @@ const Dispatch = () => {
   return (
     <>
       {/* HEADER & SEARCH BAR */}
-      <div>
-        <h1 style={{ float: 'left', fontSize: '30px', fontWeight: 'bold' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+        <h1 style={{ fontSize: '30px', fontWeight: 'bold' }}>
           DISPATCH BOARD
         </h1>
 
-        <input
-          style={{
-            width: '300px',
-            display: 'inline',
-            padding: '8px',
-            borderRadius: '4px',
-            border: '1px solid #ccc',
-            background: 'rgba(0,0,0,0)',
-            marginLeft: '600px',
-            fontWeight: 'bold',
-          }}
-          type="search"
-          placeholder="Search..."
-          className="datatable-input"
-          onChange={(e) => {
-            const value = e.target.value;
-            setFilterText(value);
-            updateFilteredCargo(value);
-          }}
-        />
-        <button
-          className={`custom-button effect1`}
-          style={{
-            padding: '8px',
-            borderRadius: '4px',
-            border: '1px solid #ccc',
-            marginLeft: '10px',
-            cursor: 'pointer',
-            fontWeight: 'bold',
-          }}
-        >
-          Search
-        </button>
-        <button
-          className={`custom-button effect1`}
-          style={{
-            padding: '8px',
-            borderRadius: '4px',
-            border: '1px solid #ccc',
-            marginLeft: '10px',
-            cursor: 'pointer',
-            fontWeight: 'bold',
-          }}
-          onClick={() => updateFilteredCargo('')}
-        >
-          Show All
-        </button>
+        <div>
+          <input
+            style={{
+              width: '300px',
+              padding: '8px',
+              borderRadius: '4px',
+              border: '1px solid #ccc',
+              background: 'rgba(0,0,0,0)',
+              fontWeight: 'bold',
+            }}
+            type="search"
+            placeholder="Search..."
+            className="datatable-input"
+            onChange={(e) => {
+              const value = e.target.value;
+              setFilterText(value);
+              updateFilteredCargo(value);
+            }}
+          />
+          <button
+            className={`custom-button effect1`}
+            style={{
+              padding: '8px',
+              borderRadius: '4px',
+              border: '1px solid #ccc',
+              marginLeft: '10px',
+              cursor: 'pointer',
+              fontWeight: 'bold',
+            }}
+          >
+            Search
+          </button>
+          <button
+            className={`custom-button effect1`}
+            style={{
+              padding: '8px',
+              borderRadius: '4px',
+              border: '1px solid #ccc',
+              marginLeft: '10px',
+              cursor: 'pointer',
+              fontWeight: 'bold',
+            }}
+            onClick={() => updateFilteredCargo('')}
+          >
+            Show All
+          </button>
+        </div>
       </div>
       <br />
       {/* END HEADER & SEARCH BAR */}
 
       {/* ADD LOAD BUTTONS */}
-      <div>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '15px', marginBottom: '20px' }}>
         <button
           className={`custom-button effect1`}
           style={{
-            float: 'right',
-            padding: '10px',
-            borderRadius: '4px',
-            border: '1px solid #ccc',
-            fontWeight: 'bold',
-          }}
-        >
-          Delivered/Completed Loads
-        </button>
-
-        <button
-          className={`custom-button effect1`}
-          style={{
-            float: 'right',
-            marginRight: '15px',
             padding: '10px',
             borderRadius: '4px',
             border: '1px solid #ccc',
@@ -175,6 +160,17 @@ const Dispatch = () => {
           }}
         >
           Open Loads
+        </button>
+        <button
+          className={`custom-button effect1`}
+          style={{
+            padding: '10px',
+            borderRadius: '4px',
+            border: '1px solid #ccc',
+            fontWeight: 'bold',
+          }}
+        >
+          Delivered/Completed Loads
         </button>
       </div>
       <br />
