@@ -670,7 +670,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                 pathname === '/dispatch' && 'text-white'
                               } `}
                             >
-                              Data Tables
+                              Dispatch
                               <span className="absolute right-4 block rounded bg-primary py-1 px-2 text-xs font-medium text-white">
                                 Pro
                               </span>
