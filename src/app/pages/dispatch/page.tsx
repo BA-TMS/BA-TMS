@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import AddButton from '@/components/Modals/AddButton';
 
 type CargoLoad = {
   loadNum: string;
@@ -47,6 +48,7 @@ const Dispatch = () => {
   // Use-State variables
   const [filteredCargo, setFilteredCargo] = useState<CargoLoads>(cargo);
   const [filterText, setFilterText] = useState('');
+  const [modalOpen, setModalOpen] = useState(false); // Added line
 
   function updateFilteredCargo(filter: string) {
     const filteredCargo = cargo.filter(
@@ -150,6 +152,7 @@ const Dispatch = () => {
 
       {/* ADD LOAD BUTTONS */}
       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '15px', marginBottom: '20px' }}>
+      <AddButton modalOpen={modalOpen} setModalOpen={setModalOpen} /> {/* Updated line */}
         <button
           className={`custom-button effect1`}
           style={{
@@ -158,6 +161,7 @@ const Dispatch = () => {
             border: '1px solid #ccc',
             fontWeight: 'bold',
           }}
+          onClick={() => setModalOpen(true)} // Added line
         >
           Open Loads
         </button>
