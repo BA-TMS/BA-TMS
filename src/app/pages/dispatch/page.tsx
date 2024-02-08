@@ -34,7 +34,7 @@ const placeholderCargo = [
     shipDate: '02/07/24',
     delDate: '02/13/24',
     customer: 'Amazon Prime',
-    origin: 'Tokyo, JA',
+    origin: 'Tokyo, JP',
     destination: 'Los Angeles, CA',
     status: 'Open',
   },
@@ -116,36 +116,65 @@ const Dispatch = () => {
           }}
         />
         <button
+          className={`custom-button effect1`}
           style={{
             padding: '8px',
             borderRadius: '4px',
             border: '1px solid #ccc',
-            backgroundColor: 'rgb(60 80 224 / var(--tw-bg-opacity))',
-            color: 'white',
             marginLeft: '10px',
             cursor: 'pointer',
+            fontWeight: 'bold',
           }}
         >
           Search
         </button>
         <button
+          className={`custom-button effect1`}
           style={{
             padding: '8px',
             borderRadius: '4px',
             border: '1px solid #ccc',
-            backgroundColor: 'rgb(60 80 224 / var(--tw-bg-opacity))',
-            color: 'white',
             marginLeft: '10px',
             cursor: 'pointer',
+            fontWeight: 'bold',
           }}
         >
           Show All
         </button>
       </div>
+      <br />
       {/* END HEADER & SEARCH BAR */}
 
       {/* ADD LOAD BUTTONS */}
+      <div>
+        <button
+          className={`custom-button effect1`}
+          style={{
+            float: 'right',
+            padding: '10px',
+            borderRadius: '4px',
+            border: '1px solid #ccc',
+            fontWeight: 'bold',
+          }}
+        >
+          Delivered/Completed Loads
+        </button>
 
+        <button
+          className={`custom-button effect1`}
+          style={{
+            float: 'right',
+            marginRight: '15px',
+            padding: '10px',
+            borderRadius: '4px',
+            border: '1px solid #ccc',
+            fontWeight: 'bold',
+          }}
+        >
+          Open Loads
+        </button>
+      </div>
+      <br />
       {/* END ADD LOAD BUTTONS*/}
 
       {/* STATUS COLORS */}
