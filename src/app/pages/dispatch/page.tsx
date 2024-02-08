@@ -104,7 +104,9 @@ const Dispatch = () => {
             padding: '8px',
             borderRadius: '4px',
             border: '1px solid #ccc',
+            background: 'rgba(0,0,0,0)',
             marginLeft: '600px',
+            fontWeight: 'bold',
           }}
           type="search"
           placeholder="Search..."
@@ -138,6 +140,7 @@ const Dispatch = () => {
             cursor: 'pointer',
             fontWeight: 'bold',
           }}
+          onClick={() => updateFilteredCargo('')}
         >
           Show All
         </button>
