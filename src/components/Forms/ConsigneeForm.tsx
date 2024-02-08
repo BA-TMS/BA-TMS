@@ -36,7 +36,7 @@ const consigneeSchema = yup.object({
 
 type Consignee = yup.InferType<typeof consigneeSchema>;
 
-export const ConsigneeForm = (props: Consignee) => {
+export const ConsigneeForm = () => {
   const {
     handleSubmit,
     clearErrors, // will we need to clear errors?
@@ -89,11 +89,22 @@ export const ConsigneeForm = (props: Consignee) => {
                 name="Consignee Name" // name always needs to match schema
               />
               <TextInput control={control} name="Address" />
-              <TextInput control={control} name="City" />
-              <SelectInput control={control} name="State" options={usStates} />
-              <TextInput control={control} name="Zip" />
+
+              <div className=" flex flex-col gap-6 xl:flex-row">
+                <div className="w-full xl:w-1/2">
+                  <TextInput control={control} name="City" />
+                  <SelectInput
+                    control={control}
+                    name="State"
+                    options={usStates}
+                  />
+                </div>
+                <div className="w-full xl:w-1/2">
+                  <TextInput control={control} name="Zip" />
+                  <TextInput control={control} name="Phone Number" />
+                </div>
+              </div>
               <TextInput control={control} name="Contact Name" />
-              <TextInput control={control} name="Phone Number" />
               <TextInput control={control} name="Email" />
               <TextInput control={control} name="Notes" isTextArea={true} />
               {errors.root && (
