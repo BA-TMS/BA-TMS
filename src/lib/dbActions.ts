@@ -65,20 +65,19 @@ async function creater(table: any, insertData: any) {
   return resp;
 }
 
-export async function addCarrier({carrier}: {carrier: any}) {
+export async function addCarrier({carrier}: {carrier:any}) {
   const resp = await prisma.carrier.create({
     data: {
       name: carrier.name,
       address: carrier.address,
-      addressAddOn: null,
+      addressAddOn: carrier.addressAddOn,
       city: carrier.city,
       state: carrier.state,
-      postCountry: 'USA',
+      postCountry: carrier.postCountry,
       postCode: carrier.zip,
-      telCountry: 1,
+      telCountry: carrier.telCountry,
       telephone: carrier.telephone,
-      dotId: carrier.totid,
-      factorId: null,
+      dotId: carrier.dotId, // Ensuring dotId is correctly referenced
     },
   });
 }

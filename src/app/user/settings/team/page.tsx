@@ -227,8 +227,6 @@ const SettingsPage = () => {
         </div>
       </div>
 
-      <p>Setting &gt; Team</p>
-      <br />
       <h1 style={{ fontSize: '32px', fontWeight: 'bold' }}>Team</h1>
       <br />
 
