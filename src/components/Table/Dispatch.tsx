@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import AddButton from '@/components/Modals/AddButton';
+//import AddButton from '@/components/Modals/AddButton';
 
 type CargoLoad = {
   loadNum: string;
@@ -164,7 +164,7 @@ const Dispatch = () => {
           marginBottom: '20px',
         }}
       >
-        <AddButton modalOpen={modalOpen} setModalOpen={setModalOpen} />{' '}
+        {/*<AddButton modalOpen={modalOpen} setModalOpen={setModalOpen} />{' '}*/}
         {/* Updated line */}
         <button
           className={`custom-button effect1`}
