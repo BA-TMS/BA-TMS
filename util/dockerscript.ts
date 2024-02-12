@@ -1,4 +1,5 @@
 const { execSync } = require("child_process");
+const dbSetup = require('dbsetup');
 
 require("dotenv").config();
 
@@ -19,11 +20,6 @@ function createRunString() {
   const envString = envProps.join(" ");
 
   return `docker run --name ${CONTAINER_NAME} ${envString} -p 5432:5432 -d postgres`;
-}
-
-function dbSetup() {
-  const migrateResp = execSync("npx prisma migrate reset -f");
-  const seedResp = execSync('npx ts-node prisma/seed.ts');
 }
 
 function startOrCreateContainer() {
