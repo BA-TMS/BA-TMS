@@ -2,11 +2,11 @@
 
 'use client';
 
-import ModalOne from "@/components/Modals/CarrierModal";
-import TableThree from "@/components/Table/TableThree";
-import Carriers from "@/components/Table/Carriers";
+import ModalOne from '@/components/Modals/CarrierModal';
+import TableThree from '@/components/Table/TableThree';
+import Carriers from '@/components/Table/Carriers';
 
-export default function Home() {  
+export default function Home() {
   return (
     <>
       <Carriers />
