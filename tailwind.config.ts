@@ -10,6 +10,7 @@ const config: Config = {
   darkMode: 'class',
   theme: {
     colors: {
+      
       current: 'currentColor',
       transparent: 'transparent',
       white: '#FFFFFF',
@@ -67,6 +68,11 @@ const config: Config = {
         'title-sm': ['20px', '26px'],
         'title-sm2': ['22px', '28px'],
         'title-xsm': ['18px', '24px'],
+      },
+      screens: {
+        "2xsm": "375px",
+        xsm: "425px",
+        "3xl": "2000px",
       },
       screens: {
         "2xsm": "375px",
