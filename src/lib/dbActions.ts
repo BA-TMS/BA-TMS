@@ -3,7 +3,7 @@
 import { PrismaClient } from '@prisma/client';
 import { ConsigneeFormDataState } from '@/types/formTypes';
 
-let prisma = new PrismaClient(); // TODO: Is this better off as a const?
+const prisma = new PrismaClient(); // TODO: Is this better off as a const?
 
 /** Get existing table data */
 async function getter(table: any, relations: any) {
