@@ -5,8 +5,8 @@ import { useForm, FieldValues } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import TextInput from './UI Elements/TextInput';
-import SelectInput from './UI Elements/SelectInput';
+import TextInput from './UI_Elements/TextInput';
+import SelectInput from './UI_Elements/SelectInput';
 import { usStates } from '@/assets/data/states';
 
 const consigneeSchema = yup.object({
@@ -36,10 +36,9 @@ type Consignee = yup.InferType<typeof consigneeSchema>;
 export const ConsigneeForm = () => {
   const {
     handleSubmit,
-    clearErrors, // will we need to clear errors?
     setError, // async error handling
     reset, // for resetting form
-    control, // seems based on schema
+    control, // based on schema
     formState: { errors, isSubmitting, isSubmitSuccessful }, // boolean values representing form state
   } = useForm<Consignee>({
     defaultValues: {
@@ -100,7 +99,7 @@ export const ConsigneeForm = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="p-6.5">
               <TextInput
-                control={control} // can not figure out type error here
+                control={control}
                 name="Consignee Name" // name always needs to match schema
               />
               <TextInput control={control} name="Address" />
