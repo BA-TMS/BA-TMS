@@ -67,11 +67,11 @@ const ModalOne: React.FC<ModalOneProps> = ({ modalOpen, setModalOpen }) => {
       </button>
       {modalOpen && (
         <div
-          className="fixed top-0 left-0 z-999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5"
+          className="fixed top-0 left-0 z-999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5 overflow-auto" // Added overflow-auto here
         >
           <div
             ref={modal}
-            className="w-full max-w-screen-md rounded-lg bg-white py-8 px-8 text-left dark:bg-boxdark md:py-10 md:px-17.5"
+            className="w-full max-w-screen-md rounded-lg bg-white py-8 px-8 text-left dark:bg-boxdark md:py-10 md:px-17.5 overflow-y-auto" // Added overflow-y-auto here for internal scrolling
           >
               <div className="border-b border-stroke px-6.5 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white text-center">
