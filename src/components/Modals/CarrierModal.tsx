@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef, Dispatch, SetStateAction } from 'react';
-import { addCarrier } from '../../lib/dbActions'; // Adjust the path as necessary
+import { addCarrier } from '@/lib/dbActions'; // Adjust the path as necessary
 
 interface ModalOneProps {
   modalOpen: boolean;
