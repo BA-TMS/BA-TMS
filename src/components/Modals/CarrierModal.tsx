@@ -41,7 +41,7 @@ const ModalOne: React.FC<ModalOneProps> = ({ modalOpen, setModalOpen }) => {
       dotId: parseInt(dotId, 10) // Placeholder value for dotId
     };
 
-    await addCarrier(carrierData);
+    await addCarrier({carrier: carrierData});
 
     setModalOpen(false);
   };
