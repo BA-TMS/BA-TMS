@@ -159,40 +159,34 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
                           <li>
                             <Link
-                              href="/"
+                              href="/group1"
                               className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === '/' && 'text-white'
+                                pathname === '/group1' && 'text-white'
                               }`}
                             >
-                              eCommerce
+                              Group 1
                             </Link>
                           </li>
                           <li>
                             <Link
-                              href="/dashboard/analytics"
+                              href="/dashboard/group2"
                               className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === '/dashboard/analytics' &&
+                                pathname === '/dashboard/group2' &&
                                 'text-white'
                               } `}
                             >
-                              Analytics
-                              <span className="absolute right-4 block rounded bg-primary px-2 py-1 text-xs font-medium text-white">
-                                Pro
-                              </span>
+                              Group 2
                             </Link>
                           </li>
                           <li>
                             <Link
-                              href="/dashboard/marketing"
+                              href="/dashboard/group3"
                               className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === '/dashboard/marketing' &&
+                                pathname === '/dashboard/group3' &&
                                 'text-white'
                               }`}
                             >
-                              Marketing
-                              <span className="absolute right-4 block rounded bg-primary px-2 py-1 text-xs font-medium text-white">
-                                Pro
-                              </span>
+                              Group 3
                             </Link>
                           </li>
                         </ul>
@@ -204,120 +198,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </SidebarLinkGroup>
               {/* <!-- Menu Item Dashboard --> */}
 
-              {/* <!-- Menu Item Calendar --> */}
-              <li>
-                <Link
-                  href="/calendar"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes('calendar') &&
-                    'bg-graydark dark:bg-meta-4'
-                  }`}
-                >
-                  {CalendarIcon}
-                  Calendar
-                </Link>
-              </li>
-              {/* <!-- Menu Item Calendar --> */}
-
-              {/* <!-- Menu Item Profile --> */}
-              <li>
-                <Link
-                  href="/profile"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes('profile') && 'bg-graydark dark:bg-meta-4'
-                  }`}
-                >
-                  {SidebarUserIcon}
-                  Profile
-                </Link>
-              </li>
-              {/* <!-- Menu Item Profile --> */}
-
-              {/* <!-- Menu Item Task --> */}
-              <SidebarLinkGroup
-                activeCondition={
-                  pathname === '/tasks' || pathname.includes('tasks')
-                }
-              >
-                {(handleClick, open) => {
-                  return (
-                    <React.Fragment>
-                      <Link
-                        href="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                          (pathname === '/tasks' ||
-                            pathname.includes('tasks')) &&
-                          'bg-graydark dark:bg-meta-4'
-                        }`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          sidebarExpanded
-                            ? handleClick()
-                            : setSidebarExpanded(true);
-                        }}
-                      >
-                        {TaskIcon}
-                        Task
-                        <svg
-                          className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
-                            open && 'rotate-180'
-                          }`}
-                          width="20"
-                          height="20"
-                          viewBox="0 0 20 20"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
-                            fill=""
-                          />
-                        </svg>
-                      </Link>
-                      {/* <!-- Dropdown Menu Start --> */}
-                      <div
-                        className={`translate transform overflow-hidden ${
-                          !open && 'hidden'
-                        }`}
-                      >
-                        <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-                          <li>
-                            <Link
-                              href="/tasks/task-list"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === '/tasks/task-list' && 'text-white'
-                              }`}
-                            >
-                              List
-                              <span className="absolute right-4 block rounded bg-primary py-1 px-2 text-xs font-medium text-white">
-                                Pro
-                              </span>
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              href="/tasks/task-kanban"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === '/tasks/task-kanban' &&
-                                'text-white'
-                              } `}
-                            >
-                              Kanban
-                              <span className="absolute right-4 block rounded bg-primary py-1 px-2 text-xs font-medium text-white">
-                                Pro
-                              </span>
-                            </Link>
-                          </li>
-                        </ul>
-                      </div>
-                      {/* <!-- Dropdown Menu End --> */}
-                    </React.Fragment>
-                  );
-                }}
-              </SidebarLinkGroup>
-              {/* <!-- Menu Item Task --> */}
 
               {/* <!-- Menu Item Forms --> */}
               <SidebarLinkGroup
@@ -328,40 +208,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 {(handleClick, open) => {
                   return (
                     <React.Fragment>
-                      <Link
-                        href="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                          (pathname === '/forms' ||
-                            pathname.includes('forms')) &&
-                          'bg-graydark dark:bg-meta-4'
-                        }`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          sidebarExpanded
-                            ? handleClick()
-                            : setSidebarExpanded(true);
-                        }}
-                      >
-                        {FormsIcon}
-                        Forms
-                        <svg
-                          className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
-                            open && 'rotate-180'
-                          }`}
-                          width="20"
-                          height="20"
-                          viewBox="0 0 20 20"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
-                            fill=""
-                          />
-                        </svg>
-                      </Link>
+
                       {/* <!-- Dropdown Menu Start --> */}
                       <div
                         className={`translate transform overflow-hidden ${
@@ -400,24 +247,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </SidebarLinkGroup>
               {/* <!-- Menu Item Forms --> */}
 
-              {/* <!-- Menu Item Tables --> */}
-              <li>
-                <Link
-                  href="/tables"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname === '/tables' && 'bg-graydark dark:bg-meta-4'
-                  }`}
-                >
-                  {TablesIcon}
-                  Tables
-                </Link>
-              </li>
-              {/* <!-- Menu Item Tables --> */}
+
 
               {/* <!-- Menu Item Pages --> */}
               <SidebarLinkGroup
                 activeCondition={
-                  pathname === '/pages' || pathname.includes('pages')
+                  pathname === '/temp' || pathname.includes('temp')
                 }
               >
                 {(handleClick, open) => {
@@ -426,8 +261,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       <Link
                         href="#"
                         className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                          (pathname === '/pages' ||
-                            pathname.includes('pages')) &&
+                          (pathname === '/temp' ||
+                            pathname.includes('temp')) &&
                           'bg-graydark dark:bg-meta-4'
                         }`}
                         onClick={(e) => {
@@ -438,7 +273,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         }}
                       >
                         {PagesIcon}
-                        Pages
+                        Temp
                         <svg
                           className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
                             open && 'rotate-180'
@@ -466,28 +301,15 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
                           <li>
                             <Link
-                              href="/pages/settings"
+                              href="/carrier"
                               className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === '/pages/settings' && 'text-white'
+                                pathname === '/carrier' && 'text-white'
                               }`}
                             >
-                              Settings
+                              Carrier
                             </Link>
                           </li>
-                          <li>
-                            <Link
-                              href="/pages/file-manager"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === '/pages/file-manager' &&
-                                'text-white'
-                              } `}
-                            >
-                              File Manager
-                              <span className="absolute right-4 block rounded bg-primary py-1 px-2 text-xs font-medium text-white">
-                                Pro
-                              </span>
-                            </Link>
-                          </li>
+
                           <li>
                             <Link
                               href="/dispatch"
@@ -496,47 +318,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                               } `}
                             >
                               Dispatch
-                              <span className="absolute right-4 block rounded bg-primary py-1 px-2 text-xs font-medium text-white">
-                                Pro
-                              </span>
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              href="/pages/pricing-tables"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === '/pages/pricing-tables' &&
-                                'text-white'
-                              } `}
-                            >
-                              Pricing Tables
-                              <span className="absolute right-4 block rounded bg-primary py-1 px-2 text-xs font-medium text-white">
-                                Pro
-                              </span>
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              href="/pages/error-page"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === '/pages/error-page' && 'text-white'
-                              }`}
-                            >
-                              Error Page
-                              <span className="absolute right-4 block rounded bg-primary py-1 px-2 text-xs font-medium text-white">
-                                Pro
-                              </span>
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              href="/pages/mail-success"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === '/pages/mail-success' &&
-                                'text-white'
-                              } `}
-                            >
-                              Mail Success
                               <span className="absolute right-4 block rounded bg-primary py-1 px-2 text-xs font-medium text-white">
                                 Pro
                               </span>
