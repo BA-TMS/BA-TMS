@@ -318,9 +318,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                               } `}
                             >
                               Dispatch
-                              <span className="absolute right-4 block rounded bg-primary py-1 px-2 text-xs font-medium text-white">
-                                Pro
-                              </span>
                             </Link>
                           </li>
                         </ul>
