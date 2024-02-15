@@ -32,11 +32,9 @@ const tableHeaders = [
   'Telephone',
   'DOT ID',
 ];
-export default function TableJ() {
+export default function Carriers() {
   const [modalOpen, setModalOpen] = useState(false); // for edit button in table
   const [carriers, setCarriers] = useState<Carrier[]>([]);
-  // for triggering form modal
-  // const [isOpen, setIsOpen] = useState(false);
 
   const { isOpen, toggleOpen } = useContext(ModalContext);
 
@@ -67,8 +65,7 @@ export default function TableJ() {
   }, []);
 
   // clicking the edit button
-  const handleEditClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault(); // might need this if the click should go somwehere
+  const handleEditClick = () => {
     console.log('Edit clicked');
     // additional logic or actions here if needed
   };
@@ -95,12 +92,10 @@ export default function TableJ() {
 
       {/* Start of Data Table */}
       <div className="mt-8 flow-root">
-        <div className="data-table-common rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark py-4">
+        <div className="overflow-x-auto rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark py-4">
           <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-            {/* dividing line for table */}
             <table className="min-w-full divide-y divide-gray-300">
               <thead>
-                {/* Looping through headers */}
                 <tr>
                   {tableHeaders.map((header, index) => (
                     <th
@@ -120,8 +115,6 @@ export default function TableJ() {
                   </th>
                 </tr>
               </thead>
-
-              {/* users list */}
               <tbody className="divide-y divide-gray-200">
                 {carriers.map((carrier, index) => (
                   <tr key={index}>
@@ -156,15 +149,12 @@ export default function TableJ() {
                       {carrier.dotID}
                     </td>
                     <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-md sm:pr-0">
-                      {!modalOpen && (
-                        <a
-                          href="#"
-                          className="text-indigo-600 hover:text-indigo-900"
-                          onClick={handleEditClick}
-                        >
-                          Edit<span className="sr-only">, {carrier.name}</span>
-                        </a>
-                      )}
+                      <button
+                        onClick={handleEditClick}
+                        className="text-indigo-600 hover:text-indigo-900"
+                      >
+                        Edit<span className="sr-only">, {carrier.name}</span>
+                      </button>
                     </td>
                   </tr>
                 ))}
