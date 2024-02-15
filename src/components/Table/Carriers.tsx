@@ -1,8 +1,5 @@
 'use client';
 
-/* Create search bar and popup modal for edit and add user */
-
-// import ModalOne from "@/components/Modals/ModalOne";
 import CarrierModal from "@/components/Modals/CarrierModal";
 import { useState, useEffect } from 'react';
 import { getCarriers } from '@/lib/dbActions';
@@ -32,37 +29,50 @@ const tableHeaders = [
   'Telephone', 
   'DOT ID'
 ];
+
 export default function Carriers() {
   const [modalOpen, setModalOpen] = useState(false);
   const [carriers, setCarriers] = useState<Carrier[]>([]);
 
   useEffect(() => {
     const fetchCarriers = async () => {
-      const data = await getCarriers();
-      const carriersData: Carrier[] = data.map((item) => ({
-        name: item.name,
-        address: item.address,
-        addressAddOn: item.addressAddOn || '', // Convert null to empty string
-        city: item.city,
-        state: item.state,
-        postCountry: item.postCountry,
-        postCode: item.postCode,
-        telCountry: item.telCountry.toString(), // Convert number to string
-        telephone: item.telephone,
-        dotID: item.dotId.toString(), // Adjust property name and convert number to string if necessary
-      }));
-      setCarriers(carriersData);
+      try {
+        const data = await getCarriers();
+        const carriersData: Carrier[] = data.map((item) => ({
+          name: item.name,
+          address: item.address,
+          addressAddOn: item.addressAddOn || '',
+          city: item.city,
+          state: item.state,
+          postCountry: item.postCountry,
+          postCode: item.postCode,
+          telCountry: item.telCountry.toString(),
+          telephone: item.telephone,
+          dotID: item.dotId.toString(),
+        }));
+        setCarriers(carriersData);
+      } catch (error) {
+        console.error("Failed to fetch carriers", error);
+        // Handle the error appropriately
+      }
     };
 
     fetchCarriers();
   }, []);
+
+  const handleEditClick = (carrierName: string) => {
+    // Logic to handle edit operation
+    console.log(`Edit ${carrierName}`);
+    setModalOpen(true);
+    // You might want to pass the carrier's data to the modal for editing
+  };
   
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
-          <h1 className="text-base leading-6 text-gray-900">Carriers</h1>
-          <p className="mt-2 text-md text-gray-700">
+          <h1 className="text-lg leading-6 text-gray-900">Carriers</h1>
+          <p className="mt-2 text-sm text-gray-700">
             A list of all the carrier information.
           </p>
         </div>
@@ -71,16 +81,11 @@ export default function Carriers() {
         </div>
       </div>
       
-      {/* Start of Data Table */}
       <div className="mt-8 flow-root">
-        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark py-4">
+        <div className="overflow-x-auto rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark py-4">
           <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-
-            {/* dividing line for table */}
             <table className="min-w-full divide-y divide-gray-300">
               <thead>
-
-                {/* Looping through headers */}
                 <tr>
                   {tableHeaders.map((header, index) => (
                     <th key={index} scope="col" className={`py-3.5 ${index === 0 ? 'pl-4 pr-3 text-left sm:pl-0' : 'px-3 text-left'}`}>
@@ -92,8 +97,6 @@ export default function Carriers() {
                   </th>
                 </tr>
               </thead>
-              
-              {/* users list */}
               <tbody className="divide-y divide-gray-200">
                 {carriers.map((carrier, index) => (
                   <tr key={index}>
@@ -110,11 +113,9 @@ export default function Carriers() {
                     <td className="whitespace-nowrap px-3 py-4 text-md text-gray-500">{carrier.telephone}</td>
                     <td className="whitespace-nowrap px-3 py-4 text-md text-gray-500">{carrier.dotID}</td>
                     <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-md sm:pr-0">
-                      {!modalOpen && (
-                        <a href="#" className="text-indigo-600 hover:text-indigo-900">
-                          Edit<span className="sr-only">, {carrier.name}</span>
-                        </a>
-                      )}
+                      <button onClick={() => handleEditClick(carrier.name)} className="text-indigo-600 hover:text-indigo-900">
+                        Edit<span className="sr-only">, {carrier.name}</span>
+                      </button>
                     </td>
                   </tr>
                 ))}
