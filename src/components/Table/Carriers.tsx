@@ -32,7 +32,7 @@ const tableHeaders = [
   'Telephone', 
   'DOT ID'
 ];
-export default function TableJ() {
+export default function Carriers() {
   const [modalOpen, setModalOpen] = useState(false);
   const [carriers, setCarriers] = useState<Carrier[]>([]);
 
@@ -73,7 +73,7 @@ export default function TableJ() {
       
       {/* Start of Data Table */}
       <div className="mt-8 flow-root">
-        <div className="data-table-common rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark py-4">
+        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark py-4">
           <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
 
             {/* dividing line for table */}
