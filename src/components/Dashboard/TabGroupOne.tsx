@@ -62,6 +62,29 @@ const TabGroupOne: React.FC = () => {
           </Link>
         </div>
 
+        {/* Search bar and sort */}
+        <div className="flex justify-between w-full">
+          <input
+            type="text"
+            className="border border-stroke focus:border-primary outline-none rounded-md w-4/5 px-5 py-2.5 mr-4"
+            placeholder="Search..."
+          />
+
+          {/* Sort bar */}
+          <select
+            className="border border-stroke focus:border-primary outline-none rounded-md px-3 py-2.5 w-1/5"
+          >
+            <option value="" disabled selected>Sort By:</option> {/* Adjusted line */}
+            {["Name", "Load Number", "Customer", "Dispatcher", "Carrier", "Driver", "Truck", "Trailer", "Work Order #", "Shipper", "Sales Rep", "Origin City", "Origin State", "P.O. Numbers", "Consignee", "Destination City", "Destination State", "PO#"].map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </div>
+
+
+        {/* Tabs */}
         <div>
           {/* customer tab */}
           <div
@@ -98,3 +121,4 @@ const TabGroupOne: React.FC = () => {
 };
 
 export default TabGroupOne;
+
