@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -8,10 +8,7 @@ import TextInput from './UI_Elements/TextInput';
 import SelectInput from './UI_Elements/SelectInput';
 import { usStates } from '@/assets/data/states';
 import { addCarrier } from '@/lib/dbActions';
-
-interface CarrierFormProps {
-  closeModal: () => void;
-}
+import { ModalContext } from '@/Context/modalContext';
 
 const carrierSchema = yup.object({
   'Carrier Name': yup.string().required('Consignee Name is required'),
@@ -31,7 +28,7 @@ const carrierSchema = yup.object({
     .required('Country Code is required'),
   'Phone Number': yup
     .string()
-    .matches(/^[0-9]+$/, 'Must use valid phone number')
+    .matches(/^\d{3}-\d{3}-\d{4}$/, 'Must use valid phone number xxx-xxx-xxxx')
     .required('Contact phone number required'),
   Email: yup
     .string()
@@ -46,10 +43,9 @@ const carrierSchema = yup.object({
 
 type Carrier = yup.InferType<typeof carrierSchema>;
 
-export const CarrierForm: React.FC<CarrierFormProps> = ({ closeModal }) => {
+export const CarrierForm = () => {
   const {
     handleSubmit,
-    setFocus, // focus - how to use this?
     setError, // async error handling
     reset, // for resetting form
     control, // based on schema
@@ -73,12 +69,14 @@ export const CarrierForm: React.FC<CarrierFormProps> = ({ closeModal }) => {
     resolver: yupResolver(carrierSchema),
   });
 
+  const { toggleOpen } = useContext(ModalContext);
+
   const onSubmit = async (data: Carrier) => {
     console.log(data); // see the data
     try {
       await addCarrier({ carrier: data });
       console.log('Carrier added successfully');
-      closeModal();
+      toggleOpen();
     } catch (error) {
       console.log('Error submitting form:', error);
       setError('root', { message: 'Error Submitting Form - Please try Again' });
@@ -154,7 +152,7 @@ export const CarrierForm: React.FC<CarrierFormProps> = ({ closeModal }) => {
                 type="button"
                 onClick={() => {
                   reset();
-                  closeModal(); // Close the modal when cancel is clicked
+                  toggleOpen();
                 }}
                 disabled={isSubmitting}
                 className="rounded bg-red p-3 font-medium text-gray ml-2 hover:bg-opacity-80"

@@ -2,8 +2,9 @@
 
 /* Create search bar and popup modal for edit and add user */
 
+import { useState, useEffect, useContext } from 'react';
+import { ModalContext } from '@/Context/modalContext';
 import CarrierModal from '@/components/Modals/CarrierModal';
-import { useState, useEffect } from 'react';
 import { getCarriers } from '@/lib/dbActions';
 
 type Carrier = {
@@ -35,7 +36,14 @@ export default function TableJ() {
   const [modalOpen, setModalOpen] = useState(false); // for edit button in table
   const [carriers, setCarriers] = useState<Carrier[]>([]);
   // for triggering form modal
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
+
+  const { isOpen, toggleOpen } = useContext(ModalContext);
+
+  const handleClick = () => {
+    toggleOpen();
+    console.log('button clicked');
+  };
 
   useEffect(() => {
     const fetchCarriers = async () => {
@@ -68,10 +76,8 @@ export default function TableJ() {
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <button
-        onClick={() => {
-          setIsOpen(true);
-        }}
-        className="rounded-md bg-primary py-3 px-9 font-medium text-white hover:bg-opacity-80"
+        onClick={handleClick}
+        className="float-right rounded-md bg-primary py-3 px-9 font-medium text-white hover:bg-opacity-80"
       >
         Add Carrier
       </button>
@@ -83,7 +89,7 @@ export default function TableJ() {
           </p>
         </div>
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-          <CarrierModal isOpen={isOpen} setIsOpen={setIsOpen} />
+          <CarrierModal />
         </div>
       </div>
 

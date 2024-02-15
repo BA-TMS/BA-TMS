@@ -2,12 +2,15 @@
 
 'use client';
 
+import { ContextProvider } from '@/Context/modalContext';
 import Carriers from '@/components/Table/Carriers';
 
 export default function Home() {
   return (
     <>
-      <Carriers />
+      <ContextProvider>
+        <Carriers />
+      </ContextProvider>
     </>
   );
 }
