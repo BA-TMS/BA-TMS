@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -11,7 +11,6 @@ import { addCarrier } from '@/lib/dbActions';
 
 interface CarrierFormProps {
   closeModal: () => void;
-  ref: any;
 }
 
 const carrierSchema = yup.object({
@@ -50,6 +49,7 @@ type Carrier = yup.InferType<typeof carrierSchema>;
 export const CarrierForm: React.FC<CarrierFormProps> = ({ closeModal }) => {
   const {
     handleSubmit,
+    setFocus, // focus - how to use this?
     setError, // async error handling
     reset, // for resetting form
     control, // based on schema

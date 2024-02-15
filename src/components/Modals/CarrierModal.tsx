@@ -1,79 +1,100 @@
 'use client';
 
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  Dispatch,
-  SetStateAction,
-} from 'react';
+import React, { useEffect, useRef, Dispatch, SetStateAction } from 'react';
 import CarrierForm from '../Forms/CarrierForm';
 
 interface CarrierModalProps {
-  modalOpen: boolean;
-  setModalOpen: Dispatch<SetStateAction<boolean>>;
+  isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const CarrierModal: React.FC<CarrierModalProps> = ({
-  modalOpen,
-  setModalOpen,
-}) => {
-  const trigger = useRef<any>(null);
+// The child elements will be displayed based on the boolean isOpen prop.
+// The setter function for this boolean state is the setIsOpen prop.
+
+const CarrierModal = ({ isOpen, setIsOpen }: CarrierModalProps) => {
+  const modalRef = useRef(null);
+
+  // const trigger = useRef<any>(null);
   const modal = useRef<any>(null);
-  const formRef = useRef<any>(null); // for the form to not close modal which is still not working
 
-  // close if the esc key is pressed
+  // Define a useEffect hook inside the Modal component.
+  // We will then check if the isOpen prop is true.
+  // The child elements will be displayed based on the boolean isOpen prop.
+  // If it is true, we proceed with the focus trapping setup.
   useEffect(() => {
-    const keyHandler = ({ keyCode }: KeyboardEvent) => {
-      if (!modalOpen || keyCode !== 27) return;
-      setModalOpen(false);
-    };
-    document.addEventListener('keydown', keyHandler);
-    return () => document.removeEventListener('keydown', keyHandler);
-  });
+    if (isOpen) {
+      // query all focusable elements within the modal using the querySelectorAll method.
+      // This includes buttons, links, inputs, selects, textareas, and elements with explicit tabindex values.
+      const modalElement = modalRef.current;
+      const focusableElements = modalElement.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
 
-  // close on click outside
-  // useEffect(() => {
-  //   const clickHandler = ({ target }: MouseEvent) => {
-  //     if (!modal.current || !formRef.current) return;
+      // store the first and last focusable elements in firstElement and lastElement variables
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
 
-  //     const isInsideModal =
-  //       modal.current.contains(target) || formRef.current.contains(target);
+      // handleTabKeyPress event handler gets triggered when the “Tab” key is pressed.
+      // by using event.shiftKey condition, the logic ensures that pressing the "Tab" key alone or with the "Shift" key behaves correctly for both forward and backward navigation within the focusable elements of the modal.
+      const handleTabKeyPress = (event: KeyboardEvent) => {
+        if (event.key === 'Tab') {
+          // event.shiftKey condition is used to determine whether the "Shift" key is pressed along with the "Tab" key.
+          // This condition helps handle the circular focus navigation within the modal
+          // event.shiftKey property is a boolean value that indicates whether the "Shift" key was pressed at the same time as the event.
+          // if event.shiftKey is true and the currently focused element is the first focusable element (document.activeElement === firstElement), it means the user is navigating backward from the first element.
+          // In this case, the default tab behavior is prevented (event.preventDefault()) to avoid leaving the modal, and the focus is set on the last focusable element (lastElement.focus()). This creates a circular focus navigation within the modal.
+          if (event.shiftKey && document.activeElement === firstElement) {
+            event.preventDefault();
+            lastElement.focus();
+          } else if (
+            // if event.shiftKey is false and the currently focused element is the last focusable element (document.activeElement === lastElement), it means the user is navigating forward from the last element.
+            // Similarly, the default tab behavior is prevented, and the focus is set on the first focusable element (firstElement.focus()), ensuring the circular navigation continues within the modal.
+            !event.shiftKey &&
+            document.activeElement === lastElement
+          ) {
+            event.preventDefault();
+            firstElement.focus();
+          }
+        }
+      };
+      // handleEscapeKeyPress-  Thandles the "Escape" key press to close the modal by calling the setIsOpen function.
+      const handleEscapeKeyPress = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          setIsOpen(false);
+        }
+      };
 
-  //     if (!modalOpen || isInsideModal || trigger.current.contains(target))
-  //       return;
+      // add the event listeners to the modal element using addEventListener.
+      // useEffect only adds or removes event listeners based on the isOpen state, but doesn't modify isOpen state itself to avoid rerenders
+      modalElement.addEventListener('keydown', handleTabKeyPress);
+      modalElement.addEventListener('keydown', handleEscapeKeyPress);
 
-  //     setModalOpen(false);
-  //   };
-
-  //   document.addEventListener('click', clickHandler);
-
-  //   return () => document.removeEventListener('click', clickHandler);
-  // }, [modalOpen, setModalOpen]);
+      // cleanup function to remove event listener
+      return () => {
+        modalElement.removeEventListener('keydown', handleTabKeyPress);
+        modalElement.removeEventListener('keydown', handleEscapeKeyPress);
+      };
+    }
+  }, [isOpen, setIsOpen]); // The useEffect hook should then be set to run whenever the dependencies (isOpen, setIsOpen) change. When isOpen changes, the effect will be triggered again. However, the code inside the effect only adds or removes event listeners based on the value of isOpen, and it doesn't directly modify the isOpen state.
 
   return (
     <div>
-      <button
-        ref={trigger}
-        onClick={() => setModalOpen(!modalOpen)}
-        className="rounded-md bg-primary py-3 px-9 font-medium text-white"
-      >
-        Add Carrier
-      </button>
+      isOpen ? (
       <div
-        className={`fixed top-0 left-0 z-999999 flex h-full min-h-screen w-full items-start justify-center bg-black/90 px-4 py-5 ${
-          modalOpen ? 'block' : 'hidden'
-        }`}
+        ref={modalRef}
+        className="fixed z-999999 top-0 left-0 flex h-full min-h-screen w-full items-start justify-center bg-black/90 px-4 py-5"
       >
         <div
           ref={modal}
-          onFocus={() => setModalOpen(true)}
-          onBlur={() => setModalOpen(false)}
+          onFocus={() => setIsOpen(true)}
+          onBlur={() => setIsOpen(false)}
           className="max-w-142.5 rounded-lg bg-white"
         >
-          <CarrierForm ref={formRef} closeModal={() => setModalOpen(false)} />
+          <CarrierForm closeModal={() => setIsOpen(false)} />
         </div>
       </div>
+      ) : (<></>
+      );
     </div>
   );
 };

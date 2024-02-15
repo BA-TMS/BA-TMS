@@ -2,7 +2,6 @@
 
 /* Create search bar and popup modal for edit and add user */
 
-// import ModalOne from "@/components/Modals/ModalOne";
 import CarrierModal from '@/components/Modals/CarrierModal';
 import { useState, useEffect } from 'react';
 import { getCarriers } from '@/lib/dbActions';
@@ -33,8 +32,10 @@ const tableHeaders = [
   'DOT ID',
 ];
 export default function TableJ() {
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false); // for edit button in table
   const [carriers, setCarriers] = useState<Carrier[]>([]);
+  // for triggering form modal
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const fetchCarriers = async () => {
@@ -57,8 +58,23 @@ export default function TableJ() {
     fetchCarriers();
   }, []);
 
+  // clicking the edit button
+  const handleEditClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault(); // might need this if the click should go somwehere
+    console.log('Edit clicked');
+    // additional logic or actions here if needed
+  };
+
   return (
     <div className="px-4 sm:px-6 lg:px-8">
+      <button
+        onClick={() => {
+          setIsOpen(true);
+        }}
+        className="rounded-md bg-primary py-3 px-9 font-medium text-white hover:bg-opacity-80"
+      >
+        Add Carrier
+      </button>
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           <h1 className="text-base leading-6 text-gray-900">Carriers</h1>
@@ -67,7 +83,7 @@ export default function TableJ() {
           </p>
         </div>
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-          <CarrierModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
+          <CarrierModal isOpen={isOpen} setIsOpen={setIsOpen} />
         </div>
       </div>
 
@@ -138,6 +154,7 @@ export default function TableJ() {
                         <a
                           href="#"
                           className="text-indigo-600 hover:text-indigo-900"
+                          onClick={handleEditClick}
                         >
                           Edit<span className="sr-only">, {carrier.name}</span>
                         </a>
