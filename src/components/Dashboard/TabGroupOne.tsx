@@ -7,9 +7,8 @@ import Link from "next/link";
 import ConsigneeTable from '@/components/Tables/ConsigneeTable';
 import CustomerTable from '@/components/Tables/CustomerTable';
 import ShipperTable from '@/components/Tables/ShipperTable';
-import { getConsignees } from '@/lib/dbActions';
-import { getCustomers } from '@/lib/dbActions';
-import { getShippers } from '@/lib/dbActions';
+import { getConsignees, getCustomers, getShippers } from '@/lib/dbActions';
+
 
 interface DataItem {
   id: number;
@@ -25,6 +24,8 @@ interface DataItem {
   telCountry: number;
   telephone: string;
 }
+
+const SORT_OPTIONS = ["Name", "Load Number", "Customer", "Dispatcher", "Carrier", "Driver", "Truck", "Trailer", "Work Order #", "Shipper", "Sales Rep", "Origin City", "Origin State", "P.O. Numbers", "Consignee", "Destination City", "Destination State", "PO#"];
 
 const TabGroupOne: React.FC = () => {
   const [openTab, setOpenTab] = useState(1);
@@ -103,8 +104,8 @@ const TabGroupOne: React.FC = () => {
             className="border border-stroke focus:border-primary outline-none rounded-md px-3 py-2.5 flex-shrink"
           >
             <option value="" disabled>Sort By:</option>
-            {["Name", "Load Number", "Customer", "Dispatcher", "Carrier", "Driver", "Truck", "Trailer", "Work Order #", "Shipper", "Sales Rep", "Origin City", "Origin State", "P.O. Numbers", "Consignee", "Destination City", "Destination State", "PO#"].map((option, index) => (
-              <option key={index} value={option}>
+            {SORT_OPTIONS.map((option) => (
+              <option key={option} value={option}>
                 {option}
               </option>
             ))}
