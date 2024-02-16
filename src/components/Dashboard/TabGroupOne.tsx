@@ -5,20 +5,47 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import ConsigneeTable from '@/components/Tables/ConsigneeTable';
+import CustomerTable from '@/components/Tables/CustomerTable';
+import ShipperTable from '@/components/Tables/ShipperTable';
 import { getConsignees } from '@/lib/dbActions';
+import { getCustomers } from '@/lib/dbActions';
+import { getShippers } from '@/lib/dbActions';
+
+interface DataItem {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+  name: string;
+  address: string;
+  addressAddOn: string | null;
+  city: string;
+  state: string;
+  postCountry: string;
+  postCode: string;
+  telCountry: number;
+  telephone: string;
+}
 
 const TabGroupOne: React.FC = () => {
   const [openTab, setOpenTab] = useState(1);
-  const [data, setData] = useState([]); // State to hold consignees data
+  const [data, setData] = useState<DataItem[]>([]); // State to hold customer, consignee and shipper data
 
   useEffect(() => {
     const fetchData = async () => {
-      const consigneesData = await getConsignees();
-      setData(consigneesData);
+      if (openTab === 1) {
+        const customersData = await getCustomers();
+        setData(customersData);
+      } else if (openTab === 2) {
+        const consigneesData = await getConsignees();
+        setData(consigneesData);
+      } else if (openTab === 3) {
+        const shipperData = await getShippers(); // Fetch shipper data
+        setData(shipperData); // Update state with shipper data
+      }
     };
 
     fetchData();
-  }, []); // Empty dependency array means this effect runs once on mount
+  }, [openTab]); // Added openTab to the dependency array to refetch data when it changes
 
   const activeClasses = "text-primary border-primary";
   const inactiveClasses = "border-transparent";
@@ -91,11 +118,7 @@ const TabGroupOne: React.FC = () => {
           <div
             className={`leading-relaxed ${openTab === 1 ? "block" : "hidden"}`}
           >
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            luctus ligula nec dolor placerat, a consequat elit volutpat. Quisque
-            nibh lacus, posuere et turpis in, pretium facilisis nisl. Proin congue
-            sem vel sollicitudin sagittis. Class aptent taciti sociosqu ad litora
-            torquent per conubia nostra, per
+            <CustomerTable data={data} />
           </div>
           {/* consignee tab */}
           <div
@@ -107,12 +130,7 @@ const TabGroupOne: React.FC = () => {
           <div
             className={`leading-relaxed ${openTab === 3 ? "block" : "hidden"}`}
           >
-            Tab3 ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            luctus ligula nec dolor placerat, a consequat elit volutpat. Quisque
-            nibh lacus, posuere et turpis in, pretium facilisis nisl. Proin congue
-            sem vel sollicitudin sagittis. Class aptent taciti sociosqu ad litora
-            torquent per conubia nostra, per
-
+            <ShipperTable data={data} />
           </div>
 
         </div>
@@ -122,4 +140,3 @@ const TabGroupOne: React.FC = () => {
 };
 
 export default TabGroupOne;
-
