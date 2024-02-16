@@ -9,7 +9,6 @@ import CustomerTable from '@/components/Tables/CustomerTable';
 import ShipperTable from '@/components/Tables/ShipperTable';
 import { getConsignees, getCustomers, getShippers } from '@/lib/dbActions';
 
-
 interface DataItem {
   id: number;
   createdAt: Date;
@@ -25,7 +24,12 @@ interface DataItem {
   telephone: string;
 }
 
-const SORT_OPTIONS = ["Name", "Load Number", "Customer", "Dispatcher", "Carrier", "Driver", "Truck", "Trailer", "Work Order #", "Shipper", "Sales Rep", "Origin City", "Origin State", "P.O. Numbers", "Consignee", "Destination City", "Destination State", "PO#"];
+const SORT_OPTIONS = [
+  "Name", "Load Number", "Customer", "Dispatcher", "Carrier", "Driver", 
+  "Truck", "Trailer", "Work Order #", "Shipper", "Sales Rep", "Origin City", 
+  "Origin State", "P.O. Numbers", "Consignee", "Destination City", 
+  "Destination State", "PO#"
+];
 
 const TabGroupOne: React.FC = () => {
   const [openTab, setOpenTab] = useState(1);
@@ -112,28 +116,20 @@ const TabGroupOne: React.FC = () => {
           </select>
         </div>
 
-
         {/* Tabs */}
         <div>
-          {/* customer tab */}
-          <div
-            className={`leading-relaxed ${openTab === 1 ? "block" : "hidden"}`}
-          >
+          {/* Customer tab */}
+          <div className={`leading-relaxed ${openTab === 1 ? "block" : "hidden"}`}>
             <CustomerTable data={data} />
           </div>
-          {/* consignee tab */}
-          <div
-            className={`leading-relaxed ${openTab === 2 ? "block" : "hidden"}`}
-          >
+          {/* Consignee tab */}
+          <div className={`leading-relaxed ${openTab === 2 ? "block" : "hidden"}`}>
             <ConsigneeTable data={data} />
           </div>
-          {/* shipper tab */}
-          <div
-            className={`leading-relaxed ${openTab === 3 ? "block" : "hidden"}`}
-          >
+          {/* Shipper tab */}
+          <div className={`leading-relaxed ${openTab === 3 ? "block" : "hidden"}`}>
             <ShipperTable data={data} />
           </div>
-
         </div>
       </div>
     </>
