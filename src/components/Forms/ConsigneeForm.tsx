@@ -4,10 +4,10 @@ import { useEffect } from 'react';
 import { useForm, FieldValues } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-
 import TextInput from './UI_Elements/TextInput';
 import SelectInput from './UI_Elements/SelectInput';
 import { usStates } from '@/assets/data/states';
+import { addConsignee } from '@/lib/dbActions';
 
 const consigneeSchema = yup.object({
   'Consignee Name': yup.string().required('Consignee Name is required'),
@@ -16,13 +16,17 @@ const consigneeSchema = yup.object({
   State: yup.string().required('State is required '),
   Zip: yup
     .string()
-    .length(5, 'Zip must be 5 characters')
+    .matches(/^\d{5}$/, 'Zip must be 5 digits')
     .required('Zip Code is required '),
   Country: yup.string().required('Country is required'),
   'Contact Name': yup.string().required('Contact Name is required'),
+  'Country Code': yup
+    .number()
+    .integer('Must be an integer')
+    .required('Country Code is required'),
   'Phone Number': yup
     .string()
-    .matches(/^[0-9]+$/, 'Must use valid phone number')
+    .matches(/^\d{3}-\d{3}-\d{4}$/, 'Must use valid phone number xxx-xxx-xxxx')
     .required('Contact phone number required'),
   Email: yup
     .string()
@@ -49,6 +53,7 @@ export const ConsigneeForm = () => {
       Zip: '',
       Country: '',
       'Contact Name': '',
+      'Country Code': undefined,
       'Phone Number': '',
       Email: '',
       Notes: '',
@@ -59,17 +64,16 @@ export const ConsigneeForm = () => {
   // add our backend functionality here
   const onSubmit = async (data: Consignee) => {
     try {
-      console.log(data); // see the object being sent
-      await new Promise((resolve) => {
-        setTimeout(resolve, 1000);
-      });
-      // throw Error; // for testing
+      console.log(data);
+      await addConsignee({ consignee: data });
+      // await new Promise((resolve) => {
+      //   setTimeout(resolve, 1000);
+      // });
     } catch (error) {
       setError('root', { message: 'Error Submitting Form- Please try Again' }); // root is for errors that belong to form as a whole
     }
   };
 
-  // found out this is best practice for reset
   useEffect(() => {
     if (isSubmitSuccessful) {
       reset({
@@ -80,6 +84,7 @@ export const ConsigneeForm = () => {
         Zip: '',
         Country: '',
         'Contact Name': '',
+        'Country Code': undefined,
         'Phone Number': '',
         Email: '',
         Notes: '',
@@ -112,13 +117,14 @@ export const ConsigneeForm = () => {
                     name="State"
                     options={usStates}
                   />
+                  <TextInput control={control} name="Country Code" />
                 </div>
                 <div className="w-full xl:w-1/2">
                   <TextInput control={control} name="Zip" />
                   <TextInput control={control} name="Country" />
+                  <TextInput control={control} name="Phone Number" />
                 </div>
               </div>
-              <TextInput control={control} name="Phone Number" />
               <TextInput control={control} name="Contact Name" />
               <TextInput control={control} name="Email" />
               <TextInput control={control} name="Notes" isTextArea={true} />

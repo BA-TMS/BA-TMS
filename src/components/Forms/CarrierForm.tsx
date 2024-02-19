@@ -18,7 +18,7 @@ const carrierSchema = yup.object({
   State: yup.string().required('State is required '),
   Zip: yup
     .string()
-    .length(5, 'Zip must be 5 characters')
+    .matches(/^\d{5}$/, 'Zip must be 5 digits')
     .required('Zip Code is required '),
   Country: yup.string().required('Country is required'), // is this necessary or are we US based?
   'Contact Name': yup.string().required('Contact Name is required'),

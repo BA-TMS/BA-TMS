@@ -83,35 +83,22 @@ export async function addCarrier({ carrier }: { carrier: any }) {
   });
 }
 
-export async function addConsignee({
-  consignee,
-}: {
-  consignee: ConsigneeFormDataState;
-}) {
-  // const resp = await prisma.consignee.create({
-  //   data: {
-  //     name: consignee.consigneeName,
-  //     address: consignee.address,
-  //     city: consignee.city,
-  //     state: consignee.state,
-  //     postCountry: consignee.country,
-  //     postCode: consignee.zip,
-  //     telCountry: 1,
-  //     telephone: consignee.phone,
-  //   },
-  // });
-
-  const insertData = {
-    name: consignee.consigneeName,
-    address: consignee.address,
-    city: consignee.city,
-    state: consignee.state,
-    postCountry: consignee.country,
-    postCode: consignee.zip,
-    telCountry: 1,
-    telephone: consignee.phone,
-  };
-  const resp = creater(prisma.consignee, insertData);
+export async function addConsignee({ consignee }: { consignee: any }) {
+  const resp = await prisma.consignee.create({
+    data: {
+      name: consignee['Consignee Name'],
+      address: consignee['Address'],
+      addressAddOn: consignee['Address (Optional)'] || null, // Optional field
+      city: consignee['City'],
+      state: consignee['State'],
+      postCountry: consignee['Country'],
+      postCode: consignee['Zip'],
+      telCountry: consignee['Country Code'],
+      telephone: consignee['Phone Number'],
+      // contact: consignee['Contact Name'], //n not in db table yet
+      // notes: carrier['Notes'] || null, // optional field, notes not in db table yet
+    },
+  });
 
   console.log(resp);
 }
