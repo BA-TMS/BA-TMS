@@ -1,11 +1,14 @@
 'use client';
 
-import React, { useEffect, useRef, useContext } from 'react';
-import CarrierForm from '../Forms/CarrierForm';
+import React, { useEffect, useRef, useContext, ReactNode } from 'react';
 import { ModalContext } from '@/Context/modalContext';
 
+interface FormModalProps {
+  children: ReactNode;
+}
+
 // The child elements will be displayed based on context isOpen
-const CarrierModal = () => {
+const FormModal = ({ children }: FormModalProps) => {
   const modalRef = useRef(null);
 
   const { isOpen, toggleOpen } = useContext(ModalContext);
@@ -80,13 +83,11 @@ const CarrierModal = () => {
           ref={modalRef}
           className="fixed z-999999 top-0 left-0 flex h-full min-h-screen w-full items-start justify-center bg-black/90 px-4 py-5"
         >
-          <div className="max-w-142.5 rounded-lg bg-white">
-            <CarrierForm />
-          </div>
+          <div className="max-w-142.5 rounded-lg bg-white">{children}</div>
         </div>
       )}
     </div>
   );
 };
 
-export default CarrierModal;
+export default FormModal;

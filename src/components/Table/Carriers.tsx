@@ -4,8 +4,9 @@
 
 import { useState, useEffect, useContext } from 'react';
 import { ModalContext } from '@/Context/modalContext';
-import CarrierModal from '@/components/Modals/CarrierModal';
 import { getCarriers } from '@/lib/dbActions';
+import CarrierForm from '../Forms/CarrierForm';
+import FormModal from '@/components/Modals/FormModal';
 
 type Carrier = {
   name: string;
@@ -86,7 +87,9 @@ export default function Carriers() {
           </p>
         </div>
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-          <CarrierModal />
+          <FormModal>
+            <CarrierForm></CarrierForm>
+          </FormModal>
         </div>
       </div>
 
