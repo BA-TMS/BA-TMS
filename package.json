@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "docker": "npx ts-node docker/dockerscript.ts",
+    "docker": "npx ts-node util/dockerscript.ts",
     "seed": "npx ts-node prisma/seed.ts"
   },
   "dependencies": {
@@ -31,6 +31,7 @@
     "eslint-config-next": "13.5.6",
     "postcss": "^8",
     "tailwindcss": "^3",
+    "ts-node": "^10.9.2",
     "typescript": "^5",
     "yarn": "^1.22.21"
   }
