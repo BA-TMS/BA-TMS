@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect, useRef } from 'react';
 import CustomerForm from '../Forms/CustomerForm';
 import { Dispatch, SetStateAction } from 'react';
