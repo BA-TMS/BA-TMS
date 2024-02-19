@@ -134,11 +134,17 @@ export async function addCustomer({ customer }: { customer: any }) {
 export async function addDriver({ driver }: { driver: any }) {
   const resp = await prisma.driver.create({
     data: {
-      name: driver.name,
-      license: driver.license,
-      telCountry: 1,
-      telephone: driver.telephone,
-      employerId: driver.employerId,
+      name: driver['Driver Name'],
+      address: driver['Address'],
+      addressAddOn: driver['Address (Optional)'] || null, // Optional field
+      city: driver['City'],
+      state: driver['State'],
+      postCountry: driver['Country'],
+      postCode: driver['Zip'],
+      telCountry: driver['Country Code'],
+      telephone: driver['Phone Number'],
+      license: driver['License Number'],
+      // notes: carrier['Notes'] || null, // optional field, notes not in table yet
     },
   });
 }
