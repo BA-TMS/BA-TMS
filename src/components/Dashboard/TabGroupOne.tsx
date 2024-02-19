@@ -7,6 +7,7 @@ import Link from "next/link";
 import ConsigneeTable from '@/components/Tables/ConsigneeTable';
 import CustomerTable from '@/components/Tables/CustomerTable';
 import ShipperTable from '@/components/Tables/ShipperTable';
+import CustomerModal from '@/components/Modals/CustomerModal';
 import { getConsignees, getCustomers, getShippers } from '@/lib/dbActions';
 
 interface DataItem {
@@ -34,6 +35,7 @@ const SORT_OPTIONS = [
 const TabGroupOne: React.FC = () => {
   const [openTab, setOpenTab] = useState(1);
   const [data, setData] = useState<DataItem[]>([]); // State to hold customer, consignee and shipper data
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,7 +60,13 @@ const TabGroupOne: React.FC = () => {
   return (
     <>
       <div className="flex justify-end mb-4">
-        <button className="rounded-md bg-primary py-3 px-9 font-medium text-white">
+        <button className="rounded-md bg-primary py-3 px-9 font-medium text-white"
+          onClick={() => {
+            if (openTab === 1) {
+              setIsModalOpen(true);
+            }
+          }}
+        >
           Add
         </button>
       </div>
@@ -132,6 +140,8 @@ const TabGroupOne: React.FC = () => {
           </div>
         </div>
       </div>
+      {/* Include CustomerModal and pass isModalOpen and setIsModalOpen as props */}
+      <CustomerModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
     </>
   );
 };
