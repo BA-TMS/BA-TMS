@@ -1,6 +1,12 @@
 'use client';
 
 import Image from 'next/image';
+import defaultImage from '../../images/default.png';
+import testImage from '../../images/test.png';
+import React from 'react';
+import { useState, useEffect, useCallback, MouseEventHandler } from 'react';
+import { StaticImageData } from 'next/image';
+import test from 'node:test';
 
 const secondaryNavigation = [
   { name: 'Account', href: '#', current: true },
@@ -9,7 +15,27 @@ const secondaryNavigation = [
   { name: 'Teams', href: '../user/settings/team', current: false },
 ];
 
+/*export function getSelectedImage() {
+  if (selectedImage === null) {
+    return defaultImage;
+  }
+  return selectedImage;
+}*/
+
 export default function Account() {
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  //const [newProfile, setNewProfile] = useState<StaticImageData>();
+
+  /*useEffect(() => {
+    setNewProfile(newProfile);
+  });*/
+
+  // This function will remove the user profile picture and set it to default.
+  const deleteImage = useCallback<MouseEventHandler<HTMLButtonElement>>((e) => {
+    setSelectedImage(null);
+    e.preventDefault();
+  }, []);
+
   return (
     <>
       {/* Tabs */}
@@ -205,21 +231,26 @@ export default function Account() {
               <div className="p-7">
                 <form action="#">
                   <div className="mb-4 flex items-center gap-3">
-                    <div className="h-14 w-14 rounded-full">
-                      <Image
-                        src={'/images/user/user-03.png'}
-                        width={55}
-                        height={55}
-                        alt="User"
-                      />
-                    </div>
+                    {selectedImage && (
+                      <div className="h-14 w-14 rounded-full">
+                        <Image
+                          alt="not found"
+                          width={55}
+                          height={55}
+                          src={URL.createObjectURL(selectedImage)}
+                        />
+                      </div>
+                    )}
 
                     <div>
                       <span className="mb-1.5 text-black dark:text-white">
                         Edit your photo
                       </span>
                       <span className="flex gap-2.5">
-                        <button className="text-sm hover:text-primary">
+                        <button
+                          className="text-sm hover:text-primary"
+                          onClick={deleteImage}
+                        >
                           Delete
                         </button>
                         <button className="text-sm hover:text-primary">
@@ -237,6 +268,12 @@ export default function Account() {
                       type="file"
                       accept="image/*"
                       className="absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none"
+                      onChange={(event) => {
+                        const file = event.target.files
+                          ? event.target.files[0]
+                          : null;
+                        setSelectedImage(file);
+                      }}
                     />
                     <div className="flex flex-col items-center justify-center space-y-3">
                       <span className="flex h-10 w-10 items-center justify-center rounded-full border border-stroke bg-white dark:border-strokedark dark:bg-boxdark">

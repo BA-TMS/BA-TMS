@@ -1,8 +1,10 @@
 'use client';
 
+import { getSelectedImage } from '../User/Account';
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import defaultImage from '../../images/default.png';
 import {
   AddressBookIcon,
   DropdownIcon,
@@ -65,7 +67,8 @@ const DropdownUser = () => {
             src={'/images/user/user-01.png'}
             alt="User"
           /> */}
-          <p>User Image Placeholder</p>
+          {/*<p>User Image Placeholder</p>*/}
+          <Image src={defaultImage} alt="Image Placeholder" />
         </span>
 
         {DropdownIcon}
