@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "docker": "npx ts-node util/dockerscript.ts",
+    "docker": "npx ts-node util/dispatcher.ts docker",
+    "dbsetup": "npx ts-node util/dispatcher.ts dbsetup",
     "seed": "npx ts-node prisma/seed.ts"
   },
   "dependencies": {
