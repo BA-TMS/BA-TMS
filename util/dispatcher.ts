@@ -1,8 +1,21 @@
 const { execSync } = require('child_process');
-
 require('dotenv').config();
 
 const CONTAINER_NAME = 'a2ztmspostgres';
+
+function execWrap(command: string, verbose = false) {
+  // Wrapper to handle errors and format responses.
+  try {
+    return execSync(command);
+  } catch(error: any) {
+    console.log(`Execution failed when trying to run ${command}`);
+    if (verbose) {
+      console.log('\nError trace:')
+      console.error(error.stack);
+    }
+    process.exit();
+  }
+}
 
 function containerQuery() {
   const containerBuffer = execSync('docker ps -a');
@@ -23,21 +36,21 @@ function createRunString() {
 
 function dbSetup(verbose: boolean) {
   // Set up A2Z tables and seed them; requires an existing PG isntance.
-  const migrateResp = execSync('npx prisma migrate reset -f');
+  const migrateResp = execWrap('npx prisma migrate reset -f', verbose);
   if (verbose) console.log(migrateResp.toString());
-  const seedResp = execSync('npx ts-node prisma/seed.ts');
-  if (verbose) console.log(migrateResp.toString());
+  const seedResp = execWrap('npx ts-node prisma/seed.ts');
+  if (verbose) console.log(seedResp.toString());
 }
 
 function startOrCreateContainer(verbose: boolean) {
   // Create a new Docker container and invoke the DB setup.
   if (containerQuery()) {
     if (verbose) console.log('Found existing container; restarting. . .')
-    const restartResp = execSync(`docker restart ${CONTAINER_NAME}`);
+    const restartResp = execWrap(`docker restart ${CONTAINER_NAME}`);
     if (verbose) console.log(`${restartResp.toString().trim()} restarted`);
   } else {
     const runString = createRunString();
-    const runResp = execSync(runString);
+    const runResp = execWrap(runString);
     if (verbose) console.log(runResp.toString());
     // Left to its own devices, Docker returns success before Prisma can access it :(.
     setTimeout(() => dbSetup(verbose), 1000);
@@ -56,5 +69,4 @@ function dispatcher(args: string[]) {
   }
 }
 
-// startOrCreateContainer();
 dispatcher(process.argv.slice(2));
