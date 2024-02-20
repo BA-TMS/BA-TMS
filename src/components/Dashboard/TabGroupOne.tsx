@@ -8,6 +8,8 @@ import ConsigneeTable from '@/components/Tables/ConsigneeTable';
 import CustomerTable from '@/components/Tables/CustomerTable';
 import ShipperTable from '@/components/Tables/ShipperTable';
 import CustomerModal from '@/components/Modals/CustomerModal';
+import ConsigneeModal from '@/components/Modals/ConsigneeModal'; // Corrected import for ConsigneeModal
+import ShipperModal from '@/components/Modals/ShipperModal';
 import { getConsignees, getCustomers, getShippers } from '@/lib/dbActions';
 
 interface DataItem {
@@ -64,6 +66,10 @@ const TabGroupOne: React.FC = () => {
           onClick={() => {
             if (openTab === 1) {
               setIsModalOpen(true);
+            } else if (openTab === 2) {
+              setIsModalOpen(true); // Set modal open for Consignee as well
+            } else if (openTab === 3) {
+              setIsModalOpen(true); // Set modal open for Shipper as well
             }
           }}
         >
@@ -141,7 +147,11 @@ const TabGroupOne: React.FC = () => {
         </div>
       </div>
       {/* Include CustomerModal and pass isModalOpen and setIsModalOpen as props */}
-      <CustomerModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+      <CustomerModal isModalOpen={isModalOpen && openTab === 1} setIsModalOpen={setIsModalOpen} />
+      {/* Include ConsigneeModal and pass isModalOpen and setIsModalOpen as props for Consignee */}
+      <ConsigneeModal isModalOpen={isModalOpen && openTab === 2} setIsModalOpen={setIsModalOpen} />
+      {/* Include ShipperModal and pass isModalOpen and setIsModalOpen as props for Shipper */}
+      <ShipperModal isModalOpen={isModalOpen && openTab === 3} setIsModalOpen={setIsModalOpen} />
     </>
   );
 };
