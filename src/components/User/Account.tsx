@@ -15,7 +15,9 @@ const secondaryNavigation = [
   { name: 'Teams', href: '../user/settings/team', current: false },
 ];
 
-export var selectedImage: File | null = null;
+//export const selectedImage: File | null = null;
+
+export var getSelectedImage: File | null = null;
 
 /*function getSelectedImage() {
     if (selectedImage === null) {
@@ -25,7 +27,7 @@ export var selectedImage: File | null = null;
   }*/
 
 export default function Account() {
-  //const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
   //const [newProfile, setNewProfile] = useState<StaticImageData>();
 
   /*useEffect(() => {
@@ -34,8 +36,8 @@ export default function Account() {
 
   // This function will remove the user profile picture and set it to default.
   const deleteImage = useCallback<MouseEventHandler<HTMLButtonElement>>((e) => {
-    //setSelectedImage(null);
-    selectedImage = null;
+    setSelectedImage(null);
+    getSelectedImage = null;
     e.preventDefault();
   }, []);
 
@@ -275,7 +277,8 @@ export default function Account() {
                         const file = event.target.files
                           ? event.target.files[0]
                           : null;
-                        selectedImage = file;
+                        setSelectedImage(file);
+                        getSelectedImage = file;
                       }}
                     />
                     <div className="flex flex-col items-center justify-center space-y-3">

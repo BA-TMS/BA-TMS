@@ -1,6 +1,7 @@
 'use client';
 
-import { selectedImage } from '../User/Account';
+//import { selectedImage } from '../User/Account';
+import { getSelectedImage } from '../User/Account';
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -70,7 +71,9 @@ const DropdownUser = () => {
           {/*<p>User Image Placeholder</p>*/}
           <Image
             src={
-              selectedImage ? URL.createObjectURL(selectedImage) : defaultImage
+              getSelectedImage
+                ? URL.createObjectURL(getSelectedImage)
+                : defaultImage
             }
             width={55}
             height={55}
