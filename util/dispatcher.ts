@@ -36,6 +36,11 @@ function createRunString() {
 
 function dbSetup(verbose: boolean) {
   // Set up A2Z tables and seed them; requires an existing PG isntance.
+  const target = process.env.DATABASE_URL || '';
+  if (!target.includes('localhost')) {
+    console.log('DB Setup is only for local instances; run Supabase migrations manually');
+    process.exit();
+  }
   const migrateResp = execWrap('npx prisma migrate reset -f', verbose);
   if (verbose) console.log(migrateResp.toString());
   const seedResp = execWrap('npx ts-node prisma/seed.ts');
