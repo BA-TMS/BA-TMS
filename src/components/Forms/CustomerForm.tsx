@@ -67,7 +67,7 @@ const CustomerForm: React.FC<CustomerFormProps> = ({ modalOpen, setModalOpen }) 
           >
               <div className="border-b border-stroke px-6.5 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white text-center">
-                  User Form
+                  Customer Form
                 </h3>
               </div>
               <form onSubmit={handleSubmit}>

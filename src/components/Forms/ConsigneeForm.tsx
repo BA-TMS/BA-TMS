@@ -94,7 +94,7 @@ export const ConsigneeForm: React.FC<ConsigneeFormProps> = ({ modalOpen, setModa
 
   return (
     <div className={`fixed top-0 left-0 z-999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5 ${!modalOpen && 'hidden'}`}>
-      <div className="w-full max-w-screen-md rounded-lg bg-white py-8 px-8 text-left dark:bg-boxdark md:py-10 md:px-17.5">
+      <div className="w-full max-w-screen-md max-h-screen overflow-y-auto rounded-lg bg-white py-8 px-8 text-left dark:bg-boxdark md:py-10 md:px-17.5">
         <div className="border-b border-stroke px-6.5 dark:border-strokedark">
           <h3 className="font-medium text-black dark:text-white">
             New Consignee
@@ -154,5 +154,3 @@ export const ConsigneeForm: React.FC<ConsigneeFormProps> = ({ modalOpen, setModa
 };
 
 export default ConsigneeForm;
-
-
