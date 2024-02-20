@@ -170,7 +170,7 @@ const CustomerForm: React.FC<CustomerFormProps> = ({ modalOpen, setModalOpen }) 
                     >
                       Close
                     </button>
-                    <button type="submit" className="flex w-1/2 justify-center rounded bg-green p-3 font-medium text-gray bg-green-500">
+                    <button type="submit" className="flex w-1/2 justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-80">
                       Save
                     </button>
                   </div>

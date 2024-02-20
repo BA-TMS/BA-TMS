@@ -1,5 +1,3 @@
-// Shipper data for telCountry is a string and not an int
-
 'use client';
 
 import React from 'react';
@@ -32,7 +30,17 @@ const ShipperForm: React.FC<ShipperFormProps> = ({ modalOpen, setModalOpen }) =>
   });
 
   const onSubmit = async (data: any) => {
-    await addShipper({ shipper: data });
+    // Attempt to parse telCountry to an integer
+    const telCountryInt = parseInt(data.telCountry, 10);
+    
+    // Check if the parsing was successful and telCountry is a valid integer
+    // This code was added to ensure telCountry is correctly formatted as an integer
+    const formattedData = {
+      ...data,
+      telCountry: !isNaN(telCountryInt) ? telCountryInt : null, // Fallback to null if not a valid integer
+    };
+
+    await addShipper({ shipper: formattedData });
     setModalOpen(false);
     reset(); // Reset form fields after submission
   };
@@ -165,7 +173,7 @@ const ShipperForm: React.FC<ShipperFormProps> = ({ modalOpen, setModalOpen }) =>
                   >
                     Close
                   </button>
-                  <button type="submit" className="flex w-1/2 justify-center rounded bg-green p-3 font-medium text-gray bg-green-500">
+                  <button type="submit" className="flex w-1/2 justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-80">
                     Save
                   </button>
                 </div>
