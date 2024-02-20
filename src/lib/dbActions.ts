@@ -70,7 +70,7 @@ export async function addCarrier({ carrier }: { carrier: any }) {
     data: {
       name: carrier['Carrier Name'],
       address: carrier['Address'],
-      addressAddOn: carrier['Address (Optional)'] || null, // Optional field
+      addressAddOn: carrier['Address Line 2'] || null, // Optional field
       city: carrier['City'],
       state: carrier['State'],
       postCountry: carrier['Country'],
@@ -88,7 +88,7 @@ export async function addConsignee({ consignee }: { consignee: any }) {
     data: {
       name: consignee['Consignee Name'],
       address: consignee['Address'],
-      addressAddOn: consignee['Address (Optional)'] || null, // Optional field
+      addressAddOn: consignee['Address Line 2'] || null, // Optional field
       city: consignee['City'],
       state: consignee['State'],
       postCountry: consignee['Country'],
@@ -96,7 +96,7 @@ export async function addConsignee({ consignee }: { consignee: any }) {
       telCountry: consignee['Country Code'],
       telephone: consignee['Phone Number'],
       // contact: consignee['Contact Name'], //n not in db table yet
-      // notes: carrier['Notes'] || null, // optional field, notes not in db table yet
+      // notes: consignee['Notes'] || null, // optional field, notes not in db table yet
     },
   });
 
@@ -122,15 +122,16 @@ export async function addDriver({ driver }: { driver: any }) {
   const resp = await prisma.driver.create({
     data: {
       name: driver['Driver Name'],
-      address: driver['Address'],
-      addressAddOn: driver['Address (Optional)'] || null, // Optional field
-      city: driver['City'],
-      state: driver['State'],
-      postCountry: driver['Country'],
-      postCode: driver['Zip'],
+      // address: driver['Address'],
+      // addressAddOn: driver['Address Line 2'] || null, // Optional field
+      // city: driver['City'],
+      // state: driver['State'],
+      // postCountry: driver['Country'],
+      // postCode: driver['Zip'],
       telCountry: driver['Country Code'],
       telephone: driver['Phone Number'],
       license: driver['License Number'],
+      employerId: driver['Employer ID'] || null, // optional
       // notes: carrier['Notes'] || null, // optional field, notes not in table yet
     },
   });

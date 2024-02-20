@@ -12,17 +12,18 @@ import { addDriver } from '@/lib/dbActions';
 
 const driverSchema = yup.object({
   'Driver Name': yup.string().required('Driver Name is required'),
-  Address: yup.string().required('Address is required'),
-  'Address (Optional)': yup.string(),
-  City: yup.string().required('City is required '),
-  State: yup.string().required('State is required '),
-  Zip: yup
-    .string()
-    .matches(/^\d{5}$/, 'Zip must be 5 digits')
-    .required('Zip Code is required '),
-  Country: yup.string().required('Country is required'), // is this necessary or are we US based?
+  // Address: yup.string().required('Address is required'),
+  // 'Address Line 2': yup.string(),
+  // City: yup.string().required('City is required '),
+  // State: yup.string().required('State is required '),
+  // Zip: yup
+  //   .string()
+  //   .matches(/^\d{5}$/, 'Zip must be 5 digits')
+  //   .required('Zip Code is required '),
+  // Country: yup.string().required('Country is required'), // is this necessary or are we US based?
   'Country Code': yup
     .number()
+    .nullable()
     .integer('Must be an integer')
     .required('Country Code is required'),
   'Phone Number': yup
@@ -34,6 +35,7 @@ const driverSchema = yup.object({
     .email('Must use a valid email')
     .required('Contact email required'),
   'License Number': yup.string(),
+  'Employer ID': yup.string(),
   Notes: yup.string().max(250, 'Must be under 250 characters'),
 });
 
@@ -49,16 +51,17 @@ export const DriverForm = () => {
   } = useForm<Driver>({
     defaultValues: {
       'Driver Name': '',
-      Address: '',
-      'Address (Optional)': '',
-      City: '',
-      State: '',
-      Zip: '',
-      Country: '',
-      'Country Code': undefined,
+      // Address: '',
+      // 'Address Line 2': '',
+      // City: '',
+      // State: '',
+      // Zip: '',
+      // Country: '',
+      'Country Code': 1,
       'Phone Number': '',
       Email: '',
       'License Number': '',
+      'Employer ID': '',
       Notes: '',
     },
     resolver: yupResolver(driverSchema),
@@ -82,16 +85,17 @@ export const DriverForm = () => {
     if (isSubmitSuccessful) {
       reset({
         'Driver Name': '',
-        Address: '',
-        'Address (Optional)': '',
-        City: '',
-        State: '',
-        Zip: '',
-        Country: '',
-        'Country Code': undefined,
+        // Address: '',
+        // 'Address Line 2': '',
+        // City: '',
+        // State: '',
+        // Zip: '',
+        // Country: '',
+        'Country Code': 1,
         'Phone Number': '',
         Email: '',
         'License Number': '',
+        'Employer ID': '',
         Notes: '',
       });
     }
@@ -105,29 +109,39 @@ export const DriverForm = () => {
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="p-6.5">
-            <TextInput control={control} name="Driver Name" />
-            <TextInput control={control} name="Address" />
-            <TextInput control={control} name="Address (Optional)" />
+            <TextInput control={control} name="Driver Name" required={true} />
+            {/* <TextInput control={control} name="Address" required={true} /> */}
+            {/* <TextInput control={control} name="Address Line 2" /> */}
 
             <div className=" flex flex-col gap-6 xl:flex-row">
               <div className="w-full xl:w-1/2">
-                <TextInput control={control} name="City" />
-                <SelectInput
+                {/* <TextInput control={control} name="City" required={true} /> */}
+                {/* <SelectInput
                   control={control}
                   name="State"
                   options={usStates}
+                  required={true}
+                /> */}
+                <TextInput
+                  control={control}
+                  name="Country Code"
+                  required={true}
                 />
-                <TextInput control={control} name="Country Code" />
               </div>
               <div className="w-full xl:w-1/2">
-                <TextInput control={control} name="Zip" />
-                <TextInput control={control} name="Country" />
-                <TextInput control={control} name="Phone Number" />
+                {/* <TextInput control={control} name="Zip" required={true} /> */}
+                {/* <TextInput control={control} name="Country" required={true} /> */}
+                <TextInput
+                  control={control}
+                  name="Phone Number"
+                  required={true}
+                />
               </div>
             </div>
 
-            <TextInput control={control} name="Email" />
+            <TextInput control={control} name="Email" required={true} />
             <TextInput control={control} name="License Number" />
+            <TextInput control={control} name="Employer ID" />
             <TextInput control={control} name="Notes" isTextArea={true} />
             {errors.root && (
               <p className="mb-5 text-danger">{errors.root.message}</p>

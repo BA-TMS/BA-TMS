@@ -12,6 +12,7 @@ import { addConsignee } from '@/lib/dbActions';
 const consigneeSchema = yup.object({
   'Consignee Name': yup.string().required('Consignee Name is required'),
   Address: yup.string().required('Address is required'),
+  'Address Line 2': yup.string(),
   City: yup.string().required('City is required '),
   State: yup.string().required('State is required '),
   Zip: yup
@@ -48,12 +49,13 @@ export const ConsigneeForm = () => {
     defaultValues: {
       'Consignee Name': '',
       Address: '',
+      'Address Line 2': '',
       City: '',
       State: '',
       Zip: '',
       Country: '',
       'Contact Name': '',
-      'Country Code': undefined,
+      'Country Code': 1,
       'Phone Number': '',
       Email: '',
       Notes: '',
@@ -79,12 +81,13 @@ export const ConsigneeForm = () => {
       reset({
         'Consignee Name': '',
         Address: '',
+        'Address Line 2': '',
         City: '',
         State: '',
         Zip: '',
         Country: '',
         'Contact Name': '',
-        'Country Code': undefined,
+        'Country Code': 1,
         'Phone Number': '',
         Email: '',
         Notes: '',
@@ -106,27 +109,42 @@ export const ConsigneeForm = () => {
               <TextInput
                 control={control}
                 name="Consignee Name" // name always needs to match schema
+                required={true}
               />
-              <TextInput control={control} name="Address" />
+              <TextInput control={control} name="Address" required={true} />
+              <TextInput control={control} name="Address Line 2" />
 
               <div className=" flex flex-col gap-6 xl:flex-row">
                 <div className="w-full xl:w-1/2">
-                  <TextInput control={control} name="City" />
+                  <TextInput control={control} name="City" required={true} />
                   <SelectInput
                     control={control}
                     name="State"
                     options={usStates}
+                    required={true}
                   />
-                  <TextInput control={control} name="Country Code" />
+                  <TextInput
+                    control={control}
+                    name="Country Code"
+                    required={true}
+                  />
                 </div>
                 <div className="w-full xl:w-1/2">
-                  <TextInput control={control} name="Zip" />
-                  <TextInput control={control} name="Country" />
-                  <TextInput control={control} name="Phone Number" />
+                  <TextInput control={control} name="Zip" required={true} />
+                  <TextInput control={control} name="Country" required={true} />
+                  <TextInput
+                    control={control}
+                    name="Phone Number"
+                    required={true}
+                  />
                 </div>
               </div>
-              <TextInput control={control} name="Contact Name" />
-              <TextInput control={control} name="Email" />
+              <TextInput
+                control={control}
+                name="Contact Name"
+                required={true}
+              />
+              <TextInput control={control} name="Email" required={true} />
               <TextInput control={control} name="Notes" isTextArea={true} />
               {errors.root && (
                 <p className="mb-5 text-danger">{errors.root.message}</p>

@@ -18,7 +18,6 @@ export const ContextProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   // how we open/ close said modal
   function toggleOpen() {
     setIsOpen(!isOpen);
-    console.log('toggle open function triggered');
   }
 
   return (

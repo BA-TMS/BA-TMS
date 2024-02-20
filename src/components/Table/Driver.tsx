@@ -10,7 +10,6 @@ export default function Driver() {
 
   const handleClick = () => {
     toggleOpen();
-    console.log('button clicked', isOpen);
   };
 
   return (

@@ -41,7 +41,6 @@ export default function Carriers() {
 
   const handleClick = () => {
     toggleOpen();
-    console.log('button clicked');
   };
 
   useEffect(() => {
