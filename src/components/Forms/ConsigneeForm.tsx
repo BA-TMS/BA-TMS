@@ -33,7 +33,12 @@ const consigneeSchema = yup.object({
 
 type Consignee = yup.InferType<typeof consigneeSchema>;
 
-export const ConsigneeForm = () => {
+interface ConsigneeFormProps {
+  modalOpen: boolean;
+  setModalOpen: (open: boolean) => void;
+}
+
+export const ConsigneeForm: React.FC<ConsigneeFormProps> = ({ modalOpen, setModalOpen }) => {
   const {
     handleSubmit,
     setError, // async error handling
@@ -88,63 +93,61 @@ export const ConsigneeForm = () => {
   }, [isSubmitSuccessful, reset]);
 
   return (
-    <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
-      <div className="flex flex-col gap-9">
-        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-          <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-            <h3 className="font-medium text-black dark:text-white">
-              New Consignee
-            </h3>
-          </div>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="p-6.5">
-              <TextInput
-                control={control}
-                name="Consignee Name" // name always needs to match schema
-              />
-              <TextInput control={control} name="Address" />
+    <div className={`fixed top-0 left-0 z-999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5 ${!modalOpen && 'hidden'}`}>
+      <div className="w-full max-w-screen-md max-h-screen overflow-y-auto rounded-lg bg-white py-8 px-8 text-left dark:bg-boxdark md:py-10 md:px-17.5">
+        <div className="border-b border-stroke px-6.5 dark:border-strokedark">
+          <h3 className="font-medium text-black dark:text-white">
+            New Consignee
+          </h3>
+        </div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="p-6.5">
+            <TextInput control={control} name="Consignee Name" />
+            <TextInput control={control} name="Address" />
 
-              <div className=" flex flex-col gap-6 xl:flex-row">
-                <div className="w-full xl:w-1/2">
-                  <TextInput control={control} name="City" />
-                  <SelectInput
-                    control={control}
-                    name="State"
-                    options={usStates}
-                  />
-                </div>
-                <div className="w-full xl:w-1/2">
-                  <TextInput control={control} name="Zip" />
-                  <TextInput control={control} name="Country" />
-                </div>
+            <div className=" flex flex-col gap-6 xl:flex-row">
+              <div className="w-full xl:w-1/2">
+                <TextInput control={control} name="City" />
+                <SelectInput
+                  control={control}
+                  name="State"
+                  options={usStates}
+                />
               </div>
-              <TextInput control={control} name="Phone Number" />
-              <TextInput control={control} name="Contact Name" />
-              <TextInput control={control} name="Email" />
-              <TextInput control={control} name="Notes" isTextArea={true} />
-              {errors.root && (
-                <p className="mb-5 text-danger">{errors.root.message}</p>
-              )}
-              <div className="flex justify-end">
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-1/4 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-80"
-                >
-                  {isSubmitting ? 'Submitting' : 'Add'}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => reset()}
-                  disabled={isSubmitting}
-                  className="rounded bg-red p-3 font-medium text-gray ml-2 hover:bg-opacity-80"
-                >
-                  Cancel
-                </button>
+              <div className="w-full xl:w-1/2">
+                <TextInput control={control} name="Zip" />
+                <TextInput control={control} name="Country" />
               </div>
             </div>
-          </form>
-        </div>
+            <TextInput control={control} name="Phone Number" />
+            <TextInput control={control} name="Contact Name" />
+            <TextInput control={control} name="Email" />
+            <TextInput control={control} name="Notes" isTextArea={true} />
+            {errors.root && (
+              <p className="mb-5 text-danger">{errors.root.message}</p>
+            )}
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-1/4 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-80"
+                           >
+                {isSubmitting ? 'Submitting' : 'Add'}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  reset();
+                  setModalOpen(false); // Close the modal on cancel
+                }}
+                disabled={isSubmitting}
+                className="rounded bg-red p-3 font-medium text-gray ml-2 hover:bg-opacity-80"
+                           >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   );
