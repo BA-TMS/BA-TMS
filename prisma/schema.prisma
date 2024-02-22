@@ -21,7 +21,7 @@ model Organization { // This is a collection of TMS users
   state         String
   postCountry   String
   postCode      String
-  telCountry    Int
+  telCountry    String    @default("1") // By default, use US code
   telephone     String
   loads         Load[]
   users         User[]
@@ -79,7 +79,7 @@ model Carrier {
   state         String
   postCountry   String
   postCode      String    // Cram all digits together and format based on country
-  telCountry    Int
+  telCountry    String    @default("1")
   telephone     String    // Cram all digits together and format based on country
   dotId         Int
   factor        Factor?  @relation(fields: [factorId], references: [id])
@@ -95,7 +95,7 @@ model Driver {
   updatedAt   DateTime  @updatedAt
   name        String    @unique
   license     Int       @unique
-  telCountry  Int
+  telCountry  String    @default("1")
   telephone   String
   employer    Carrier   @relation(fields: [employerId], references: [id])
   employerId  Int       // Are drivers always associated with a carrier?
@@ -113,7 +113,7 @@ model Customer {
   state         String
   postCountry   String
   postCode      String
-  telCountry    Int
+  telCountry    String    @default("1")
   telephone     String
   loads         Load[]
 }
@@ -129,7 +129,7 @@ model Shipper {
   state         String
   postCountry   String
   postCode      String
-  telCountry    Int
+  telCountry    String    @default("1")
   telephone     String
   loads         Load[]
 }
@@ -145,7 +145,7 @@ model Consignee {
   state         String
   postCountry   String
   postCode      String
-  telCountry    Int
+  telCountry    String    @default("1")
   telephone     String
   loads         Load[]
 }
@@ -163,7 +163,7 @@ model Location {
   state         String
   postCountry   String
   postCode      String
-  telCountry    Int
+  telCountry    String    @default("1")
   telephone     String
   isShipper     Boolean
   isConsignee   Boolean
@@ -181,7 +181,7 @@ model Factor {
   state         String
   postCountry   String
   postCode      String
-  telCountry    Int
+  telCountry    String    @default("1")
   telephone     String
   carriers      Carrier[]
 }
@@ -197,7 +197,7 @@ model Insurer {
   state         String
   postCountry   String
   postCode      String
-  telCountry    Int
+  telCountry    String    @default("1")
   telephone     String
 }
 
