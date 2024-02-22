@@ -106,14 +106,17 @@ export async function addConsignee({ consignee }: { consignee: any }) {
 export async function addCustomer({ customer }: { customer: any }) {
   const resp = await prisma.customer.create({
     data: {
-      name: customer.name,
-      address: customer.address,
-      city: customer.city,
-      state: customer.state,
-      postCountry: customer.country,
-      postCode: customer.zip,
-      telCountry: 1,
-      telephone: customer.phone,
+      name: customer['Customer Name'],
+      address: customer['Address'],
+      addressAddOn: customer['Address Line 2'] || null, // Optional field
+      city: customer['City'],
+      state: customer['State'],
+      postCountry: customer['Country'],
+      postCode: customer['Zip'],
+      telCountry: customer['Country Code'],
+      telephone: customer['Phone Number'],
+      // email: customer['Email'] // do we need email for customer?
+      // notes: customer['Notes'] || null, // optional field, notes not in db table yet
     },
   });
 }

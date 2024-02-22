@@ -2,7 +2,7 @@
 
 import TableActionsPopover from '../Popovers/TableActions';
 
-interface ConsigneeData {
+interface CustomerData {
   id: number;
   createdAt: Date | null;
   updatedAt: Date | null;
@@ -17,13 +17,13 @@ interface ConsigneeData {
   telephone: string;
 }
 
-interface ConsigneeTableProps {
-  data: ConsigneeData[];
+interface CustomerTableProps {
+  data: CustomerData[];
 }
 
-export default function ConsigneeTable({
+export default function CustomerTable({
   data,
-}: ConsigneeTableProps): JSX.Element {
+}: CustomerTableProps): JSX.Element {
   return (
     <>
       <div className="rounded-sm border border-stroke bg-white px-5 pt-6 mt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -32,7 +32,7 @@ export default function ConsigneeTable({
             <thead>
               <tr className="bg-gray-2 text-left dark:bg-meta-4">
                 <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                  Consignee Name
+                  Customer Name
                 </th>
                 <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
                   Address
@@ -61,31 +61,31 @@ export default function ConsigneeTable({
               </tr>
             </thead>
             <tbody>
-              {data.map((consignee: ConsigneeData, key: number) => (
+              {data.map((customer: CustomerData, key: number) => (
                 <tr key={key} className={key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}>
                   <td className={`py-5 px-4 pl-9 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'} xl:pl-11`}>
                     <h5 className="font-medium text-black dark:text-white">
-                      {consignee.name}
+                      {customer.name}
                     </h5>
                   </td>
                   <td className={`py-5 px-4 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}`}>
                     <p className="text-black dark:text-white">
-                      {consignee.address}
+                      {customer.address}
                     </p>
                   </td>
                   <td className={`py-5 px-4 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}`}>
                     <p className="text-black dark:text-white">
-                      {consignee.city}
+                      {customer.city}
                     </p>
                   </td>
                   <td className={`py-5 px-4 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}`}>
                     <p className="text-black dark:text-white">
-                      {consignee.state}
+                      {customer.state}
                     </p>
                   </td>
                   <td className={`py-5 px-4 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}`}>
                     <p className="text-black dark:text-white">
-                      {consignee.postCode}
+                      {customer.postCode}
                     </p>
                   </td>
                   <td className={`py-5 px-4 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}`}>
