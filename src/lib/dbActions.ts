@@ -158,15 +158,15 @@ export async function addLoad({ load }: { load: any }) {
 export async function addShipper({ shipper }: { shipper: any }) {
   const resp = await prisma.shipper.create({
     data: {
-      name: shipper.name,
-      address: shipper.address,
-      addressAddOn: shipper.addressAddOn,
-      city: shipper.city,
-      state: shipper.state,
-      postCountry: shipper.postCountry,
-      postCode: shipper.postCode,
-      telCountry: shipper.telCountry,
-      telephone: shipper.telephone,
+      name: shipper['Shipper Name'],
+      address: shipper['Address'],
+      addressAddOn: shipper['Address Line 2'],
+      city: shipper['City'],
+      state: shipper['State'],
+      postCountry: shipper['Country'],
+      postCode: shipper['Zip'],
+      telCountry: shipper['Country Code'],
+      telephone: shipper['Phone Number'],
     },
   });
 }

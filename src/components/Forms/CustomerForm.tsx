@@ -15,7 +15,7 @@ interface CustomerFormProps {
 }
 
 const customerSchema = yup.object({
-  'Customer Name': yup.string().required('Driver Name is required'),
+  'Customer Name': yup.string().required('Customer Name is required'),
   Address: yup.string().required('Address is required'),
   'Address Line 2': yup.string(),
   City: yup.string().required('City is required '),
@@ -33,7 +33,7 @@ const customerSchema = yup.object({
   'Phone Number': yup
     .string()
     .matches(/^\d{3}-\d{3}-\d{4}$/, 'Must use valid phone number xxx-xxx-xxxx')
-    .required('Contact phone number required'),
+    .required('Phone number required'),
   // Email: yup // do we need email for customers?
   //   .string()
   //   .email('Must use a valid email')
@@ -122,7 +122,7 @@ const CustomerForm: React.FC<CustomerFormProps> = ({
         onClick={() => setModalOpen(!modalOpen)}
         className="rounded-md bg-primary py-3 px-9 font-medium text-white"
       >
-        Add User
+        Add
       </button>
       {modalOpen && (
         <div className="fixed top-0 left-0 z-999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5">
