@@ -1,7 +1,10 @@
 import { UseControllerProps, useController } from 'react-hook-form';
 
+// select input takes in an array as options prop
+// options are mapped to create dropdown <option> elements
+
 interface SelectInputProps extends UseControllerProps {
-  options: { name: string; abbreviation?: string }[];
+  options: any[];
   control?: any;
   required?: boolean;
 }
@@ -19,9 +22,9 @@ const SelectInput = (props: SelectInputProps) => {
           className="relative z-20 w-full rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
         >
           <option value="">{`Select ${props.name}`}</option>
-          {props.options.map((option, index) => (
-            <option key={index} value={option.name}>
-              {option.name}
+          {props.options.map((option: any, index: number) => (
+            <option key={index} value={option}>
+              {option}
             </option>
           ))}
         </select>

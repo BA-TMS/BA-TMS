@@ -5,6 +5,8 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import TextInput from './UI_Elements/TextInput';
+import SelectInput from './UI_Elements/SelectInput';
+import { status, owner } from './data/details';
 // import { ModalContext } from '@/Context/modalContext'; // for modal
 
 const truckSchema = yup.object({
@@ -74,15 +76,18 @@ export const TruckForm = () => {
           <div className="p-6.5">
             <TextInput control={control} name="Truck Number" required={true} />
 
-            {/* status and ownership could be a dropdown */}
             <div className=" flex flex-col gap-6 xl:flex-row">
               <div className="w-full xl:w-1/2">
                 <TextInput control={control} name="Truck Type" />
-                <TextInput control={control} name="License Plate" />
+                <SelectInput control={control} name="Status" options={status} />
               </div>
               <div className="w-full xl:w-1/2">
-                <TextInput control={control} name="Status" />
-                <TextInput control={control} name="Ownership" />
+                <TextInput control={control} name="License Plate" />
+                <SelectInput
+                  control={control}
+                  name="Ownership"
+                  options={owner}
+                />
               </div>
             </div>
 

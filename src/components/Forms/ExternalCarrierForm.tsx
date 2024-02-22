@@ -6,7 +6,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import TextInput from './UI_Elements/TextInput';
 import SelectInput from './UI_Elements/SelectInput';
-import { usStates } from '@/assets/data/states';
+import { usStates } from '@/components/Forms/data/states';
 // import { ModalContext } from '@/Context/modalContext'; // for modal
 
 const externalCarrierSchema = yup.object({
@@ -130,7 +130,7 @@ export const ExternalCarrierForm = () => {
                 <SelectInput
                   control={control}
                   name="State"
-                  options={usStates}
+                  options={usStates.map((state) => state.name)}
                   required={true}
                 />
                 <TextInput

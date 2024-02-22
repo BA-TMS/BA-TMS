@@ -5,6 +5,8 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import TextInput from './UI_Elements/TextInput';
+import SelectInput from './UI_Elements/SelectInput';
+import { status } from './data/details';
 // import { ModalContext } from '@/Context/modalContext'; // for modal
 
 const trailerSchema = yup.object({
@@ -81,7 +83,7 @@ export const TrailerForm = () => {
 
             <TextInput control={control} name="Trailer Type" />
             <TextInput control={control} name="License Plate" />
-            <TextInput control={control} name="Status" />
+            <SelectInput control={control} name="Status" options={status} />
 
             <TextInput control={control} name="Notes" isTextArea={true} />
             {errors.root && (

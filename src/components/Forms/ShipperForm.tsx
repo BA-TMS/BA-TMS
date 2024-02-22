@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import TextInput from './UI_Elements/TextInput';
 import SelectInput from './UI_Elements/SelectInput';
-import { usStates } from '@/assets/data/states';
+import { usStates } from '@/components/Forms/data/states';
 import { addShipper } from '../../lib/dbActions'; // Adjust the path as necessary
 
 interface ShipperFormProps {
@@ -136,7 +136,7 @@ const ShipperForm: React.FC<ShipperFormProps> = ({
                       <SelectInput
                         control={control}
                         name="State"
-                        options={usStates}
+                        options={usStates.map((state) => state.name)}
                         required={true}
                       />
                       <TextInput
