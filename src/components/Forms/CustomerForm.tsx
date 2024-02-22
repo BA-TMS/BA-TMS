@@ -1,6 +1,12 @@
 'use client';
 
-import React, { useState, useEffect, useRef, Dispatch, SetStateAction } from 'react';
+import React, { useEffect, useRef, Dispatch, SetStateAction } from 'react';
+import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import TextInput from './UI_Elements/TextInput';
+import SelectInput from './UI_Elements/SelectInput';
+import { usStates } from '@/assets/data/states';
 import { addCustomer } from '../../lib/dbActions'; // Adjust the path as necessary
 
 interface CustomerFormProps {
@@ -8,35 +14,96 @@ interface CustomerFormProps {
   setModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const CustomerForm: React.FC<CustomerFormProps> = ({ modalOpen, setModalOpen }) => {
+const customerSchema = yup.object({
+  'Customer Name': yup.string().required('Driver Name is required'),
+  Address: yup.string().required('Address is required'),
+  'Address Line 2': yup.string(),
+  City: yup.string().required('City is required '),
+  State: yup.string().required('State is required '),
+  Zip: yup
+    .string()
+    .matches(/^\d{5}$/, 'Zip must be 5 digits')
+    .required('Zip Code is required '),
+  Country: yup.string().required('Country is required'), // is this necessary or are we US based?
+  'Country Code': yup
+    .number()
+    .nullable()
+    .integer('Must be an integer')
+    .required('Country Code is required'),
+  'Phone Number': yup
+    .string()
+    .matches(/^\d{3}-\d{3}-\d{4}$/, 'Must use valid phone number xxx-xxx-xxxx')
+    .required('Contact phone number required'),
+  // Email: yup // do we need email for customers?
+  //   .string()
+  //   .email('Must use a valid email')
+  //   .required('Contact email required'),
+  Notes: yup.string().max(250, 'Must be under 250 characters'),
+});
+
+type Customer = yup.InferType<typeof customerSchema>;
+
+const CustomerForm: React.FC<CustomerFormProps> = ({
+  modalOpen,
+  setModalOpen,
+}) => {
   const trigger = useRef<any>(null);
   const modal = useRef<any>(null);
 
-  const [name, setName] = useState('');
-  const [address, setAddress] = useState('');
-  const [city, setCity] = useState('');
-  const [state, setState] = useState('');
-  const [country, setCountry] = useState('');
-  const [zip, setZip] = useState('');
-  const [phone, setPhone] = useState('');
+  const {
+    handleSubmit,
+    setError, // async error handling
+    reset, // for resetting form
+    control, // based on schema
+    formState: { errors, isSubmitting, isSubmitSuccessful }, // boolean values representing form state
+  } = useForm<Customer>({
+    defaultValues: {
+      'Customer Name': '',
+      Address: '',
+      'Address Line 2': '',
+      City: '',
+      State: '',
+      Zip: '',
+      Country: '',
+      'Country Code': 1,
+      'Phone Number': '',
+      // Email: '',
+      Notes: '',
+    },
+    resolver: yupResolver(customerSchema),
+  });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const customerData = {
-      name,
-      address,
-      city,
-      state,
-      country,
-      zip,
-      phone,
-    };
-
-    await addCustomer({customer: customerData});
-
-    setModalOpen(false);
+  const onSubmit = async (data: Customer) => {
+    console.log(data); // see the data
+    try {
+      await addCustomer({ customer: data });
+      console.log('customer added successfully');
+      // toggleOpen(); // modal refactor
+      setModalOpen(false);
+    } catch (error) {
+      console.log('Error submitting form:', error);
+      setError('root', { message: 'Error Submitting Form - Please try Again' });
+    }
   };
+
+  // reset form if submit successful
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset({
+        'Customer Name': '',
+        Address: '',
+        'Address Line 2': '',
+        City: '',
+        State: '',
+        Zip: '',
+        Country: '',
+        'Country Code': 1,
+        'Phone Number': '',
+        // Email: '',
+        Notes: '',
+      });
+    }
+  }, [isSubmitSuccessful, reset]);
 
   // close if the esc key is pressed
   useEffect(() => {
@@ -55,127 +122,90 @@ const CustomerForm: React.FC<CustomerFormProps> = ({ modalOpen, setModalOpen }) 
         onClick={() => setModalOpen(!modalOpen)}
         className="rounded-md bg-primary py-3 px-9 font-medium text-white"
       >
-        Add user
+        Add User
       </button>
       {modalOpen && (
-        <div
-          className="fixed top-0 left-0 z-999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5"
-        >
-          <div
-            ref={modal}
-            className="w-full max-w-screen-md rounded-lg bg-white py-8 px-8 text-left dark:bg-boxdark md:py-10 md:px-17.5"
-          >
-              <div className="border-b border-stroke px-6.5 dark:border-strokedark">
-                <h3 className="font-medium text-black dark:text-white text-center">
-                  Customer Form
+        <div className="fixed top-0 left-0 z-999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5">
+          <div className="flex flex-col gap-9">
+            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark w-full max-w-xl mx-auto overflow-y-auto max-h-screen">
+              <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
+                <h3 className="font-medium text-black dark:text-white">
+                  New Customer
                 </h3>
               </div>
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="p-6.5">
-                  <div className="mb-4.5">
-                    <label className="mb-2.5 block text-black dark:text-white">
-                      Name
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Enter name"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                    />
+                  <TextInput
+                    control={control}
+                    name="Customer Name"
+                    required={true}
+                  />
+                  <TextInput control={control} name="Address" required={true} />
+                  <TextInput control={control} name="Address Line 2" />
+
+                  <div className=" flex flex-col gap-6 xl:flex-row">
+                    <div className="w-full xl:w-1/2">
+                      <TextInput
+                        control={control}
+                        name="City"
+                        required={true}
+                      />
+                      <SelectInput
+                        control={control}
+                        name="State"
+                        options={usStates}
+                        required={true}
+                      />
+                      <TextInput
+                        control={control}
+                        name="Country Code"
+                        required={true}
+                      />
+                    </div>
+                    <div className="w-full xl:w-1/2">
+                      <TextInput control={control} name="Zip" required={true} />
+                      <TextInput
+                        control={control}
+                        name="Country"
+                        required={true}
+                      />
+                      <TextInput
+                        control={control}
+                        name="Phone Number"
+                        required={true}
+                      />
+                    </div>
                   </div>
 
-                  <div className="mb-4.5">
-                    <label className="mb-2.5 block text-black dark:text-white">
-                      Address
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Enter address"
-                      value={address}
-                      onChange={(e) => setAddress(e.target.value)}
-                      className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                    />
-                  </div>
-
-                  <div className="mb-4.5">
-                    <label className="mb-2.5 block text-black dark:text-white">
-                      City
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Enter city"
-                      value={city}
-                      onChange={(e) => setCity(e.target.value)}
-                      className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                    />
-                  </div>
-
-                  <div className="mb-4.5">
-                    <label className="mb-2.5 block text-black dark:text-white">
-                      State
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Enter state"
-                      value={state}
-                      onChange={(e) => setState(e.target.value)}
-                      className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                    />
-                  </div>
-
-                  <div className="mb-4.5">
-                    <label className="mb-2.5 block text-black dark:text-white">
-                      Country
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Enter country"
-                      value={country}
-                      onChange={(e) => setCountry(e.target.value)}
-                      className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                    />
-                  </div>
-
-                  <div className="mb-4.5">
-                    <label className="mb-2.5 block text-black dark:text-white">
-                      Zip
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Enter zip"
-                      value={zip}
-                      onChange={(e) => setZip(e.target.value)}
-                      className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                    />
-                  </div>
-
-                  <div className="mb-4.5">
-                    <label className="mb-2.5 block text-black dark:text-white">
-                      Phone
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Enter phone"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                    />
-                  </div>
-
-                  <div className="flex w-full justify-between space-x-2">
-                    <button 
-                      onClick={() => setModalOpen(false)}
-                      className="flex w-1/2 justify-center rounded bg-red p-3 font-medium text-gray"
+                  {/* <TextInput control={control} name="Email" required={true} /> */}
+                  <TextInput control={control} name="Notes" isTextArea={true} />
+                  {errors.root && (
+                    <p className="mb-5 text-danger">{errors.root.message}</p>
+                  )}
+                  <div className="flex justify-end">
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-1/4 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-80"
                     >
-                      Close
+                      {isSubmitting ? 'Submitting' : 'Add'}
                     </button>
-                    <button type="submit" className="flex w-1/2 justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-80">
-                      Save
+                    <button
+                      type="button"
+                      onClick={() => {
+                        reset();
+                        // toggleOpen();
+                        setModalOpen(false);
+                      }}
+                      disabled={isSubmitting}
+                      className="rounded bg-red p-3 font-medium text-gray ml-2 hover:bg-opacity-80"
+                    >
+                      Cancel
                     </button>
                   </div>
                 </div>
               </form>
+            </div>
           </div>
         </div>
       )}
