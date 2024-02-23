@@ -17,7 +17,7 @@ const SignIn: React.FC = () => {
               </h2>
 
               <form>
-                <div className="mb-4">
+                {/* <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Email
                   </label>
@@ -46,9 +46,9 @@ const SignIn: React.FC = () => {
                       </svg>
                     </span>
                   </div>
-                </div>
+                </div> */}
 
-                <div className="mb-6">
+                {/* <div className="mb-6">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Re-type Password
                   </label>
@@ -81,7 +81,7 @@ const SignIn: React.FC = () => {
                       </svg>
                     </span>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="mb-5">
                   <input
@@ -93,12 +93,12 @@ const SignIn: React.FC = () => {
 
 
                 <div className="mt-6 text-center">
-                  <p>
+                  {/* <p>
                     Don’t have any account?{" "}
                     <Link href="/auth/signup" className="text-primary">
                       Sign Up
                     </Link>
-                  </p>
+                  </p> */}
                 </div>
               </form>
           </div>
