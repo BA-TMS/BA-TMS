@@ -5,22 +5,11 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import TextInput from './UI_Elements/TextInput';
-import SelectInput from './UI_Elements/SelectInput';
-import { usStates } from '@/components/Forms/data/states';
 import { ModalContext } from '@/Context/modalContext';
 import { addDriver } from '@/lib/dbActions';
 
 const driverSchema = yup.object({
   'Driver Name': yup.string().required('Driver Name is required'),
-  // Address: yup.string().required('Address is required'),
-  // 'Address Line 2': yup.string(),
-  // City: yup.string().required('City is required '),
-  // State: yup.string().required('State is required '),
-  // Zip: yup
-  //   .string()
-  //   .matches(/^\d{5}$/, 'Zip must be 5 digits')
-  //   .required('Zip Code is required '),
-  // Country: yup.string().required('Country is required'), // is this necessary or are we US based?
   'Country Code': yup
     .number()
     .nullable()
@@ -34,8 +23,8 @@ const driverSchema = yup.object({
     .string()
     .email('Must use a valid email')
     .required('Contact email required'),
-  'License Number': yup.string(),
-  'Employer ID': yup.string(),
+  'License Number': yup.number(),
+  'Employer ID': yup.number().required('Employer ID is required'),
   Notes: yup.string().max(250, 'Must be under 250 characters'),
 });
 
@@ -51,17 +40,11 @@ export const DriverForm = () => {
   } = useForm<Driver>({
     defaultValues: {
       'Driver Name': '',
-      // Address: '',
-      // 'Address Line 2': '',
-      // City: '',
-      // State: '',
-      // Zip: '',
-      // Country: '',
       'Country Code': 1,
       'Phone Number': '',
       Email: '',
-      'License Number': '',
-      'Employer ID': '',
+      'License Number': 0,
+      'Employer ID': 1,
       Notes: '',
     },
     resolver: yupResolver(driverSchema),
@@ -85,17 +68,11 @@ export const DriverForm = () => {
     if (isSubmitSuccessful) {
       reset({
         'Driver Name': '',
-        // Address: '',
-        // 'Address Line 2': '',
-        // City: '',
-        // State: '',
-        // Zip: '',
-        // Country: '',
         'Country Code': 1,
         'Phone Number': '',
         Email: '',
-        'License Number': '',
-        'Employer ID': '',
+        'License Number': 0,
+        'Employer ID': 1,
         Notes: '',
       });
     }
@@ -110,18 +87,9 @@ export const DriverForm = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="p-6.5">
             <TextInput control={control} name="Driver Name" required={true} />
-            {/* <TextInput control={control} name="Address" required={true} /> */}
-            {/* <TextInput control={control} name="Address Line 2" /> */}
 
             <div className=" flex flex-col gap-6 xl:flex-row">
               <div className="w-full xl:w-1/2">
-                {/* <TextInput control={control} name="City" required={true} /> */}
-                {/* <SelectInput
-                  control={control}
-                  name="State"
-                  options={usStates.map((state) => state.name)}
-                  required={true}
-                /> */}
                 <TextInput
                   control={control}
                   name="Country Code"
@@ -129,8 +97,6 @@ export const DriverForm = () => {
                 />
               </div>
               <div className="w-full xl:w-1/2">
-                {/* <TextInput control={control} name="Zip" required={true} /> */}
-                {/* <TextInput control={control} name="Country" required={true} /> */}
                 <TextInput
                   control={control}
                   name="Phone Number"
@@ -141,7 +107,7 @@ export const DriverForm = () => {
 
             <TextInput control={control} name="Email" required={true} />
             <TextInput control={control} name="License Number" />
-            <TextInput control={control} name="Employer ID" />
+            <TextInput control={control} name="Employer ID" required={true} />
             <TextInput control={control} name="Notes" isTextArea={true} />
             {errors.root && (
               <p className="mb-5 text-danger">{errors.root.message}</p>
