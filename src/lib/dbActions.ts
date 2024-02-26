@@ -134,6 +134,24 @@ export async function addDriver({ driver }: { driver: any }) {
   });
 }
 
+export async function addFactoringCo({ factor }: { factor: any }) {
+  const resp = await prisma.factor.create({
+    data: {
+      name: factor['Factoring Company Name'],
+      address: factor['Address'],
+      addressAddOn: factor['Address Line 2'] || null, // Optional field
+      city: factor['City'],
+      state: factor['State'],
+      postCountry: factor['Country'],
+      postCode: factor['Zip'],
+      telCountry: factor['Country Code'],
+      telephone: factor['Phone Number'],
+      // terms: factor['Payment Terms'], // if we need payment terms
+      // notes: factor['Notes'] || null, // optional field, notes not in db table yet
+    },
+  });
+}
+
 export async function addLoad({ load }: { load: any }) {
   const resp = await prisma.load.create({
     data: {

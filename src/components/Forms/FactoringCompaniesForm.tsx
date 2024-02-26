@@ -7,10 +7,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import TextInput from './UI_Elements/TextInput';
 import SelectInput from './UI_Elements/SelectInput';
 import { usStates } from '@/components/Forms/data/states';
+import { terms } from '@/components/Forms/data/details';
 import { ModalContext } from '@/Context/modalContext';
-
-// needs to go on a page and have modal functionality added
-// also needs db integration
+import { addFactoringCo } from '@/lib/dbActions';
 
 const factoringSchema = yup.object({
   'Factoring Company Name': yup
@@ -34,12 +33,8 @@ const factoringSchema = yup.object({
     .string()
     .matches(/^\d{3}-\d{3}-\d{4}$/, 'Must use valid phone number xxx-xxx-xxxx')
     .required('Contact phone number required'),
-  Email: yup
-    .string()
-    .email('Must use a valid email')
-    .required('Contact email required'),
-  'Payment Terms': yup.string(),
-  Notes: yup.string().max(250, 'Must be under 250 characters'),
+  'Payment Terms': yup.string(), // not in db table- should we add?
+  Notes: yup.string().max(250, 'Must be under 250 characters'), // not in db yet
 });
 
 type FactoringCompany = yup.InferType<typeof factoringSchema>;
@@ -63,7 +58,6 @@ export const FactoringCompanyForm = () => {
       'Contact Name': '',
       'Country Code': 1,
       'Phone Number': '',
-      Email: '',
       'Payment Terms': '',
       Notes: '',
     },
@@ -75,9 +69,9 @@ export const FactoringCompanyForm = () => {
   const onSubmit = async (data: FactoringCompany) => {
     console.log(data);
     try {
-      //   need db integration here
+      await addFactoringCo({ factor: data });
       console.log('Factoring Company added successfully');
-      // toggleOpen(); // for modal
+      toggleOpen(); // for modal
     } catch (error) {
       console.log('Error submitting form:', error);
       setError('root', { message: 'Error Submitting Form - Please try Again' });
@@ -97,7 +91,6 @@ export const FactoringCompanyForm = () => {
         'Contact Name': '',
         'Country Code': 1,
         'Phone Number': '',
-        Email: '',
         'Payment Terms': '',
         Notes: '',
       });
@@ -148,8 +141,11 @@ export const FactoringCompanyForm = () => {
               </div>
             </div>
             <TextInput control={control} name="Contact Name" required={true} />
-            <TextInput control={control} name="Email" required={true} />
-            <TextInput control={control} name="Payment Terms" />
+            <SelectInput
+              control={control}
+              name="Payment Terms"
+              options={terms}
+            />
             <TextInput control={control} name="Notes" isTextArea={true} />
             {errors.root && (
               <p className="mb-5 text-danger">{errors.root.message}</p>
@@ -166,7 +162,7 @@ export const FactoringCompanyForm = () => {
                 type="button"
                 onClick={() => {
                   reset();
-                  //   toggleOpen(); // for modal
+                  toggleOpen(); // for modal
                 }}
                 disabled={isSubmitting}
                 className="rounded bg-red p-3 font-medium text-gray ml-2 hover:bg-opacity-80"
