@@ -246,3 +246,18 @@ enum TrailerStatus {
   NOTAVAILABLE
   INACTIVE
 }
+
+model ThirdPartyBillee {
+  id            String    @id @default(uuid())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  name          String
+  address       String
+  addressAddOn  String?
+  city          String
+  state         String
+  postCountry   String
+  postCode      String
+  telCountry    String    @default("1")
+  telephone     String  
+}
