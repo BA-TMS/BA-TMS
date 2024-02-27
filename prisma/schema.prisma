@@ -212,8 +212,17 @@ model CoverageMatrix {
   id                String    @id @default(uuid())
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
-  carrierId         Int
-  insurerId         Int
+  carrierId         String
+  insurerId         String
   // How many categories of insurance need noting? Is this an enum of a table of categories?
-  coverageCategory  Int
+  coverageCategory  Int       // TODO: this should be an enum (I think)
+}
+
+model Truck {
+  id            String    @id @default(uuid())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  truckNum      String
+  truckType     String    // TODO: This should be an enum
+  iftaLicensed  Boolean   @default(false)
 }
