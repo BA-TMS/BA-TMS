@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useContext } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -10,19 +11,12 @@ import { usStates } from '@/components/Forms/data/states';
 import { ModalContext } from '@/Context/modalContext';
 import { addUser } from '@/lib/dbActions';
 
-const userSchema = yup.object({
-  'User Name': yup.string().required('User Name is required'),
-  email: yup
-    .string()
-    .email('Must be a valid email')
-    .required('Contact email required'),
-  password: yup.string().required('Must include password'),
-  orgId: yup.number().integer().required('Organization is required'),
-  Address: yup.string().required('Address is required'),
-  role: yup.number().integer().required('Must include a role'),
+const otherSchema = yup.object({
+  'Other Name': yup.string().required('Other Name is required'),
+  isOnDispatch: yup.bool(),
 });
 
-type User = yup.InferType<typeof userSchema>;
+type Other = yup.InferType<typeof otherSchema>;
 
 export const OtherNumbersForm = () => {
   const {
@@ -31,23 +25,42 @@ export const OtherNumbersForm = () => {
     reset,
     control,
     formState: { errors, isSubmitting, isSubmitSuccessful },
-  } = useForm<User>({
+  } = useForm<Other>({
     defaultValues: {
-      'User Name': '',
-      email: '',
-      password: '',
-      orgId: 0,
-      Address: '',
-      role: 0,
+      'Other Name': '',
+      isOnDispatch: false,
     },
-    resolver: yupResolver(userSchema),
+    resolver: yupResolver(otherSchema),
   });
+
+  /* CHECKBOX COMPONENT */
+  const [checked, setChecked] = React.useState(false);
+
+  const handleChange = () => {
+    setChecked(!checked);
+  };
+
+  const Checkbox = ({ name, label, value, onChange, required }) => {
+    return (
+      <label>
+        <input
+          name={name}
+          type="checkbox"
+          checked={value}
+          onChange={onChange}
+          required={required}
+        />
+        {label}
+      </label>
+    );
+  };
+  /* END CHECKBOX COMPONENT */
 
   const { toggleOpen } = useContext(ModalContext);
 
-  const onSubmit = async (data: User) => {
+  const onSubmit = async (data: Other) => {
     try {
-      await addUser({ user: data });
+      await addUser({ user: data }); // TODO: Change to addOther
       toggleOpen();
     } catch (error) {
       alert("didn't save");
@@ -58,12 +71,8 @@ export const OtherNumbersForm = () => {
   useEffect(() => {
     if (isSubmitSuccessful) {
       reset({
-        'User Name': '',
-        email: '',
-        password: '',
-        orgId: 0,
-        Address: '',
-        role: 0,
+        'Other Name': '',
+        isOnDispatch: false,
       });
     }
   }, [isSubmitSuccessful, reset]);
@@ -72,16 +81,48 @@ export const OtherNumbersForm = () => {
     <div className="flex flex-col gap-9">
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark w-full max-w-xl mx-auto overflow-y-auto max-h-screen">
         <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-          <h3 className="font-medium text-black dark:text-white">New Number</h3>
+          <h3 className="font-medium text-black dark:text-white">
+            Add Other Number
+          </h3>
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="p-6.5">
-            <TextInput control={control} name="User Name" required={true} />
-            <TextInput control={control} name="email" required={true} />
-            <TextInput control={control} name="password" required={true} />
-            <TextInput control={control} name="orgId" required={true} />
-            <TextInput control={control} name="Address" required={true} />
-            <TextInput control={control} name="role" required={true} />
+            <TextInput control={control} name="Other Name" required={true} />
+
+            {/* DISPATCH BOARD */}
+            <label
+              className="font-medium text-black dark:text-white"
+              style={{ paddingRight: '30px' }}
+            >
+              Dispatch Board
+            </label>
+            <br />
+            <Checkbox
+              name="isOnDispatch"
+              label=" Show this item on Dispatch"
+              value={checked}
+              onChange={handleChange}
+              required={true}
+            />
+            <br />
+            <br />
+            {/* END DISPATCH BOARD */}
+
+            {/* STATUS */}
+            <tr>
+              <td className="font-medium text-black dark:text-white">Status</td>
+              <label style={{ paddingLeft: '30px' }}>
+                <input name="status" id="is_active" type="radio" value="0" />
+                Active
+              </label>
+
+              <label style={{ paddingLeft: '30px' }}>
+                <input name="status" id="is_inactive" type="radio" value="1" />
+                Inactive
+              </label>
+            </tr>
+            {/* END STATUS */}
+            {/*<TextInput control={control} name="isOnDispatch" required={true} />*/}
 
             <div className="flex justify-end">
               <button
