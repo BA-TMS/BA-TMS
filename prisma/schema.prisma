@@ -229,3 +229,20 @@ model Truck {
   truckType         String    // TODO: This should be an enum
   iftaLicensed      Boolean   @default(false)
 }
+
+model Trailer {
+  id                String        @id @default(uuid())
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  licensePlate      String
+  plateExpiry       DateTime
+  inspectionExpiry  DateTime
+  type              String        // 1) Make an enum 2) The names of these often start w/ numbers (b/c they're trailers) so we need to have a naming scheme.
+  status            TrailerStatus @default(ACTIVE)
+}
+
+enum TrailerStatus {
+  ACTIVE
+  NOTAVAILABLE
+  INACTIVE
+}
