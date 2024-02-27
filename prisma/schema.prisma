@@ -218,6 +218,22 @@ model CoverageMatrix {
   coverageCategory  Int       // TODO: this should be an enum (I think)
 }
 
+model Broker {
+  id            String    @id @default(uuid())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  name          String
+  crossing      String
+  address       String
+  addressAddOn  String?
+  city          String
+  state         String
+  postCountry   String
+  postCode      String
+  telCountry    String    @default("1")
+  telephone     String  
+}
+
 model Truck {
   id                String    @id @default(uuid())
   createdAt         DateTime  @default(now())
