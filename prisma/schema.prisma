@@ -35,7 +35,14 @@ model User { // Individual users at an organization
   password      String
   organization  Organization  @relation(fields: [orgId], references: [id])
   orgId         String
-  role          Int
+  role          UserRole      @default(USER)
+}
+
+enum UserRole {
+  USER
+  ADMIN
+  DEVELOPER
+  OWNER
 }
 
 model Load {
