@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import DarkModeToggle from './DarkModeToggle';
 // import DropdownMessage from "./DropdownMessage";
@@ -8,11 +9,31 @@ import DropdownUser from './DropdownUser';
 import Image from 'next/image';
 import { SearchIcon } from '@/assets/SVGs';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import { createClient } from '@/util/supabase/client';
 
-const Header = (props: {
+type HeaderProps = {
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
-}) => {
+};
+
+const Header = (props: HeaderProps) => {
+  console.log('header render');
+  const supabase = createClient();
+
+  const [userSession, setUserSession] = useState<any>(null); // should be a supabase session or is null
+
+  // get the session on component render
+  // what do we add to dependency array to trigger re-render
+  useEffect(() => {
+    supabase.auth.getSession().then((session) => {
+      console.log(session);
+      // do something here with the session
+      if (session.data.session !== null) {
+        setUserSession(session.data.session);
+      } else console.log('No user sesh');
+    });
+  }, []);
+
   return (
     <header className="sticky top-0 z-999 bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none">
       <div className="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">
@@ -84,6 +105,11 @@ const Header = (props: {
               />
             </div>
           </form>
+        </div>
+
+        <div>
+          Welcome,{' '}
+          <strong>{userSession ? userSession.user.email : 'Guest'}</strong>!
         </div>
 
         <div className="flex items-center gap-3 2xsm:gap-7">
