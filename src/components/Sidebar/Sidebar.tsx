@@ -343,6 +343,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                               Other Numbers
                             </Link>
                           </li>
+                          <li>
+                            <Link
+                              href="/third-party"
+                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
+                                pathname === '/third-party' && 'text-white'
+                              } `}
+                            >
+                              Third Parties
+                            </Link>
+                          </li>
                         </ul>
                       </div>
                       {/* <!-- Dropdown Menu End --> */}
