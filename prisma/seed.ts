@@ -21,7 +21,7 @@ async function main() {
 
   for (const currUser of users) {
     currUser.orgId = orgIds[userPos % orgIds.length];
-    const resp = await prisma.user.upset({
+    const resp = await prisma.user.upsert({
       where: { email: currUser.email },
       update: {},
       create: currUser,
@@ -223,7 +223,6 @@ const customers = [
     state: 'MS',
     postCountry: 'USA',
     postCode: '38655',
-    telCountry: 1,
     telephone: '4445556666',
   },
   {
@@ -233,7 +232,6 @@ const customers = [
     state: 'NH',
     postCountry: 'USA',
     postCode: '03060',
-    telCountry: 1,
     telephone: '7778889999',
   },
 ];
@@ -369,25 +367,25 @@ const billees = [
 const loads = [
   {
     ownerId: null,
-    loadNum: 69,
+    loadNum: '69',
     carrierId: null,
     customerId: null,
   },
   {
     ownerId: null,
-    loadNum: 420,
+    loadNum: '420',
     carrierId: null,
     customerId: null,
   },
   {
     ownerId: null,
-    loadNum: 1111,
+    loadNum: '1111',
     carrierId: null,
     customerId: null,
   },
   {
     ownerId: null,
-    loadNum: 2222,
+    loadNum: '2222',
     carrierId: null,
     customerId: null,
   },
@@ -398,14 +396,14 @@ const trucks = [
     truckNum: 'AA000',
     licensePlate: '88BB000',
     plateExpiry: new Date(2027, 9, 4),
-    inspectinoExpiry: new Date(2027, 9, 4),
+    inspectionExpiry: new Date(2027, 9, 4),
     type: 'Big',
   },
   {
     truckNum: 'A1B2C3D4',
     licensePlate: '89RM99',
     plateExpiry: new Date(2027, 9, 4),
-    inspectinoExpiry: new Date(2027, 9, 4),
+    inspectionExpiry: new Date(2027, 9, 4),
     type: 'Also Big',    
   }
 ]
@@ -414,13 +412,13 @@ const trailers = [
   {
     licensePlate: 'EE66RR9900',
     plateExpiry: new Date(2027, 9, 4),
-    inspectionExpirty: new Date(2027, 9, 4),
+    inspectionExpiry: new Date(2027, 9, 4),
     type: 'Container'
   },
   {
     licensePlate: '00MM11WW7896',
     plateExpiry: new Date(2027, 9, 4),
-    inspectionExpirty: new Date(2027, 9, 4),
+    inspectionExpiry: new Date(2027, 9, 4),
     type: 'Flatbed'
   }
 ]
