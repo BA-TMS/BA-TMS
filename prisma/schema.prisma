@@ -79,7 +79,7 @@ model Carrier {
   id            String    @id @default(uuid())
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  name          String    @unique
+  name          String    
   address       String
   addressAddOn  String?   // E.g. suite or floor
   city          String
@@ -88,8 +88,9 @@ model Carrier {
   postCode      String    // Cram all digits together and format based on country
   telCountry    String    @default("1")
   telephone     String    // Cram all digits together and format based on country
-  dotId         String
-  factor        Factor?  @relation(fields: [factorId], references: [id])
+  dotId         String    @unique
+  taxId         String
+  factor        Factor?   @relation(fields: [factorId], references: [id])
   factorId      String?
   loads         Load[]
   drivers       Driver[]
@@ -100,7 +101,7 @@ model Driver {
   id          String    @id @default(uuid())
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  name        String    @unique
+  name        String 
   license     String    @unique
   telCountry  String    @default("1")
   telephone   String
@@ -129,7 +130,7 @@ model Shipper {
   id            String    @id @default(uuid())
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  name          String    @unique
+  name          String
   address       String
   addressAddOn  String?
   city          String
@@ -137,7 +138,7 @@ model Shipper {
   postCountry   String
   postCode      String
   telCountry    String    @default("1")
-  telephone     String
+  telephone     String    @unique
   loads         Load[]
 }
 
@@ -145,7 +146,7 @@ model Consignee {
   id            String    @id @default(uuid())
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  name          String    @unique
+  name          String 
   address       String
   addressAddOn  String?
   city          String
@@ -153,7 +154,7 @@ model Consignee {
   postCountry   String
   postCode      String
   telCountry    String    @default("1")
-  telephone     String
+  telephone     String    @unique
   loads         Load[]
 }
 
@@ -189,7 +190,7 @@ model Factor {
   postCountry   String
   postCode      String
   telCountry    String    @default("1")
-  telephone     String
+  telephone     String    @unique
   carriers      Carrier[]
 }
 
@@ -205,7 +206,7 @@ model Insurer {
   postCountry   String
   postCode      String
   telCountry    String    @default("1")
-  telephone     String
+  telephone     String    @unique
 }
 
 model CoverageMatrix {
@@ -231,7 +232,7 @@ model Broker {
   postCountry   String
   postCode      String
   telCountry    String    @default("1")
-  telephone     String  
+  telephone     String    @unique
 }
 
 model Truck {
@@ -239,10 +240,10 @@ model Truck {
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
   truckNum          String
-  licensePlate      String
+  licensePlate      String    @unique
   plateExpiry       DateTime
   inspectionExpiry  DateTime
-  truckType         String    // TODO: This should be an enum
+  type              String    // TODO: This should be an enum
   iftaLicensed      Boolean   @default(false)
 }
 
@@ -250,7 +251,7 @@ model Trailer {
   id                String        @id @default(uuid())
   createdAt         DateTime      @default(now())
   updatedAt         DateTime      @updatedAt
-  licensePlate      String
+  licensePlate      String        @unique
   plateExpiry       DateTime
   inspectionExpiry  DateTime
   type              String        // 1) Make an enum 2) The names of these often start w/ numbers (b/c they're trailers) so we need to have a naming scheme.
@@ -275,5 +276,5 @@ model ThirdPartyBillee {
   postCountry   String
   postCode      String
   telCountry    String    @default("1")
-  telephone     String  
+  telephone     String    @unique
 }
