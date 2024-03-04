@@ -1,9 +1,6 @@
 import { useEffect } from 'react';
 import useLocalStorage from './useLocalStorage';
 
-// turning root layout into server component will impact this code
-// try updating with lifecycle methods
-
 const useColorMode = () => {
   const userPrefers: boolean = window.matchMedia(
     '(prefers-color-scheme: dark)'

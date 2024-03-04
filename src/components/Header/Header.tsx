@@ -9,7 +9,6 @@ import DropdownUser from './DropdownUser';
 import Image from 'next/image';
 import { SearchIcon } from '@/assets/SVGs';
 import Breadcrumbs from '@/components/Breadcrumbs';
-import { createClient } from '@/util/supabase/client';
 
 type HeaderProps = {
   sidebarOpen: string | boolean | undefined;
@@ -17,22 +16,7 @@ type HeaderProps = {
 };
 
 const Header = (props: HeaderProps) => {
-  console.log('header render');
-  const supabase = createClient();
-
   const [userSession, setUserSession] = useState<any>(null); // should be a supabase session or is null
-
-  // get the session on component render
-  // what do we add to dependency array to trigger re-render
-  useEffect(() => {
-    supabase.auth.getSession().then((session) => {
-      console.log(session);
-      // do something here with the session
-      if (session.data.session !== null) {
-        setUserSession(session.data.session);
-      } else console.log('No user sesh');
-    });
-  }, []);
 
   return (
     <header className="sticky top-0 z-999 bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none">
