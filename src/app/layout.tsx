@@ -1,7 +1,5 @@
 import './globals.css';
 
-// root layout should not be a client component
-
 export default function RootLayout({
   children,
 }: {

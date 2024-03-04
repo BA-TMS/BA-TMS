@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useContext } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -17,6 +17,8 @@ import {
   SettingsIcon,
   UserIcon,
 } from '@/assets/SVGs';
+// context
+import { UserContext } from '@/Context/userContextProvider';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -34,6 +36,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const [sidebarExpanded, setSidebarExpanded] = useState(
     storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true'
   );
+
+  // user session
+  const { userSession } = useContext(UserContext);
 
   // close on click outside
   useEffect(() => {
@@ -70,7 +75,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     }
   }, [sidebarExpanded]);
 
-  return (
+  return userSession ? (
     <aside
       ref={sidebar}
       className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
@@ -171,8 +176,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             <Link
                               href="/dashboard/group2"
                               className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === '/dashboard/group2' &&
-                                'text-white'
+                                pathname === '/dashboard/group2' && 'text-white'
                               } `}
                             >
                               Group 2
@@ -182,8 +186,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             <Link
                               href="/dashboard/group3"
                               className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === '/dashboard/group3' &&
-                                'text-white'
+                                pathname === '/dashboard/group3' && 'text-white'
                               }`}
                             >
                               Group 3
@@ -198,7 +201,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </SidebarLinkGroup>
               {/* <!-- Menu Item Dashboard --> */}
 
-
               {/* <!-- Menu Item Forms --> */}
               <SidebarLinkGroup
                 activeCondition={
@@ -208,7 +210,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 {(handleClick, open) => {
                   return (
                     <React.Fragment>
-
                       {/* <!-- Dropdown Menu Start --> */}
                       <div
                         className={`translate transform overflow-hidden ${
@@ -247,8 +248,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </SidebarLinkGroup>
               {/* <!-- Menu Item Forms --> */}
 
-
-
               {/* <!-- Menu Item Pages --> */}
               <SidebarLinkGroup
                 activeCondition={
@@ -261,8 +260,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       <Link
                         href="#"
                         className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                          (pathname === '/temp' ||
-                            pathname.includes('temp')) &&
+                          (pathname === '/temp' || pathname.includes('temp')) &&
                           'bg-graydark dark:bg-meta-4'
                         }`}
                         onClick={(e) => {
@@ -429,6 +427,22 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           </div>
         </nav>
         {/* <!-- Sidebar Menu --> */}
+      </div>
+    </aside>
+  ) : (
+    <aside
+      ref={sidebar}
+      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
+        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+      }`}
+    >
+      {/* <!-- SIDEBAR HEADER --> */}
+      <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
+        <Link href="/">
+          {/* <Image width={176} height={32} src={"/images/logo/logo.svg"} alt="Logo" /> */}
+          {/* logo placeholder */}
+          <h2 className="text-white">A2ZTMS</h2>
+        </Link>
       </div>
     </aside>
   );
