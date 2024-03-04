@@ -1,15 +1,15 @@
-// Driver Components Test
+// Factoring Company Components Test
 
 'use client';
 
 import { ContextProvider } from '@/Context/modalContext';
-import Driver from '@/components/Table/Driver';
+import FactoringCompany from '@/components/Table/FactoringCompany';
 
 export default function Home() {
   return (
     <>
       <ContextProvider>
-        <Driver />
+        <FactoringCompany />
       </ContextProvider>
     </>
   );

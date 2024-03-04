@@ -171,8 +171,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             <Link
                               href="/dashboard/group2"
                               className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === '/dashboard/group2' &&
-                                'text-white'
+                                pathname === '/dashboard/group2' && 'text-white'
                               } `}
                             >
                               Group 2
@@ -182,8 +181,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             <Link
                               href="/dashboard/group3"
                               className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === '/dashboard/group3' &&
-                                'text-white'
+                                pathname === '/dashboard/group3' && 'text-white'
                               }`}
                             >
                               Group 3
@@ -198,7 +196,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </SidebarLinkGroup>
               {/* <!-- Menu Item Dashboard --> */}
 
-
               {/* <!-- Menu Item Forms --> */}
               <SidebarLinkGroup
                 activeCondition={
@@ -208,7 +205,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 {(handleClick, open) => {
                   return (
                     <React.Fragment>
-
                       {/* <!-- Dropdown Menu Start --> */}
                       <div
                         className={`translate transform overflow-hidden ${
@@ -247,8 +243,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </SidebarLinkGroup>
               {/* <!-- Menu Item Forms --> */}
 
-
-
               {/* <!-- Menu Item Pages --> */}
               <SidebarLinkGroup
                 activeCondition={
@@ -261,8 +255,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       <Link
                         href="#"
                         className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                          (pathname === '/temp' ||
-                            pathname.includes('temp')) &&
+                          (pathname === '/temp' || pathname.includes('temp')) &&
                           'bg-graydark dark:bg-meta-4'
                         }`}
                         onClick={(e) => {
@@ -330,6 +323,36 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                               Consignees
                             </Link>
                           </li>
+                          <li>
+                            <Link
+                              href="/users"
+                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
+                                pathname === '/users' && 'text-white'
+                              } `}
+                            >
+                              Users
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/other-numbers"
+                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
+                                pathname === '/other-numbers' && 'text-white'
+                              } `}
+                            >
+                              Other Numbers
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/third-party"
+                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
+                                pathname === '/third-party' && 'text-white'
+                              } `}
+                            >
+                              Third Parties
+                            </Link>
+                          </li>
                         </ul>
                       </div>
                       {/* <!-- Dropdown Menu End --> */}
@@ -348,6 +371,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             </h3>
 
             <ul className="mt-4 mb-5.5 flex flex-col gap-1.5">
+              <Link
+                href="/preferences"
+                className="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
+              >
+                {SettingsIcon}
+                Preferences
+              </Link>
               <SidebarLinkGroup
                 activeCondition={
                   pathname === '/pages' || pathname.includes('pages')
