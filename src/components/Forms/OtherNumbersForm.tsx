@@ -40,7 +40,7 @@ export const OtherNumbersForm = () => {
     setChecked(!checked);
   };
 
-  const Checkbox = ({ name, label, value, onChange, required }) => {
+  const Checkbox = ({ name, label, value, onChange }) => {
     return (
       <label>
         <input
@@ -48,7 +48,6 @@ export const OtherNumbersForm = () => {
           type="checkbox"
           checked={value}
           onChange={onChange}
-          required={required}
         />
         {label}
       </label>
@@ -102,7 +101,6 @@ export const OtherNumbersForm = () => {
               label=" Show this item on Dispatch"
               value={checked}
               onChange={handleChange}
-              required={true}
             />
             <br />
             <br />
