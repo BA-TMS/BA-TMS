@@ -11,7 +11,16 @@ interface UserProviderProps {
 
 // default values are initial state to provide
 export const UserContext = createContext({
-  userSession: undefined,
+  userSession: {
+    user: {
+      id: null,
+      email: null,
+      // add defaults for other properties if needed
+    },
+    expires_at: null,
+    access_token: null,
+    // Add other session-related properties as needed}
+  },
   updateSession: (arg: any) => {},
 });
 

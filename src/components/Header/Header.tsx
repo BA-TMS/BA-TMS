@@ -9,10 +9,7 @@ import DropdownUser from './DropdownUser';
 import Image from 'next/image';
 import { SearchIcon } from '@/assets/SVGs';
 import Breadcrumbs from '@/components/Breadcrumbs';
-// context
-import { createClient } from '@/util/supabase/client';
 import { UserContext } from '@/Context/userContextProvider';
-import { SupabaseUserSession } from '@/types/supabase';
 
 type HeaderProps = {
   sidebarOpen: string | boolean | undefined;
@@ -20,11 +17,7 @@ type HeaderProps = {
 };
 
 const Header = (props: HeaderProps) => {
-  // const [userSession, setUserSession] = useState<any>(null); // should be a supabase session or is null
-
   const { userSession } = useContext(UserContext);
-
-  const user: SupabaseUserSession | undefined = userSession;
 
   return (
     <header className="sticky top-0 z-999 bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none">
@@ -101,8 +94,7 @@ const Header = (props: HeaderProps) => {
 
         <div>
           Welcome,{' '}
-          {/* need to figure out type error with user, which sometimes exists but not always */}
-          <strong>{user ? user.user.email : 'User'}</strong>!
+          <strong>{userSession ? userSession.user.email : 'User'}</strong>!
         </div>
 
         <div className="flex items-center gap-3 2xsm:gap-7">
