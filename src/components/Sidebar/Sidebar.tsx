@@ -17,8 +17,6 @@ import {
   SettingsIcon,
   UserIcon,
 } from '@/assets/SVGs';
-// context
-import { UserContext } from '@/Context/userContextProvider';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -36,9 +34,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const [sidebarExpanded, setSidebarExpanded] = useState(
     storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true'
   );
-
-  // user session
-  const { userSession } = useContext(UserContext);
 
   // close on click outside
   useEffect(() => {
@@ -75,7 +70,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     }
   }, [sidebarExpanded]);
 
-  return userSession ? (
+  return (
     <aside
       ref={sidebar}
       className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
@@ -328,16 +323,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                               Consignees
                             </Link>
                           </li>
-                          <li>
-                            <Link
-                              href="/signin"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === '/signin' && 'text-white'
-                              } `}
-                            >
-                              Sign In
-                            </Link>
-                          </li>
                         </ul>
                       </div>
                       {/* <!-- Dropdown Menu End --> */}
@@ -427,22 +412,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           </div>
         </nav>
         {/* <!-- Sidebar Menu --> */}
-      </div>
-    </aside>
-  ) : (
-    <aside
-      ref={sidebar}
-      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
-        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      }`}
-    >
-      {/* <!-- SIDEBAR HEADER --> */}
-      <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-        <Link href="/">
-          {/* <Image width={176} height={32} src={"/images/logo/logo.svg"} alt="Logo" /> */}
-          {/* logo placeholder */}
-          <h2 className="text-white">A2ZTMS</h2>
-        </Link>
       </div>
     </aside>
   );

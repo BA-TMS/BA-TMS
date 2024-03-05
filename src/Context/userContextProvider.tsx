@@ -11,9 +11,8 @@ interface UserProviderProps {
 
 // default values are initial state to provide
 export const UserContext = createContext({
-  userSession: null,
+  userSession: undefined,
   updateSession: (arg: any) => {},
-  logout: () => {},
 });
 
 export const UserContextProvider: React.FC<UserProviderProps> = ({
@@ -22,13 +21,13 @@ export const UserContextProvider: React.FC<UserProviderProps> = ({
   // create instance of supabase
   const supabase = createClient();
 
-  const [userSession, setUserSession] = useState<any>(null); // should be a supabase session or is null
+  const [userSession, setUserSession] = useState<any>(undefined); // should be a supabase session
 
   useEffect(() => {
     supabase.auth.getSession().then((session) => {
       console.log(session);
 
-      // do something here with the session
+      // do something here with the session if needed
 
       if (session.data.session !== null) {
         setUserSession(session.data.session);
@@ -36,18 +35,14 @@ export const UserContextProvider: React.FC<UserProviderProps> = ({
     });
   }, []);
 
+  // not sure if this is correct/ relevant
   const updateSession = (newValue: SupabaseUserSession) => {
     console.log(newValue);
     setUserSession({ ...userSession, newValue });
   };
 
-  const logout = async () => {
-    await supabase.auth.signOut();
-    setUserSession(null);
-  };
-
   return (
-    <UserContext.Provider value={{ userSession, updateSession, logout }}>
+    <UserContext.Provider value={{ userSession, updateSession }}>
       {children}
     </UserContext.Provider>
   );

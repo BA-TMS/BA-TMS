@@ -1,13 +1,10 @@
 'use client';
 
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import Loader from '@/components/common/Loader';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import Header from '@/components/Header/Header';
 import { UserContextProvider } from '@/Context/userContextProvider';
-
-// templates create a new instance for each of their children on navigation, and re-render, do not persist state (unlike layout)
-// wrapped usercontext provider here instead of layout so it will change on re-render (which happens when user logs in/ out)
 
 export default function Template({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
