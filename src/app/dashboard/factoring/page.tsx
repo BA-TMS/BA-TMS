@@ -1,15 +1,15 @@
-// For example purposes only to quickly test the componets
+// Factoring Company Components Test
 
 'use client';
 
 import { ContextProvider } from '@/Context/modalContext';
-import Carriers from '@/components/Table/Carriers';
+import FactoringCompany from '@/components/Table/FactoringCompany';
 
 export default function Home() {
   return (
     <>
       <ContextProvider>
-        <Carriers />
+        <FactoringCompany />
       </ContextProvider>
     </>
   );

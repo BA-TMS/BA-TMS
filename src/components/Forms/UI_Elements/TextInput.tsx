@@ -1,20 +1,22 @@
 'use client';
 
-import {
-  UseControllerProps,
-  useController,
-  Control,
-  FieldValues,
-} from 'react-hook-form';
+import { UseControllerProps, useController } from 'react-hook-form';
 
-// optional props if we want a textarea instead of input
+// optional props
 interface TextInputProps extends UseControllerProps {
   isTextArea?: boolean;
   rows?: number;
-  control?: any; // this "works"
+  control?: any;
+  required?: boolean;
 }
 
-const TextInput = ({ control, name, isTextArea, rows }: TextInputProps) => {
+const TextInput = ({
+  control,
+  name,
+  isTextArea,
+  rows,
+  required,
+}: TextInputProps) => {
   const {
     field,
     fieldState: { error },
@@ -22,23 +24,25 @@ const TextInput = ({ control, name, isTextArea, rows }: TextInputProps) => {
 
   return (
     <div className="mb-4.5">
-      <label className="mb-2.5 block text-black dark:text-white">{name}</label>
-      {isTextArea ? (
-        <textarea
-          {...field}
-          rows={rows || 3}
-          placeholder={field.name}
-          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-        />
-      ) : (
-        <input
-          {...field}
-          type="text"
-          placeholder={field.name}
-          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-        />
-      )}
-      {error && <p className="mt-1 text-danger">{error.message}</p>}
+      <label className="mb-2.5 block text-black dark:text-white">
+        {name}
+        {required && <span className="text-danger"> *</span>}
+        {isTextArea ? (
+          <textarea
+            {...field}
+            rows={rows || 3}
+            placeholder={field.name}
+            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+          />
+        ) : (
+          <input
+            {...field}
+            placeholder={field.name}
+            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+          />
+        )}
+        {error && <p className="mt-1 text-danger">{error.message}</p>}
+      </label>
     </div>
   );
 };

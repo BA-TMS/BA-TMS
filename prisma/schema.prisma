@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Organization { // This is a collection of TMS users
-  id            Int       @id @default(autoincrement())
+  id            String    @id @default(uuid())
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   name          String    @unique
@@ -21,41 +21,48 @@ model Organization { // This is a collection of TMS users
   state         String
   postCountry   String
   postCode      String
-  telCountry    Int
+  telCountry    String    @default("1") // By default, use US code
   telephone     String
   loads         Load[]
   users         User[]
 }
 
 model User { // Individual users at an organization
-  id            Int           @id @default(autoincrement())
+  id            String        @id @default(uuid())
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
   email         String        @unique
   password      String
   organization  Organization  @relation(fields: [orgId], references: [id])
-  orgId         Int
-  role          Int
+  orgId         String
+  role          UserRole      @default(USER)
+}
+
+enum UserRole {
+  USER
+  ADMIN
+  DEVELOPER
+  OWNER
 }
 
 model Load {
-  id          Int           @id @default(autoincrement())
+  id          String        @id @default(uuid())
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   owner       Organization  @relation(fields: [ownerId], references: [id])
-  ownerId     Int           
-  loadNum     Int
+  ownerId     String     
+  loadNum     String
   carrier     Carrier       @relation(fields: [carrierId], references: [id])
-  carrierId   Int
+  carrierId   String
   driver      Driver?       @relation(fields: [driverId], references: [id])
-  driverId    Int?          // If blank, display only carrier info
+  driverId    String?          // If blank, display only carrier info
   customer    Customer      @relation(fields: [customerId], references: [id])
-  customerId  Int
+  customerId  String
   // Can shippers and consigness be in a single table with fields indicating if they fill each role?
   shipper     Shipper?      @relation(fields: [originId], references: [id])
-  originId    Int?
+  originId    String?
   consignee   Consignee?    @relation(fields: [destId], references: [id])
-  destId      Int?
+  destId      String?
   status      LoadStatus    @default(OPENED)
   @@unique([ownerId, loadNum])  // Loads can be numbered by user, but a user can't have two loads with the same number
 }
@@ -69,41 +76,42 @@ enum LoadStatus {
 }
 
 model Carrier {
-  id            Int       @id @default(autoincrement())
+  id            String    @id @default(uuid())
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  name          String    @unique
+  name          String    
   address       String
   addressAddOn  String?   // E.g. suite or floor
   city          String
   state         String
   postCountry   String
   postCode      String    // Cram all digits together and format based on country
-  telCountry    Int
+  telCountry    String    @default("1")
   telephone     String    // Cram all digits together and format based on country
-  dotId         Int
-  factor        Factor?  @relation(fields: [factorId], references: [id])
-  factorId      Int?
+  dotId         String    @unique
+  taxId         String
+  factor        Factor?   @relation(fields: [factorId], references: [id])
+  factorId      String?
   loads         Load[]
   drivers       Driver[]
 }
 
 model Driver {
   // Do drivers need their own insurance info, or is that attached to carriers?
-  id          Int       @id @default(autoincrement())
+  id          String    @id @default(uuid())
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  name        String    @unique
-  license     Int       @unique
-  telCountry  Int
+  name        String 
+  license     String    @unique
+  telCountry  String    @default("1")
   telephone   String
   employer    Carrier   @relation(fields: [employerId], references: [id])
-  employerId  Int       // Are drivers always associated with a carrier?
+  employerId  String    // Are drivers always associated with a carrier?
   loads       Load[]
 }
 
 model Customer {
-  id            Int       @id @default(autoincrement())
+  id            String    @id @default(uuid())
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   name          String    @unique
@@ -113,47 +121,13 @@ model Customer {
   state         String
   postCountry   String
   postCode      String
-  telCountry    Int
+  telCountry    String    @default("1")
   telephone     String
   loads         Load[]
 }
 
 model Shipper {
-  id            Int       @id @default(autoincrement())
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  name          String    @unique
-  address       String
-  addressAddOn  String?
-  city          String
-  state         String
-  postCountry   String
-  postCode      String
-  telCountry    Int
-  telephone     String
-  loads         Load[]
-}
-
-model Consignee {
-  id            Int       @id @default(autoincrement())
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  name          String    @unique
-  address       String
-  addressAddOn  String?
-  city          String
-  state         String
-  postCountry   String
-  postCode      String
-  telCountry    Int
-  telephone     String
-  loads         Load[]
-}
-
-// If, as noted in Load table, shippers and consigness can be combined, it
-// might look like this.
-model Location {
-  id            Int       @id @default(autoincrement())
+  id            String    @id @default(uuid())
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   name          String
@@ -163,7 +137,41 @@ model Location {
   state         String
   postCountry   String
   postCode      String
-  telCountry    Int
+  telCountry    String    @default("1")
+  telephone     String    @unique
+  loads         Load[]
+}
+
+model Consignee {
+  id            String    @id @default(uuid())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  name          String 
+  address       String
+  addressAddOn  String?
+  city          String
+  state         String
+  postCountry   String
+  postCode      String
+  telCountry    String    @default("1")
+  telephone     String    @unique
+  loads         Load[]
+}
+
+// If, as noted in Load table, shippers and consigness can be combined, it
+// might look like this.
+model Location {
+  id            String    @id @default(uuid())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  name          String
+  address       String
+  addressAddOn  String?
+  city          String
+  state         String
+  postCountry   String
+  postCode      String
+  telCountry    String    @default("1")
   telephone     String
   isShipper     Boolean
   isConsignee   Boolean
@@ -171,7 +179,7 @@ model Location {
 }
 
 model Factor {
-  id            Int       @id @default(autoincrement())
+  id            String    @id @default(uuid())
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   name          String
@@ -181,13 +189,13 @@ model Factor {
   state         String
   postCountry   String
   postCode      String
-  telCountry    Int
-  telephone     String
+  telCountry    String    @default("1")
+  telephone     String    @unique
   carriers      Carrier[]
 }
 
 model Insurer {
-  id            Int       @id @default(autoincrement())
+  id            String    @id @default(uuid())
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   name          String
@@ -197,16 +205,76 @@ model Insurer {
   state         String
   postCountry   String
   postCode      String
-  telCountry    Int
-  telephone     String
+  telCountry    String    @default("1")
+  telephone     String    @unique
 }
 
 model CoverageMatrix {
-  id                Int       @id @default(autoincrement())
+  id                String    @id @default(uuid())
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
-  carrierId         Int
-  insurerId         Int
+  carrierId         String
+  insurerId         String
   // How many categories of insurance need noting? Is this an enum of a table of categories?
-  coverageCategory  Int
+  coverageCategory  Int       // TODO: this should be an enum (I think)
+}
+
+model Broker {
+  id            String    @id @default(uuid())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  name          String
+  crossing      String
+  address       String
+  addressAddOn  String?
+  city          String
+  state         String
+  postCountry   String
+  postCode      String
+  telCountry    String    @default("1")
+  telephone     String    @unique
+}
+
+model Truck {
+  id                String    @id @default(uuid())
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  truckNum          String
+  licensePlate      String    @unique
+  plateExpiry       DateTime
+  inspectionExpiry  DateTime
+  type              String    // TODO: This should be an enum
+  iftaLicensed      Boolean   @default(false)
+}
+
+model Trailer {
+  id                String        @id @default(uuid())
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  licensePlate      String        @unique
+  plateExpiry       DateTime
+  inspectionExpiry  DateTime
+  type              String        // 1) Make an enum 2) The names of these often start w/ numbers (b/c they're trailers) so we need to have a naming scheme.
+  status            TrailerStatus @default(ACTIVE)
+}
+
+enum TrailerStatus {
+  ACTIVE
+  NOTAVAILABLE
+  INACTIVE
+}
+
+model Billee {
+  id            String    @id @default(uuid())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  name          String
+  address       String
+  addressAddOn  String?
+  city          String
+  state         String
+  postCountry   String
+  postCode      String
+  telCountry    String    @default("1")
+  telephone     String    @unique
 }

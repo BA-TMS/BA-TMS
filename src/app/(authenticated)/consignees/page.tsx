@@ -1,15 +1,15 @@
+// test page for consignee
+
+'use client';
+
+import { ContextProvider } from '@/Context/modalContext';
 import ConsigneeForm from '@/components/Forms/ConsigneeForm';
-import ConsigneeTable from '@/components/Tables/ConsigneeTable';
-import { getConsignees } from '@/lib/dbActions';
 
-const ConsigneePage = async () => {
-  const data = await getConsignees();
-
+const ConsigneePage = () => {
   return (
-    <div>
+    <ContextProvider>
       <ConsigneeForm></ConsigneeForm>
-      <ConsigneeTable data={data} />
-    </div>
+    </ContextProvider>
   );
 };
 
