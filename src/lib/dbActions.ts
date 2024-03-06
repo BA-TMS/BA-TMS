@@ -78,6 +78,8 @@ export async function addCarrier({ carrier }: { carrier: any }) {
       telCountry: carrier['Country Code'],
       telephone: carrier['Phone Number'],
       dotId: carrier['DOT ID'],
+      factorId: carrier['Factor ID'],
+      taxId: carrier['Tax ID'],
       // notes: carrier['Notes'] || null, // optional field, notes not in table yet
     },
   });

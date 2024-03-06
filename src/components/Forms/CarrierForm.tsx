@@ -10,6 +10,8 @@ import { usStates } from '@/components/Forms/data/states';
 import { addCarrier } from '@/lib/dbActions';
 import { ModalContext } from '@/Context/modalContext';
 
+// contact name and email are commented out in case we need to go back and add them in
+
 const carrierSchema = yup.object({
   'Carrier Name': yup.string().required('Carrier Name is required'),
   Address: yup.string().required('Address is required'),
@@ -20,25 +22,28 @@ const carrierSchema = yup.object({
     .string()
     .matches(/^\d{5}$/, 'Zip must be 5 digits')
     .required('Zip Code is required '),
-  Country: yup.string().required('Country is required'), // is this necessary or are we US based?
-  'Contact Name': yup.string().required('Contact Name is required'),
+  Country: yup.string().required('Country is required'),
+  // 'Contact Name': yup.string().required('Contact Name is required'), // in case we end up needing this
   'Country Code': yup
-    .number()
-    .integer('Must be an integer')
+    .string()
+    .matches(/^\d+$/, 'Must be a valid Country Code')
     .required('Country Code is required'),
   'Phone Number': yup
     .string()
-    .matches(/^\d{3}-\d{3}-\d{4}$/, 'Must use valid phone number xxx-xxx-xxxx')
+    .matches(/^\d{10}$/, 'Must use valid phone number')
     .required('Contact phone number required'),
-  Email: yup
-    .string()
-    .email('Must use a valid email')
-    .required('Contact email required'),
+  // Email: yup
+  //   .string()
+  //   .email('Must use a valid email')
+  //   .required('Contact email required'),
   'DOT ID': yup
-    .number()
-    .integer('Must be an integer')
+    .string()
+    .matches(/^\d+$/, 'Must be a valid DOT ID')
     .required('Must enter DOT ID')
-    .test('not-null', 'Must enter DOT ID', (value) => value !== 0),
+    .min(6, 'Must be valid DOT ID')
+    .max(8, 'Must be valid DOT ID'),
+  'Factor ID': yup.string().required('Must include Factor ID'),
+  'Tax ID': yup.string(),
   Notes: yup.string().max(250, 'Must be under 250 characters'),
 });
 
@@ -47,10 +52,10 @@ type Carrier = yup.InferType<typeof carrierSchema>;
 export const CarrierForm = () => {
   const {
     handleSubmit,
-    setError, // async error handling
-    reset, // for resetting form
-    control, // based on schema
-    formState: { errors, isSubmitting, isSubmitSuccessful }, // boolean values representing form state
+    setError,
+    reset,
+    control,
+    formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<Carrier>({
     defaultValues: {
       'Carrier Name': '',
@@ -60,11 +65,13 @@ export const CarrierForm = () => {
       State: '',
       Zip: '',
       Country: '',
-      'Contact Name': '',
-      'Country Code': 1,
+      // 'Contact Name': '',
+      'Country Code': '',
       'Phone Number': '',
-      Email: '',
-      'DOT ID': 0,
+      // Email: '',
+      'DOT ID': '',
+      'Factor ID': '',
+      'Tax ID': '',
       Notes: '',
     },
     resolver: yupResolver(carrierSchema),
@@ -94,11 +101,13 @@ export const CarrierForm = () => {
         State: '',
         Zip: '',
         Country: '',
-        'Contact Name': '',
-        'Country Code': 1,
+        // 'Contact Name': '',
+        'Country Code': '',
         'Phone Number': '',
-        Email: '',
-        'DOT ID': 0,
+        // Email: '',
+        'DOT ID': '',
+        'Factor ID': '',
+        'Tax ID': '',
         Notes: '',
       });
     }
@@ -132,6 +141,7 @@ export const CarrierForm = () => {
                   name="Country Code"
                   required={true}
                 />
+                <TextInput control={control} name="DOT ID" required={true} />
               </div>
               <div className="w-full xl:w-1/2">
                 <TextInput control={control} name="Zip" required={true} />
@@ -141,11 +151,12 @@ export const CarrierForm = () => {
                   name="Phone Number"
                   required={true}
                 />
+                <TextInput control={control} name="Factor ID" required={true} />
               </div>
             </div>
-            <TextInput control={control} name="Contact Name" required={true} />
-            <TextInput control={control} name="Email" required={true} />
-            <TextInput control={control} name="DOT ID" required={true} />
+            {/* <TextInput control={control} name="Contact Name" required={true} /> */}
+            {/* <TextInput control={control} name="Email" required={true} /> */}
+            <TextInput control={control} name="Tax ID" />
             <TextInput control={control} name="Notes" isTextArea={true} />
             {errors.root && (
               <p className="mb-5 text-danger">{errors.root.message}</p>
