@@ -10,12 +10,23 @@ import {
   SettingsIcon,
   UserIcon,
 } from '@/assets/SVGs';
+import { createClient } from '@/util/supabase/client';
+import { useRouter } from 'next/navigation';
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
+
+  // supabase logs out user and redirects to sign-in
+  const router = useRouter();
+
+  const signOut = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push('/login');
+  };
 
   // close on click outside
   useEffect(() => {
@@ -109,7 +120,10 @@ const DropdownUser = () => {
             </Link>
           </li>
         </ul>
-        <button className="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+        <button
+          onClick={signOut}
+          className="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+        >
           {LogoutIcon}
           Log Out
         </button>
