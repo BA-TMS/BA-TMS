@@ -24,10 +24,7 @@ const consigneeSchema = yup.object({
     .required('Zip Code is required '),
   Country: yup.string().required('Country is required'),
   'Contact Name': yup.string().required('Contact Name is required'),
-  'Country Code': yup
-    .number()
-    .integer('Must be an integer')
-    .required('Country Code is required'),
+  'Country Code': yup.string().nullable().required('Country Code is required'),
   'Phone Number': yup
     .string()
     .matches(/^\d{3}-\d{3}-\d{4}$/, 'Must use valid phone number xxx-xxx-xxxx')
@@ -58,7 +55,7 @@ export const ConsigneeForm = () => {
       Zip: '',
       Country: '',
       'Contact Name': '',
-      'Country Code': 1,
+      'Country Code': '',
       'Phone Number': '',
       Email: '',
       Notes: '',
@@ -91,7 +88,7 @@ export const ConsigneeForm = () => {
         Zip: '',
         Country: '',
         'Contact Name': '',
-        'Country Code': 1,
+        'Country Code': '',
         'Phone Number': '',
         Email: '',
         Notes: '',
