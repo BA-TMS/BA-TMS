@@ -135,7 +135,7 @@ export async function addDriver({ driver }: { driver: any }) {
       telCountry: driver['Country Code'],
       telephone: driver['Phone Number'],
       license: driver['License Number'] || null, // optional
-      employerId: driver['Employer ID'],
+      employerId: driver['Employer'],
       // notes: carrier['Notes'] || null, // optional field, notes not in table yet
     },
   });
