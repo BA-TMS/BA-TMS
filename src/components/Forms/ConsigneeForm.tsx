@@ -10,6 +10,11 @@ import { usStates } from '@/components/Forms/data/states';
 import { ModalContext } from '@/Context/modalContext';
 import { addConsignee } from '@/lib/dbActions';
 
+interface ConsigneeFormProps {
+  modalOpen: boolean;
+  setModalOpen: (open: boolean) => void;
+}
+
 // consignee form needs worked into the modal popup
 
 const consigneeSchema = yup.object({
@@ -38,7 +43,10 @@ const consigneeSchema = yup.object({
 
 type Consignee = yup.InferType<typeof consigneeSchema>;
 
-export const ConsigneeForm = () => {
+export const ConsigneeForm: React.FC<ConsigneeFormProps> = ({
+  modalOpen,
+  setModalOpen,
+}) => {
   const {
     handleSubmit,
     setError, // async error handling
@@ -97,74 +105,101 @@ export const ConsigneeForm = () => {
   }, [isSubmitSuccessful, reset]);
 
   return (
-    <div className="flex flex-col gap-9">
-      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark w-full max-w-xl mx-auto overflow-y-auto max-h-screen">
-        <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-          <h3 className="font-medium text-black dark:text-white">
-            New Consignee
-          </h3>
-        </div>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="p-6.5">
-            <TextInput
-              control={control}
-              name="Consignee Name" // name always needs to match schema
-              required={true}
-            />
-            <TextInput control={control} name="Address" required={true} />
-            <TextInput control={control} name="Address Line 2" />
+    <div>
+      <button
+        onClick={() => setModalOpen(!modalOpen)}
+        className="rounded-md bg-primary py-3 px-9 font-medium text-white"
+      >
+        Add
+      </button>
+      {modalOpen && (
+        <div className="fixed top-0 left-0 z-999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5">
+          <div className="flex flex-col gap-9">
+            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark w-full max-w-xl mx-auto overflow-y-auto max-h-screen">
+              <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
+                <h3 className="font-medium text-black dark:text-white">
+                  New Consignee
+                </h3>
+              </div>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="p-6.5">
+                  <TextInput
+                    control={control}
+                    name="Consignee Name" // name always needs to match schema
+                    required={true}
+                  />
+                  <TextInput control={control} name="Address" required={true} />
+                  <TextInput control={control} name="Address Line 2" />
 
-            <div className=" flex flex-col gap-6 xl:flex-row">
-              <div className="w-full xl:w-1/2">
-                <TextInput control={control} name="City" required={true} />
-                <SelectInput
-                  control={control}
-                  name="State"
-                  options={usStates.map((state) => state.name)}
-                  required={true}
-                />
-                <TextInput
-                  control={control}
-                  name="Country Code"
-                  required={true}
-                />
-              </div>
-              <div className="w-full xl:w-1/2">
-                <TextInput control={control} name="Zip" required={true} />
-                <TextInput control={control} name="Country" required={true} />
-                <TextInput
-                  control={control}
-                  name="Phone Number"
-                  required={true}
-                />
-              </div>
-            </div>
-            <TextInput control={control} name="Contact Name" required={true} />
-            <TextInput control={control} name="Email" required={true} />
-            <TextInput control={control} name="Notes" isTextArea={true} />
-            {errors.root && (
-              <p className="mb-5 text-danger">{errors.root.message}</p>
-            )}
-            <div className="flex justify-end">
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-1/4 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-80"
-              >
-                {isSubmitting ? 'Submitting' : 'Add'}
-              </button>
-              <button
-                type="button"
-                onClick={() => reset()}
-                disabled={isSubmitting}
-                className="rounded bg-red p-3 font-medium text-gray ml-2 hover:bg-opacity-80"
-              >
-                Cancel
-              </button>
+                  <div className=" flex flex-col gap-6 xl:flex-row">
+                    <div className="w-full xl:w-1/2">
+                      <TextInput
+                        control={control}
+                        name="City"
+                        required={true}
+                      />
+                      <SelectInput
+                        control={control}
+                        name="State"
+                        options={usStates.map((state) => state.name)}
+                        required={true}
+                      />
+                      <TextInput
+                        control={control}
+                        name="Country Code"
+                        required={true}
+                      />
+                    </div>
+                    <div className="w-full xl:w-1/2">
+                      <TextInput control={control} name="Zip" required={true} />
+                      <TextInput
+                        control={control}
+                        name="Country"
+                        required={true}
+                      />
+                      <TextInput
+                        control={control}
+                        name="Phone Number"
+                        required={true}
+                      />
+                    </div>
+                  </div>
+                  <TextInput
+                    control={control}
+                    name="Contact Name"
+                    required={true}
+                  />
+                  <TextInput control={control} name="Email" required={true} />
+                  <TextInput control={control} name="Notes" isTextArea={true} />
+                  {errors.root && (
+                    <p className="mb-5 text-danger">{errors.root.message}</p>
+                  )}
+                  <div className="flex justify-end">
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-1/4 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-80"
+                    >
+                      {isSubmitting ? 'Submitting' : 'Add'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        reset();
+                        setModalOpen(false);
+                      }}
+                      disabled={isSubmitting}
+                      className="rounded bg-red p-3 font-medium text-gray ml-2 hover:bg-opacity-80"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
-        </form>
-      </div>
+        </div>
+      )}
     </div>
   );
 };
