@@ -33,6 +33,11 @@ export async function getDrivers() {
   return drivers;
 }
 
+export async function getFactor() {
+  const factor = await prisma.factor.findMany();
+  return factor;
+}
+
 export async function getLoads() {
   const relations = {
     carrier: { select: { name: true } },
@@ -78,6 +83,8 @@ export async function addCarrier({ carrier }: { carrier: any }) {
       telCountry: carrier['Country Code'],
       telephone: carrier['Phone Number'],
       dotId: carrier['DOT ID'],
+      factorId: carrier['Factor ID'],
+      taxId: carrier['Tax ID'],
       // notes: carrier['Notes'] || null, // optional field, notes not in table yet
     },
   });
