@@ -6,8 +6,9 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import TextInput from './UI_Elements/TextInput';
 import SelectInput from './UI_Elements/SelectInput';
+import DynamicSelect from './UI_Elements/DynamicSelect';
 import { usStates } from '@/components/Forms/data/states';
-import { addCarrier } from '@/lib/dbActions';
+import { addCarrier, getFactor } from '@/lib/dbActions';
 import { ModalContext } from '@/Context/modalContext';
 
 // contact name and email are commented out in case we need to go back and add them in
@@ -151,7 +152,12 @@ export const CarrierForm = () => {
                   name="Phone Number"
                   required={true}
                 />
-                <TextInput control={control} name="Factor ID" required={true} />
+                <DynamicSelect
+                  control={control}
+                  name="Factor ID"
+                  dbaction={getFactor}
+                  required={true}
+                ></DynamicSelect>
               </div>
             </div>
             {/* <TextInput control={control} name="Contact Name" required={true} /> */}
