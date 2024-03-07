@@ -33,6 +33,11 @@ export async function getDrivers() {
   return drivers;
 }
 
+export async function getFactor() {
+  const factor = await prisma.factor.findMany();
+  return factor;
+}
+
 export async function getLoads() {
   const relations = {
     carrier: { select: { name: true } },
