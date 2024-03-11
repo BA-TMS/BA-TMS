@@ -37,7 +37,7 @@ const TableActionsPopover: React.FC = () => {
     return () => document.removeEventListener('keydown', keyHandler);
   });
   return (
-    <div className="w-full px-2 sm:w-1/2 xl:w-1/4">
+    <div className="w-full pl-5 sm:w-1/2 xl:w-1/4">
       <div className="mt-1 text-center">
         <div className="relative inline-block">
           <button

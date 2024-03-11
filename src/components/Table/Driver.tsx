@@ -15,6 +15,7 @@ type Driver = {
   employerId: string;
 };
 
+// this is passed to Table
 const columns = [
   { field: 'name', headerName: 'Name' },
   { field: 'telCountry', headerName: 'Country Code' },
@@ -31,6 +32,7 @@ export default function Driver() {
     toggleOpen();
   };
 
+  // data fetched and passed to Table
   useEffect(() => {
     const fetchDrivers = async () => {
       const data = await getDrivers();
