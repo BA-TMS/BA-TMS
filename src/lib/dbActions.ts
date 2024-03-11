@@ -8,7 +8,7 @@ const prisma = new PrismaClient(); // TODO: Is this better off as a const?
 /** Get existing table data */
 async function getter(table: any, relations: any) {
   const resp = await table.findMany({
-    include: relations
+    include: relations,
   });
   return resp;
 }
@@ -35,11 +35,11 @@ export async function getDrivers() {
 
 export async function getLoads() {
   const relations = {
-    carrier: {select: {name: true}},
-    driver: {select: {name: true}},
-    customer: {select: {name: true}},
-    shipper: {select: {name: true}},
-    consignee: {select: {name: true}}
+    carrier: { select: { name: true } },
+    driver: { select: { name: true } },
+    customer: { select: { name: true } },
+    shipper: { select: { name: true } },
+    consignee: { select: { name: true } },
   };
   const loads = await getter(prisma.load, relations);
   return loads;
@@ -65,80 +65,94 @@ async function creater(table: any, insertData: any) {
   return resp;
 }
 
-export async function addCarrier({carrier}: {carrier:any}) {
+export async function addCarrier({ carrier }: { carrier: any }) {
   const resp = await prisma.carrier.create({
     data: {
-      name: carrier.name,
-      address: carrier.address,
-      addressAddOn: carrier.addressAddOn,
-      city: carrier.city,
-      state: carrier.state,
-      postCountry: carrier.postCountry,
-      postCode: carrier.zip,
-      telCountry: carrier.telCountry,
-      telephone: carrier.telephone,
-      dotId: carrier.dotId, // Ensuring dotId is correctly referenced
+      name: carrier['Carrier Name'],
+      address: carrier['Address'],
+      addressAddOn: carrier['Address Line 2'] || null, // Optional field
+      city: carrier['City'],
+      state: carrier['State'],
+      postCountry: carrier['Country'],
+      postCode: carrier['Zip'],
+      telCountry: carrier['Country Code'],
+      telephone: carrier['Phone Number'],
+      dotId: carrier['DOT ID'],
+      // notes: carrier['Notes'] || null, // optional field, notes not in table yet
     },
   });
 }
 
-export async function addConsignee({consignee}: {consignee: ConsigneeFormDataState}) {
-  // const resp = await prisma.consignee.create({
-  //   data: {
-  //     name: consignee.consigneeName,
-  //     address: consignee.address,
-  //     city: consignee.city,
-  //     state: consignee.state,
-  //     postCountry: consignee.country,
-  //     postCode: consignee.zip,
-  //     telCountry: 1,
-  //     telephone: consignee.phone,
-  //   },
-  // });
-
-  const insertData = {
-    name: consignee.consigneeName,
-    address: consignee.address,
-    city: consignee.city,
-    state: consignee.state,
-    postCountry: consignee.country,
-    postCode: consignee.zip,
-    telCountry: 1,
-    telephone: consignee.phone,
-  }
-  const resp = creater(prisma.consignee, insertData);
+export async function addConsignee({ consignee }: { consignee: any }) {
+  const resp = await prisma.consignee.create({
+    data: {
+      name: consignee['Consignee Name'],
+      address: consignee['Address'],
+      addressAddOn: consignee['Address Line 2'] || null, // Optional field
+      city: consignee['City'],
+      state: consignee['State'],
+      postCountry: consignee['Country'],
+      postCode: consignee['Zip'],
+      telCountry: consignee['Country Code'],
+      telephone: consignee['Phone Number'],
+      // contact: consignee['Contact Name'], //n not in db table yet
+      // notes: consignee['Notes'] || null, // optional field, notes not in db table yet
+    },
+  });
 
   console.log(resp);
 }
 
-export async function addCustomer({customer}: {customer: any}) {
+export async function addCustomer({ customer }: { customer: any }) {
   const resp = await prisma.customer.create({
     data: {
-      name: customer.name,
-      address: customer.address,
-      city: customer.city,
-      state: customer.state,
-      postCountry: customer.country,
-      postCode: customer.zip,
-      telCountry: 1,
-      telephone: customer.phone,
+      name: customer['Customer Name'],
+      address: customer['Address'],
+      addressAddOn: customer['Address Line 2'] || null, // Optional field
+      city: customer['City'],
+      state: customer['State'],
+      postCountry: customer['Country'],
+      postCode: customer['Zip'],
+      telCountry: customer['Country Code'],
+      telephone: customer['Phone Number'],
+      // email: customer['Email'] // do we need email for customer?
+      // notes: customer['Notes'] || null, // optional field, notes not in db table yet
     },
   });
 }
 
-export async function addDriver({driver}: {driver: any}) {
+export async function addDriver({ driver }: { driver: any }) {
   const resp = await prisma.driver.create({
     data: {
-      name: driver.name,
-      license: driver.license,
-      telCountry: 1,
-      telephone: driver.telephone,
-      employerId: driver.employerId,
+      name: driver['Driver Name'],
+      telCountry: driver['Country Code'],
+      telephone: driver['Phone Number'],
+      license: driver['License Number'] || null, // optional
+      employerId: driver['Employer ID'],
+      // notes: carrier['Notes'] || null, // optional field, notes not in table yet
     },
   });
 }
 
-export async function addLoad({load}: {load: any}) {
+export async function addFactoringCo({ factor }: { factor: any }) {
+  const resp = await prisma.factor.create({
+    data: {
+      name: factor['Factoring Company Name'],
+      address: factor['Address'],
+      addressAddOn: factor['Address Line 2'] || null, // Optional field
+      city: factor['City'],
+      state: factor['State'],
+      postCountry: factor['Country'],
+      postCode: factor['Zip'],
+      telCountry: factor['Country Code'],
+      telephone: factor['Phone Number'],
+      // terms: factor['Payment Terms'], // if we need payment terms
+      // notes: factor['Notes'] || null, // optional field, notes not in db table yet
+    },
+  });
+}
+
+export async function addLoad({ load }: { load: any }) {
   const resp = await prisma.load.create({
     data: {
       ownerId: load.ownerId,
@@ -153,23 +167,23 @@ export async function addLoad({load}: {load: any}) {
   });
 }
 
-export async function addShipper({shipper}: {shipper: any}) {
+export async function addShipper({ shipper }: { shipper: any }) {
   const resp = await prisma.shipper.create({
     data: {
-      name: shipper.name,
-      address: shipper.address,
-      addressAddOn: shipper.addressAddOn,
-      city: shipper.city,
-      state: shipper.state,
-      postCountry: shipper.postCountry,
-      postCode: shipper.postCode,
-      telCountry: shipper.telCountry,
-      telephone: shipper.telephone,
+      name: shipper['Shipper Name'],
+      address: shipper['Address'],
+      addressAddOn: shipper['Address Line 2'],
+      city: shipper['City'],
+      state: shipper['State'],
+      postCountry: shipper['Country'],
+      postCode: shipper['Zip'],
+      telCountry: shipper['Country Code'],
+      telephone: shipper['Phone Number'],
     },
   });
 }
 
-export async function addUser({user}: {user: any}) {
+export async function addUser({ user }: { user: any }) {
   const resp = await prisma.user.create({
     data: {
       email: user.email,
@@ -191,31 +205,46 @@ async function updater(table: any, targetId: number, upateData: any) {
   return resp;
 }
 
-export async function updateCarrier(id: number, {formData}: {formData: any}) {
+export async function updateCarrier(
+  id: number,
+  { formData }: { formData: any }
+) {
   const resp = updater(prisma.carrier, id, formData);
 }
 
-export async function updateConsignee(id: number, {formData}: {formData: any}) {
+export async function updateConsignee(
+  id: number,
+  { formData }: { formData: any }
+) {
   const resp = updater(prisma.consignee, id, formData);
 }
 
-export async function updateCustomer(id: number, {formData}: {formData: any}) {
+export async function updateCustomer(
+  id: number,
+  { formData }: { formData: any }
+) {
   const resp = updater(prisma.customer, id, formData);
 }
 
-export async function updateDriver(id: number, {formData}: {formData: any}) {
+export async function updateDriver(
+  id: number,
+  { formData }: { formData: any }
+) {
   const resp = updater(prisma.driver, id, formData);
 }
 
-export async function updateLoad(id: number, {formData}: {formData: any}) {
+export async function updateLoad(id: number, { formData }: { formData: any }) {
   const resp = updater(prisma.load, id, formData);
 }
 
-export async function updateShipper(id: number, {formData}: {formData: any}) {
+export async function updateShipper(
+  id: number,
+  { formData }: { formData: any }
+) {
   const resp = updater(prisma.shipper, id, formData);
 }
 
-export async function updateUser(id: number, {formData}: {formData: any}) {
+export async function updateUser(id: number, { formData }: { formData: any }) {
   const resp = updater(prisma.user, id, formData);
 }
 
@@ -233,7 +262,7 @@ export async function deleteCarrier(id: number) {
   const resp = deleter(prisma.carrier, id);
 }
 
-export async function deleteConsignee(id:number) {
+export async function deleteConsignee(id: number) {
   const resp = deleter(prisma.consignee, id);
 }
 

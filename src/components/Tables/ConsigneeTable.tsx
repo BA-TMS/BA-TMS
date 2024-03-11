@@ -62,42 +62,42 @@ export default function ConsigneeTable({
             </thead>
             <tbody>
               {data.map((consignee: ConsigneeData, key: number) => (
-                <tr key={key}>
-                  <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
+                <tr key={key} className={key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}>
+                  <td className={`py-5 px-4 pl-9 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'} xl:pl-11`}>
                     <h5 className="font-medium text-black dark:text-white">
                       {consignee.name}
                     </h5>
                   </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <td className={`py-5 px-4 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}`}>
                     <p className="text-black dark:text-white">
                       {consignee.address}
                     </p>
                   </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <td className={`py-5 px-4 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}`}>
                     <p className="text-black dark:text-white">
                       {consignee.city}
                     </p>
                   </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <td className={`py-5 px-4 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}`}>
                     <p className="text-black dark:text-white">
                       {consignee.state}
                     </p>
                   </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <td className={`py-5 px-4 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}`}>
                     <p className="text-black dark:text-white">
                       {consignee.postCode}
                     </p>
                   </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <td className={`py-5 px-4 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}`}>
                     <p className="text-black dark:text-white">{'contact'}</p>
                   </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <td className={`py-5 px-4 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}`}>
                     <p className="text-black dark:text-white">{'email'}</p>
                   </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <td className={`py-5 px-4 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}`}>
                     <p className="text-black dark:text-white">{'notes'}</p>
                   </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <td className={`py-5 px-4 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}`}>
                     <div className="flex items-center space-x-3.5">
                       <TableActionsPopover></TableActionsPopover>
                     </div>
