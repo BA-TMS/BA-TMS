@@ -1,9 +1,18 @@
-interface TableProps {
-  columns: string[];
-  data: Record<string, any>[]; // adjust
+// pass this table an array of objects containing keys field and headerName
+// field is what the property is on the data object from the database
+// headerName is what we want the table column name to be
+
+interface TableColumn {
+  field: string;
+  headerName: string;
 }
 
-const Table: React.FC<TableProps> = ({ columns, data }) => {
+interface TableProps<T> {
+  columns: TableColumn[];
+  data: T[];
+}
+
+const Table: React.FC<TableProps<any>> = ({ columns, data }) => {
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 mt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full overflow-x-auto">
@@ -13,23 +22,35 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
               {columns.map((column, index) => (
                 <th
                   key={index}
-                  className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11"
+                  className="min-w-[220px] py-5 px-4 font-medium text-black dark:text-white xl:pl-11"
                 >
-                  {column}
+                  {column.headerName}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
-            {data.map((row, rowIndex) => (
-              <tr key={rowIndex}>
+          <tbody>
+            {data.map((data, dataIndex) => (
+              <tr
+                key={dataIndex}
+                className={
+                  dataIndex === data.length - 1
+                    ? ''
+                    : 'border-b border-[#eee] dark:border-strokedark'
+                }
+              >
                 {columns.map((column, index) => (
                   <td
                     key={index}
-                    className="whitespace-nowrap px-3 py-4 text-md text-gray-500"
+                    className={`py-4 px-4 pl-9 ${
+                      index === data.length - 1
+                        ? ''
+                        : 'border-b border-[#eee] dark:border-strokedark'
+                    } xl:pl-11`}
                   >
-                    {row.name}
-                    {console.log(row)}
+                    <h5 className="font-medium text-black dark:text-white">
+                      {data[column.field]}
+                    </h5>
                   </td>
                 ))}
               </tr>
