@@ -53,7 +53,7 @@ const Table: React.FC<TableProps<any>> = ({ columns, data }) => {
                         : 'border-b border-[#eee] dark:border-strokedark'
                     } xl:pl-11`}
                   >
-                    <h5 className="font-medium text-black dark:text-white">
+                    <h5 className="font-medium text-center text-black dark:text-white">
                       {data[column.field]}
                     </h5>
                   </td>

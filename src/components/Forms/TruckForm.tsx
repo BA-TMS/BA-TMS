@@ -6,15 +6,15 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import TextInput from './UI_Elements/TextInput';
 import SelectInput from './UI_Elements/SelectInput';
-import { status, owner } from './data/details';
-// import { ModalContext } from '@/Context/modalContext'; // for modal
+import { ModalContext } from '@/Context/modalContext';
 
 const truckSchema = yup.object({
   'Truck Number': yup.string().required('Truck Number is required'),
   'Truck Type': yup.string(),
   'License Plate': yup.string(),
-  Status: yup.string(),
-  Ownership: yup.string(),
+  'Plate Expiry': yup.string(), // date
+  'Inspection Expiry': yup.string(), // date
+  'IFTA Licensed': yup.boolean(), // check this
   Notes: yup.string().max(250, 'Must be under 250 characters'),
 });
 
@@ -23,30 +23,31 @@ type Truck = yup.InferType<typeof truckSchema>;
 export const TruckForm = () => {
   const {
     handleSubmit,
-    setError, // async error handling
-    reset, // for resetting form
-    control, // based on schema
-    formState: { errors, isSubmitting, isSubmitSuccessful }, // boolean values representing form state
+    setError,
+    reset,
+    control,
+    formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<Truck>({
     defaultValues: {
       'Truck Number': '',
       'Truck Type': '',
       'License Plate': '',
-      Status: '',
-      Ownership: '',
+      'Plate Expiry': '',
+      'Inspection Expiry': '',
+      'IFTA Licensed': false,
       Notes: '',
     },
     resolver: yupResolver(truckSchema),
   });
 
-  //   const { toggleOpen } = useContext(ModalContext); // for modal
+  const { toggleOpen } = useContext(ModalContext);
 
   const onSubmit = async (data: Truck) => {
     console.log(data);
     try {
       //   add database integration
-      console.log('External Carrier added successfully');
-      //   toggleOpen(); // for modal
+      console.log('Truck added successfully');
+      toggleOpen();
     } catch (error) {
       console.log('Error submitting form:', error);
       setError('root', { message: 'Error Submitting Form - Please try Again' });
@@ -59,8 +60,9 @@ export const TruckForm = () => {
         'Truck Number': '',
         'Truck Type': '',
         'License Plate': '',
-        Status: '',
-        Ownership: '',
+        'Plate Expiry': '',
+        'Inspection Expiry': '',
+        'IFTA Licensed': false,
         Notes: '',
       });
     }
@@ -75,19 +77,19 @@ export const TruckForm = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="p-6.5">
             <TextInput control={control} name="Truck Number" required={true} />
-
+            <TextInput control={control} name="License Plate" />
             <div className=" flex flex-col gap-6 xl:flex-row">
               <div className="w-full xl:w-1/2">
                 <TextInput control={control} name="Truck Type" />
-                <SelectInput control={control} name="Status" options={status} />
+                <TextInput control={control} name="Plate Expiry" />
               </div>
               <div className="w-full xl:w-1/2">
-                <TextInput control={control} name="License Plate" />
                 <SelectInput
                   control={control}
-                  name="Ownership"
-                  options={owner}
+                  options={['True', 'False']}
+                  name="IFTA Licensed"
                 />
+                <TextInput control={control} name="Inspection Expiry" />
               </div>
             </div>
 
@@ -107,7 +109,7 @@ export const TruckForm = () => {
                 type="button"
                 onClick={() => {
                   reset();
-                  //   toggleOpen(); // for modal
+                  toggleOpen();
                 }}
                 disabled={isSubmitting}
                 className="rounded bg-red p-3 font-medium text-gray ml-2 hover:bg-opacity-80"

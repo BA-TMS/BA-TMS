@@ -55,6 +55,11 @@ export async function getShippers() {
   return shippers;
 }
 
+export async function getTrucks() {
+  const trucks = prisma.truck.findMany();
+  return trucks;
+}
+
 export async function getUsers() {
   const users = prisma.user.findMany();
   return users;
