@@ -1,16 +1,47 @@
 'use client';
 
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { ModalContext } from '@/Context/modalContext';
 import FormModal from '../Modals/FormModal';
 import DriverForm from '../Forms/DriverForm';
+import Table from './Table';
+import { getDrivers } from '@/lib/dbActions';
+
+type Driver = {
+  name: string;
+  license: string;
+  telCountry: string;
+  telephone: string;
+  employerId: string;
+};
+
+// this is passed to Table
+const columns = [
+  { field: 'name', headerName: 'Name' },
+  { field: 'telCountry', headerName: 'Country Code' },
+  { field: 'telephone', headerName: 'Phone Number' },
+  { field: 'license', headerName: 'License Number' },
+  { field: 'employerId', headerName: 'Employer ID' },
+];
 
 export default function Driver() {
-  const { isOpen, toggleOpen } = useContext(ModalContext);
+  const [drivers, setDrivers] = useState<Driver[]>([]);
+  const { toggleOpen } = useContext(ModalContext);
 
   const handleClick = () => {
     toggleOpen();
   };
+
+  // data fetched and passed to Table
+  useEffect(() => {
+    const fetchDrivers = async () => {
+      const data = await getDrivers();
+      console.log('drivers', data);
+      setDrivers(data);
+    };
+
+    fetchDrivers();
+  }, []);
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
@@ -33,6 +64,7 @@ export default function Driver() {
           </FormModal>
         </div>
       </div>
+      <Table columns={columns} data={drivers}></Table>
     </div>
   );
 }
