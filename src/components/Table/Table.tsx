@@ -1,4 +1,5 @@
 import TableActionsPopover from '../Popovers/TableActions';
+
 // pass this table an array of objects containing keys field and headerName
 // field is what the property is on the data object from the database
 // headerName is what we want the table column name to be
@@ -59,7 +60,7 @@ const Table: React.FC<TableProps<any>> = ({ columns, data }) => {
                 ))}
                 <td>
                   {/* Table Actions Popover is not functional yet */}
-                  <TableActionsPopover></TableActionsPopover>
+                  <TableActionsPopover id={data.id}></TableActionsPopover>
                 </td>
               </tr>
             ))}

@@ -3,9 +3,13 @@ import Link from 'next/link';
 
 import { EditIcon, ElipsisVertical, DeleteIcon } from '@/assets/SVGs';
 
-// should it be a link or a button to get the functionality we want?
+type TableActionsProps = {
+  id: string;
+};
 
-const TableActionsPopover: React.FC = () => {
+// pass this component an id from the table it is used in
+
+const TableActionsPopover: React.FC<TableActionsProps> = ({ id }) => {
   const [popoversOpen, setPopoversOpen] = useState(false);
 
   const trigger = useRef<any>(null);
@@ -25,7 +29,7 @@ const TableActionsPopover: React.FC = () => {
     };
     document.addEventListener('click', clickHandler);
     return () => document.removeEventListener('click', clickHandler);
-  });
+  }, [popoversOpen, trigger, popovers]);
 
   // close if the esc key is pressed
   useEffect(() => {
@@ -35,7 +39,8 @@ const TableActionsPopover: React.FC = () => {
     };
     document.addEventListener('keydown', keyHandler);
     return () => document.removeEventListener('keydown', keyHandler);
-  });
+  }, [popoversOpen, popovers]);
+
   return (
     <div className="w-full pl-5 sm:w-1/2 xl:w-1/4">
       <div className="mt-1 text-center">
