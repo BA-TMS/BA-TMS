@@ -5,26 +5,22 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import TextInput from './UI_Elements/TextInput';
+import DynamicSelect from './UI_Elements/DynamicSelect';
 import { ModalContext } from '@/Context/modalContext';
-import { addDriver } from '@/lib/dbActions';
+import { addDriver, getCarriers } from '@/lib/dbActions';
 
 const driverSchema = yup.object({
   'Driver Name': yup.string().required('Driver Name is required'),
   'Country Code': yup
-    .number()
-    .nullable()
-    .integer('Must be an integer')
+    .string()
+    .matches(/^\d+$/, 'Must be a valid Country Code')
     .required('Country Code is required'),
   'Phone Number': yup
     .string()
-    .matches(/^\d{3}-\d{3}-\d{4}$/, 'Must use valid phone number xxx-xxx-xxxx')
+    .matches(/^\d{10}$/, 'Must use valid phone number')
     .required('Contact phone number required'),
-  Email: yup
-    .string()
-    .email('Must use a valid email')
-    .required('Contact email required'),
-  'License Number': yup.number(),
-  'Employer ID': yup.number().required('Employer ID is required'),
+  'License Number': yup.string(),
+  Employer: yup.string().required('Employer is required'), // relation to carriers
   Notes: yup.string().max(250, 'Must be under 250 characters'),
 });
 
@@ -33,18 +29,17 @@ type Driver = yup.InferType<typeof driverSchema>;
 export const DriverForm = () => {
   const {
     handleSubmit,
-    setError, // async error handling
-    reset, // for resetting form
-    control, // based on schema
-    formState: { errors, isSubmitting, isSubmitSuccessful }, // boolean values representing form state
+    setError,
+    reset,
+    control,
+    formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<Driver>({
     defaultValues: {
       'Driver Name': '',
-      'Country Code': 1,
+      'Country Code': '',
       'Phone Number': '',
-      Email: '',
-      'License Number': 0,
-      'Employer ID': 1,
+      'License Number': '',
+      Employer: '',
       Notes: '',
     },
     resolver: yupResolver(driverSchema),
@@ -68,11 +63,10 @@ export const DriverForm = () => {
     if (isSubmitSuccessful) {
       reset({
         'Driver Name': '',
-        'Country Code': 1,
+        'Country Code': '',
         'Phone Number': '',
-        Email: '',
-        'License Number': 0,
-        'Employer ID': 1,
+        'License Number': '',
+        Employer: '',
         Notes: '',
       });
     }
@@ -105,9 +99,13 @@ export const DriverForm = () => {
               </div>
             </div>
 
-            <TextInput control={control} name="Email" required={true} />
             <TextInput control={control} name="License Number" />
-            <TextInput control={control} name="Employer ID" required={true} />
+            <DynamicSelect
+              control={control}
+              name="Employer"
+              required={true}
+              dbaction={getCarriers}
+            />
             <TextInput control={control} name="Notes" isTextArea={true} />
             {errors.root && (
               <p className="mb-5 text-danger">{errors.root.message}</p>

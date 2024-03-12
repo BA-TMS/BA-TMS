@@ -26,11 +26,7 @@ const shipperSchema = yup.object({
     .string()
     .matches(/^\d{5}$/, 'Zip must be 5 digits')
     .required('Zip Code is required '),
-  'Country Code': yup
-    .number()
-    .nullable()
-    .integer('Must be an integer')
-    .required('Country Code is required'),
+  'Country Code': yup.string().nullable().required('Country Code is required'),
   'Phone Number': yup
     .string()
     .matches(/^\d{3}-\d{3}-\d{4}$/, 'Must use valid phone number xxx-xxx-xxxx')
@@ -59,26 +55,32 @@ const ShipperForm: React.FC<ShipperFormProps> = ({
       State: '',
       Zip: '',
       Country: '',
-      'Country Code': 1,
+      'Country Code': '',
       'Phone Number': '',
       Notes: '',
     },
     resolver: yupResolver(shipperSchema),
   });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: Shipper) => {
     // Attempt to parse telCountry to an integer
-    const telCountryInt = parseInt(data.telCountry, 10);
+    /*const telCountryInt = parseInt(data.telCountry, 10);
 
     // Check if the parsing was successful and telCountry is a valid integer
     // This code was added to ensure telCountry is correctly formatted as an integer
     const formattedData = {
       ...data,
       telCountry: !isNaN(telCountryInt) ? telCountryInt : null, // Fallback to null if not a valid integer
-    };
+    };*/
 
-    await addShipper({ shipper: formattedData });
-    setModalOpen(false);
+    try {
+      await addShipper({ shipper: data }); // Change these to thirdParty
+      console.log('thirdParty added successfully');
+      setModalOpen(false);
+    } catch (error) {
+      console.log('Error submitting form:', error);
+      setError('root', { message: 'Error Submitting Form - Please try Again' }); // errors that belong to form as a whole
+    }
   };
 
   // reset form if submit successful
@@ -92,7 +94,7 @@ const ShipperForm: React.FC<ShipperFormProps> = ({
         State: '',
         Zip: '',
         Country: '',
-        'Country Code': 1,
+        'Country Code': '',
         'Phone Number': '',
         Notes: '',
       });
