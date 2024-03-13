@@ -195,6 +195,19 @@ export async function addShipper({ shipper }: { shipper: any }) {
   });
 }
 
+export async function addTruck({ truck }: { truck: any }) {
+  const resp = await prisma.truck.create({
+    data: {
+      truckNum: truck['Truck Number'],
+      licensePlate: truck['License Plate'],
+      type: truck['Truck Type'],
+      plateExpiry: truck['Plate Expiry'],
+      inspectionExpiry: truck['Inspection Expiry'],
+      iftaLicensed: truck['IFTA Licensed'],
+    },
+  });
+}
+
 export async function addUser({ user }: { user: any }) {
   const resp = await prisma.user.create({
     data: {
