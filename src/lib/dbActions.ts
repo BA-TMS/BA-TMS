@@ -111,8 +111,6 @@ export async function addConsignee({ consignee }: { consignee: any }) {
       // notes: consignee['Notes'] || null, // optional field, notes not in db table yet
     },
   });
-
-  console.log(resp);
 }
 
 export async function addCustomer({ customer }: { customer: any }) {
@@ -199,7 +197,7 @@ export async function addTruck({ truck }: { truck: any }) {
   const resp = await prisma.truck.create({
     data: {
       truckNum: truck['Truck Number'],
-      licensePlate: truck['License Plate'],
+      licensePlate: truck['License Plate'] || null, // Optional field
       type: truck['Truck Type'],
       plateExpiry: truck['Plate Expiry'],
       inspectionExpiry: truck['Inspection Expiry'],

@@ -6,14 +6,16 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import TextInput from './UI_Elements/TextInput';
 import SelectInput from './UI_Elements/SelectInput';
+import DateSelect from './UI_Elements/DateSelect';
 import { ModalContext } from '@/Context/modalContext';
+import { addTruck } from '@/lib/dbActions';
 
 const truckSchema = yup.object({
   'Truck Number': yup.string().required('Truck Number is required'),
   'Truck Type': yup.string(),
-  'License Plate': yup.string(),
-  'Plate Expiry': yup.string(), // date
-  'Inspection Expiry': yup.string(), // date
+  'License Plate': yup.string().required('License Plate is required'),
+  'Plate Expiry': yup.date().required('Plate Expiry is required'),
+  'Inspection Expiry': yup.date().required('Inspection Expiry is required'),
   'IFTA Licensed': yup.boolean(), // check this
   Notes: yup.string().max(250, 'Must be under 250 characters'),
 });
@@ -32,8 +34,8 @@ export const TruckForm = () => {
       'Truck Number': '',
       'Truck Type': '',
       'License Plate': '',
-      'Plate Expiry': '',
-      'Inspection Expiry': '',
+      'Plate Expiry': new Date(),
+      'Inspection Expiry': new Date(),
       'IFTA Licensed': false,
       Notes: '',
     },
@@ -45,7 +47,7 @@ export const TruckForm = () => {
   const onSubmit = async (data: Truck) => {
     console.log(data);
     try {
-      //   add database integration
+      await addTruck({ truck: data });
       console.log('Truck added successfully');
       toggleOpen();
     } catch (error) {
@@ -60,8 +62,8 @@ export const TruckForm = () => {
         'Truck Number': '',
         'Truck Type': '',
         'License Plate': '',
-        'Plate Expiry': '',
-        'Inspection Expiry': '',
+        'Plate Expiry': new Date(),
+        'Inspection Expiry': new Date(),
         'IFTA Licensed': false,
         Notes: '',
       });
@@ -76,20 +78,36 @@ export const TruckForm = () => {
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="p-6.5">
-            <TextInput control={control} name="Truck Number" required={true} />
-            <TextInput control={control} name="License Plate" />
             <div className=" flex flex-col gap-6 xl:flex-row">
               <div className="w-full xl:w-1/2">
+                <TextInput
+                  control={control}
+                  name="Truck Number"
+                  required={true}
+                />
+                <DateSelect
+                  control={control}
+                  name="Plate Expiry"
+                  required={true}
+                />
                 <TextInput control={control} name="Truck Type" />
-                <TextInput control={control} name="Plate Expiry" />
               </div>
               <div className="w-full xl:w-1/2">
+                <TextInput
+                  control={control}
+                  name="License Plate"
+                  required={true}
+                />
+                <DateSelect
+                  control={control}
+                  name="Inspection Expiry"
+                  required={true}
+                />
                 <SelectInput
                   control={control}
                   options={['True', 'False']}
                   name="IFTA Licensed"
                 />
-                <TextInput control={control} name="Inspection Expiry" />
               </div>
             </div>
 

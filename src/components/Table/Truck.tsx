@@ -21,8 +21,8 @@ const columns = [
   { field: 'truckNum', headerName: 'Truck Number' },
   { field: 'licensePlate', headerName: 'License Plate' },
   { field: 'type', headerName: 'Truck Type' },
-  //   { field: 'plateExpiry', headerName: 'Plate Expiry' },
-  //   { field: 'inspectionExpiry', headerName: 'Inspection Expiry' }, // need to format date as not an object
+  { field: 'plateExpiry', headerName: 'Plate Expiry' },
+  { field: 'inspectionExpiry', headerName: 'Inspection Expiry' },
   { field: 'iftaLicensed', headerName: 'IFTA Licensed?' },
 ];
 
