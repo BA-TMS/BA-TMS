@@ -55,6 +55,11 @@ export async function getShippers() {
   return shippers;
 }
 
+export async function getTrucks() {
+  const trucks = prisma.truck.findMany();
+  return trucks;
+}
+
 export async function getUsers() {
   const users = prisma.user.findMany();
   return users;
@@ -106,8 +111,6 @@ export async function addConsignee({ consignee }: { consignee: any }) {
       // notes: consignee['Notes'] || null, // optional field, notes not in db table yet
     },
   });
-
-  console.log(resp);
 }
 
 export async function addCustomer({ customer }: { customer: any }) {
@@ -186,6 +189,19 @@ export async function addShipper({ shipper }: { shipper: any }) {
       postCode: shipper['Zip'],
       telCountry: shipper['Country Code'],
       telephone: shipper['Phone Number'],
+    },
+  });
+}
+
+export async function addTruck({ truck }: { truck: any }) {
+  const resp = await prisma.truck.create({
+    data: {
+      truckNum: truck['Truck Number'],
+      licensePlate: truck['License Plate'] || null, // Optional field
+      type: truck['Truck Type'],
+      plateExpiry: truck['Plate Expiry'],
+      inspectionExpiry: truck['Inspection Expiry'],
+      iftaLicensed: truck['IFTA Licensed'],
     },
   });
 }

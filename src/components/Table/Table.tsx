@@ -15,6 +15,26 @@ interface TableProps<T> {
 }
 
 const Table: React.FC<TableProps<any>> = ({ columns, data }) => {
+  // check if data type is Date object
+  function isDate(value: any): boolean {
+    return value instanceof Date;
+  }
+  // format date
+  function formatDate(date: Date): string {
+    return new Intl.DateTimeFormat('en-US').format(date);
+  }
+
+  // helper function for checking boolean values
+  function displayBooleanValue(value: any) {
+    if (typeof value === 'boolean') {
+      // 'yes' for true, and nothing for false
+      return value ? 'Yes' : '';
+    } else {
+      // if not a boolean will return just the value
+      return value;
+    }
+  }
+
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 mt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full overflow-x-auto overflow-y-scroll">
@@ -53,8 +73,11 @@ const Table: React.FC<TableProps<any>> = ({ columns, data }) => {
                         : 'border-b border-[#eee] dark:border-strokedark'
                     } xl:pl-11`}
                   >
-                    <h5 className="font-medium text-black dark:text-white">
-                      {data[column.field]}
+                    <h5 className="font-medium text-center text-black dark:text-white">
+                      {/* check if the value is a date */}
+                      {isDate(data[column.field])
+                        ? formatDate(data[column.field])
+                        : displayBooleanValue(data[column.field])}
                     </h5>
                   </td>
                 ))}

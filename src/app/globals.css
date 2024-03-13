@@ -51,3 +51,14 @@
   background-color: #4caf50;
   color: white;
 }
+
+.custom-input-date::-webkit-calendar-picker-indicator {
+  background: transparent;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 20px;
+}
+
+.custom-input-date-1::-webkit-calendar-picker-indicator {
+  background-image: url('../../public/assets/icons/calendar.svg');
+}
