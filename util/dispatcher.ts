@@ -64,6 +64,18 @@ function startOrCreateContainer(verbose: boolean) {
   }
 }
 
+function deleteContainer(verbose: boolean) {
+  if (containerQuery()) {
+    if (verbose) console.log('Found existing container; stopping & deleting. . .')
+    const stopResp = execWrap(`docker container stop ${CONTAINER_NAME}`);
+    if (verbose) console.log(`${stopResp.toString().trim()} stopped`);
+    const rmResp = execWrap(`docker container rm ${CONTAINER_NAME}`);
+    if (verbose) console.log(`${rmResp.toString().trim()} removed`);
+  } else {
+    if (verbose) console.log("Can't find existing container, thus not deleting anything")
+  }
+}
+
 function dispatcher(args: string[]) {
   const command = args[0];
   const verbose = (process.env.VERBOSE_SETUP === '1') || false;
@@ -71,6 +83,8 @@ function dispatcher(args: string[]) {
     startOrCreateContainer(verbose);
   } else if (command === 'dbsetup') {
     dbSetup(verbose);
+  } else if (command === 'delete-docker-container') {
+    deleteContainer(verbose);
   }else {
     console.log(`${command} is not a registered command`);
   }
