@@ -10,7 +10,8 @@
     "docker": "npx ts-node util/dispatcher.ts docker",
     "delete-docker-container": "npx ts-node util/dispatcher.ts delete-docker-container",
     "dbsetup": "npx ts-node util/dispatcher.ts dbsetup",
-    "seed": "npx ts-node prisma/seed.ts"
+    "seed": "npx ts-node prisma/seed.ts",
+    "reset": "rm -rf .next/ node_modules/ next-env.d.ts && yarn --frozen-lockfile && yarn delete-docker-container && yarn docker && yarn dev"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
