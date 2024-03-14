@@ -1,7 +1,9 @@
 const { execSync } = require('child_process');
 require('dotenv').config();
 
-const CONTAINER_NAME = 'a2ztmspostgres';
+const CONTAINER_NAME = process.env.DB_DOCKER_CONTAINER_NAME;
+const CONTAINER_PORT=5432
+const HOST_PORT=process.env.DB_DOCKER_HOST_PORT
 
 function execWrap(command: string, verbose = false) {
   // Wrapper to handle errors and format responses.
@@ -31,7 +33,7 @@ function createRunString() {
 
   const envString = envProps.join(' ');
 
-  return `docker run --name ${CONTAINER_NAME} ${envString} -p 5432:5432 -d postgres`;
+  return `docker run --name ${CONTAINER_NAME} ${envString} -p ${HOST_PORT}:${CONTAINER_PORT} -d postgres`;
 }
 
 function dbSetup(verbose: boolean) {
