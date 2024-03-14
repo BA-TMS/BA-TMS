@@ -51,7 +51,9 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 Your .env file should include these items:
 
-```
+```bash
+DB_DOCKER_CONTAINER_NAME=''
+DB_DOCKER_HOST_PORT=''
 DB_USER=''
 DB_PASSWORD=''
 DB_NAME=''
@@ -59,7 +61,25 @@ DB_NAME=''
 DATABASE_URL=''
 ```
 
-The first 3 are arbitrary. Whatever you choose will be applied to the database when it is created. DATABASE_URL needs to combine the other elements like thi: `DATABASE_URL='postgresql://${DB_USER}:${DB_PASSWORD}@localhost:5432/$(DB_NAME)`
+`DB_DOCKER_CONTAINER_NAME`, `DB_USER`, `DB_PASSWORD`, and `DB_NAME` are arbitrary.
+
+`DB_DOCKER_HOST_PORT` must be a [valid port number](<https://en.wikipedia.org/wiki/Port_(computer_networking)#Port_number>).
+
+Whatever you choose will be applied to the Docker container and its database when they are created.
+
+`DATABASE_URL` needs to combine the other elements like this: `DATABASE_URL='postgresql://${DB_USER}:${DB_PASSWORD}@localhost:${DB_DOCKER_HOST_PORT}/${DB_NAME}'`.
+
+### Example .env file inclusion
+
+```bash
+DB_DOCKER_CONTAINER_NAME='a2ztmspostgres'
+DB_DOCKER_HOST_PORT='5432'
+DB_USER='a2ztmsuser'
+DB_PASSWORD='a2ztmspassword'
+DB_NAME='a2ztmsdbname'
+
+DATABASE_URL='postgresql://a2ztmsuser:a2ztmspassword@localhost:5432/a2ztmsdbname'
+```
 
 ## Creating a local database container
 
