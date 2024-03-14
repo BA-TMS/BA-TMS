@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import TextInput from './UI_Elements/TextInput';
 import SelectInput from './UI_Elements/SelectInput';
 import { status } from './data/details';
-// import { ModalContext } from '@/Context/modalContext'; // for modal
+import { ModalContext } from '@/Context/modalContext';
 
 const trailerSchema = yup.object({
   'Trailer Number': yup.string().required('Trailer Number is required'),
@@ -37,14 +37,14 @@ export const TrailerForm = () => {
     resolver: yupResolver(trailerSchema),
   });
 
-  //   const { toggleOpen } = useContext(ModalContext); // for modal
+  const { toggleOpen } = useContext(ModalContext);
 
   const onSubmit = async (data: Trailer) => {
     console.log(data);
     try {
       //   add database integration
       console.log('External Carrier added successfully');
-      //   toggleOpen(); // for modal
+      toggleOpen();
     } catch (error) {
       console.log('Error submitting form:', error);
       setError('root', { message: 'Error Submitting Form - Please try Again' });
@@ -79,8 +79,6 @@ export const TrailerForm = () => {
               required={true}
             />
 
-            {/* status could be a dropdown */}
-
             <TextInput control={control} name="Trailer Type" />
             <TextInput control={control} name="License Plate" />
             <SelectInput control={control} name="Status" options={status} />
@@ -101,7 +99,7 @@ export const TrailerForm = () => {
                 type="button"
                 onClick={() => {
                   reset();
-                  //   toggleOpen(); // for modal
+                  toggleOpen();
                 }}
                 disabled={isSubmitting}
                 className="rounded bg-red p-3 font-medium text-gray ml-2 hover:bg-opacity-80"
