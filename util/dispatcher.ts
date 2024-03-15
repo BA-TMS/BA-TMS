@@ -1,7 +1,9 @@
 const { execSync } = require('child_process');
 require('dotenv').config();
 
-const CONTAINER_NAME = 'a2ztmspostgres';
+const CONTAINER_NAME = process.env.DB_DOCKER_CONTAINER_NAME;
+const CONTAINER_PORT=5432
+const HOST_PORT=process.env.DB_DOCKER_HOST_PORT
 
 function execWrap(command: string, verbose = false) {
   // Wrapper to handle errors and format responses.
@@ -31,7 +33,7 @@ function createRunString() {
 
   const envString = envProps.join(' ');
 
-  return `docker run --name ${CONTAINER_NAME} ${envString} -p 5432:5432 -d postgres`;
+  return `docker run --name ${CONTAINER_NAME} ${envString} -p ${HOST_PORT}:${CONTAINER_PORT} -d postgres`;
 }
 
 function dbSetup(verbose: boolean) {
@@ -62,6 +64,18 @@ function startOrCreateContainer(verbose: boolean) {
   }
 }
 
+function deleteContainer(verbose: boolean) {
+  if (containerQuery()) {
+    if (verbose) console.log('Found existing container; stopping & deleting. . .')
+    const stopResp = execWrap(`docker container stop ${CONTAINER_NAME}`);
+    if (verbose) console.log(`${stopResp.toString().trim()} stopped`);
+    const rmResp = execWrap(`docker container rm ${CONTAINER_NAME}`);
+    if (verbose) console.log(`${rmResp.toString().trim()} removed`);
+  } else {
+    if (verbose) console.log("Can't find existing container, thus not deleting anything")
+  }
+}
+
 function dispatcher(args: string[]) {
   const command = args[0];
   const verbose = (process.env.VERBOSE_SETUP === '1') || false;
@@ -69,6 +83,8 @@ function dispatcher(args: string[]) {
     startOrCreateContainer(verbose);
   } else if (command === 'dbsetup') {
     dbSetup(verbose);
+  } else if (command === 'delete-docker-container') {
+    deleteContainer(verbose);
   }else {
     console.log(`${command} is not a registered command`);
   }
