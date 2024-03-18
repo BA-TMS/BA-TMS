@@ -2,7 +2,7 @@
 
 type Owner = 'Company Truck' | 'Owner/ Operator';
 
-export const status: string[] = ['ACTIVE', 'INACTIVE', 'NOT AVAILABLE'];
+export const status: string[] = ['ACTIVE', 'INACTIVE', 'NOTAVAILABLE'];
 
 export const owner: Owner[] = ['Company Truck', 'Owner/ Operator'];
 
