@@ -10,12 +10,25 @@ import DateSelect from './UI_Elements/DateSelect';
 import { status, trailers } from './data/details';
 import { ModalContext } from '@/Context/modalContext';
 import { addTrailer } from '@/lib/dbActions';
+import { parse, isDate } from 'date-fns';
+
+function parseDateString(value: Date, originalValue: '' | Date) {
+  const parsedDate = isDate(originalValue)
+    ? originalValue
+    : parse(originalValue, 'yyyy-MM-dd', new Date());
+
+  return parsedDate;
+}
+
+const currentDate = new Date();
+currentDate.setDate(currentDate.getDate() - 1);
+const yesterday = currentDate;
 
 const trailerSchema = yup.object({
   'Trailer Type': yup.string(),
   'License Plate': yup.string().required('License Plate is required'),
-  'Plate Expiry': yup.date().required('Plate Expiry is required'),
-  'Inspection Expiry': yup.date().required('Inspection Expiry is required'),
+  'Plate Expiry': yup.date().min(currentDate),
+  'Inspection Expiry': yup.date().transform(parseDateString).min(currentDate),
   Status: yup.string().required('Status is required'),
   Notes: yup.string().max(250, 'Must be under 250 characters'),
 });
@@ -33,8 +46,8 @@ export const TrailerForm = () => {
     defaultValues: {
       'Trailer Type': '',
       'License Plate': '',
-      'Plate Expiry': new Date(),
-      'Inspection Expiry': new Date(),
+      'Plate Expiry': yesterday,
+      'Inspection Expiry': yesterday,
       Status: '',
       Notes: '',
     },
@@ -60,8 +73,8 @@ export const TrailerForm = () => {
       reset({
         'Trailer Type': '',
         'License Plate': '',
-        'Plate Expiry': new Date(),
-        'Inspection Expiry': new Date(),
+        'Plate Expiry': yesterday,
+        'Inspection Expiry': yesterday,
         Status: '',
         Notes: '',
       });
