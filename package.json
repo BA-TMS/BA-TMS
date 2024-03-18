@@ -14,7 +14,7 @@
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
     "@prisma/client": "5.6.0",
-    "@supabase/ssr": "latest",
+    "@supabase/ssr": "^0.1.0",
     "@supabase/supabase-js": "^2.39.7",
     "apexcharts": "^3.45.1",
     "classnames": "^2.5.1",

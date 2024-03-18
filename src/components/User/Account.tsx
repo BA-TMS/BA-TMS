@@ -7,6 +7,9 @@ import React from 'react';
 import { useState, useEffect, useCallback, MouseEventHandler } from 'react';
 import { StaticImageData } from 'next/image';
 import test from 'node:test';
+import { createClient } from '@/util/supabase/client';
+import { type User } from '@supabase/supabase-js';
+import Avatar from './Avatar';
 
 const secondaryNavigation = [
   { name: 'Account', href: '#', current: true },
@@ -26,8 +29,79 @@ export var getSelectedImage: File | null = null;
     return selectedImage;
   }*/
 
-export default function Account() {
+export default function Account({ user }: { user: User | null }) {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
+
+  // TESTING FOR SUPABASE
+  const [loading, setLoading] = useState(true);
+  const [fullname, setFullname] = useState<string | null>(null);
+  const [username, setUsername] = useState<string | null>(null);
+  const [website, setWebsite] = useState<string | null>(null);
+  const [avatar_url, setAvatarUrl] = useState<string | null>(null);
+  const supabase = createClient();
+  const getProfile = useCallback(async () => {
+    try {
+      setLoading(true);
+
+      const { data, error, status } = await supabase
+        .from('profiles')
+        .select('full_name, username, website, avatar_url')
+        .eq('id', user?.id)
+        .single();
+
+      if (error && status !== 406) {
+        console.log(error);
+        throw error;
+      }
+
+      if (data) {
+        setFullname(data.full_name);
+        setUsername(data.username);
+        setWebsite(data.website);
+        setAvatarUrl(data.avatar_url);
+      }
+    } catch (error) {
+      alert('Error loading user data!');
+    } finally {
+      setLoading(false);
+    }
+  }, [user, supabase]);
+
+  useEffect(() => {
+    getProfile();
+  }, [user, getProfile]);
+
+  async function updateProfile({
+    username,
+    website,
+    avatar_url,
+  }: {
+    username: string | null;
+    fullname: string | null;
+    website: string | null;
+    avatar_url: string | null;
+  }) {
+    try {
+      setLoading(true);
+
+      const { error } = await supabase.from('profiles').upsert({
+        id: user?.id as string,
+        full_name: fullname,
+        username,
+        website,
+        avatar_url,
+        updated_at: new Date().toISOString(),
+      });
+      if (error) throw error;
+      alert('Profile updated!');
+    } catch (error) {
+      alert('Error updating the data!');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // END TESTING
   //const [newProfile, setNewProfile] = useState<StaticImageData>();
 
   /*useEffect(() => {
@@ -236,16 +310,22 @@ export default function Account() {
               <div className="p-7">
                 <form action="#">
                   <div className="mb-4 flex items-center gap-3">
-                    {selectedImage && (
-                      <div className="h-14 w-14 rounded-full">
-                        <Image
-                          alt="not found"
-                          width={55}
-                          height={55}
-                          src={URL.createObjectURL(selectedImage)}
-                        />
-                      </div>
-                    )}
+                    <div className="h-14 w-14 rounded-full">
+                      <Avatar
+                        uid={user?.id ?? null}
+                        url={avatar_url}
+                        size={150}
+                        onUpload={(url) => {
+                          setAvatarUrl(url);
+                          updateProfile({
+                            fullname,
+                            username,
+                            website,
+                            avatar_url: url,
+                          });
+                        }}
+                      />
+                    </div>
 
                     <div>
                       <span className="mb-1.5 text-black dark:text-white">
