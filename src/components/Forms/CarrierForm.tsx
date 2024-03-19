@@ -11,8 +11,6 @@ import { usStates } from '@/components/Forms/data/states';
 import { addCarrier, getFactor } from '@/lib/dbActions';
 import { ModalContext } from '@/Context/modalContext';
 
-// contact name and email are commented out in case we need to go back and add them in
-
 const carrierSchema = yup.object({
   'Carrier Name': yup.string().required('Carrier Name is required'),
   Address: yup.string().required('Address is required'),
@@ -24,7 +22,6 @@ const carrierSchema = yup.object({
     .matches(/^\d{5}$/, 'Zip must be 5 digits')
     .required('Zip Code is required '),
   Country: yup.string().required('Country is required'),
-  // 'Contact Name': yup.string().required('Contact Name is required'), // in case we end up needing this
   'Country Code': yup
     .string()
     .matches(/^\d+$/, 'Must be a valid Country Code')
@@ -33,10 +30,6 @@ const carrierSchema = yup.object({
     .string()
     .matches(/^\d{10}$/, 'Must use valid phone number')
     .required('Contact phone number required'),
-  // Email: yup
-  //   .string()
-  //   .email('Must use a valid email')
-  //   .required('Contact email required'),
   'DOT ID': yup
     .string()
     .matches(/^\d+$/, 'Must be a valid DOT ID')
@@ -66,10 +59,8 @@ export const CarrierForm = () => {
       State: '',
       Zip: '',
       Country: '',
-      // 'Contact Name': '',
       'Country Code': '',
       'Phone Number': '',
-      // Email: '',
       'DOT ID': '',
       'Factor ID': '',
       'Tax ID': '',
@@ -102,10 +93,8 @@ export const CarrierForm = () => {
         State: '',
         Zip: '',
         Country: '',
-        // 'Contact Name': '',
         'Country Code': '',
         'Phone Number': '',
-        // Email: '',
         'DOT ID': '',
         'Factor ID': '',
         'Tax ID': '',
@@ -160,8 +149,6 @@ export const CarrierForm = () => {
                 ></DynamicSelect>
               </div>
             </div>
-            {/* <TextInput control={control} name="Contact Name" required={true} /> */}
-            {/* <TextInput control={control} name="Email" required={true} /> */}
             <TextInput control={control} name="Tax ID" />
             <TextInput control={control} name="Notes" isTextArea={true} />
             {errors.root && (
