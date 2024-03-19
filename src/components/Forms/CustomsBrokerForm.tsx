@@ -5,7 +5,10 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import TextInput from './UI_Elements/TextInput';
+import SelectInput from './UI_Elements/SelectInput';
+import { usStates } from './data/states';
 import { ModalContext } from '@/Context/modalContext';
+import { addBroker } from '@/lib/dbActions';
 
 const customsBrokerSchema = yup.object({
   'Broker Name': yup.string().required('Broker Name is required'),
@@ -57,14 +60,14 @@ export const CustomsBrokerForm = () => {
     resolver: yupResolver(customsBrokerSchema),
   });
 
-  const { toggleOpen } = useContext(ModalContext); // for modal functionality
+  const { toggleOpen } = useContext(ModalContext);
 
   const onSubmit = async (data: CustomsBroker) => {
     console.log(data); // see the data
     try {
-      //   await addDriver({ driver: data }); // add
+      await addBroker({ broker: data });
       console.log('customs broker added successfully');
-      //   toggleOpen(); // for modal
+      toggleOpen();
     } catch (error) {
       console.log('Error submitting form:', error);
       setError('root', { message: 'Error Submitting Form - Please try Again' });
@@ -100,8 +103,18 @@ export const CustomsBrokerForm = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="p-6.5">
             <TextInput control={control} name="Broker Name" required={true} />
+            <TextInput control={control} name="Crossing" required={true} />
+            <TextInput control={control} name="Address" required={true} />
+            <TextInput control={control} name="Address Line 2" />
             <div className=" flex flex-col gap-6 xl:flex-row">
               <div className="w-full xl:w-1/2">
+                <TextInput control={control} name="City" required={true} />
+                <SelectInput
+                  control={control}
+                  name="State"
+                  options={usStates.map((state) => state.name)}
+                  required={true}
+                />
                 <TextInput
                   control={control}
                   name="Country Code"
@@ -109,6 +122,8 @@ export const CustomsBrokerForm = () => {
                 />
               </div>
               <div className="w-full xl:w-1/2">
+                <TextInput control={control} name="Zip" required={true} />
+                <TextInput control={control} name="Country" required={true} />
                 <TextInput
                   control={control}
                   name="Phone Number"
@@ -117,8 +132,6 @@ export const CustomsBrokerForm = () => {
               </div>
             </div>
 
-            <TextInput control={control} name="Crossing" required={true} />
-            <TextInput control={control} name="Email" />
             <TextInput control={control} name="Notes" isTextArea={true} />
             {errors.root && (
               <p className="mb-5 text-danger">{errors.root.message}</p>
