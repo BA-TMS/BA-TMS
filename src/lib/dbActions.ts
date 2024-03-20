@@ -156,7 +156,6 @@ export async function addFactoringCo({ factor }: { factor: any }) {
       postCode: factor['Zip'],
       telCountry: factor['Country Code'],
       telephone: factor['Phone Number'],
-      // terms: factor['Payment Terms'], // if we need payment terms
       // notes: factor['Notes'] || null, // optional field, notes not in db table yet
     },
   });
