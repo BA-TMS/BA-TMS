@@ -11,6 +11,9 @@ type Load = {
   id: string;
   ownerId: string;
   loadNum: string;
+  payOrderNum: string;
+  shipDate: string;
+  deliveryDate: string;
   carrierId: string;
   driverId: string | null;
   customerId: string;
@@ -31,6 +34,9 @@ type Load = {
 // this is passed to Table
 const columns = [
   { field: 'loadNum', headerName: 'Load Number' },
+  { field: 'payOrderNum', headerName: 'PO Number'},
+  { field: 'shipDate', headerName: 'Date Shipped'},
+  { field: 'deliveryDate', headerName: 'Date Delivered'},
   { field: 'carrier', headerName: 'Carrier' },
   { field: 'shipper', headerName: 'Shipper' },
   { field: 'consignee', headerName: 'Consignee'},
@@ -50,6 +56,8 @@ export default function Load() {
     const fetchLoads = async () => {
       const data = await getLoads();
       for (const load of data) {
+        if (load.shipDate) load.shipDate = load.shipDate.toDateString();
+        if (load.deliveryDate) load.deliveryDate = load.deliveryDate.toDateString();
         load.carrier = load.carrier.name;
         load.customer = load.customer.name;
         if (load.shipper) load.shipper = load.shipper.name;

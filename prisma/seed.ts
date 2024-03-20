@@ -368,24 +368,28 @@ const loads = [
   {
     ownerId: null,
     loadNum: '69',
+    payOrderNum: '1111',
     carrierId: null,
     customerId: null,
   },
   {
     ownerId: null,
     loadNum: '420',
+    payOrderNum: '0088',
     carrierId: null,
     customerId: null,
   },
   {
     ownerId: null,
     loadNum: '1111',
+    payOrderNum: '3232',
     carrierId: null,
     customerId: null,
   },
   {
     ownerId: null,
     loadNum: '2222',
+    payOrderNum: '1212',
     carrierId: null,
     customerId: null,
   },

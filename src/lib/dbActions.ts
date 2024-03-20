@@ -164,6 +164,7 @@ export async function addLoad({ load }: { load: any }) {
     data: {
       ownerId: load.ownerId,
       loadNum: load.number,
+      payOrderNum: load.payOrderNum,
       carrierId: load.carrier,
       driverId: load.driver,
       customerId: load.customerId,
