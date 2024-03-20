@@ -20,18 +20,13 @@ type Load = {
   originId: string | null;
   destId: string | null;
   status: string;
-  // carrier: {name: string};
   carrier: string;
-  driver: { name: string } | null;
-  // customer: {name: string};
+  driver: string | null;
   customer: string;
-  // shipper: {name: string} | null;
   shipper: string | null;
-  // consignee: { name: string } | null;
   consignee: string | null;
 };
 
-// this is passed to Table
 const columns = [
   { field: 'loadNum', headerName: 'Load Number' },
   { field: 'payOrderNum', headerName: 'PO Number'},
@@ -51,14 +46,15 @@ export default function Load() {
     toggleOpen();
   };
 
-  // data fetched and passed to Table
   useEffect(() => {
     const fetchLoads = async () => {
       const data = await getLoads();
       for (const load of data) {
+        // Pull strings out of relations and format dates.
         if (load.shipDate) load.shipDate = load.shipDate.toDateString();
         if (load.deliveryDate) load.deliveryDate = load.deliveryDate.toDateString();
         load.carrier = load.carrier.name;
+        if (load.driver) load.driver = load.driver.name;
         load.customer = load.customer.name;
         if (load.shipper) load.shipper = load.shipper.name;
         if (load.consignee) load.consignee = load.consignee.name;
@@ -76,13 +72,13 @@ export default function Load() {
         onClick={handleClick}
         className="float-right rounded-md bg-primary py-3 px-9 font-medium text-white hover:bg-opacity-80"
       >
-        Add Driver
+        Add Load
       </button>
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
-          <h1 className="text-base leading-6 text-gray-900">Drivers</h1>
+          <h1 className="text-base leading-6 text-gray-900">Loads</h1>
           <p className="mt-2 text-md text-gray-700">
-            A list of all the driver information.
+            Load Information
           </p>
         </div>
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
