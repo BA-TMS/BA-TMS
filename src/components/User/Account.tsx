@@ -36,7 +36,7 @@ export default function Account({ user }: { user: User | null }) {
   const [loading, setLoading] = useState(true);
   const [fullname, setFullname] = useState<string | null>(null);
   const [username, setUsername] = useState<string | null>(null);
-  const [website, setWebsite] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
   const [avatar_url, setAvatarUrl] = useState<string | null>(null);
   const supabase = createClient();
   const getProfile = useCallback(async () => {
@@ -45,7 +45,7 @@ export default function Account({ user }: { user: User | null }) {
 
       const { data, error, status } = await supabase
         .from('profiles')
-        .select('full_name, username, website, avatar_url')
+        .select('full_name, username, email, avatar_url')
         .eq('id', user?.id)
         .single();
 
@@ -57,11 +57,11 @@ export default function Account({ user }: { user: User | null }) {
       if (data) {
         setFullname(data.full_name);
         setUsername(data.username);
-        setWebsite(data.website);
+        setEmail(data.email);
         setAvatarUrl(data.avatar_url);
       }
     } catch (error) {
-      alert('Error loading user data!');
+      alert('Error loading user data!' + user);
     } finally {
       setLoading(false);
     }
@@ -73,12 +73,12 @@ export default function Account({ user }: { user: User | null }) {
 
   async function updateProfile({
     username,
-    website,
+    email,
     avatar_url,
   }: {
     username: string | null;
     fullname: string | null;
-    website: string | null;
+    email: string | null;
     avatar_url: string | null;
   }) {
     try {
@@ -88,7 +88,7 @@ export default function Account({ user }: { user: User | null }) {
         id: user?.id as string,
         full_name: fullname,
         username,
-        website,
+        email,
         avatar_url,
         updated_at: new Date().toISOString(),
       });
@@ -320,7 +320,7 @@ export default function Account({ user }: { user: User | null }) {
                           updateProfile({
                             fullname,
                             username,
-                            website,
+                            email,
                             avatar_url: url,
                           });
                         }}
