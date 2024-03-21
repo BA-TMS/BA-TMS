@@ -60,6 +60,11 @@ export async function getShippers() {
   return shippers;
 }
 
+export async function getTrailers() {
+  const trailers = prisma.trailer.findMany();
+  return trailers;
+}
+
 export async function getTrucks() {
   const trucks = prisma.truck.findMany();
   return trucks;
@@ -211,6 +216,18 @@ export async function addShipper({ shipper }: { shipper: any }) {
       postCode: shipper['Zip'],
       telCountry: shipper['Country Code'],
       telephone: shipper['Phone Number'],
+    },
+  });
+}
+
+export async function addTrailer({ trailer }: { trailer: any }) {
+  const resp = await prisma.trailer.create({
+    data: {
+      licensePlate: trailer['License Plate'],
+      plateExpiry: trailer['Plate Expiry'],
+      inspectionExpiry: trailer['Inspection Expiry'],
+      type: trailer['Trailer Type'],
+      status: trailer['Status'],
     },
   });
 }
