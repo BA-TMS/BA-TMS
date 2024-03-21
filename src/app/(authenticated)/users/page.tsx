@@ -1,12 +1,12 @@
 'use client';
 
 import { ContextProvider } from '@/Context/modalContext';
-import UserForm from '@/components/Forms/UserForm';
+import Users from '@/components/Table/Users';
 
 const UserPage = () => {
   return (
     <ContextProvider>
-      <UserForm></UserForm>
+      <Users />
     </ContextProvider>
   );
 };
