@@ -13,6 +13,11 @@ async function getter(table: any, relations: any) {
   return resp;
 }
 
+export async function getBrokers() {
+  const brokers = await prisma.broker.findMany();
+  return brokers;
+}
+
 export async function getCarriers() {
   const carriers = await prisma.carrier.findMany();
   return carriers;
@@ -73,6 +78,24 @@ async function creater(table: any, insertData: any) {
     data: insertData,
   });
   return resp;
+}
+
+export async function addBroker({ broker }: { broker: any }) {
+  const resp = await prisma.broker.create({
+    data: {
+      name: broker['Broker Name'],
+      crossing: broker['Crossing'],
+      address: broker['Address'],
+      addressAddOn: broker['Address Line 2'] || null, // Optional field
+      city: broker['City'],
+      state: broker['State'],
+      postCountry: broker['Country'],
+      postCode: broker['Zip'],
+      telCountry: broker['Country Code'],
+      telephone: broker['Phone Number'],
+      // notes: carrier['Notes'] || null, // optional field, notes not in table yet
+    },
+  });
 }
 
 export async function addCarrier({ carrier }: { carrier: any }) {
