@@ -233,7 +233,7 @@ export async function addShipper({ shipper }: { shipper: any }) {
 export async function addThirdParty({ billee }: { billee: any }) {
   const resp = await prisma.billee.create({
     data: {
-      name: billee['Shipper Name'],
+      name: billee['Third Party Name'],
       address: billee['Address'],
       addressAddOn: billee['Address Line 2'],
       city: billee['City'],
