@@ -7,16 +7,17 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import TextInput from '@/components/Forms/UI_Elements/TextInput';
 import SelectInput from '@/components/Forms/UI_Elements/SelectInput';
 import { ModalContext } from '@/Context/modalContext';
+import { getAccountPreferences, updateAccountPreferences } from '@/lib/dbActions';
 
 const schema = yup.object({
   'Company Name': yup.string(),
   'Primary Contact Name': yup.string(),
   Telephone: yup
     .string()
-    .matches(/^\d{3}-\d{3}-\d{4}$/, 'Must use valid phone number xxx-xxx-xxxx'),
+    .matches(/^\d{10}$/, 'Must use valid phone number xxx-xxx-xxxx'),
   'Toll Free': yup
     .string()
-    .matches(/^\d{3}-\d{3}-\d{4}$/, 'Must use valid phone number xxx-xxx-xxxx'),
+    .matches(/^\d{10}$/, 'Must use valid phone number xxx-xxx-xxxx'),
   'FEI Number': yup.string(),
   Currency: yup.string(),
   'Date Format': yup.string(),
@@ -34,16 +35,20 @@ export default () => {
     control,
     formState: { errors, isSaving, isSaveSuccessful },
   } = useForm<AccountPreferences>({
-    defaultValues: {
-      'Company Name': '',
-      'Primary Contact Name': '',
-      Telephone: '',
-      'Toll Free': '',
-      'FEI Number': '',
-      Currency: '',
-      'Date Format': '',
-      'Time Format': '',
-      'Calendar Format': '',
+    defaultValues: async () => {
+      const prefs = await getAccountPreferences();
+
+      return {
+        'Company Name': prefs.companyName,
+        'Primary Contact Name': prefs.primaryContactName,
+        Telephone: prefs.telephone,
+        'Toll Free': prefs.tollFree,
+        'FEI Number': prefs.fei,
+        Currency: prefs.currency,
+        'Date Format': prefs.dateFormat,
+        'Time Format': prefs.timeFormat,
+        'Calendar Format': prefs.calendarFormat,
+      };
     },
     resolver: yupResolver(schema),
   });
@@ -53,6 +58,17 @@ export default () => {
   const onSubmit = async (data: AccountPreferences) => {
     console.log(data);
     try {
+      await updateAccountPreferences({
+        companyName: data['Company Name'],
+        primaryContactName: data['Primary Contact Name'],
+        telephone: data['Telephone'],
+        tollFree: data['Toll Free'],
+        fei: data['FEI Number'],
+        currency: data['Currency'],
+        dateFormat: data['Date Format'],
+        timeFormat: data['Time Format'],
+        calendarFormat: data['Calendar Format']
+      });
       console.log('account preferences updated successfully');
       toggleOpen();
     } catch (error) {

@@ -138,7 +138,30 @@ async function main() {
     });
   }
 
+  await seedAccountPreferences();
+}
 
+async function seedAccountPreferences() {
+  const prefs = {
+    id: '0',
+    companyName: 'companyName1',
+    primaryContactName: 'primaryContactName1',
+    telephone: '1231231234',
+    tollFree: '3213214321',
+    fei: '234v56',
+    currency: 'American Dollars',
+    dateFormat: 'm/d/Y',
+    timeFormat: '12 Hour',
+    calendarFormat: 'Yearly',
+    mileageSystem: 'ProMiles',
+    printSetting: 'Avoid Toll Roads',
+  };
+
+  await prisma.accountPreferences.upsert({
+    where: { id: prefs.id },
+    update: {},
+    create: prefs,
+  });
 }
 
 const orgs = [
