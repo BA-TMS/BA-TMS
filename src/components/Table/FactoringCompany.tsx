@@ -5,7 +5,7 @@ import { ModalContext } from '@/Context/modalContext';
 import FormModal from '../Modals/FormModal';
 import FactoringCompanyForm from '../Forms/FactoringCompaniesForm';
 import { getFactor } from '@/lib/dbActions';
-import Table from './Table';
+import Table from './UI_Elements/Table';
 
 type Factor = {
   name: string;

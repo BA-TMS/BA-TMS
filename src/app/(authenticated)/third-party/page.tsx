@@ -1,12 +1,12 @@
 'use client';
 
 import { ContextProvider } from '@/Context/modalContext';
-import ThirdPartyForm from '@/components/Forms/ThirdPartyForm';
+import ThirdParty from '@/components/Table/ThirdParty';
 
 const ThirdPartyPage = () => {
   return (
     <ContextProvider>
-      <ThirdPartyForm></ThirdPartyForm>
+      <ThirdParty />
     </ContextProvider>
   );
 };
