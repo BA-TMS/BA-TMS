@@ -5,7 +5,7 @@ import { ModalContext } from '@/Context/modalContext';
 import { getCarriers } from '@/lib/dbActions';
 import CarrierForm from '../Forms/CarrierForm';
 import FormModal from '@/components/Modals/FormModal';
-import Table from './Table';
+import Table from './UI_Elements/Table';
 
 type Carrier = {
   name: string;

@@ -3,13 +3,12 @@
 import { useContext, useState, useEffect } from 'react';
 import { ModalContext } from '@/Context/modalContext';
 import FormModal from '../Modals/FormModal';
+import ThirdPartyForm from '../Forms/ThirdPartyForm';
 import Table from './UI_Elements/Table';
-import { getBrokers } from '@/lib/dbActions';
-import CustomsBrokerForm from '../Forms/CustomsBrokerForm';
+import { getThirdParty } from '@/lib/dbActions';
 
-type Broker = {
+type Billee = {
   name: string;
-  crossing: string;
   address: string;
   addressAddOn: string | null;
   city: string;
@@ -20,10 +19,8 @@ type Broker = {
   telephone: string;
 };
 
-// this is passed to Table
 const columns = [
-  { field: 'name', headerName: 'Broker Name' },
-  { field: 'crossing', headerName: 'Crossing' },
+  { field: 'name', headerName: 'Name' },
   { field: 'address', headerName: 'Address' },
   { field: 'addressAddOn', headerName: 'Address Line 2' },
   { field: 'city', headerName: 'City' },
@@ -34,23 +31,21 @@ const columns = [
   { field: 'telephone', headerName: 'Phone Number' },
 ];
 
-export default function Broker() {
-  const [brokers, setBrokers] = useState<Broker[]>([]);
+export default function ThirdParty() {
+  const [billee, setBillee] = useState<Billee[]>([]);
   const { toggleOpen } = useContext(ModalContext);
 
   const handleClick = () => {
     toggleOpen();
   };
 
-  // data fetched and passed to Table
   useEffect(() => {
-    const fetchBrokers = async () => {
-      const data = await getBrokers();
-      console.log('brokers', data);
-      setBrokers(data);
+    const fetchBillee = async () => {
+      const data = await getThirdParty();
+      setBillee(data);
     };
 
-    fetchBrokers();
+    fetchBillee();
   }, []);
 
   return (
@@ -59,22 +54,24 @@ export default function Broker() {
         onClick={handleClick}
         className="float-right rounded-md bg-primary py-3 px-9 font-medium text-white hover:bg-opacity-80"
       >
-        Add Broker
+        Add Billee
       </button>
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
-          <h1 className="text-base leading-6 text-gray-900">Customs Brokers</h1>
+          <h1 className="text-base leading-6 text-gray-900">
+            Third Party Billing
+          </h1>
           <p className="mt-2 text-md text-gray-700">
-            A list of all Customs Broker information.
+            Third party billing information.
           </p>
         </div>
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
           <FormModal>
-            <CustomsBrokerForm />
+            <ThirdPartyForm />
           </FormModal>
         </div>
       </div>
-      <Table columns={columns} data={brokers}></Table>
+      <Table columns={columns} data={billee}></Table>
     </div>
   );
 }

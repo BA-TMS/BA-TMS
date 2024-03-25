@@ -65,6 +65,11 @@ export async function getShippers() {
   return shippers;
 }
 
+export async function getThirdParty() {
+  const thirdParty = await prisma.billee.findMany();
+  return thirdParty;
+}
+
 export async function getTrailers() {
   const trailers = prisma.trailer.findMany();
   return trailers;
@@ -221,6 +226,22 @@ export async function addShipper({ shipper }: { shipper: any }) {
       postCode: shipper['Zip'],
       telCountry: shipper['Country Code'],
       telephone: shipper['Phone Number'],
+    },
+  });
+}
+
+export async function addThirdParty({ billee }: { billee: any }) {
+  const resp = await prisma.billee.create({
+    data: {
+      name: billee['Third Party Name'],
+      address: billee['Address'],
+      addressAddOn: billee['Address Line 2'],
+      city: billee['City'],
+      state: billee['State'],
+      postCountry: billee['Country'],
+      postCode: billee['Zip'],
+      telCountry: billee['Country Code'],
+      telephone: billee['Phone Number'],
     },
   });
 }
