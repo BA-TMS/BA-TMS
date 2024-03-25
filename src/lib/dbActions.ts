@@ -55,6 +55,11 @@ export async function getLoads() {
   return loads;
 }
 
+export async function getOrganizations() {
+  const organizations = prisma.organization.findMany();
+  return organizations;
+}
+
 export async function getShippers() {
   const shippers = prisma.shipper.findMany();
   return shippers;
@@ -248,10 +253,10 @@ export async function addTruck({ truck }: { truck: any }) {
 export async function addUser({ user }: { user: any }) {
   const resp = await prisma.user.create({
     data: {
-      email: user.email,
-      password: user.password,
-      orgId: user.orgId,
-      role: user.role,
+      email: user['Email'],
+      password: user['Password'],
+      orgId: user['Organization'],
+      role: user['Role'],
     },
   });
 }
