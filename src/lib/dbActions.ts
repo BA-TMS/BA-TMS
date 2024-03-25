@@ -80,6 +80,10 @@ export async function getUsers() {
   return users;
 }
 
+export async function getAccountPreferences() {
+  return await prisma.accountPreferences.findUnique({ where: { id: '0' } });
+}
+
 /** Add new entries to tables. */
 // TODO: Create a central location for form types to replace any.
 // TODO: Read resp. to confirm success of write.
@@ -313,6 +317,15 @@ export async function updateShipper(
 
 export async function updateUser(id: number, { formData }: { formData: any }) {
   const resp = updater(prisma.user, id, formData);
+}
+
+export async function updateAccountPreferences(prefs: any) {
+  await prisma.accountPreferences.update({
+    where: {
+      id: '0',
+    },
+    data: prefs,
+  });
 }
 
 /** Delete rows */
