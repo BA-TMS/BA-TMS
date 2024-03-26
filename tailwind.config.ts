@@ -10,7 +10,6 @@ const config: Config = {
   darkMode: 'class',
   theme: {
     colors: {
-      
       current: 'currentColor',
       transparent: 'transparent',
       white: '#FFFFFF',
@@ -70,14 +69,9 @@ const config: Config = {
         'title-xsm': ['18px', '24px'],
       },
       screens: {
-        "2xsm": "375px",
-        xsm: "425px",
-        "3xl": "2000px",
-      },
-      screens: {
-        "2xsm": "375px",
-        xsm: "425px",
-        "3xl": "2000px",
+        '2xsm': '375px',
+        xsm: '425px',
+        '3xl': '2000px',
       },
       spacing: {
         4.5: '1.125rem',
@@ -326,4 +320,3 @@ const config: Config = {
   plugins: [],
 };
 export default config;
-
