@@ -315,16 +315,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           </li>
                           <li>
                             <Link
-                              href="/consignees"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === '/consignees' && 'text-white'
-                              } `}
-                            >
-                              Consignees
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
                               href="/users"
                               className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
                                 pathname === '/users' && 'text-white'
