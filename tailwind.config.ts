@@ -10,7 +10,7 @@ const config: Config = {
   darkMode: 'class',
   theme: {
     fontFamily: {
-      public: ['var(--font-publicsans)'],
+      public: ['var(--font-publicsans)', 'sans-serif'],
     },
     colors: {
       current: 'currentColor',
