@@ -30,6 +30,7 @@ export var getSelectedImage: File | null = null;
   }*/
 
 export default function Account({ user }: { user: User | null }) {
+  console.log('My user: ' + user);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   // TESTING FOR SUPABASE
