@@ -8,8 +8,17 @@ import { useState, useEffect, useCallback, MouseEventHandler } from 'react';
 import { StaticImageData } from 'next/image';
 import test from 'node:test';
 import { createClient } from '@/util/supabase/client';
-import { type User } from '@supabase/supabase-js';
+//import { type User } from '@supabase/supabase-js';
 import Avatar from './Avatar';
+
+interface User {
+  id: string;
+  app_metadata: any;
+  user_metadata: any;
+  aud: string;
+  created_at: string;
+  profile_url: string;
+}
 
 const secondaryNavigation = [
   { name: 'Account', href: '#', current: true },
@@ -30,7 +39,14 @@ export var getSelectedImage: File | null = null;
   }*/
 
 export default function Account({ user }: { user: User | null }) {
-  console.log('My user: ' + user);
+  //console.log('My user: ' + user);
+  // TEST
+  const { id } = user;
+  //console.log('My ID: ' + id);
+
+  // TESTING FOR SHOW IMAGE
+  const [showImage, setShowImage] = useState<boolean>(true);
+
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   // TESTING FOR SUPABASE
@@ -113,6 +129,9 @@ export default function Account({ user }: { user: User | null }) {
   const deleteImage = useCallback<MouseEventHandler<HTMLButtonElement>>((e) => {
     setSelectedImage(null);
     getSelectedImage = null;
+
+    // DELETE IMAGE
+    setShowImage(false);
     e.preventDefault();
   }, []);
 
@@ -313,8 +332,9 @@ export default function Account({ user }: { user: User | null }) {
                   <div className="mb-4 flex items-center gap-3">
                     <div className="h-14 w-14 rounded-full">
                       <Avatar
+                        key={showImage ? 'show' : 'hide'}
                         uid={user?.id ?? null}
-                        url={avatar_url}
+                        url={showImage ? user?.profile_url ?? null : ''}
                         size={150}
                         onUpload={(url) => {
                           setAvatarUrl(url);
