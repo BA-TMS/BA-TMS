@@ -93,16 +93,12 @@ const config: Config = {
 
     extend: {
       fontSize: {
-        'title-xxl': ['44px', '55px'],
-        'title-xxl2': ['42px', '58px'],
-        'title-xl': ['36px', '45px'],
-        'title-xl2': ['33px', '45px'],
-        'title-lg': ['28px', '35px'],
-        'title-md': ['24px', '30px'],
-        'title-md2': ['26px', '30px'],
-        'title-sm': ['20px', '26px'],
-        'title-sm2': ['22px', '28px'],
-        'title-xsm': ['18px', '24px'],
+        'title-xxl': ['64px', '80px'],
+        'title-xl': ['48px', '64px'],
+        'title-lg': ['32px', '48px'],
+        'title-md': ['24px', '36px'],
+        'title-sm': ['20px', '30px'],
+        'title-xsm': ['18px', '28px'],
       },
       screens: {
         '2xsm': '375px',
