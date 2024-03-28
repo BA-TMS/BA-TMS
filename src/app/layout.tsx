@@ -7,7 +7,6 @@ const publicSans = Public_Sans({
   display: 'swap',
   variable: '--font-publicsans',
 });
-// create a variable to reference through tailwind classes
 
 export default function RootLayout({
   children,
@@ -16,7 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html suppressHydrationWarning lang="en">
-      <body className={`${publicSans.variable} font-public`}>
+      <body className={`${publicSans.variable}`}>
         <main>{children}</main>
       </body>
     </html>

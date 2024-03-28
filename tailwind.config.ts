@@ -99,6 +99,9 @@ const config: Config = {
         'title-md': ['24px', '36px'],
         'title-sm': ['20px', '30px'],
         'title-xsm': ['18px', '28px'],
+        'text-lg': ['16px', '24px'],
+        'text-sm': ['14px', '22px'],
+        'text-xsm': ['12px', '18px'],
       },
       screens: {
         '2xsm': '375px',
