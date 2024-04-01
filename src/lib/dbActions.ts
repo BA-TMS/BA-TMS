@@ -50,6 +50,11 @@ export async function getLoads() {
   return loads;
 }
 
+export async function getOrgs() {
+  const orgs = await getter(prisma.organization, null);
+  return orgs;
+}
+
 export async function getShippers() {
   const shippers = prisma.shipper.findMany();
   return shippers;
@@ -162,15 +167,15 @@ export async function addFactoringCo({ factor }: { factor: any }) {
 export async function addLoad({ load }: { load: any }) {
   const resp = await prisma.load.create({
     data: {
-      ownerId: load.ownerId,
-      loadNum: load.number,
-      payOrderNum: load.payOrderNum,
-      carrierId: load.carrier,
-      driverId: load.driver,
-      customerId: load.customerId,
-      originId: load.originId,
-      destId: load.destId,
-      status: load.status,
+      ownerId: load['Owner'],
+      loadNum: load['Load Number'],
+      payOrderNum: load['Pay Order Number'],
+      carrierId: load['Carrier'],
+      driverId: load['Driver'],
+      customerId: load['Customer'],
+      originId: load['Shipper'],
+      destId: load['Consignee'],
+      status: load['Status'],
     },
   });
 }

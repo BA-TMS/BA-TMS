@@ -3,7 +3,7 @@
 import { useContext, useState, useEffect } from 'react';
 import { ModalContext } from '@/Context/modalContext';
 import FormModal from '../Modals/FormModal';
-import DriverForm from '../Forms/DriverForm';
+import LoadForm from '../Forms/LoadForm';
 import Table from './Table';
 import { getLoads } from '@/lib/dbActions';
 
@@ -30,6 +30,7 @@ type Load = {
 const columns = [
   { field: 'loadNum', headerName: 'Load Number' },
   { field: 'payOrderNum', headerName: 'PO Number'},
+  { field: 'customer', headerName: 'Customer'},
   { field: 'shipDate', headerName: 'Date Shipped'},
   { field: 'deliveryDate', headerName: 'Date Delivered'},
   { field: 'carrier', headerName: 'Carrier' },
@@ -83,7 +84,7 @@ export default function Load() {
         </div>
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
           <FormModal>
-            <DriverForm />
+            <LoadForm />
           </FormModal>
         </div>
       </div>
