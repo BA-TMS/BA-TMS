@@ -4,7 +4,7 @@ import { useContext, useState, useEffect } from 'react';
 import { ModalContext } from '@/Context/modalContext';
 import FormModal from '../Modals/FormModal';
 import TruckForm from '../Forms/TruckForm';
-import Table from './UI_Elements/Table';
+import Table from '../UI_Elements/Table';
 import { getTrucks } from '@/lib/dbActions';
 
 type Truck = {

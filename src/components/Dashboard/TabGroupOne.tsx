@@ -2,11 +2,11 @@
 
 /* Eventually use SWR to keep everything real time */
 
-import React, { useState, useEffect } from "react";
-import Link from "next/link";
-import ConsigneeTable from '@/components/Tables/ConsigneeTable';
-import CustomerTable from '@/components/Tables/CustomerTable';
-import ShipperTable from '@/components/Tables/ShipperTable';
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import ConsigneeTable from '@/components/Table/ConsigneeTable';
+import CustomerTable from '@/components/Table/CustomerTable';
+import ShipperTable from '@/components/Table/ShipperTable';
 import CustomerModal from '@/components/Modals/CustomerModal';
 import ConsigneeModal from '@/components/Modals/ConsigneeModal'; // Corrected import for ConsigneeModal
 import ShipperModal from '@/components/Modals/ShipperModal';
@@ -28,10 +28,24 @@ interface DataItem {
 }
 
 const SORT_OPTIONS = [
-  "Name", "Load Number", "Customer", "Dispatcher", "Carrier", "Driver", 
-  "Truck", "Trailer", "Work Order #", "Shipper", "Sales Rep", "Origin City", 
-  "Origin State", "P.O. Numbers", "Consignee", "Destination City", 
-  "Destination State", "PO#"
+  'Name',
+  'Load Number',
+  'Customer',
+  'Dispatcher',
+  'Carrier',
+  'Driver',
+  'Truck',
+  'Trailer',
+  'Work Order #',
+  'Shipper',
+  'Sales Rep',
+  'Origin City',
+  'Origin State',
+  'P.O. Numbers',
+  'Consignee',
+  'Destination City',
+  'Destination State',
+  'PO#',
 ];
 
 const TabGroupOne: React.FC = () => {
@@ -56,13 +70,14 @@ const TabGroupOne: React.FC = () => {
     fetchData();
   }, [openTab]); // Added openTab to the dependency array to refetch data when it changes
 
-  const activeClasses = "text-primary border-primary";
-  const inactiveClasses = "border-transparent";
+  const activeClasses = 'text-primary border-primary';
+  const inactiveClasses = 'border-transparent';
 
   return (
     <>
       <div className="flex justify-end mb-4">
-        <button className="rounded-md bg-primary py-3 px-9 font-medium text-white"
+        <button
+          className="rounded-md bg-primary py-3 px-9 font-medium text-white"
           onClick={() => {
             if (openTab === 1) {
               setIsModalOpen(true);
@@ -76,7 +91,7 @@ const TabGroupOne: React.FC = () => {
           Add
         </button>
       </div>
-      
+
       <div className="rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="mb-6 flex flex-wrap gap-5 border-b border-stroke dark:border-strokedark sm:gap-10">
           <Link
@@ -121,7 +136,9 @@ const TabGroupOne: React.FC = () => {
             defaultValue="" // Adjusted line for controlled component
             className="border border-stroke focus:border-primary outline-none rounded-md px-3 py-2.5 flex-shrink"
           >
-            <option value="" disabled>Sort By:</option>
+            <option value="" disabled>
+              Sort By:
+            </option>
             {SORT_OPTIONS.map((option) => (
               <option key={option} value={option}>
                 {option}
@@ -133,28 +150,42 @@ const TabGroupOne: React.FC = () => {
         {/* Tabs */}
         <div>
           {/* Customer tab */}
-          <div className={`leading-relaxed ${openTab === 1 ? "block" : "hidden"}`}>
+          <div
+            className={`leading-relaxed ${openTab === 1 ? 'block' : 'hidden'}`}
+          >
             <CustomerTable data={data} />
           </div>
           {/* Consignee tab */}
-          <div className={`leading-relaxed ${openTab === 2 ? "block" : "hidden"}`}>
+          <div
+            className={`leading-relaxed ${openTab === 2 ? 'block' : 'hidden'}`}
+          >
             <ConsigneeTable data={data} />
           </div>
           {/* Shipper tab */}
-          <div className={`leading-relaxed ${openTab === 3 ? "block" : "hidden"}`}>
+          <div
+            className={`leading-relaxed ${openTab === 3 ? 'block' : 'hidden'}`}
+          >
             <ShipperTable data={data} />
           </div>
         </div>
       </div>
       {/* Include CustomerModal and pass isModalOpen and setIsModalOpen as props */}
-      <CustomerModal isModalOpen={isModalOpen && openTab === 1} setIsModalOpen={setIsModalOpen} />
+      <CustomerModal
+        isModalOpen={isModalOpen && openTab === 1}
+        setIsModalOpen={setIsModalOpen}
+      />
       {/* Include ConsigneeModal and pass isModalOpen and setIsModalOpen as props for Consignee */}
-      <ConsigneeModal isModalOpen={isModalOpen && openTab === 2} setIsModalOpen={setIsModalOpen} />
+      <ConsigneeModal
+        isModalOpen={isModalOpen && openTab === 2}
+        setIsModalOpen={setIsModalOpen}
+      />
       {/* Include ShipperModal and pass isModalOpen and setIsModalOpen as props for Shipper */}
-      <ShipperModal isModalOpen={isModalOpen && openTab === 3} setIsModalOpen={setIsModalOpen} />
+      <ShipperModal
+        isModalOpen={isModalOpen && openTab === 3}
+        setIsModalOpen={setIsModalOpen}
+      />
     </>
   );
 };
 
 export default TabGroupOne;
-

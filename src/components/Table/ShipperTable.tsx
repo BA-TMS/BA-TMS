@@ -1,6 +1,6 @@
 'use client';
 
-import TableActionsPopover from '../Popovers/TableActions';
+import TableActionsPopover from '../UI_Elements/Popovers/TableActions';
 
 interface ShipperData {
   id: number;
@@ -21,9 +21,7 @@ interface ShipperTableProps {
   data: ShipperData[];
 }
 
-export default function ShipperTable({
-  data,
-}: ShipperTableProps): JSX.Element {
+export default function ShipperTable({ data }: ShipperTableProps): JSX.Element {
   return (
     <>
       <div className="rounded-sm border border-stroke bg-white px-5 pt-6 mt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -62,42 +60,101 @@ export default function ShipperTable({
             </thead>
             <tbody>
               {data.map((shipper: ShipperData, key: number) => (
-                <tr key={key} className={key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}>
-                  <td className={`py-5 px-4 pl-9 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'} xl:pl-11`}>
+                <tr
+                  key={key}
+                  className={
+                    key === data.length - 1
+                      ? ''
+                      : 'border-b border-[#eee] dark:border-strokedark'
+                  }
+                >
+                  <td
+                    className={`py-5 px-4 pl-9 ${
+                      key === data.length - 1
+                        ? ''
+                        : 'border-b border-[#eee] dark:border-strokedark'
+                    } xl:pl-11`}
+                  >
                     <h5 className="font-medium text-black dark:text-white">
                       {shipper.name}
                     </h5>
                   </td>
-                  <td className={`py-5 px-4 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}`}>
+                  <td
+                    className={`py-5 px-4 ${
+                      key === data.length - 1
+                        ? ''
+                        : 'border-b border-[#eee] dark:border-strokedark'
+                    }`}
+                  >
                     <p className="text-black dark:text-white">
                       {shipper.address}
                     </p>
                   </td>
-                  <td className={`py-5 px-4 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}`}>
-                    <p className="text-black dark:text-white">
-                      {shipper.city}
-                    </p>
+                  <td
+                    className={`py-5 px-4 ${
+                      key === data.length - 1
+                        ? ''
+                        : 'border-b border-[#eee] dark:border-strokedark'
+                    }`}
+                  >
+                    <p className="text-black dark:text-white">{shipper.city}</p>
                   </td>
-                  <td className={`py-5 px-4 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}`}>
+                  <td
+                    className={`py-5 px-4 ${
+                      key === data.length - 1
+                        ? ''
+                        : 'border-b border-[#eee] dark:border-strokedark'
+                    }`}
+                  >
                     <p className="text-black dark:text-white">
                       {shipper.state}
                     </p>
                   </td>
-                  <td className={`py-5 px-4 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}`}>
+                  <td
+                    className={`py-5 px-4 ${
+                      key === data.length - 1
+                        ? ''
+                        : 'border-b border-[#eee] dark:border-strokedark'
+                    }`}
+                  >
                     <p className="text-black dark:text-white">
                       {shipper.postCode}
                     </p>
                   </td>
-                  <td className={`py-5 px-4 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}`}>
+                  <td
+                    className={`py-5 px-4 ${
+                      key === data.length - 1
+                        ? ''
+                        : 'border-b border-[#eee] dark:border-strokedark'
+                    }`}
+                  >
                     <p className="text-black dark:text-white">{'contact'}</p>
                   </td>
-                  <td className={`py-5 px-4 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}`}>
+                  <td
+                    className={`py-5 px-4 ${
+                      key === data.length - 1
+                        ? ''
+                        : 'border-b border-[#eee] dark:border-strokedark'
+                    }`}
+                  >
                     <p className="text-black dark:text-white">{'email'}</p>
                   </td>
-                  <td className={`py-5 px-4 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}`}>
+                  <td
+                    className={`py-5 px-4 ${
+                      key === data.length - 1
+                        ? ''
+                        : 'border-b border-[#eee] dark:border-strokedark'
+                    }`}
+                  >
                     <p className="text-black dark:text-white">{'notes'}</p>
                   </td>
-                  <td className={`py-5 px-4 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}`}>
+                  <td
+                    className={`py-5 px-4 ${
+                      key === data.length - 1
+                        ? ''
+                        : 'border-b border-[#eee] dark:border-strokedark'
+                    }`}
+                  >
                     <div className="flex items-center space-x-3.5">
                       <TableActionsPopover></TableActionsPopover>
                     </div>

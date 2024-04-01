@@ -4,8 +4,8 @@ import { useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import TextInput from './UI_Elements/TextInput';
-import DynamicSelect from './UI_Elements/DynamicSelect';
+import TextInput from '../UI_Elements/Form/TextInput';
+import DynamicSelect from '../UI_Elements/Form/DynamicSelect';
 import { ModalContext } from '@/Context/modalContext';
 import {
   addLoad,
@@ -16,17 +16,17 @@ import {
   getOrgs,
   getShippers,
 } from '@/lib/dbActions';
-import DateSelect from './UI_Elements/DateSelect';
+import DateSelect from '../UI_Elements/Form/DateSelect';
 
 const loadSchema = yup.object({
-  'Owner': yup.string(),
+  Owner: yup.string(),
   'Load Number': yup.string().required('Enter load number for your records'),
   'Pay Order Number': yup.string().required('Enter PO number for your records'),
-  'Customer': yup.string().required('Enter customer for load'),
-  'Driver': yup.string(),
-  'Carrier': yup.string().required('Who will be carrying this load?'),
-  'Shipper': yup.string(),
-  'Consignee': yup.string(),
+  Customer: yup.string().required('Enter customer for load'),
+  Driver: yup.string(),
+  Carrier: yup.string().required('Who will be carrying this load?'),
+  Shipper: yup.string(),
+  Consignee: yup.string(),
   'Ship Date': yup.date().nullable(),
   'Received Date': yup.date().nullable(),
 });
@@ -45,7 +45,7 @@ export const LoadForm = () => {
       'Load Number': '',
       'Pay Order Number': '',
       'Ship Date': undefined,
-      'Received Date': undefined
+      'Received Date': undefined,
     },
     resolver: yupResolver(loadSchema),
   });
@@ -140,7 +140,7 @@ export const LoadForm = () => {
 
             <div className=" flex flex-col gap-6 xl:flex-row">
               <div className="w-full xl:w-1/2">
-              <DateSelect
+                <DateSelect
                   control={control}
                   name="Ship Date"
                   required={false}
@@ -148,7 +148,7 @@ export const LoadForm = () => {
               </div>
 
               <div className="w-full xl:w-1/2">
-              <DateSelect
+                <DateSelect
                   control={control}
                   name="Received Date"
                   required={false}

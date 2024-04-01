@@ -4,7 +4,7 @@ import { useContext, useState, useEffect } from 'react';
 import { ModalContext } from '@/Context/modalContext';
 import FormModal from '../Modals/FormModal';
 import LoadForm from '../Forms/LoadForm';
-import Table from './UI_Elements/Table';
+import Table from '../UI_Elements/Table';
 import { getLoads } from '@/lib/dbActions';
 
 type Load = {
@@ -29,14 +29,14 @@ type Load = {
 
 const columns = [
   { field: 'loadNum', headerName: 'Load Number' },
-  { field: 'payOrderNum', headerName: 'PO Number'},
-  { field: 'customer', headerName: 'Customer'},
-  { field: 'shipDate', headerName: 'Date Shipped'},
-  { field: 'deliveryDate', headerName: 'Date Delivered'},
+  { field: 'payOrderNum', headerName: 'PO Number' },
+  { field: 'customer', headerName: 'Customer' },
+  { field: 'shipDate', headerName: 'Date Shipped' },
+  { field: 'deliveryDate', headerName: 'Date Delivered' },
   { field: 'carrier', headerName: 'Carrier' },
   { field: 'shipper', headerName: 'Shipper' },
-  { field: 'consignee', headerName: 'Consignee'},
-  { field: 'status', headerName: 'Status'}
+  { field: 'consignee', headerName: 'Consignee' },
+  { field: 'status', headerName: 'Status' },
 ];
 
 export default function Load() {
@@ -53,7 +53,8 @@ export default function Load() {
       for (const load of data) {
         // Pull strings out of relations and format dates.
         if (load.shipDate) load.shipDate = load.shipDate.toDateString();
-        if (load.deliveryDate) load.deliveryDate = load.deliveryDate.toDateString();
+        if (load.deliveryDate)
+          load.deliveryDate = load.deliveryDate.toDateString();
         load.carrier = load.carrier.name;
         if (load.driver) load.driver = load.driver.name;
         load.customer = load.customer.name;
@@ -78,9 +79,7 @@ export default function Load() {
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           <h1 className="text-base leading-6 text-gray-900">Loads</h1>
-          <p className="mt-2 text-md text-gray-700">
-            Load Information
-          </p>
+          <p className="mt-2 text-md text-gray-700">Load Information</p>
         </div>
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
           <FormModal>

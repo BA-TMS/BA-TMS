@@ -4,8 +4,8 @@ import React, { useEffect, useRef, Dispatch, SetStateAction } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import TextInput from './UI_Elements/TextInput';
-import SelectInput from './UI_Elements/SelectInput';
+import TextInput from '../UI_Elements/Form/TextInput';
+import SelectInput from '../UI_Elements/Form/SelectInput';
 import { usStates } from '@/components/Forms/data/states';
 import { addCustomer } from '../../lib/dbActions'; // Adjust the path as necessary
 

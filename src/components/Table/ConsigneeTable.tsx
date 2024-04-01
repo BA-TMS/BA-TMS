@@ -1,8 +1,8 @@
 'use client';
 
-import TableActionsPopover from '../Popovers/TableActions';
+import TableActionsPopover from '../UI_Elements/Popovers/TableActions';
 
-interface CustomerData {
+interface ConsigneeData {
   id: number;
   createdAt: Date | null;
   updatedAt: Date | null;
@@ -17,13 +17,13 @@ interface CustomerData {
   telephone: string;
 }
 
-interface CustomerTableProps {
-  data: CustomerData[];
+interface ConsigneeTableProps {
+  data: ConsigneeData[];
 }
 
-export default function CustomerTable({
+export default function ConsigneeTable({
   data,
-}: CustomerTableProps): JSX.Element {
+}: ConsigneeTableProps): JSX.Element {
   return (
     <>
       <div className="rounded-sm border border-stroke bg-white px-5 pt-6 mt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -32,7 +32,7 @@ export default function CustomerTable({
             <thead>
               <tr className="bg-gray-2 text-left dark:bg-meta-4">
                 <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                  Customer Name
+                  Consignee Name
                 </th>
                 <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
                   Address
@@ -61,7 +61,7 @@ export default function CustomerTable({
               </tr>
             </thead>
             <tbody>
-              {data.map((customer: CustomerData, key: number) => (
+              {data.map((consignee: ConsigneeData, key: number) => (
                 <tr
                   key={key}
                   className={
@@ -78,7 +78,7 @@ export default function CustomerTable({
                     } xl:pl-11`}
                   >
                     <h5 className="font-medium text-black dark:text-white">
-                      {customer.name}
+                      {consignee.name}
                     </h5>
                   </td>
                   <td
@@ -89,7 +89,7 @@ export default function CustomerTable({
                     }`}
                   >
                     <p className="text-black dark:text-white">
-                      {customer.address}
+                      {consignee.address}
                     </p>
                   </td>
                   <td
@@ -100,7 +100,7 @@ export default function CustomerTable({
                     }`}
                   >
                     <p className="text-black dark:text-white">
-                      {customer.city}
+                      {consignee.city}
                     </p>
                   </td>
                   <td
@@ -111,7 +111,7 @@ export default function CustomerTable({
                     }`}
                   >
                     <p className="text-black dark:text-white">
-                      {customer.state}
+                      {consignee.state}
                     </p>
                   </td>
                   <td
@@ -122,7 +122,7 @@ export default function CustomerTable({
                     }`}
                   >
                     <p className="text-black dark:text-white">
-                      {customer.postCode}
+                      {consignee.postCode}
                     </p>
                   </td>
                   <td

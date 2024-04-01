@@ -9,7 +9,7 @@ import Button from '@/components/Settings-General/Button';
 import { useRef } from 'react';
 import ToggleButton from '@/components/Controls/ToggleButton';
 import Popup from 'reactjs-popup';
-import TableActionsPopover from '@/components/Popovers/TableActions';
+import TableActionsPopover from '@/components/UI_Elements/Popovers/TableActions';
 
 type Member = {
   avatar: string;
