@@ -220,6 +220,8 @@ export async function addLoad({ load }: { load: any }) {
       originId: load['Shipper'],
       destId: load['Consignee'],
       status: load['Status'],
+      shipDate: load['Ship Date'],
+      deliveryDate: load['Received Date']
     },
   });
 }
