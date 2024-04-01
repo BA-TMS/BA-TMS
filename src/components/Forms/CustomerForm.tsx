@@ -25,11 +25,7 @@ const customerSchema = yup.object({
     .matches(/^\d{5}$/, 'Zip must be 5 digits')
     .required('Zip Code is required '),
   Country: yup.string().required('Country is required'), // is this necessary or are we US based?
-  'Country Code': yup
-    .number()
-    .nullable()
-    .integer('Must be an integer')
-    .required('Country Code is required'),
+  'Country Code': yup.string().nullable().required('Country Code is required'),
   'Phone Number': yup
     .string()
     .matches(/^\d{3}-\d{3}-\d{4}$/, 'Must use valid phone number xxx-xxx-xxxx')
@@ -65,7 +61,7 @@ const CustomerForm: React.FC<CustomerFormProps> = ({
       State: '',
       Zip: '',
       Country: '',
-      'Country Code': 1,
+      'Country Code': '',
       'Phone Number': '',
       // Email: '',
       Notes: '',
@@ -97,7 +93,7 @@ const CustomerForm: React.FC<CustomerFormProps> = ({
         State: '',
         Zip: '',
         Country: '',
-        'Country Code': 1,
+        'Country Code': '',
         'Phone Number': '',
         // Email: '',
         Notes: '',

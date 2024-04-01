@@ -1,16 +1,54 @@
 'use client';
 
-import { useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { ModalContext } from '@/Context/modalContext';
 import FormModal from '../Modals/FormModal';
 import FactoringCompanyForm from '../Forms/FactoringCompaniesForm';
+import { getFactor } from '@/lib/dbActions';
+import Table from './UI_Elements/Table';
+
+type Factor = {
+  name: string;
+  address: string;
+  addressAddOn: string | null;
+  city: string;
+  state: string;
+  postCountry: string;
+  postCode: string;
+  telCountry: string;
+  telephone: string;
+};
+
+// this is passed to Table
+const columns = [
+  { field: 'name', headerName: 'Name' },
+  { field: 'address', headerName: 'Name' },
+  { field: 'addressAddOn', headerName: 'Name' },
+  { field: 'city', headerName: 'Name' },
+  { field: 'state', headerName: 'Name' },
+  { field: 'postCountry', headerName: 'Name' },
+  { field: 'postCode', headerName: 'Name' },
+  { field: 'telCountry', headerName: 'Country Code' },
+  { field: 'telephone', headerName: 'Phone Number' },
+];
 
 export default function FactoringCompany() {
-  const { isOpen, toggleOpen } = useContext(ModalContext);
+  const [factor, setFactor] = useState<Factor[]>([]);
+  const { toggleOpen } = useContext(ModalContext);
 
   const handleClick = () => {
     toggleOpen();
   };
+
+  // data fetched and passed to Table
+  useEffect(() => {
+    const fetchFactor = async () => {
+      const data = await getFactor();
+      setFactor(data);
+    };
+
+    fetchFactor();
+  }, []);
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
@@ -35,6 +73,7 @@ export default function FactoringCompany() {
           </FormModal>
         </div>
       </div>
+      <Table columns={columns} data={factor}></Table>
     </div>
   );
 }

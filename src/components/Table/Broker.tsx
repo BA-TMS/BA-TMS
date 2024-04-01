@@ -3,29 +3,39 @@
 import { useContext, useState, useEffect } from 'react';
 import { ModalContext } from '@/Context/modalContext';
 import FormModal from '../Modals/FormModal';
-import DriverForm from '../Forms/DriverForm';
 import Table from './UI_Elements/Table';
-import { getDrivers } from '@/lib/dbActions';
+import { getBrokers } from '@/lib/dbActions';
+import CustomsBrokerForm from '../Forms/CustomsBrokerForm';
 
-type Driver = {
+type Broker = {
   name: string;
-  license: string;
+  crossing: string;
+  address: string;
+  addressAddOn: string | null;
+  city: string;
+  state: string;
+  postCountry: string;
+  postCode: string;
   telCountry: string;
   telephone: string;
-  employerId: string;
 };
 
 // this is passed to Table
 const columns = [
-  { field: 'name', headerName: 'Name' },
+  { field: 'name', headerName: 'Broker Name' },
+  { field: 'crossing', headerName: 'Crossing' },
+  { field: 'address', headerName: 'Address' },
+  { field: 'addressAddOn', headerName: 'Address Line 2' },
+  { field: 'city', headerName: 'City' },
+  { field: 'state', headerName: 'State' },
+  { field: 'postCountry', headerName: 'Country' },
+  { field: 'postCode', headerName: 'Postal Code/ Zip' },
   { field: 'telCountry', headerName: 'Country Code' },
   { field: 'telephone', headerName: 'Phone Number' },
-  { field: 'license', headerName: 'License Number' },
-  { field: 'employerId', headerName: 'Employer ID' },
 ];
 
-export default function Driver() {
-  const [drivers, setDrivers] = useState<Driver[]>([]);
+export default function Broker() {
+  const [brokers, setBrokers] = useState<Broker[]>([]);
   const { toggleOpen } = useContext(ModalContext);
 
   const handleClick = () => {
@@ -34,13 +44,13 @@ export default function Driver() {
 
   // data fetched and passed to Table
   useEffect(() => {
-    const fetchDrivers = async () => {
-      const data = await getDrivers();
-      console.log('drivers', data);
-      setDrivers(data);
+    const fetchBrokers = async () => {
+      const data = await getBrokers();
+      console.log('brokers', data);
+      setBrokers(data);
     };
 
-    fetchDrivers();
+    fetchBrokers();
   }, []);
 
   return (
@@ -49,22 +59,22 @@ export default function Driver() {
         onClick={handleClick}
         className="float-right rounded-md bg-primary py-3 px-9 font-medium text-white hover:bg-opacity-80"
       >
-        Add Driver
+        Add Broker
       </button>
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
-          <h1 className="text-base leading-6 text-gray-900">Drivers</h1>
+          <h1 className="text-base leading-6 text-gray-900">Customs Brokers</h1>
           <p className="mt-2 text-md text-gray-700">
-            A list of all the driver information.
+            A list of all Customs Broker information.
           </p>
         </div>
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
           <FormModal>
-            <DriverForm />
+            <CustomsBrokerForm />
           </FormModal>
         </div>
       </div>
-      <Table columns={columns} data={drivers}></Table>
+      <Table columns={columns} data={brokers}></Table>
     </div>
   );
 }

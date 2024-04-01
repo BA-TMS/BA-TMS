@@ -1,10 +1,12 @@
-import { getLoads } from '@/lib/dbActions';
-import LoadTable from '@/components/Tables/LoadTable';
+'use client';
 
-const LoadsPage = async () => {
-  const data = await getLoads();
+import { ContextProvider } from '@/Context/modalContext';
+import Load from '@/components/Table/Load';
 
-  return <LoadTable loads={data} />;
-};
-
-export default LoadsPage;
+export default function Loads() {
+  return (
+    <ContextProvider>
+      <Load/>
+    </ContextProvider>
+  )
+}
