@@ -281,3 +281,18 @@ model Billee {
   telCountry    String    @default("1")
   telephone     String    @unique
 }
+
+model AccountPreferences {
+  id                 String @unique
+  companyName        String
+  primaryContactName String
+  telephone          String
+  tollFree           String
+  fei                String
+  currency           String
+  dateFormat         String
+  timeFormat         String
+  calendarFormat     String
+  mileageSystem      String
+  printSetting       String
+}

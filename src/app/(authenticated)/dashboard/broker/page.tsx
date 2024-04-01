@@ -1,15 +1,15 @@
-// Driver Components Test
+// Test page for customs broker
 
 'use client';
 
 import { ContextProvider } from '@/Context/modalContext';
-import Driver from '@/components/Table/Driver';
+import Broker from '@/components/Table/Broker';
 
 export default function Home() {
   return (
     <>
       <ContextProvider>
-        <Driver />
+        <Broker />
       </ContextProvider>
     </>
   );

@@ -13,6 +13,11 @@ async function getter(table: any, relations: any) {
   return resp;
 }
 
+export async function getBrokers() {
+  const brokers = await prisma.broker.findMany();
+  return brokers;
+}
+
 export async function getCarriers() {
   const carriers = await prisma.carrier.findMany();
   return carriers;
@@ -50,6 +55,11 @@ export async function getLoads() {
   return loads;
 }
 
+export async function getOrganizations() {
+  const organizations = prisma.organization.findMany();
+  return organizations;
+}
+
 export async function getOrgs() {
   const orgs = await getter(prisma.organization, null);
   return orgs;
@@ -60,9 +70,28 @@ export async function getShippers() {
   return shippers;
 }
 
+export async function getThirdParty() {
+  const thirdParty = await prisma.billee.findMany();
+  return thirdParty;
+}
+
+export async function getTrailers() {
+  const trailers = prisma.trailer.findMany();
+  return trailers;
+}
+
+export async function getTrucks() {
+  const trucks = prisma.truck.findMany();
+  return trucks;
+}
+
 export async function getUsers() {
   const users = prisma.user.findMany();
   return users;
+}
+
+export async function getAccountPreferences() {
+  return await prisma.accountPreferences.findUnique({ where: { id: '0' } });
 }
 
 /** Add new entries to tables. */
@@ -73,6 +102,24 @@ async function creater(table: any, insertData: any) {
     data: insertData,
   });
   return resp;
+}
+
+export async function addBroker({ broker }: { broker: any }) {
+  const resp = await prisma.broker.create({
+    data: {
+      name: broker['Broker Name'],
+      crossing: broker['Crossing'],
+      address: broker['Address'],
+      addressAddOn: broker['Address Line 2'] || null, // Optional field
+      city: broker['City'],
+      state: broker['State'],
+      postCountry: broker['Country'],
+      postCode: broker['Zip'],
+      telCountry: broker['Country Code'],
+      telephone: broker['Phone Number'],
+      // notes: carrier['Notes'] || null, // optional field, notes not in table yet
+    },
+  });
 }
 
 export async function addCarrier({ carrier }: { carrier: any }) {
@@ -111,8 +158,6 @@ export async function addConsignee({ consignee }: { consignee: any }) {
       // notes: consignee['Notes'] || null, // optional field, notes not in db table yet
     },
   });
-
-  console.log(resp);
 }
 
 export async function addCustomer({ customer }: { customer: any }) {
@@ -158,7 +203,6 @@ export async function addFactoringCo({ factor }: { factor: any }) {
       postCode: factor['Zip'],
       telCountry: factor['Country Code'],
       telephone: factor['Phone Number'],
-      // terms: factor['Payment Terms'], // if we need payment terms
       // notes: factor['Notes'] || null, // optional field, notes not in db table yet
     },
   });
@@ -196,13 +240,54 @@ export async function addShipper({ shipper }: { shipper: any }) {
   });
 }
 
+export async function addThirdParty({ billee }: { billee: any }) {
+  const resp = await prisma.billee.create({
+    data: {
+      name: billee['Third Party Name'],
+      address: billee['Address'],
+      addressAddOn: billee['Address Line 2'],
+      city: billee['City'],
+      state: billee['State'],
+      postCountry: billee['Country'],
+      postCode: billee['Zip'],
+      telCountry: billee['Country Code'],
+      telephone: billee['Phone Number'],
+    },
+  });
+}
+
+export async function addTrailer({ trailer }: { trailer: any }) {
+  const resp = await prisma.trailer.create({
+    data: {
+      licensePlate: trailer['License Plate'],
+      plateExpiry: trailer['Plate Expiry'],
+      inspectionExpiry: trailer['Inspection Expiry'],
+      type: trailer['Trailer Type'],
+      status: trailer['Status'],
+    },
+  });
+}
+
+export async function addTruck({ truck }: { truck: any }) {
+  const resp = await prisma.truck.create({
+    data: {
+      truckNum: truck['Truck Number'],
+      licensePlate: truck['License Plate'] || null, // Optional field
+      type: truck['Truck Type'],
+      plateExpiry: truck['Plate Expiry'],
+      inspectionExpiry: truck['Inspection Expiry'],
+      iftaLicensed: truck['IFTA Licensed'],
+    },
+  });
+}
+
 export async function addUser({ user }: { user: any }) {
   const resp = await prisma.user.create({
     data: {
-      email: user.email,
-      password: user.password,
-      orgId: user.orgId,
-      role: user.role,
+      email: user['Email'],
+      password: user['Password'],
+      orgId: user['Organization'],
+      role: user['Role'],
     },
   });
 }
@@ -259,6 +344,15 @@ export async function updateShipper(
 
 export async function updateUser(id: number, { formData }: { formData: any }) {
   const resp = updater(prisma.user, id, formData);
+}
+
+export async function updateAccountPreferences(prefs: any) {
+  await prisma.accountPreferences.update({
+    where: {
+      id: '0',
+    },
+    data: prefs,
+  });
 }
 
 /** Delete rows */

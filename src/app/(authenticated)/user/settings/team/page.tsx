@@ -3,7 +3,7 @@ import { ReactNode, useState } from 'react';
 //import 'primereact/resources/themes/lara-light-indigo/theme.css';
 
 // TESTING
-import Input from '../../../../components/Settings-General/Input';
+import Input from '../../../../../components/Settings-General/Input';
 import Form, { type FormHandle } from '@/components/Settings-General/Form';
 import Button from '@/components/Settings-General/Button';
 import { useRef } from 'react';
