@@ -27,8 +27,8 @@ const loadSchema = yup.object({
   'Carrier': yup.string().required('Who will be carrying this load?'),
   'Shipper': yup.string(),
   'Consignee': yup.string(),
-  'Ship Date': yup.date(),
-  'Received Date': yup.date(),
+  'Ship Date': yup.date().nullable(),
+  'Received Date': yup.date().nullable(),
 });
 
 type Load = yup.InferType<typeof loadSchema>;
@@ -41,7 +41,12 @@ export const LoadForm = () => {
     control,
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<Load>({
-    defaultValues: {},
+    defaultValues: {
+      'Load Number': '',
+      'Pay Order Number': '',
+      'Ship Date': undefined,
+      'Received Date': undefined
+    },
     resolver: yupResolver(loadSchema),
   });
 
