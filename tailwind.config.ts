@@ -102,6 +102,9 @@ const config: Config = {
         'text-lg': ['16px', '24px'],
         'text-sm': ['14px', '22px'],
         'text-xsm': ['12px', '18px'],
+        'button-lg': ['15px', '26px'],
+        'button-md': ['14px', '24px'],
+        'button-sm': ['13px', '22px'],
       },
       screens: {
         '2xsm': '375px',
@@ -109,6 +112,7 @@ const config: Config = {
         '3xl': '2000px',
       },
       spacing: {
+        2.75: '0.6875rem',
         4.5: '1.125rem',
         5.5: '1.375rem',
         6.5: '1.625rem',
@@ -272,7 +276,12 @@ const config: Config = {
         12: '12px',
       },
       boxShadow: {
-        default: '0px 8px 13px -3px rgba(0, 0, 0, 0.07)',
+        'hover-primary': '0px 8px 16px 0px rgba(0, 0, 0, 0.24)',
+        'hover-info': '0px 8px 16px 0px rgba(0, 0, 0, 0.24)',
+        'hover-success': '0px 8px 16px 0px rgba(0, 0, 0, 0.24)',
+        'hover-warning': '0px 8px 16px 0px rgba(0, 0, 0, 0.24)',
+        'hover-error': '0px 8px 16px 0px rgba(0, 0, 0, 0.24)',
+        default: '0px 8px 16px 0px rgba(0, 0, 0, 0.24)',
         card: '0px 1px 3px rgba(0, 0, 0, 0.12)',
         'card-2': '0px 1px 2px rgba(0, 0, 0, 0.05)',
         switcher:
