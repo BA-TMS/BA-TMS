@@ -4,9 +4,9 @@ import { useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import TextInput from './UI_Elements/TextInput';
-import SelectInput from './UI_Elements/SelectInput';
-import DynamicSelect from './UI_Elements/DynamicSelect';
+import TextInput from '../UI_Elements/Form/TextInput';
+import SelectInput from '../UI_Elements/Form/SelectInput';
+import DynamicSelect from '../UI_Elements/Form/DynamicSelect';
 import { ModalContext } from '@/Context/modalContext';
 import { addUser, getOrganizations } from '@/lib/dbActions';
 

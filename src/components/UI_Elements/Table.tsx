@@ -1,4 +1,4 @@
-import TableActionsPopover from '../../Popovers/TableActions';
+import TableActionsPopover from '@ui/Popovers/TableActions';
 
 // pass this table an array of objects containing keys field and headerName
 // field is what the property is on the data object from the database

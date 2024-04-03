@@ -3,7 +3,7 @@
 import { useContext, useState, useEffect } from 'react';
 import { ModalContext } from '@/Context/modalContext';
 import FormModal from '../Modals/FormModal';
-import Table from './UI_Elements/Table';
+import Table from '../UI_Elements/Table';
 import { getUsers } from '@/lib/dbActions';
 import UserForm from '../Forms/UserForm';
 
