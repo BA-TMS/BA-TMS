@@ -1,10 +1,7 @@
 import { cva, VariantProps } from 'class-variance-authority';
 import { ComponentProps } from 'react';
-// import { ButtonOrLink, Props as ButtonOrLinkProps } from './ButtonOrLink';
 
-/**
-This is a base component that will render a button with specific styling depending on the props that are passed to it by using class-variance-authority. Must be used in a client component if passing an onClick function. This may need modified in the future
- */
+// This is a base component that will render a button with specific styling depending on the props that are passed to it by using class-variance-authority.
 
 const buttonStyles = cva(
   'flex items-center justify-center rounded-lg font-public font-bold w-auto h-auto disabled:bg-grey-500 disabled:bg-opacity-25 disabled:text-grey-500 disabled:text-opacity-80 disabled:pointer-events-none',
@@ -25,7 +22,7 @@ const buttonStyles = cva(
       size: {
         large: 'px-5.5 py-2.75 text-button-lg',
         medium: 'px-4 py-1.5 text-button-md',
-        small: 'px-2.5 py-1 text-button-sm', // height + width not quite accurate
+        small: 'px-2.5 py-1 text-button-sm',
       },
     },
     defaultVariants: {
