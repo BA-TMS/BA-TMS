@@ -1,5 +1,6 @@
 import { cva, VariantProps } from 'class-variance-authority';
-import { ButtonOrLink, Props as ButtonOrLinkProps } from './ButtonOrLink';
+import { ComponentProps } from 'react';
+// import { ButtonOrLink, Props as ButtonOrLinkProps } from './ButtonOrLink';
 
 /**
 This is a base component that will render a button with specific styling depending on the props that are passed to it by using class-variance-authority. Must be used in a client component if passing an onClick function. This may need modified in the future
@@ -35,9 +36,9 @@ const buttonStyles = cva(
 );
 
 export interface Props
-  extends ButtonOrLinkProps,
+  extends ComponentProps<'button'>,
     VariantProps<typeof buttonStyles> {}
 
 export function ContainedButton({ intent, size, ...props }: Props) {
-  return <ButtonOrLink className={buttonStyles({ intent, size })} {...props} />;
+  return <button className={buttonStyles({ intent, size })} {...props} />;
 }
