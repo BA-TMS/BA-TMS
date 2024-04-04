@@ -10,10 +10,20 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateRange } from '@mui/x-date-pickers-pro/models';
 import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
+import StartDate from '@/components/Calendar/StartDate';
+import EndDate from '@/components/Calendar/EndDate';
 
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
+
+/* CODE THAT CAN REPLACE THE CALENDAR HTML */
+/* 
+<LocalizationProvider dateAdapter={AdapterDayjs}>
+  <DateRangePicker
+    value={value}
+    onChange={(newValue) => setValue(newValue)}
+  />
+</LocalizationProvider>
+*/
 
 export default function Drayage() {
   const [value, setValue] = React.useState<DateRange<Dayjs>>([
@@ -24,39 +34,47 @@ export default function Drayage() {
   return (
     <div>
       <h1 style={{ fontSize: '32px', fontWeight: 'bold' }}>Filters</h1>
-      <div
-        className="relative z-20 w-32 rounded border border-stroke bg-transparent py-2.5 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-        style={{ float: 'left', marginRight: '1rem' }}
-      >
-        <ToggleButton labelText="" descriptionText="" />
-      </div>
       <div className="mb-4.5" style={{ float: 'left', marginRight: '1rem' }}>
-        <label className="mb-2.5 block text-black dark:text-white">
-          <select className="relative z-20 w-32 rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
-            Steam Shipping Line
-            <option value="All">ALL</option>
-            <option value="Line2">Line 2</option>
-            <option value="Line3">Line 3</option>
-          </select>
+        <label className="mb-2.5 block text-sm font-medium text-black dark:text-white">
+          Show favorites
         </label>
+        <div
+          className="relative z-20 w-32 rounded border border-stroke bg-transparent py-2.5 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+          style={{ float: 'left', marginRight: '1rem' }}
+        >
+          <ToggleButton labelText="" descriptionText="" />
+        </div>
       </div>
+
       <div className="mb-4.5" style={{ float: 'left', marginRight: '1rem' }}>
-        <label className="mb-2.5 block text-black dark:text-white">
-          <select className="relative z-20 w-32 rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+        <label className="mb-2.5 block text-sm font-medium text-black dark:text-white">
+          Steam Shipping Line
+        </label>
+        <div
+          x-data="{ isOptionSelected: false }"
+          className="relative z-20 bg-white dark:bg-form-input"
+        >
+          <select className="relative z-20 w-48 rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+            <option value="Option 1">Steam 1</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="mb-4.5" style={{ float: 'left', marginRight: '1rem' }}>
+        <label className="mb-2.5 block text-sm font-medium text-black dark:text-white">
+          Container Type
+        </label>
+        <div>
+          <select className="relative z-20 w-48 rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
             <option value="20">20</option>
             <option value="40">40</option>
             <option value="60">60</option>
           </select>
-        </label>
+        </div>
       </div>
-      <div>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DateRangePicker
-            value={value}
-            onChange={(newValue) => setValue(newValue)}
-          />
-        </LocalizationProvider>
-      </div>
+
+      <StartDate />
+      <EndDate />
     </div>
   );
 }
