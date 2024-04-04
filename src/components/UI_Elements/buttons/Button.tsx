@@ -15,6 +15,106 @@ export interface ButtonProps
   extends ComponentProps<'button'>,
     VariantProps<typeof buttonStyles> {}
 
+const buttonStyles = cva(
+  'justify-center rounded-lg font-public font-bold w-auto h-auto disabled:pointer-events-none',
+  {
+    variants: {
+      variant: {
+        contained: 'disabled:bg-grey-300 disabled:text-grey-500',
+        outline: 'bg-transparent disabled:text-grey-500',
+        text: '',
+        soft: '',
+      },
+      intent: {
+        default: '',
+        primary: '',
+        info: '',
+        success: '',
+        warning: '',
+        error: '',
+      },
+      size: {
+        large: 'px-5.5 py-2.75 text-button-lg',
+        medium: 'px-4 py-1.5 text-button-md',
+        small: 'px-2.5 py-1 text-button-sm',
+      },
+    },
+    compoundVariants: [
+      {
+        variant: 'contained',
+        intent: 'default',
+        class: 'bg-grey-300 text-black hover:bg-grey-500 hover:shadow-default',
+      },
+      {
+        variant: 'contained',
+        intent: 'primary',
+        className:
+          'bg-primary text-white hover:shadow-hover-primary hover:bg-primary-dark',
+      },
+      {
+        variant: 'contained',
+        intent: 'info',
+        className:
+          'bg-info text-white hover:shadow-hover-info hover:bg-info-dark',
+      },
+      {
+        variant: 'contained',
+        intent: 'success',
+        className:
+          'bg-success text-white hover:shadow-hover-success hover:bg-success-dark',
+      },
+      {
+        variant: 'contained',
+        intent: 'warning',
+        className:
+          'bg-warning text-black hover:shadow-hover-warning hover:bg-warning-dark',
+      },
+      {
+        variant: 'contained',
+        intent: 'error',
+        className:
+          'bg-error text-white hover:shadow-hover-error hover:bg-error-dark',
+      },
+      // outline
+      {
+        variant: 'outline',
+        intent: 'default',
+        class: '',
+      },
+      {
+        variant: 'outline',
+        intent: 'primary',
+        className: '',
+      },
+      {
+        variant: 'outline',
+        intent: 'info',
+        className: '',
+      },
+      {
+        variant: 'outline',
+        intent: 'success',
+        className: '',
+      },
+      {
+        variant: 'outline',
+        intent: 'warning',
+        className: '',
+      },
+      {
+        variant: 'outline',
+        intent: 'error',
+        className: '',
+      },
+    ],
+    defaultVariants: {
+      variant: 'contained',
+      intent: 'info',
+      size: 'large',
+    },
+  }
+);
+
 export default function Button({
   intent,
   size,
@@ -22,7 +122,6 @@ export default function Button({
   children,
   ...props
 }: ButtonProps) {
-  // this gives us the button
   return (
     <button
       className={buttonStyles({
@@ -36,56 +135,3 @@ export default function Button({
     </button>
   );
 }
-
-const buttonStyles = cva(
-  'flex items-center justify-center rounded-lg font-public font-bold w-auto h-auto disabled:pointer-events-none',
-  {
-    variants: {
-      variant: {
-        contained:
-          'disabled:bg-grey-500 disabled:bg-opacity-25 disabled:text-grey-500 disabled:text-opacity-80',
-        outline: '',
-        text: '',
-        soft: '',
-      },
-      intent: {
-        default: '',
-        primary: '',
-        info: 'bg-info text-white hover:shadow-hover-info hover:bg-info-dark',
-        success:
-          'bg-success text-white hover:shadow-hover-success hover:bg-success-dark',
-        warning:
-          'bg-warning text-black hover:shadow-hover-warning hover:bg-warning-dark',
-        error:
-          'bg-error text-white hover:shadow-hover-error hover:bg-error-dark',
-      },
-      size: {
-        large: 'px-5.5 py-2.75 text-button-lg',
-        medium: 'px-4 py-1.5 text-button-md',
-        small: 'px-2.5 py-1 text-button-sm',
-      },
-    },
-    compoundVariants: [
-      {
-        variant: 'contained',
-        intent: 'default',
-        class: 'bg-grey-300 text-black hover:shadow-default',
-      },
-      {
-        variant: 'contained',
-        intent: 'primary',
-        className:
-          'bg-primary text-white hover:shadow-hover-primary hover:bg-primary-dark',
-      },
-    ],
-    defaultVariants: {
-      variant: 'contained',
-      intent: 'info',
-      size: 'large',
-    },
-  }
-);
-
-// function ButtonWrapper({ children }: { children: React.ReactNode }) {
-//   return <div className="space-x-8">{children}</div>;
-// }
