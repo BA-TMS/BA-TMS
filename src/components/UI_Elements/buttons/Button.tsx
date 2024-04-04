@@ -6,12 +6,12 @@ export interface ButtonProps
     VariantProps<typeof buttonStyles> {}
 
 const buttonStyles = cva(
-  'justify-center rounded-lg font-public font-bold w-auto h-auto disabled:pointer-events-none',
+  'justify-center rounded-lg font-public font-bold w-auto h-auto disabled:text-grey-500 disabled:pointer-events-none',
   {
     variants: {
       variant: {
-        contained: 'disabled:bg-grey-300 disabled:text-grey-500',
-        outline: 'bg-white disabled:text-grey-500 border',
+        contained: 'disabled:bg-grey-300 ',
+        outline: 'bg-white border',
         text: '',
         soft: '',
       },
@@ -66,7 +66,7 @@ const buttonStyles = cva(
         className:
           'bg-error text-white hover:shadow-hover-error hover:bg-error-dark',
       },
-      // outline
+      // outline button
       {
         variant: 'outline',
         intent: 'default',
@@ -96,6 +96,37 @@ const buttonStyles = cva(
         variant: 'outline',
         intent: 'error',
         className: 'border-error text-error hover:bg-error/25',
+      },
+      // text button
+      {
+        variant: 'text',
+        intent: 'default',
+        className: 'text-black hover:bg-grey-300/25',
+      },
+      {
+        variant: 'text',
+        intent: 'primary',
+        className: ' text-primary hover:bg-primary/25',
+      },
+      {
+        variant: 'text',
+        intent: 'info',
+        className: 'text-info hover:bg-info/25',
+      },
+      {
+        variant: 'text',
+        intent: 'success',
+        className: 'text-success hover:bg-success/25',
+      },
+      {
+        variant: 'text',
+        intent: 'warning',
+        className: 'text-warning hover:bg-warning/25',
+      },
+      {
+        variant: 'text',
+        intent: 'error',
+        className: 'text-error hover:bg-error/25',
       },
     ],
     defaultVariants: {
