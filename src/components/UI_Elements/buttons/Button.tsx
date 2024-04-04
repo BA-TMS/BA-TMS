@@ -77,55 +77,60 @@ const buttonStyles = cva(
       },
       // outline
       {
-        variant: 'outline',
+        variant: 'contained',
         intent: 'default',
-        class: '',
+        class: 'bg-grey-300 text-black hover:bg-grey-500 hover:shadow-default',
       },
       {
-        variant: 'outline',
+        variant: 'contained',
         intent: 'primary',
-        className: '',
+        className:
+          'bg-primary text-white hover:shadow-hover-primary hover:bg-primary-dark',
       },
       {
-        variant: 'outline',
+        variant: 'contained',
         intent: 'info',
-        className: '',
+        className:
+          'bg-info text-white hover:shadow-hover-info hover:bg-info-dark',
       },
       {
-        variant: 'outline',
+        variant: 'contained',
         intent: 'success',
-        className: '',
+        className:
+          'bg-success text-white hover:shadow-hover-success hover:bg-success-dark',
       },
       {
-        variant: 'outline',
+        variant: 'contained',
         intent: 'warning',
-        className: '',
+        className:
+          'bg-warning text-black hover:shadow-hover-warning hover:bg-warning-dark',
       },
       {
-        variant: 'outline',
+        variant: 'contained',
         intent: 'error',
-        className: '',
+        className:
+          'bg-error text-white hover:shadow-hover-error hover:bg-error-dark',
       },
     ],
     defaultVariants: {
       variant: 'contained',
-      intent: 'info',
+      intent: 'primary',
       size: 'large',
     },
   }
 );
 
 export default function Button({
+  variant,
   intent,
   size,
-  className,
   children,
   ...props
 }: ButtonProps) {
   return (
     <button
       className={buttonStyles({
-        className,
+        variant,
         intent,
         size,
       })}
