@@ -1,16 +1,6 @@
 import { cva, VariantProps } from 'class-variance-authority';
 import { ComponentProps } from 'react';
 
-// type ButtonVariants = Omit<
-//   RequiredVariantProps<typeof buttonVariants>,
-//   '_content'
-// >;
-
-// type SVGComponent = React.ComponentType<React.SVGAttributes<SVGSVGElement>>;
-
-// type ButtonProps = Partial<buttonStyles> &
-//   React.ButtonHTMLAttributes<HTMLButtonElement>
-
 export interface ButtonProps
   extends ComponentProps<'button'>,
     VariantProps<typeof buttonStyles> {}
@@ -21,7 +11,7 @@ const buttonStyles = cva(
     variants: {
       variant: {
         contained: 'disabled:bg-grey-300 disabled:text-grey-500',
-        outline: 'bg-transparent disabled:text-grey-500',
+        outline: 'bg-white disabled:text-grey-500 border',
         text: '',
         soft: '',
       },
@@ -43,7 +33,8 @@ const buttonStyles = cva(
       {
         variant: 'contained',
         intent: 'default',
-        class: 'bg-grey-300 text-black hover:bg-grey-500 hover:shadow-default',
+        className:
+          'bg-grey-300 text-black hover:bg-grey-500 hover:shadow-default',
       },
       {
         variant: 'contained',
@@ -77,39 +68,34 @@ const buttonStyles = cva(
       },
       // outline
       {
-        variant: 'contained',
+        variant: 'outline',
         intent: 'default',
-        class: 'bg-grey-300 text-black hover:bg-grey-500 hover:shadow-default',
+        className: 'border-grey-300 text-black hover:bg-grey-300/25',
       },
       {
-        variant: 'contained',
+        variant: 'outline',
         intent: 'primary',
-        className:
-          'bg-primary text-white hover:shadow-hover-primary hover:bg-primary-dark',
+        className: 'border-bg-primary text-primary hover:bg-primary/25',
       },
       {
-        variant: 'contained',
+        variant: 'outline',
         intent: 'info',
-        className:
-          'bg-info text-white hover:shadow-hover-info hover:bg-info-dark',
+        className: 'border-bg-info text-info hover:bg-info/25',
       },
       {
-        variant: 'contained',
+        variant: 'outline',
         intent: 'success',
-        className:
-          'bg-success text-white hover:shadow-hover-success hover:bg-success-dark',
+        className: 'border-bg-success text-success hover:bg-success/25',
       },
       {
-        variant: 'contained',
+        variant: 'outline',
         intent: 'warning',
-        className:
-          'bg-warning text-black hover:shadow-hover-warning hover:bg-warning-dark',
+        className: 'border:bg-warning text-warning hover:bg-warning/25',
       },
       {
-        variant: 'contained',
+        variant: 'outline',
         intent: 'error',
-        className:
-          'bg-error text-white hover:shadow-hover-error hover:bg-error-dark',
+        className: 'border-error text-error hover:bg-error/25',
       },
     ],
     defaultVariants: {
