@@ -13,7 +13,7 @@ const buttonStyles = cva(
         contained: 'disabled:bg-grey-300 ',
         outline: 'bg-white border',
         text: '',
-        soft: '',
+        soft: 'disabled:bg-grey-500/25',
       },
       intent: {
         default: '',
@@ -127,6 +127,37 @@ const buttonStyles = cva(
         variant: 'text',
         intent: 'error',
         className: 'text-error hover:bg-error/25',
+      },
+      // soft button
+      {
+        variant: 'soft',
+        intent: 'default',
+        className: 'text-black bg-grey-500/15 hover:bg-grey-500/30',
+      },
+      {
+        variant: 'soft',
+        intent: 'primary',
+        className: ' text-primary-dark bg-primary/15 hover:bg-primary/30',
+      },
+      {
+        variant: 'soft',
+        intent: 'info',
+        className: 'text-info-dark bg-info/15 hover:bg-info/30',
+      },
+      {
+        variant: 'soft',
+        intent: 'success',
+        className: 'text-success-dark bg-success/15 hover:bg-success/30',
+      },
+      {
+        variant: 'soft',
+        intent: 'warning',
+        className: 'text-warning-dark bg-warning/15 hover:bg-warning/30',
+      },
+      {
+        variant: 'soft',
+        intent: 'error',
+        className: 'text-error-dark bg-error/15 hover:bg-error/30',
       },
     ],
     defaultVariants: {
