@@ -1,10 +1,13 @@
-import CRM from '@/components/Dashboard/CRM';
+'use client';
+
+import { ContextProvider } from '@/Context/modalContext';
+import Load from '@/components/Table/Load';
 
 const DashboardHome = () => {
   return (
-    <>
-      <CRM />
-    </>
+    <ContextProvider>
+      <Load />
+    </ContextProvider>
   );
 };
 
