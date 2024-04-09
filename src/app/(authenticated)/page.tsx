@@ -1,16 +1,10 @@
-import CRM from '@/components/Dashboard/CRM';
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'TailAdmin | E-commerce Dashboard Template',
-  description: 'This is Home for TailAdmin',
-  // other metadata
-};
+// this page should redirect to /login if a user is not authenticated
+// if user is authenticated, redirect to /dashboard/loads
 
 export default function Home() {
   return (
     <>
-      <CRM />
+      <h1>Hello Home Page </h1>
     </>
   );
 }
