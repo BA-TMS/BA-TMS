@@ -78,7 +78,7 @@ export default function Load() {
       </button>
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
-          <h1 className="text-base leading-6 text-gray-900">Loads</h1>
+          <h1 className="text-base leading-6 text-gray-900">Dispatch Board</h1>
           <p className="mt-2 text-md text-gray-700">Load Information</p>
         </div>
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
