@@ -62,6 +62,7 @@ export default function Load() {
         if (load.consignee) load.consignee = load.consignee.name;
       }
       console.log('loads', data);
+
       setLoads(data);
     };
 
@@ -69,25 +70,168 @@ export default function Load() {
   }, []);
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8">
-      <button
-        onClick={handleClick}
-        className="float-right rounded-md bg-primary py-3 px-9 font-medium text-white hover:bg-opacity-80"
+    <>
+      {/* HEADER & SEARCH BAR */}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '20px',
+        }}
       >
-        Add Load
-      </button>
-      <div className="sm:flex sm:items-center">
-        <div className="sm:flex-auto">
-          <h1 className="text-base leading-6 text-gray-900">Dispatch Board</h1>
-          <p className="mt-2 text-md text-gray-700">Load Information</p>
-        </div>
-        <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-          <FormModal>
-            <LoadForm />
-          </FormModal>
+        <h1 style={{ fontSize: '30px', fontWeight: 'bold' }}>DISPATCH BOARD</h1>
+
+        <div>
+          <input
+            style={{
+              width: '300px',
+              padding: '8px',
+              borderRadius: '4px',
+              border: '1px solid #ccc',
+              background: 'rgba(0,0,0,0)',
+              fontWeight: 'bold',
+            }}
+            type="search"
+            placeholder="Search..."
+            className="datatable-input"
+            onChange={(e) => {
+              const value = e.target.value;
+              setFilterText(value);
+              updateFilteredCargo(value);
+            }}
+          />
+          <button
+            className={`custom-button effect1`}
+            style={{
+              padding: '8px',
+              borderRadius: '4px',
+              border: '1px solid #ccc',
+              marginLeft: '10px',
+              cursor: 'pointer',
+              fontWeight: 'bold',
+            }}
+          >
+            Search
+          </button>
+          <button
+            className={`custom-button effect1`}
+            style={{
+              padding: '8px',
+              borderRadius: '4px',
+              border: '1px solid #ccc',
+              marginLeft: '10px',
+              cursor: 'pointer',
+              fontWeight: 'bold',
+            }}
+            onClick={() => updateFilteredCargo('')}
+          >
+            Show All
+          </button>
         </div>
       </div>
+      <br />
+      {/* END HEADER & SEARCH BAR */}
+
+      {/* ADD LOAD BUTTONS */}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          gap: '15px',
+          marginBottom: '20px',
+        }}
+      >
+        {/*<AddButton modalOpen={modalOpen} setModalOpen={setModalOpen} />{' '}*/}
+        <button
+          onClick={handleClick}
+          className={`custom-button effect1`}
+          style={{
+            padding: '8px',
+            borderRadius: '4px',
+            border: '1px solid #ccc',
+            marginLeft: '10px',
+            cursor: 'pointer',
+            fontWeight: 'bold',
+          }}
+        >
+          Add Load
+        </button>
+        <FormModal>
+          <LoadForm />
+        </FormModal>
+        {/* Updated line */}
+        <button
+          className={`custom-button effect1`}
+          style={{
+            padding: '10px',
+            borderRadius: '4px',
+            border: '1px solid #ccc',
+            fontWeight: 'bold',
+          }}
+          onClick={() => setModalOpen(true)} // Added line
+        >
+          Open Loads
+        </button>
+        <button
+          className={`custom-button effect1`}
+          style={{
+            padding: '10px',
+            borderRadius: '4px',
+            border: '1px solid #ccc',
+            fontWeight: 'bold',
+          }}
+        >
+          Delivered/Completed Loads
+        </button>
+      </div>
+      <br />
+      {/* END ADD LOAD BUTTONS*/}
+
+      {/* STATUS COLORS */}
+      <div style={{ display: 'flex', position: 'absolute' }}>
+        <div>
+          <div className="box yellow"></div>
+          Pending
+        </div>
+
+        <div style={{ paddingLeft: '20px' }}>
+          <div className="box red"></div>
+          Open
+        </div>
+
+        <div style={{ paddingLeft: '20px' }}>
+          <div className="box purple"></div>
+          Refused
+        </div>
+
+        <div style={{ paddingLeft: '20px' }}>
+          <div className="box blue"></div>
+          Covered
+        </div>
+
+        <div style={{ paddingLeft: '20px' }}>
+          <div className="box wine"></div>
+          Dispatched
+        </div>
+
+        <div style={{ paddingLeft: '20px' }}>
+          <div className="box green"></div>
+          On Route
+        </div>
+
+        <div style={{ paddingLeft: '20px' }}>
+          <div className="box gray"></div>
+          (Un)Loading
+        </div>
+
+        <div style={{ paddingLeft: '20px' }}>
+          <div className="box hotpink"></div>
+          In Yard
+        </div>
+      </div>
+      <br />
       <Table columns={columns} data={loads}></Table>
-    </div>
+    </>
   );
 }
