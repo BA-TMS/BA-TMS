@@ -5,7 +5,7 @@ import { ModalContext } from '@/Context/modalContext';
 import FormModal from '../Modals/FormModal';
 import LoadForm from '../Forms/LoadForm';
 import Table from '../UI_Elements/Table';
-import { getLoads } from '@/lib/dbActions';
+import { getLoads, deleteLoad } from '@/lib/dbActions';
 
 type Load = {
   id: string;
@@ -87,7 +87,7 @@ export default function Load() {
           </FormModal>
         </div>
       </div>
-      <Table columns={columns} data={loads}></Table>
+      <Table columns={columns} data={loads} deleter={deleteLoad}></Table>
     </div>
   );
 }

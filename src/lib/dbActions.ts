@@ -358,7 +358,7 @@ export async function updateAccountPreferences(prefs: any) {
 }
 
 /** Delete rows */
-async function deleter(table: any, targetId: number) {
+async function deleter(table: any, targetId: string) {
   const resp = table.delete({
     where: {
       id: targetId,
@@ -367,30 +367,30 @@ async function deleter(table: any, targetId: number) {
   return resp;
 }
 
-export async function deleteCarrier(id: number) {
+export async function deleteCarrier(id: string) {
   const resp = deleter(prisma.carrier, id);
 }
 
-export async function deleteConsignee(id: number) {
+export async function deleteConsignee(id: string) {
   const resp = deleter(prisma.consignee, id);
 }
 
-export async function deleteCustomer(id: number) {
+export async function deleteCustomer(id: string) {
   const resp = deleter(prisma.customer, id);
 }
 
-export async function deleteDriver(id: number) {
+export async function deleteDriver(id: string) {
   const resp = deleter(prisma.driver, id);
 }
 
-export async function deleteLoad(id: number) {
+export async function deleteLoad(id: string) {
   const resp = deleter(prisma.load, id);
 }
 
-export async function deleteShipper(id: number) {
+export async function deleteShipper(id: string) {
   const resp = deleter(prisma.shipper, id);
 }
 
-export async function deleteUser(id: number) {
+export async function deleteUser(id: string) {
   const resp = deleter(prisma.user, id);
 }

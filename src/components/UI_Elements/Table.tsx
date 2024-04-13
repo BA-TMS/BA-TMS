@@ -12,9 +12,10 @@ interface TableColumn {
 interface TableProps<T> {
   columns: TableColumn[];
   data: T[];
+  deleter: any;
 }
 
-const Table: React.FC<TableProps<any>> = ({ columns, data }) => {
+const Table: React.FC<TableProps<any>> = ({ columns, data, deleter }) => {
   // check if data type is Date object
   function isDate(value: any): boolean {
     return value instanceof Date;
@@ -83,7 +84,7 @@ const Table: React.FC<TableProps<any>> = ({ columns, data }) => {
                 ))}
                 <td>
                   {/* Table Actions Popover is not functional yet */}
-                  <TableActionsPopover id={data.id}></TableActionsPopover>
+                  <TableActionsPopover id={data.id} deleter={deleter}></TableActionsPopover>
                 </td>
               </tr>
             ))}

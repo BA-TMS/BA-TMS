@@ -5,11 +5,12 @@ import { EditIcon, ElipsisVertical, DeleteIcon } from '@/assets/SVGs';
 
 type TableActionsProps = {
   id: string;
+  deleter: any;
 };
 
 // pass this component an id from the table it is used in
 
-const TableActionsPopover: React.FC<TableActionsProps> = ({ id }) => {
+const TableActionsPopover: React.FC<TableActionsProps> = ({ id, deleter }) => {
   const [popoversOpen, setPopoversOpen] = useState(false);
 
   const trigger = useRef<any>(null);
@@ -76,6 +77,7 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({ id }) => {
                 <Link
                   href="#" // delete
                   className="inline-flex items-center justify-center gap-2.5 py-4 px-10 text-center font-medium dark:text-white hover:text-primary dark:hover:text-primary lg:px-8 xl:px-10"
+                  onClick={() => deleter(id)}
                 >
                   <span>{DeleteIcon}</span>
                   Delete
