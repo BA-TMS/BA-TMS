@@ -3,7 +3,7 @@
 import TableActionsPopover from '../UI_Elements/Popovers/TableActions';
 
 interface CustomerData {
-  id: number;
+  id: string;
   createdAt: Date | null;
   updatedAt: Date | null;
   name: string;
@@ -19,10 +19,12 @@ interface CustomerData {
 
 interface CustomerTableProps {
   data: CustomerData[];
+  deleter: any;
 }
 
 export default function CustomerTable({
   data,
+  deleter
 }: CustomerTableProps): JSX.Element {
   return (
     <>
@@ -160,7 +162,7 @@ export default function CustomerTable({
                     }`}
                   >
                     <div className="flex items-center space-x-3.5">
-                      <TableActionsPopover></TableActionsPopover>
+                      <TableActionsPopover id={customer.id} deleter={deleter}></TableActionsPopover>
                     </div>
                   </td>
                 </tr>

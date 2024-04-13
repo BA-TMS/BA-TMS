@@ -10,7 +10,14 @@ import ShipperTable from '@/components/Table/ShipperTable';
 import CustomerModal from '@/components/Modals/CustomerModal';
 import ConsigneeModal from '@/components/Modals/ConsigneeModal'; // Corrected import for ConsigneeModal
 import ShipperModal from '@/components/Modals/ShipperModal';
-import { getConsignees, getCustomers, getShippers } from '@/lib/dbActions';
+import {
+  getConsignees,
+  deleteConsignee,
+  getCustomers,
+  deleteCustomer,
+  getShippers,
+  deleteShipper,
+} from '@/lib/dbActions';
 
 interface DataItem {
   id: number;
@@ -153,19 +160,19 @@ const TabGroupOne: React.FC = () => {
           <div
             className={`leading-relaxed ${openTab === 1 ? 'block' : 'hidden'}`}
           >
-            <CustomerTable data={data} />
+            <CustomerTable data={data} deleter={deleteCustomer} />
           </div>
           {/* Consignee tab */}
           <div
             className={`leading-relaxed ${openTab === 2 ? 'block' : 'hidden'}`}
           >
-            <ConsigneeTable data={data} />
+            <ConsigneeTable data={data} deleter={deleteConsignee} />
           </div>
           {/* Shipper tab */}
           <div
             className={`leading-relaxed ${openTab === 3 ? 'block' : 'hidden'}`}
           >
-            <ShipperTable data={data} />
+            <ShipperTable data={data} deleter={deleteShipper} />
           </div>
         </div>
       </div>

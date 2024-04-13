@@ -3,7 +3,7 @@
 import TableActionsPopover from '../UI_Elements/Popovers/TableActions';
 
 interface ConsigneeData {
-  id: number;
+  id: string;
   createdAt: Date | null;
   updatedAt: Date | null;
   name: string;
@@ -19,10 +19,12 @@ interface ConsigneeData {
 
 interface ConsigneeTableProps {
   data: ConsigneeData[];
+  deleter: any;
 }
 
 export default function ConsigneeTable({
   data,
+  deleter,
 }: ConsigneeTableProps): JSX.Element {
   return (
     <>
@@ -160,7 +162,7 @@ export default function ConsigneeTable({
                     }`}
                   >
                     <div className="flex items-center space-x-3.5">
-                      <TableActionsPopover></TableActionsPopover>
+                      <TableActionsPopover id={consignee.id} deleter={deleter}></TableActionsPopover>
                     </div>
                   </td>
                 </tr>

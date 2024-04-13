@@ -3,7 +3,7 @@
 import TableActionsPopover from '../UI_Elements/Popovers/TableActions';
 
 interface ShipperData {
-  id: number;
+  id: string;
   createdAt: Date | null;
   updatedAt: Date | null;
   name: string;
@@ -19,9 +19,10 @@ interface ShipperData {
 
 interface ShipperTableProps {
   data: ShipperData[];
+  deleter: any;
 }
 
-export default function ShipperTable({ data }: ShipperTableProps): JSX.Element {
+export default function ShipperTable({ data, deleter }: ShipperTableProps): JSX.Element {
   return (
     <>
       <div className="rounded-sm border border-stroke bg-white px-5 pt-6 mt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -156,7 +157,7 @@ export default function ShipperTable({ data }: ShipperTableProps): JSX.Element {
                     }`}
                   >
                     <div className="flex items-center space-x-3.5">
-                      <TableActionsPopover></TableActionsPopover>
+                      <TableActionsPopover id={shipper.id} deleter={deleter}></TableActionsPopover>
                     </div>
                   </td>
                 </tr>
