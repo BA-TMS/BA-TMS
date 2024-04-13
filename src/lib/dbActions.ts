@@ -394,3 +394,7 @@ export async function deleteShipper(id: string) {
 export async function deleteUser(id: string) {
   const resp = deleter(prisma.user, id);
 }
+
+export async function deleteThirdParty(id: string) {
+  const resp = deleter(prisma.billee, id);
+}

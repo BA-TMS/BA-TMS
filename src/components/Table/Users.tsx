@@ -4,7 +4,7 @@ import { useContext, useState, useEffect } from 'react';
 import { ModalContext } from '@/Context/modalContext';
 import FormModal from '../Modals/FormModal';
 import Table from '../UI_Elements/Table';
-import { getUsers } from '@/lib/dbActions';
+import { getUsers, deleteUser } from '@/lib/dbActions';
 import UserForm from '../Forms/UserForm';
 
 type User = {
@@ -59,7 +59,7 @@ export default function Users() {
           </FormModal>
         </div>
       </div>
-      <Table columns={columns} data={users}></Table>
+      <Table columns={columns} data={users} deleter={deleteUser}></Table>
     </div>
   );
 }

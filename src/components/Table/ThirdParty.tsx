@@ -5,7 +5,7 @@ import { ModalContext } from '@/Context/modalContext';
 import FormModal from '../Modals/FormModal';
 import ThirdPartyForm from '../Forms/ThirdPartyForm';
 import Table from '../UI_Elements/Table';
-import { getThirdParty } from '@/lib/dbActions';
+import { getThirdParty, deleteThirdParty } from '@/lib/dbActions';
 
 type Billee = {
   name: string;
@@ -71,7 +71,7 @@ export default function ThirdParty() {
           </FormModal>
         </div>
       </div>
-      <Table columns={columns} data={billee}></Table>
+      <Table columns={columns} data={billee} deleter={deleteThirdParty}></Table>
     </div>
   );
 }
