@@ -10,6 +10,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateRange } from '@mui/x-date-pickers-pro/models';
 import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
+import { DatePicker } from '@mui/x-date-pickers';
 import StartDate from '@/components/Calendar/StartDate';
 import EndDate from '@/components/Calendar/EndDate';
 
@@ -73,8 +74,27 @@ export default function Drayage() {
         </div>
       </div>
 
-      <StartDate />
-      <EndDate />
+      {/* CALENDAR DATES */}
+      <div className="mb-4.5" style={{ float: 'left', marginRight: '1rem' }}>
+        <label className="mb-2.5 block text-sm font-medium text-black dark:text-white">
+          Start Date
+        </label>
+        <div>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker className="relative z-20 w-48 rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
+          </LocalizationProvider>
+        </div>
+      </div>
+      <div className="mb-4.5" style={{ float: 'left', marginRight: '1rem' }}>
+        <label className="mb-2.5 block text-sm font-medium text-black dark:text-white">
+          End Date
+        </label>
+        <div>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker className="relative z-20 w-48 rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
+          </LocalizationProvider>
+        </div>
+      </div>
     </div>
   );
 }
