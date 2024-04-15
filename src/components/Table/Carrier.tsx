@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect, useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
+import React from 'react';
 import { ModalContext } from '@/Context/modalContext';
+import FormModal from '../Modals/FormModal';
+import Table from '../UI_Elements/Table';
 import { getCarriers } from '@/lib/dbActions';
 import CarrierForm from '../Forms/CarrierForm';
-import FormModal from '@/components/Modals/FormModal';
-import Table from '../UI_Elements/Table';
 
 type Carrier = {
   name: string;
@@ -18,21 +19,21 @@ type Carrier = {
   telCountry: string;
   telephone: string;
   dotId: string;
-  factorId: string | null;
+  factorId: string;
   taxId: string;
 };
 
 // this is passed to Table
 const columns = [
-  { field: 'name', headerName: 'Name' },
+  { field: 'name', headerName: 'Carrier Name' },
   { field: 'address', headerName: 'Address' },
-  { field: 'addressAddOn', headerName: 'Address Line 2' },
+  { field: 'addressAddOn', headerName: 'Additional Address' },
   { field: 'city', headerName: 'City' },
   { field: 'state', headerName: 'State' },
-  { field: 'postCountry', headerName: 'Country' },
-  { field: 'postCode', headerName: 'Postal Code/ Zip' },
-  { field: 'telCountry', headerName: 'Country Code' },
-  { field: 'telephone', headerName: 'Phone Number' },
+  { field: 'postCountry', headerName: 'Post Country' },
+  { field: 'postCode', headerName: 'Post Code' },
+  { field: 'telCountry', headerName: 'Telephone Country' },
+  { field: 'telephone', headerName: 'Telephone' },
   { field: 'dotId', headerName: 'DOT ID' },
   { field: 'factorId', headerName: 'Factor ID' },
   { field: 'taxId', headerName: 'Tax ID' },
@@ -40,7 +41,6 @@ const columns = [
 
 export default function Carriers() {
   const [carriers, setCarriers] = useState<Carrier[]>([]);
-
   const { toggleOpen } = useContext(ModalContext);
 
   const handleClick = () => {
@@ -49,12 +49,12 @@ export default function Carriers() {
 
   // data fetched and passed to Table
   useEffect(() => {
-    const fetchDrivers = async () => {
+    const fetchCarriers = async () => {
       const data = await getCarriers();
       setCarriers(data);
     };
 
-    fetchDrivers();
+    fetchCarriers();
   }, []);
 
   return (
@@ -68,11 +68,9 @@ export default function Carriers() {
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           <h1 className="text-base leading-6 text-gray-900">
-            External Carriers
+            Customs Carriers
           </h1>
-          <p className="mt-2 text-md text-gray-700">
-            A list of all External Carrier information.
-          </p>
+          <p className="mt-2 text-md text-gray-700">All carrier information.</p>
         </div>
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
           <FormModal>

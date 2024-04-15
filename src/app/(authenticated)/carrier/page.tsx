@@ -1,16 +1,14 @@
-// For example purposes only to quickly test the componets
-
 'use client';
 
+import Carriers from '../../../components/Table/Carrier';
 import { ContextProvider } from '@/Context/modalContext';
-import Carriers from '@/components/Table/Carriers';
 
-export default function Home() {
+const CarrierPage = () => {
   return (
-    <>
-      <ContextProvider>
-        <Carriers />
-      </ContextProvider>
-    </>
+    <ContextProvider>
+      <Carriers />
+    </ContextProvider>
   );
-}
+};
+
+export default CarrierPage;

@@ -1,56 +1,55 @@
 'use client';
-import TableActionsPopover from '../Popovers/TableActions';
+import TableActionsPopover from '../UI_Elements/Popovers/TableActions';
 
-interface CarrierData {
+interface SingleLoad {
   id: number;
-  createdAt: Date | null;
-  updatedAt: Date | null;
-  name: string;
-  address: string;
-  addressAddOn: string | null;
-  city: string;
-  state: string;
-  postCountry: string;
-  postCode: string;
-  telCountry: number;
-  telephone: string;
+  ownerId: number;
+  loadNum: number;
+  carrierId: number;
+  driverId: number | null;
+  customerId: number;
+  originId: number | null;
+  destId: number | null;
+  status: string;
+  carrier: { name: string };
+  driver: { name: string } | null;
+  customer: { name: string };
+  shipper: { name: string } | null;
+  consignee: { name: string } | null;
 }
 
-interface CarrierTableProps {
-  data: CarrierData[];
+interface LoadTableProps {
+  loads: SingleLoad[];
 }
 
-export default function CarrierTable({ data }: CarrierTableProps): JSX.Element {
+export default function LoadTable({ loads }: LoadTableProps): JSX.Element {
   return (
     <>
-      <div className="rounded-sm border border-stroke bg-white px-5 pt-6 mt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+      <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
         <div className="max-w-full overflow-x-auto">
           <table className="w-full table-auto">
             <thead>
               <tr className="bg-gray-2 text-left dark:bg-meta-4">
                 <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                  Carrier Name
+                  Load Number
                 </th>
                 <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-                  Address
+                  Carrier
                 </th>
                 <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
-                  City
+                  Driver
                 </th>
                 <th className="py-4 px-4 font-medium text-black dark:text-white">
-                  State
+                  Customer
                 </th>
                 <th className="py-4 px-4 font-medium text-black dark:text-white">
-                  Postal Code/ Zip
+                  Origin
                 </th>
                 <th className="py-4 px-4 font-medium text-black dark:text-white">
-                  Contact Name
+                  Destination
                 </th>
                 <th className="py-4 px-4 font-medium text-black dark:text-white">
-                  Contact Email
-                </th>
-                <th className="py-4 px-4 font-medium text-black dark:text-white">
-                  Notes
+                  Status
                 </th>
                 <th className="py-4 px-4 font-medium text-black dark:text-white">
                   Actions
@@ -58,44 +57,43 @@ export default function CarrierTable({ data }: CarrierTableProps): JSX.Element {
               </tr>
             </thead>
             <tbody>
-              {data.map((carrier: CarrierData, key: number) => (
+              {loads.map((load: SingleLoad, key: number) => (
                 <tr key={key}>
                   <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                     <h5 className="font-medium text-black dark:text-white">
-                      {carrier.name}
+                      {load.loadNum}
                     </h5>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white">
-                      {carrier.address}
-                    </p>
-                  </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">{carrier.city}</p>
-                  </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">
-                      {carrier.state}
+                      {load.carrier.name}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white">
-                      {carrier.postCode}
+                      {load.driver ? load.driver.name : ''}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">{'contact'}</p>
+                    <p className="text-black dark:text-white">
+                      {load.customer.name}
+                    </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">{'email'}</p>
+                    <p className="text-black dark:text-white">
+                      {load.shipper ? load.shipper.name : ''}
+                    </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">{'notes'}</p>
+                    <p className="text-black dark:text-white">
+                      {load.consignee ? load.consignee.name : ''}
+                    </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <div className="flex items-center space-x-3.5">
-                      <TableActionsPopover></TableActionsPopover>
-                    </div>
+                    <p className="text-black dark:text-white">{load.status}</p>
+                  </td>
+                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                    <TableActionsPopover></TableActionsPopover>
                   </td>
                 </tr>
               ))}

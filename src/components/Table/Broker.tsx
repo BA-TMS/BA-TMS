@@ -1,14 +1,15 @@
 'use client';
 
-import { useState, useEffect, useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { ModalContext } from '@/Context/modalContext';
 import FormModal from '../Modals/FormModal';
-import FactoringCompanyForm from '../Forms/FactoringCompaniesForm';
-import { getFactor } from '@/lib/dbActions';
 import Table from '../UI_Elements/Table';
+import { getBrokers } from '@/lib/dbActions';
+import CustomsBrokerForm from '../Forms/CustomsBrokerForm';
 
-type Factor = {
+type Broker = {
   name: string;
+  crossing: string;
   address: string;
   addressAddOn: string | null;
   city: string;
@@ -21,19 +22,20 @@ type Factor = {
 
 // this is passed to Table
 const columns = [
-  { field: 'name', headerName: 'Name' },
-  { field: 'address', headerName: 'Name' },
-  { field: 'addressAddOn', headerName: 'Name' },
-  { field: 'city', headerName: 'Name' },
-  { field: 'state', headerName: 'Name' },
-  { field: 'postCountry', headerName: 'Name' },
-  { field: 'postCode', headerName: 'Name' },
+  { field: 'name', headerName: 'Broker Name' },
+  { field: 'crossing', headerName: 'Crossing' },
+  { field: 'address', headerName: 'Address' },
+  { field: 'addressAddOn', headerName: 'Address Line 2' },
+  { field: 'city', headerName: 'City' },
+  { field: 'state', headerName: 'State' },
+  { field: 'postCountry', headerName: 'Country' },
+  { field: 'postCode', headerName: 'Postal Code/ Zip' },
   { field: 'telCountry', headerName: 'Country Code' },
   { field: 'telephone', headerName: 'Phone Number' },
 ];
 
-export default function FactoringCompany() {
-  const [factor, setFactor] = useState<Factor[]>([]);
+export default function Broker() {
+  const [brokers, setBrokers] = useState<Broker[]>([]);
   const { toggleOpen } = useContext(ModalContext);
 
   const handleClick = () => {
@@ -42,12 +44,13 @@ export default function FactoringCompany() {
 
   // data fetched and passed to Table
   useEffect(() => {
-    const fetchFactor = async () => {
-      const data = await getFactor();
-      setFactor(data);
+    const fetchBrokers = async () => {
+      const data = await getBrokers();
+      console.log('brokers', data);
+      setBrokers(data);
     };
 
-    fetchFactor();
+    fetchBrokers();
   }, []);
 
   return (
@@ -56,24 +59,22 @@ export default function FactoringCompany() {
         onClick={handleClick}
         className="float-right rounded-md bg-primary py-3 px-9 font-medium text-white hover:bg-opacity-80"
       >
-        Add Factoring Company
+        Add Broker
       </button>
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
-          <h1 className="text-base leading-6 text-gray-900">
-            Factoring Companies
-          </h1>
+          <h1 className="text-base leading-6 text-gray-900">Customs Brokers</h1>
           <p className="mt-2 text-md text-gray-700">
-            A list of Factoring Companies
+            A list of all Customs Broker information.
           </p>
         </div>
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
           <FormModal>
-            <FactoringCompanyForm />
+            <CustomsBrokerForm />
           </FormModal>
         </div>
       </div>
-      <Table columns={columns} data={factor}></Table>
+      <Table columns={columns} data={brokers}></Table>
     </div>
   );
 }

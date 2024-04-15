@@ -1,6 +1,6 @@
 'use client';
 
-import TableActionsPopover from '../Popovers/TableActions';
+import TableActionsPopover from '../UI_Elements/Popovers/TableActions';
 
 interface CustomerData {
   id: number;
@@ -62,42 +62,103 @@ export default function CustomerTable({
             </thead>
             <tbody>
               {data.map((customer: CustomerData, key: number) => (
-                <tr key={key} className={key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}>
-                  <td className={`py-5 px-4 pl-9 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'} xl:pl-11`}>
+                <tr
+                  key={key}
+                  className={
+                    key === data.length - 1
+                      ? ''
+                      : 'border-b border-[#eee] dark:border-strokedark'
+                  }
+                >
+                  <td
+                    className={`py-5 px-4 pl-9 ${
+                      key === data.length - 1
+                        ? ''
+                        : 'border-b border-[#eee] dark:border-strokedark'
+                    } xl:pl-11`}
+                  >
                     <h5 className="font-medium text-black dark:text-white">
                       {customer.name}
                     </h5>
                   </td>
-                  <td className={`py-5 px-4 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}`}>
+                  <td
+                    className={`py-5 px-4 ${
+                      key === data.length - 1
+                        ? ''
+                        : 'border-b border-[#eee] dark:border-strokedark'
+                    }`}
+                  >
                     <p className="text-black dark:text-white">
                       {customer.address}
                     </p>
                   </td>
-                  <td className={`py-5 px-4 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}`}>
+                  <td
+                    className={`py-5 px-4 ${
+                      key === data.length - 1
+                        ? ''
+                        : 'border-b border-[#eee] dark:border-strokedark'
+                    }`}
+                  >
                     <p className="text-black dark:text-white">
                       {customer.city}
                     </p>
                   </td>
-                  <td className={`py-5 px-4 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}`}>
+                  <td
+                    className={`py-5 px-4 ${
+                      key === data.length - 1
+                        ? ''
+                        : 'border-b border-[#eee] dark:border-strokedark'
+                    }`}
+                  >
                     <p className="text-black dark:text-white">
                       {customer.state}
                     </p>
                   </td>
-                  <td className={`py-5 px-4 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}`}>
+                  <td
+                    className={`py-5 px-4 ${
+                      key === data.length - 1
+                        ? ''
+                        : 'border-b border-[#eee] dark:border-strokedark'
+                    }`}
+                  >
                     <p className="text-black dark:text-white">
                       {customer.postCode}
                     </p>
                   </td>
-                  <td className={`py-5 px-4 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}`}>
+                  <td
+                    className={`py-5 px-4 ${
+                      key === data.length - 1
+                        ? ''
+                        : 'border-b border-[#eee] dark:border-strokedark'
+                    }`}
+                  >
                     <p className="text-black dark:text-white">{'contact'}</p>
                   </td>
-                  <td className={`py-5 px-4 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}`}>
+                  <td
+                    className={`py-5 px-4 ${
+                      key === data.length - 1
+                        ? ''
+                        : 'border-b border-[#eee] dark:border-strokedark'
+                    }`}
+                  >
                     <p className="text-black dark:text-white">{'email'}</p>
                   </td>
-                  <td className={`py-5 px-4 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}`}>
+                  <td
+                    className={`py-5 px-4 ${
+                      key === data.length - 1
+                        ? ''
+                        : 'border-b border-[#eee] dark:border-strokedark'
+                    }`}
+                  >
                     <p className="text-black dark:text-white">{'notes'}</p>
                   </td>
-                  <td className={`py-5 px-4 ${key === data.length - 1 ? '' : 'border-b border-[#eee] dark:border-strokedark'}`}>
+                  <td
+                    className={`py-5 px-4 ${
+                      key === data.length - 1
+                        ? ''
+                        : 'border-b border-[#eee] dark:border-strokedark'
+                    }`}
+                  >
                     <div className="flex items-center space-x-3.5">
                       <TableActionsPopover></TableActionsPopover>
                     </div>

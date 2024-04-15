@@ -1,13 +1,15 @@
 'use client';
 
 import { useEffect, useContext } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import TextInput from './UI_Elements/TextInput';
-import SelectInput from './UI_Elements/SelectInput';
+import TextInput from '../UI_Elements/Form/TextInput';
+import SelectInput from '../UI_Elements/Form/SelectInput';
+import DynamicSelect from '../UI_Elements/Form/DynamicSelect';
 import { usStates } from '@/components/Forms/data/states';
-import { addCarrier } from '@/lib/dbActions';
+import { addCarrier, getFactor } from '@/lib/dbActions';
 import { ModalContext } from '@/Context/modalContext';
 
 const carrierSchema = yup.object({
@@ -20,25 +22,23 @@ const carrierSchema = yup.object({
     .string()
     .matches(/^\d{5}$/, 'Zip must be 5 digits')
     .required('Zip Code is required '),
-  Country: yup.string().required('Country is required'), // is this necessary or are we US based?
-  'Contact Name': yup.string().required('Contact Name is required'),
+  Country: yup.string().required('Country is required'),
   'Country Code': yup
-    .number()
-    .integer('Must be an integer')
+    .string()
+    .matches(/^\d+$/, 'Must be a valid Country Code')
     .required('Country Code is required'),
   'Phone Number': yup
     .string()
-    .matches(/^\d{3}-\d{3}-\d{4}$/, 'Must use valid phone number xxx-xxx-xxxx')
+    .matches(/^\d{10}$/, 'Must use valid phone number')
     .required('Contact phone number required'),
-  Email: yup
-    .string()
-    .email('Must use a valid email')
-    .required('Contact email required'),
   'DOT ID': yup
-    .number()
-    .integer('Must be an integer')
+    .string()
+    .matches(/^\d+$/, 'Must be a valid DOT ID')
     .required('Must enter DOT ID')
-    .test('not-null', 'Must enter DOT ID', (value) => value !== 0),
+    .min(6, 'Must be valid DOT ID')
+    .max(8, 'Must be valid DOT ID'),
+  'Factor ID': yup.string().required('Must include Factor ID'),
+  'Tax ID': yup.string(),
   Notes: yup.string().max(250, 'Must be under 250 characters'),
 });
 
@@ -47,10 +47,10 @@ type Carrier = yup.InferType<typeof carrierSchema>;
 export const CarrierForm = () => {
   const {
     handleSubmit,
-    setError, // async error handling
-    reset, // for resetting form
-    control, // based on schema
-    formState: { errors, isSubmitting, isSubmitSuccessful }, // boolean values representing form state
+    setError,
+    reset,
+    control,
+    formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<Carrier>({
     defaultValues: {
       'Carrier Name': '',
@@ -60,11 +60,11 @@ export const CarrierForm = () => {
       State: '',
       Zip: '',
       Country: '',
-      'Contact Name': '',
-      'Country Code': 1,
+      'Country Code': '',
       'Phone Number': '',
-      Email: '',
-      'DOT ID': 0,
+      'DOT ID': '',
+      'Factor ID': '',
+      'Tax ID': '',
       Notes: '',
     },
     resolver: yupResolver(carrierSchema),
@@ -94,11 +94,11 @@ export const CarrierForm = () => {
         State: '',
         Zip: '',
         Country: '',
-        'Contact Name': '',
-        'Country Code': 1,
+        'Country Code': '',
         'Phone Number': '',
-        Email: '',
-        'DOT ID': 0,
+        'DOT ID': '',
+        'Factor ID': '',
+        'Tax ID': '',
         Notes: '',
       });
     }
@@ -132,6 +132,7 @@ export const CarrierForm = () => {
                   name="Country Code"
                   required={true}
                 />
+                <TextInput control={control} name="DOT ID" required={true} />
               </div>
               <div className="w-full xl:w-1/2">
                 <TextInput control={control} name="Zip" required={true} />
@@ -141,11 +142,15 @@ export const CarrierForm = () => {
                   name="Phone Number"
                   required={true}
                 />
+                <DynamicSelect
+                  control={control}
+                  name="Factor ID"
+                  dbaction={getFactor}
+                  required={true}
+                ></DynamicSelect>
               </div>
             </div>
-            <TextInput control={control} name="Contact Name" required={true} />
-            <TextInput control={control} name="Email" required={true} />
-            <TextInput control={control} name="DOT ID" required={true} />
+            <TextInput control={control} name="Tax ID" />
             <TextInput control={control} name="Notes" isTextArea={true} />
             {errors.root && (
               <p className="mb-5 text-danger">{errors.root.message}</p>

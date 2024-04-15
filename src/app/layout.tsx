@@ -1,4 +1,11 @@
 import './globals.css';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'TailAdmin | E-commerce Dashboard Template',
+  description: 'This is Home for TailAdmin',
+  // other metadata
+};
 
 export default function RootLayout({
   children,

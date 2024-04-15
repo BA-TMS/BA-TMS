@@ -4,22 +4,20 @@ import { useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import TextInput from './UI_Elements/TextInput';
-import SelectInput from './UI_Elements/SelectInput';
-import { usStates } from '@/components/Forms/data/states';
+import TextInput from '../UI_Elements/Form/TextInput';
+import SelectInput from '../UI_Elements/Form/SelectInput';
+import DynamicSelect from '../UI_Elements/Form/DynamicSelect';
 import { ModalContext } from '@/Context/modalContext';
-import { addUser } from '@/lib/dbActions';
+import { addUser, getOrganizations } from '@/lib/dbActions';
 
 const userSchema = yup.object({
-  'User Name': yup.string().required('User Name is required'),
-  email: yup
+  Email: yup
     .string()
     .email('Must be a valid email')
     .required('Contact email required'),
-  password: yup.string().required('Must include password'),
-  orgId: yup.number().integer().required('Organization is required'),
-  Address: yup.string().required('Address is required'),
-  role: yup.number().integer().required('Must include a role'),
+  Password: yup.string().required('Password is required'),
+  Organization: yup.string().required('Organization is required'),
+  Role: yup.string().required('Role is required'),
 });
 
 type User = yup.InferType<typeof userSchema>;
@@ -33,12 +31,10 @@ export const UserForm = () => {
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<User>({
     defaultValues: {
-      'User Name': '',
-      email: '',
-      password: '',
-      orgId: 0,
-      Address: '',
-      role: 0,
+      Email: '',
+      Password: '',
+      Organization: '',
+      Role: 'USER',
     },
     resolver: yupResolver(userSchema),
   });
@@ -50,7 +46,7 @@ export const UserForm = () => {
       await addUser({ user: data });
       toggleOpen();
     } catch (error) {
-      alert("didn't save");
+      console.log('Error submitting form:', error);
       setError('root', { message: 'Error Submitting Form - Please try Again' });
     }
   };
@@ -58,12 +54,10 @@ export const UserForm = () => {
   useEffect(() => {
     if (isSubmitSuccessful) {
       reset({
-        'User Name': '',
-        email: '',
-        password: '',
-        orgId: 0,
-        Address: '',
-        role: 0,
+        Email: '',
+        Password: '',
+        Organization: '',
+        Role: 'USER',
       });
     }
   }, [isSubmitSuccessful, reset]);
@@ -76,13 +70,23 @@ export const UserForm = () => {
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="p-6.5">
-            <TextInput control={control} name="User Name" required={true} />
-            <TextInput control={control} name="email" required={true} />
-            <TextInput control={control} name="password" required={true} />
-            <TextInput control={control} name="orgId" required={true} />
-            <TextInput control={control} name="Address" required={true} />
-            <TextInput control={control} name="role" required={true} />
-
+            <TextInput control={control} name="Email" required={true} />
+            <TextInput control={control} name="Password" required={true} />
+            <DynamicSelect
+              control={control}
+              dbaction={getOrganizations}
+              name="Organization"
+              required={true}
+            />
+            <SelectInput
+              control={control}
+              name="Role"
+              options={['USER', 'ADMIN', 'DEVELOPER', 'OWNER']}
+              required={true}
+            />
+            {errors.root && (
+              <p className="mb-5 text-danger">{errors.root.message}</p>
+            )}
             <div className="flex justify-end">
               <button
                 type="submit"
@@ -93,7 +97,10 @@ export const UserForm = () => {
               </button>
               <button
                 type="button"
-                onClick={() => reset()}
+                onClick={() => {
+                  reset();
+                  toggleOpen();
+                }}
                 disabled={isSubmitting}
                 className="rounded bg-red p-3 font-medium text-gray ml-2 hover:bg-opacity-80"
               >

@@ -138,7 +138,30 @@ async function main() {
     });
   }
 
+  await seedAccountPreferences();
+}
 
+async function seedAccountPreferences() {
+  const prefs = {
+    id: '0',
+    companyName: 'companyName1',
+    primaryContactName: 'primaryContactName1',
+    telephone: '1231231234',
+    tollFree: '3213214321',
+    fei: '234v56',
+    currency: 'American Dollars',
+    dateFormat: 'm/d/Y',
+    timeFormat: '12 Hour',
+    calendarFormat: 'Yearly',
+    mileageSystem: 'ProMiles',
+    printSetting: 'Avoid Toll Roads',
+  };
+
+  await prisma.accountPreferences.upsert({
+    where: { id: prefs.id },
+    update: {},
+    create: prefs,
+  });
 }
 
 const orgs = [
@@ -368,24 +391,28 @@ const loads = [
   {
     ownerId: null,
     loadNum: '69',
+    payOrderNum: '1111',
     carrierId: null,
     customerId: null,
   },
   {
     ownerId: null,
     loadNum: '420',
+    payOrderNum: '0088',
     carrierId: null,
     customerId: null,
   },
   {
     ownerId: null,
     loadNum: '1111',
+    payOrderNum: '3232',
     carrierId: null,
     customerId: null,
   },
   {
     ownerId: null,
     loadNum: '2222',
+    payOrderNum: '1212',
     carrierId: null,
     customerId: null,
   },

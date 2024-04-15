@@ -4,10 +4,9 @@ import { useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import TextInput from './UI_Elements/TextInput';
-import SelectInput from './UI_Elements/SelectInput';
+import TextInput from '../UI_Elements/Form/TextInput';
+import SelectInput from '../UI_Elements/Form/SelectInput';
 import { usStates } from '@/components/Forms/data/states';
-import { terms } from '@/components/Forms/data/details';
 import { ModalContext } from '@/Context/modalContext';
 import { addFactoringCo } from '@/lib/dbActions';
 
@@ -24,16 +23,14 @@ const factoringSchema = yup.object({
     .matches(/^\d{5}$/, 'Zip must be 5 digits')
     .required('Zip Code is required '),
   Country: yup.string().required('Country is required'),
-  'Contact Name': yup.string().required('Contact Name is required'),
   'Country Code': yup
-    .number()
-    .integer('Must be an integer')
+    .string()
+    .matches(/^\d+$/, 'Must be a valid Country Code')
     .required('Country Code is required'),
   'Phone Number': yup
     .string()
-    .matches(/^\d{3}-\d{3}-\d{4}$/, 'Must use valid phone number xxx-xxx-xxxx')
+    .matches(/^\d{10}$/, 'Must use valid phone number')
     .required('Contact phone number required'),
-  'Payment Terms': yup.string(), // not in db table- should we add?
   Notes: yup.string().max(250, 'Must be under 250 characters'), // not in db yet
 });
 
@@ -42,10 +39,10 @@ type FactoringCompany = yup.InferType<typeof factoringSchema>;
 export const FactoringCompanyForm = () => {
   const {
     handleSubmit,
-    setError, // async error handling
-    reset, // for resetting form
-    control, // based on schema
-    formState: { errors, isSubmitting, isSubmitSuccessful }, // boolean values representing form state
+    setError,
+    reset,
+    control,
+    formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<FactoringCompany>({
     defaultValues: {
       'Factoring Company Name': '',
@@ -55,10 +52,8 @@ export const FactoringCompanyForm = () => {
       State: '',
       Zip: '',
       Country: '',
-      'Contact Name': '',
-      'Country Code': 1,
+      'Country Code': '',
       'Phone Number': '',
-      'Payment Terms': '',
       Notes: '',
     },
     resolver: yupResolver(factoringSchema),
@@ -71,7 +66,7 @@ export const FactoringCompanyForm = () => {
     try {
       await addFactoringCo({ factor: data });
       console.log('Factoring Company added successfully');
-      toggleOpen(); // for modal
+      toggleOpen();
     } catch (error) {
       console.log('Error submitting form:', error);
       setError('root', { message: 'Error Submitting Form - Please try Again' });
@@ -88,10 +83,8 @@ export const FactoringCompanyForm = () => {
         State: '',
         Zip: '',
         Country: '',
-        'Contact Name': '',
-        'Country Code': 1,
+        'Country Code': '',
         'Phone Number': '',
-        'Payment Terms': '',
         Notes: '',
       });
     }
@@ -109,7 +102,7 @@ export const FactoringCompanyForm = () => {
           <div className="p-6.5">
             <TextInput
               control={control}
-              name="Factoring Company Name" // name always needs to match schema
+              name="Factoring Company Name"
               required={true}
             />
             <TextInput control={control} name="Address" required={true} />
@@ -140,12 +133,7 @@ export const FactoringCompanyForm = () => {
                 />
               </div>
             </div>
-            <TextInput control={control} name="Contact Name" required={true} />
-            <SelectInput
-              control={control}
-              name="Payment Terms"
-              options={terms}
-            />
+
             <TextInput control={control} name="Notes" isTextArea={true} />
             {errors.root && (
               <p className="mb-5 text-danger">{errors.root.message}</p>
@@ -162,7 +150,7 @@ export const FactoringCompanyForm = () => {
                 type="button"
                 onClick={() => {
                   reset();
-                  toggleOpen(); // for modal
+                  toggleOpen();
                 }}
                 disabled={isSubmitting}
                 className="rounded bg-red p-3 font-medium text-gray ml-2 hover:bg-opacity-80"

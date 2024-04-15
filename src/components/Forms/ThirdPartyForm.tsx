@@ -4,13 +4,11 @@ import { useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import TextInput from './UI_Elements/TextInput';
-import SelectInput from './UI_Elements/SelectInput';
+import TextInput from '../UI_Elements/Form/TextInput';
+import SelectInput from '../UI_Elements/Form/SelectInput';
 import { usStates } from '@/components/Forms/data/states';
 import { ModalContext } from '@/Context/modalContext';
-import { addConsignee } from '@/lib/dbActions';
-
-// Third Party form needs worked into the modal popup
+import { addThirdParty } from '@/lib/dbActions';
 
 const thirdPartySchema = yup.object({
   'Third Party Name': yup.string().required('Third Party Name is required'),
@@ -24,12 +22,12 @@ const thirdPartySchema = yup.object({
     .required('Zip Code is required '),
   Country: yup.string().required('Country is required'),
   'Country Code': yup
-    .number()
-    .integer('Must be an integer')
+    .string()
+    .matches(/^\d+$/, 'Must be a valid Country Code')
     .required('Country Code is required'),
   'Phone Number': yup
     .string()
-    .matches(/^\d{3}-\d{3}-\d{4}$/, 'Must use valid phone number xxx-xxx-xxxx')
+    .matches(/^\d{10}$/, 'Must use valid phone number')
     .required('Contact phone number required'),
 });
 
@@ -38,10 +36,10 @@ type thirdParty = yup.InferType<typeof thirdPartySchema>;
 export const ThirdPartyForm = () => {
   const {
     handleSubmit,
-    setError, // async error handling
-    reset, // for resetting form
-    control, // based on schema
-    formState: { errors, isSubmitting, isSubmitSuccessful }, // boolean values representing form state
+    setError,
+    reset,
+    control,
+    formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<thirdParty>({
     defaultValues: {
       'Third Party Name': '',
@@ -51,7 +49,7 @@ export const ThirdPartyForm = () => {
       State: '',
       Zip: '',
       Country: '',
-      'Country Code': 1,
+      'Country Code': '',
       'Phone Number': '',
     },
     resolver: yupResolver(thirdPartySchema),
@@ -62,12 +60,12 @@ export const ThirdPartyForm = () => {
   const onSubmit = async (data: thirdParty) => {
     console.log(data);
     try {
-      await addConsignee({ consignee: data }); // Change these to thirdParty
+      await addThirdParty({ billee: data }); // Change these to thirdParty
       console.log('thirdParty added successfully');
       toggleOpen();
     } catch (error) {
       console.log('Error submitting form:', error);
-      setError('root', { message: 'Error Submitting Form - Please try Again' }); // errors that belong to form as a whole
+      setError('root', { message: 'Error Submitting Form - Please try Again' });
     }
   };
 
@@ -81,7 +79,7 @@ export const ThirdPartyForm = () => {
         State: '',
         Zip: '',
         Country: '',
-        'Country Code': 1,
+        'Country Code': '',
         'Phone Number': '',
       });
     }
@@ -143,7 +141,10 @@ export const ThirdPartyForm = () => {
               </button>
               <button
                 type="button"
-                onClick={() => reset()}
+                onClick={() => {
+                  reset();
+                  toggleOpen();
+                }}
                 disabled={isSubmitting}
                 className="rounded bg-red p-3 font-medium text-gray ml-2 hover:bg-opacity-80"
               >
