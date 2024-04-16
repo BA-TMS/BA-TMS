@@ -46,3 +46,43 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Configuring your .env file
+
+Your .env file should include these items:
+
+```bash
+DB_DOCKER_CONTAINER_NAME=''
+DB_DOCKER_HOST_PORT=''
+DB_USER=''
+DB_PASSWORD=''
+DB_NAME=''
+
+DATABASE_URL=''
+```
+
+`DB_DOCKER_CONTAINER_NAME`, `DB_USER`, `DB_PASSWORD`, and `DB_NAME` are arbitrary.
+
+`DB_DOCKER_HOST_PORT` must be a [valid port number](<https://en.wikipedia.org/wiki/Port_(computer_networking)#Port_number>).
+
+Whatever you choose will be applied to the Docker container and its database when they are created.
+
+`DATABASE_URL` needs to combine the other elements like this: `DATABASE_URL='postgresql://${DB_USER}:${DB_PASSWORD}@localhost:${DB_DOCKER_HOST_PORT}/${DB_NAME}'`.
+
+### Example .env file inclusion
+
+```bash
+DB_DOCKER_CONTAINER_NAME='a2ztmspostgres'
+DB_DOCKER_HOST_PORT='5432'
+DB_USER='a2ztmsuser'
+DB_PASSWORD='a2ztmspassword'
+DB_NAME='a2ztmsdbname'
+
+DATABASE_URL='postgresql://a2ztmsuser:a2ztmspassword@localhost:5432/a2ztmsdbname'
+```
+
+## Creating a local database container
+
+If your .env file is configured properly, and you have Docker installed, running `yarn docker` will create a Docker container, create a Postgres DB that reflects our Prisma schema and seeds it with some dummy data. Running `yarn docker` again will recognize the container has already been created and start it if it has been stopped.
+
+The seed script (`yarn seed`) can be run at any time to restore dummy DB data. The seed script is non-destrutive.
