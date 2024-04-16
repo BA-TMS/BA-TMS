@@ -5,29 +5,30 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/util/supabase/server';
 import { headers } from 'next/headers';
 
-export const signIn = async (formData: FormData) => {
-  'use server';
-
-  const email = formData.get('email') as string;
-  const password = formData.get('password') as string;
+export async function login(formData: FormData) {
   const supabase = createClient();
 
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
+  // should validate inputs
+  const data = {
+    email: formData.get('email') as string,
+    password: formData.get('password') as string,
+  };
+
+  const { error } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
-    return redirect('/login?message=Could not authenticate user');
-    // could make a separate error page if we wanted
+    redirect('/error');
   }
-  // purge cached data for specific path - what does this do?
+
+  // redirect to '/' upon successful login
   revalidatePath('/', 'layout');
-  return redirect('/protected'); // update this to homepage we want user to see
-};
+  redirect('/');
+}
 
 export const signUp = async (formData: FormData) => {
   'use server';
+
+  // will want to validate inputs
 
   const origin = headers().get('origin');
   const email = formData.get('email') as string;

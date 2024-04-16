@@ -2,7 +2,7 @@
 // import { createClient } from '@/util/supabase/server';
 // import { redirect } from 'next/navigation';
 // import { revalidatePath } from 'next/cache';
-import { signIn, signUp } from './actions';
+import { login, signUp } from './actions';
 import { SubmitButton } from '@/components/Authentication/submit-button';
 
 export default function Login({
@@ -49,7 +49,7 @@ export default function Login({
             />
           </div>
 
-          <SubmitButton formAction={signIn} pendingText="Signing In...">
+          <SubmitButton formAction={login} pendingText="Signing In...">
             Sign In
           </SubmitButton>
           <SubmitButton formAction={signUp} pendingText="Signing Up...">
