@@ -41,10 +41,35 @@ const columns = [
 
 export default function Load() {
   const [loads, setLoads] = useState<Load[]>([]);
+  const [filteredLoads, setFilteredLoads] = useState<Load[]>([]);
   const { toggleOpen } = useContext(ModalContext);
 
   const handleClick = () => {
     toggleOpen();
+  };
+
+  const handleSearch = (value: string) => {
+    const filteredData = loads.filter(
+      (load) =>
+        load.id?.toLowerCase().includes(value.toLowerCase()) ||
+        load.ownerId?.toLowerCase().includes(value.toLowerCase()) ||
+        load.loadNum?.toLowerCase().includes(value.toLowerCase()) ||
+        load.payOrderNum?.toLowerCase().includes(value.toLowerCase()) ||
+        load.shipDate?.toLowerCase().includes(value.toLowerCase()) ||
+        load.deliveryDate?.toLowerCase().includes(value.toLowerCase()) ||
+        load.carrierId?.toLowerCase().includes(value.toLowerCase()) ||
+        load.driverId?.toLowerCase().includes(value.toLowerCase()) ||
+        load.customerId?.toLowerCase().includes(value.toLowerCase()) ||
+        load.originId?.toLowerCase().includes(value.toLowerCase()) ||
+        load.destId?.toLowerCase().includes(value.toLowerCase()) ||
+        load.status?.toLowerCase().includes(value.toLowerCase()) ||
+        load.carrier?.toLowerCase().includes(value.toLowerCase()) ||
+        load.driver?.toLowerCase().includes(value.toLowerCase()) ||
+        load.customer?.toLowerCase().includes(value.toLowerCase()) ||
+        load.shipper?.toLowerCase().includes(value.toLowerCase()) ||
+        load.consignee?.toLowerCase().includes(value.toLowerCase())
+    );
+    setFilteredLoads(filteredData);
   };
 
   useEffect(() => {
@@ -64,6 +89,7 @@ export default function Load() {
       console.log('loads', data);
 
       setLoads(data);
+      setFilteredLoads(data);
     };
 
     fetchLoads();
@@ -97,8 +123,7 @@ export default function Load() {
             className="datatable-input"
             onChange={(e) => {
               const value = e.target.value;
-              setFilterText(value);
-              updateFilteredCargo(value);
+              handleSearch(value);
             }}
           />
           <button
@@ -124,7 +149,7 @@ export default function Load() {
               cursor: 'pointer',
               fontWeight: 'bold',
             }}
-            onClick={() => updateFilteredCargo('')}
+            onClick={() => setFilteredLoads(loads)}
           >
             Show All
           </button>
@@ -231,7 +256,7 @@ export default function Load() {
         </div>
       </div>
       <br />
-      <Table columns={columns} data={loads}></Table>
+      <Table columns={columns} data={filteredLoads}></Table>
     </>
   );
 }
