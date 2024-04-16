@@ -1,5 +1,5 @@
 'use client';
-import TableActionsPopover from '../Popovers/TableActions';
+import TableActionsPopover from '../UI_Elements/Popovers/TableActions';
 
 interface SingleLoad {
   id: number;
@@ -10,12 +10,12 @@ interface SingleLoad {
   customerId: number;
   originId: number | null;
   destId: number | null;
-  status: string
-  carrier: {name: string};
-  driver: {name: string} | null;
-  customer: {name: string};
-  shipper: {name: string} | null;
-  consignee: {name: string} | null;
+  status: string;
+  carrier: { name: string };
+  driver: { name: string } | null;
+  customer: { name: string };
+  shipper: { name: string } | null;
+  consignee: { name: string } | null;
 }
 
 interface LoadTableProps {

@@ -4,10 +4,13 @@ import { useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import TextInput from '@/components/Forms/UI_Elements/TextInput';
-import SelectInput from '@/components/Forms/UI_Elements/SelectInput';
+import TextInput from '@/components/UI_Elements/Form/TextInput';
+import SelectInput from '@/components/UI_Elements/Form/SelectInput';
 import { ModalContext } from '@/Context/modalContext';
-import { getAccountPreferences, updateAccountPreferences } from '@/lib/dbActions';
+import {
+  getAccountPreferences,
+  updateAccountPreferences,
+} from '@/lib/dbActions';
 
 const schema = yup.object({
   'Company Name': yup.string(),
@@ -67,7 +70,7 @@ export default () => {
         currency: data['Currency'],
         dateFormat: data['Date Format'],
         timeFormat: data['Time Format'],
-        calendarFormat: data['Calendar Format']
+        calendarFormat: data['Calendar Format'],
       });
       console.log('account preferences updated successfully');
       toggleOpen();
