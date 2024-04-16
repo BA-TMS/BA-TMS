@@ -6,41 +6,27 @@ import { UseControllerProps, useController } from 'react-hook-form';
 // for use when we need to fetch from database to populate options
 // pass this component a database action as a prop
 // options are mapped to create dropdown <option> elements
+// T represents shape of the data fetched
 
-interface SelectInputProps extends UseControllerProps {
-  dbaction: () => Promise<Data[]>; // pass the action for fetching data
-  control?: any;
+interface SelectInputProps<T> extends UseControllerProps {
+  dbaction: () => Promise<T[]>;
+  control?: any; // this is from external library
   required?: boolean;
 }
 
-interface Data {
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
-  name: string;
-  address: string;
-  addressAddOn: string | null;
-  city: string;
-  state: string;
-  postCountry: string;
-  postCode: string;
-  telCountry: string;
-  telephone: string;
-}
-
-const DynamicSelect = ({
+const DynamicSelect = <T extends { id: string; name: string }>({
   dbaction,
   control,
   required,
   name,
-}: SelectInputProps) => {
+}: SelectInputProps<T>) => {
   const { field, fieldState } = useController({
     control,
     name,
     rules: { required },
   });
 
-  const [options, setOptions] = useState<Data[]>([]);
+  const [options, setOptions] = useState<T[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

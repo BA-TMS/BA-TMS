@@ -343,6 +343,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                               Third Parties
                             </Link>
                           </li>
+                          <li>
+                            <Link
+                              href="/drayage"
+                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
+                                pathname === '/drayage' && 'text-white'
+                              } `}
+                            >
+                              Drayage
+                            </Link>
+                          </li>
                         </ul>
                       </div>
                       {/* <!-- Dropdown Menu End --> */}

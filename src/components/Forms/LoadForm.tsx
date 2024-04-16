@@ -13,7 +13,7 @@ import {
   getConsignees,
   getCustomers,
   getDrivers,
-  getOrgs,
+  getOrganizations,
   getShippers,
 } from '@/lib/dbActions';
 import DateSelect from '../UI_Elements/Form/DateSelect';
@@ -82,7 +82,7 @@ export const LoadForm = () => {
               control={control}
               name="Owner"
               required={true}
-              dbaction={getOrgs}
+              dbaction={getOrganizations}
             />
 
             <div className=" flex flex-col gap-6 xl:flex-row">
