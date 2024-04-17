@@ -10,7 +10,7 @@ import {
   SettingsIcon,
   UserIcon,
 } from '@/assets/SVGs';
-import { createClient } from '@/util/supabase/client';
+import { createClient } from '../../../util/supabase/client';
 import { useRouter } from 'next/navigation';
 
 const DropdownUser = () => {

@@ -2,7 +2,7 @@
 // this creates a context to provide user session information to the app
 // so we do not have to call it in every component that needs the information
 import { createContext, useState, useEffect } from 'react';
-import { createClient } from '@/util/supabase/client';
+import { createClient } from '../../util/supabase/client';
 import { SupabaseUserSession } from '@/types/supabase';
 
 interface UserProviderProps {
