@@ -9,19 +9,56 @@ const config: Config = {
   ],
   darkMode: 'class',
   theme: {
+    fontFamily: {
+      public: ['var(--font-publicsans)', 'sans-serif'],
+    },
     colors: {
-      
+      // these are our A2ZTMS colors
       current: 'currentColor',
       transparent: 'transparent',
       white: '#FFFFFF',
-      black: '#1C2434',
+      black: '#212B36',
+      primary: '#01C37A',
+      'primary-light': '#80DEBC',
+      'primary-dark': '#1B806A',
+      'grey-100': '#F9FAFB',
+      'grey-200': '#F4F6F8',
+      'grey-300': '#DFE3E8',
+      'grey-400': '#C4CDD5',
+      'grey-500': '#919EAB',
+      'grey-600': '#637381',
+      'grey-700': '#454F5B',
+      'grey-800': '#212B36',
+      'grey-900': '#161C24',
+      'info-lighter': '#CAFDF5',
+      'info-light': '#61F3F3',
+      info: '#00B8D9',
+      'info-dark': '#006C9C',
+      'info-darker': '#003768',
+      'success-lighter': '#D8FBDE',
+      'success-light': '#86E8AB',
+      success: '#36B37E',
+      'success-dark': '#1B806A',
+      'success-darker': '#0A5554',
+      'warning-lighter': '#FFF5CC',
+      'warning-light': '#FFD666',
+      warning: '#FFAB00',
+      'warning-dark': '#B76E00',
+      'warning-darker': '#7A4100',
+      'error-lighter': '#FFE9D5',
+      'error-light': '#FFAC82',
+      error: '#FF5630',
+      'error-dark': '#B71D18',
+      'error-darker': '#7A0916',
+
+      // these are colors from tailadmin template that are in use throughout app
+      // move away from these as we implement figma design
       red: '#FB5454',
       'black-2': '#010101',
       body: '#64748B',
       bodydark: '#AEB7C0',
       bodydark1: '#DEE4EE',
       bodydark2: '#8A99AF',
-      primary: '#3C50E0',
       secondary: '#80CAEE',
       stroke: '#E2E8F0',
       gray: '#EFF4FB',
@@ -45,9 +82,7 @@ const config: Config = {
       'meta-8': '#F0950C',
       'meta-9': '#E5E7EB',
       'meta-10': '#0FADCF',
-      success: '#219653',
       danger: '#D34053',
-      warning: '#FFA70B',
     },
     screens: {
       '2xsm': '375px',
@@ -58,28 +93,26 @@ const config: Config = {
 
     extend: {
       fontSize: {
-        'title-xxl': ['44px', '55px'],
-        'title-xxl2': ['42px', '58px'],
-        'title-xl': ['36px', '45px'],
-        'title-xl2': ['33px', '45px'],
-        'title-lg': ['28px', '35px'],
-        'title-md': ['24px', '30px'],
-        'title-md2': ['26px', '30px'],
-        'title-sm': ['20px', '26px'],
-        'title-sm2': ['22px', '28px'],
-        'title-xsm': ['18px', '24px'],
+        'title-xxl': ['64px', '80px'],
+        'title-xl': ['48px', '64px'],
+        'title-lg': ['32px', '48px'],
+        'title-md': ['24px', '36px'],
+        'title-sm': ['20px', '30px'],
+        'title-xsm': ['18px', '28px'],
+        'text-lg': ['16px', '24px'],
+        'text-sm': ['14px', '22px'],
+        'text-xsm': ['12px', '18px'],
+        'button-lg': ['15px', '26px'],
+        'button-md': ['14px', '24px'],
+        'button-sm': ['13px', '22px'],
       },
       screens: {
-        "2xsm": "375px",
-        xsm: "425px",
-        "3xl": "2000px",
-      },
-      screens: {
-        "2xsm": "375px",
-        xsm: "425px",
-        "3xl": "2000px",
+        '2xsm': '375px',
+        xsm: '425px',
+        '3xl': '2000px',
       },
       spacing: {
+        2.75: '0.6875rem',
         4.5: '1.125rem',
         5.5: '1.375rem',
         6.5: '1.625rem',
@@ -233,9 +266,6 @@ const config: Config = {
         '4/3': '4 / 3',
         '21/9': '21 / 9',
       },
-      backgroundImage: {
-        video: "url('../images/video/video.png')",
-      },
       content: {
         'icon-copy': 'url("../images/icon/icon-copy-alt.svg")',
       },
@@ -246,7 +276,12 @@ const config: Config = {
         12: '12px',
       },
       boxShadow: {
-        default: '0px 8px 13px -3px rgba(0, 0, 0, 0.07)',
+        'hover-primary': '0px 8px 16px 0px rgba(27, 128, 106, 0.24)',
+        'hover-info': '0px 8px 16px 0px rgba(0, 108, 156, 0.24)',
+        'hover-success': '0px 8px 16px 0px rgba(27, 128, 106, 0.24)',
+        'hover-warning': '0px 8px 16px 0px rgba(183, 110, 0, 0.24)',
+        'hover-error': '0px 8px 16px 0px rgba(183, 29, 24, 0.24)',
+        default: '0px 8px 16px 0px rgba(0, 0, 0, 0.24)',
         card: '0px 1px 3px rgba(0, 0, 0, 0.12)',
         'card-2': '0px 1px 2px rgba(0, 0, 0, 0.05)',
         switcher:
@@ -326,4 +361,3 @@ const config: Config = {
   plugins: [],
 };
 export default config;
-

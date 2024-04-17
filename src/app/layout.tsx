@@ -7,6 +7,14 @@ export const metadata: Metadata = {
   // other metadata
 };
 
+import { Public_Sans } from 'next/font/google';
+
+const publicSans = Public_Sans({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-publicsans',
+});
+
 export default function RootLayout({
   children,
 }: {
@@ -14,7 +22,7 @@ export default function RootLayout({
 }) {
   return (
     <html suppressHydrationWarning lang="en">
-      <body className="bg-white text-black dark:bg-boxdark-2 dark:text-bodydark">
+      <body className={`${publicSans.variable}`}>
         <main>{children}</main>
       </body>
     </html>
