@@ -2,6 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 
+/* default base styles for specific HTML elements */
+@layer base {
+  h1 {
+    @apply font-public font-extrabold text-title-xxl text-black dark:text-white;
+  }
+  h2 {
+    @apply font-public font-extrabold text-title-xl text-black dark:text-white;
+  }
+  h3 {
+    @apply font-public font-bold text-title-lg text-black dark:text-white;
+  }
+  h4 {
+    @apply font-public font-bold text-title-md text-black dark:text-white;
+  }
+  h5 {
+    @apply font-public font-bold text-title-sm text-black dark:text-white;
+  }
+  h6 {
+    @apply font-public font-bold text-title-xsm text-black dark:text-white;
+  }
+}
+
+/* typographic styles */
+.subtitle1 {
+  @apply font-public font-semibold text-text-lg text-black dark:text-white;
+}
+
+.subtitle2 {
+  @apply font-public font-semibold text-text-sm text-black dark:text-white;
+}
+
+.body1 {
+  @apply font-public font-normal text-text-lg text-black dark:text-white;
+}
+
+.body2 {
+  @apply font-public font-normal text-text-sm text-black dark:text-white;
+}
+
+.caption {
+  @apply font-public font-normal text-text-xsm text-black dark:text-white;
+}
+
+.overline {
+  @apply font-public font-bold text-text-xsm no-underline uppercase text-black dark:text-white;
+}
+
 .box {
   float: left;
   height: 20px;
