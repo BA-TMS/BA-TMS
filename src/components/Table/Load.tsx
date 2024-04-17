@@ -5,7 +5,8 @@ import { ModalContext } from '@/Context/modalContext';
 import FormModal from '../Modals/FormModal';
 import LoadForm from '../Forms/LoadForm';
 import Table from '../UI_Elements/Table';
-import { getLoads } from '@/lib/dbActions';
+import { getBrokers, getLoads } from '@/lib/dbActions';
+import Link from 'next/link';
 
 type Load = {
   id: string;
@@ -44,6 +45,10 @@ export default function Load() {
   const [filteredLoads, setFilteredLoads] = useState<Load[]>([]);
   const { toggleOpen } = useContext(ModalContext);
 
+  // UseStates for tabs
+  const [openTab, setOpenTab] = useState(1);
+  const [data, setData] = useState<Load[]>([]); // State to hold Dispatch (Load) and Brokerage
+
   const handleClick = () => {
     toggleOpen();
   };
@@ -72,6 +77,7 @@ export default function Load() {
     setFilteredLoads(filteredData);
   };
 
+  // useEffect for setting Loads table data and filtering.
   useEffect(() => {
     const fetchLoads = async () => {
       const data = await getLoads();
@@ -94,6 +100,24 @@ export default function Load() {
 
     fetchLoads();
   }, []);
+
+  // UseEffect for different tabs.
+  useEffect(() => {
+    const fetchData = async () => {
+      if (openTab === 1) {
+        const loadData = await getLoads();
+        setData(loadData);
+      } else if (openTab === 2) {
+        const brokerageData = await getBrokers(); // Brokerage needed
+        setData(brokerageData);
+      }
+    };
+
+    fetchData();
+  }, [openTab]); // Added openTab to the dependency array to refetch data when it changes
+
+  const activeClasses = 'text-primary border-primary';
+  const inactiveClasses = 'border-transparent';
 
   return (
     <>
@@ -256,7 +280,30 @@ export default function Load() {
         </div>
       </div>
       <br />
-      <Table columns={columns} data={filteredLoads}></Table>
+
+      <div className="rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark">
+        <div className="mb-6 flex flex-wrap gap-5 border-b border-stroke dark:border-strokedark sm:gap-10">
+          <Link
+            href="#"
+            className={`border-b-2 py-4 text-sm font-medium hover:text-primary md:text-base ${
+              openTab === 1 ? activeClasses : inactiveClasses
+            }`}
+            onClick={() => setOpenTab(1)}
+          >
+            Drayage
+          </Link>
+          <Link
+            href="#"
+            className={`border-b-2 py-4 text-sm font-medium hover:text-primary md:text-base ${
+              openTab === 2 ? activeClasses : inactiveClasses
+            }`}
+            onClick={() => setOpenTab(2)}
+          >
+            Brokerage
+          </Link>
+        </div>
+        <Table columns={columns} data={filteredLoads}></Table>
+      </div>
     </>
   );
 }
