@@ -1,19 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { updateSession } from '../util/supabase/middleware';
-import { createClient } from '../util/supabase/server';
+import { updateSession } from '@util/supabase/middleware';
+import { createClient } from '@util/supabase/server';
 
+// old code just handling supabase middleware
 // export async function middleware(request: NextRequest) {
 //   return await updateSession(request);
 // }
 
 // Specify protected and public routes
 // will need to handle routes nested in /dashboard
-const protectedRoutes = ['/', '/dashboard'];
+const protectedRoutes = [
+  '/',
+  '/dashboard',
+  '/carrier',
+  '/drayage',
+  '/other-numbers',
+  '/preferences',
+  '/third-party',
+  '/user',
+  '/users',
+];
 const publicRoutes = ['/login', '/signup'];
 
 export default async function middleware(request: NextRequest) {
   // check if the current route is protected or public
   const path = request.nextUrl.pathname;
+  console.log('path', path);
   const isProtectedRoute = protectedRoutes.includes(path);
   const isPublicRoute = publicRoutes.includes(path);
 
