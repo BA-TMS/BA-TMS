@@ -5,14 +5,16 @@ import { type NextRequest, NextResponse } from 'next/server';
 // Never trust supabase.auth.getSession() inside server code such as middleware. It isn't guaranteed to revalidate the Auth token.
 // It's safe to trust getUser() because it sends a request to the Supabase Auth server every time to revalidate the Auth token.
 
+// refreshes expired sessions before loading server component routes
 export async function updateSession(request: NextRequest) {
-  console.log('entered supabase middleware');
   let response = NextResponse.next({
     request: {
       headers: request.headers,
     },
   });
 
+  // create supabase client
+  // defines methods for handling cookies
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -59,6 +61,7 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
+  // ensure supabase user session is updated or validated
   await supabase.auth.getUser();
 
   return response;

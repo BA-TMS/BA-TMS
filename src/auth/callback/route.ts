@@ -9,6 +9,8 @@ export async function GET(request: Request) {
   const code = requestUrl.searchParams.get('code');
   const origin = requestUrl.origin;
 
+  console.log('get route'); // when is this code running?
+
   if (code) {
     const supabase = createClient();
     await supabase.auth.exchangeCodeForSession(code);
