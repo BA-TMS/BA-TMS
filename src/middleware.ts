@@ -8,7 +8,8 @@ import { createClient } from '@util/supabase/server';
 // }
 
 // Specify protected and public routes
-// will need to handle routes nested in /dashboard
+// NOTE: some pages may move or be renamed
+
 const protectedRoutes = [
   '/',
   '/dashboard',
@@ -20,13 +21,14 @@ const protectedRoutes = [
   '/user',
   '/users',
 ];
-const publicRoutes = ['/login', '/signup'];
+const publicRoutes = ['/login'];
 
 export default async function middleware(request: NextRequest) {
   // check if the current route is protected or public
   const path = request.nextUrl.pathname;
-  console.log('path', path);
-  const isProtectedRoute = protectedRoutes.includes(path);
+  // handle routes nested under dashboard
+  const isProtectedRoute =
+    protectedRoutes.includes(path) || path.startsWith('/dashboard');
   const isPublicRoute = publicRoutes.includes(path);
 
   // update session using supabase middleware- do we need?
