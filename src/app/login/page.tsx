@@ -4,6 +4,12 @@
 // import { revalidatePath } from 'next/cache';
 import { login, signUp } from './actions';
 import { SubmitButton } from '@/components/Authentication/submit-button';
+import Image from 'next/image';
+import Temp_Logo from '../../assets/Temp_Logo.png';
+
+// To Do:
+// check to see if user is logged in
+// provide option to log out
 
 export default function Login({
   searchParams,
@@ -14,8 +20,8 @@ export default function Login({
     <div className="flex flex-col justify-center items-center mx-auto">
       <div className="border rounded-2xl border-stroke p-10 dark:border-strokedark mt-16 w-100">
         <header className="flex flex-col justify-between items-center h-36 mb-6">
-          <h1 className="text-primary text-5xl">A2ZTMS</h1>
-          <h2 className="text-2xl"> Welcome </h2>
+          <Image src={Temp_Logo} alt="A2ZTMS Logo" priority />
+          <h1 className="text-2xl"> Welcome </h1>
           <p className="text-xs">Log in to A2ZTMS to continue</p>
         </header>
         <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground">
