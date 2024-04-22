@@ -1,9 +1,9 @@
-// import { headers } from 'next/headers';
-// import { createClient } from '@/util/supabase/server';
-// import { redirect } from 'next/navigation';
-// import { revalidatePath } from 'next/cache';
+import { createClient } from '@/util/supabase/server';
+import Link from 'next/link';
 import { login, signUp } from './actions';
 import { SubmitButton } from '@/components/Authentication/submit-button';
+import AuthButton from '@/components/Authentication/AuthButton';
+import Button from '@/components/UI_Elements/buttons/Button';
 import Image from 'next/image';
 import Temp_Logo from '../../assets/Temp_Logo.png';
 
@@ -11,11 +11,41 @@ import Temp_Logo from '../../assets/Temp_Logo.png';
 // check to see if user is logged in
 // provide option to log out
 
-export default function Login({
+export default async function Login({
   searchParams,
 }: {
   searchParams: { message: string };
 }) {
+  // const [user, setUser] = useState(null);
+  // const [loading, setLoading] = useState(true);
+
+  // check if a user is logged in
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (user) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="border rounded-lg border-grey-300 p-10 w-full max-w-sm">
+          <header className="flex flex-col justify-around items-center mb-3">
+            <Image src={Temp_Logo} alt="A2ZTMS Logo" priority />
+            <p className="body2 dark:text-black my-6">Not {user.email}?</p>
+            <AuthButton></AuthButton>
+            <Link
+              href="/"
+              className="justify-center rounded-lg font-public font-bold text-center w-full h-auto disabled:text-grey-500 disabled:pointer-events-none border-bg-primary text-primary hover:bg-primary/25 px-5.5 py-2.75 text-button-lg bg-white border mt-3"
+            >
+              Continue
+            </Link>
+          </header>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="border rounded-lg border-grey-300 p-10 w-full max-w-sm">
@@ -31,7 +61,7 @@ export default function Login({
             <input
               type="text"
               name="email"
-              className="block px-2.5 pb-2.5 pt-4 w-full body2 bg-transparent rounded-lg border border-grey-400 appearance-none  focus:outline-none focus:ring-0 focus:border-primary peer"
+              className="block px-2.5 pb-2.5 pt-4 w-full body2 dark:text-black bg-transparent rounded-lg border border-grey-400 appearance-none  focus:outline-none focus:ring-0 focus:border-primary peer"
               placeholder=" "
               required
             />
@@ -47,7 +77,7 @@ export default function Login({
             <input
               type="password"
               name="password"
-              className="block px-2.5 pb-2.5 pt-4 w-full body2 bg-transparent rounded-lg border border-grey-400 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer"
+              className="block px-2.5 pb-2.5 pt-4 w-full body2 dark:text-black bg-transparent rounded-lg border border-grey-400 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer"
               placeholder=" "
               required
             />
