@@ -109,7 +109,30 @@ export default function Load() {
         setData(loadData);
       } else if (openTab === 2) {
         const brokerageData = await getBrokers(); // Brokerage needed
-        setData(brokerageData);
+
+        // Transform the data into the expected Load type before
+        // setting it using setData.
+        const transformedData = brokerageData.map((broker) => ({
+          id: broker.id,
+          ownerId: '', // Add appropriate values for these properties
+          loadNum: '',
+          payOrderNum: '',
+          shipDate: '',
+          deliveryDate: '',
+          carrierId: '',
+          driverId: '',
+          customerId: '',
+          originId: '',
+          destId: '',
+          status: '',
+          carrier: broker.name,
+          driver: null,
+          customer: '',
+          shipper: null,
+          consignee: null,
+        }));
+
+        setData(transformedData);
       }
     };
 
