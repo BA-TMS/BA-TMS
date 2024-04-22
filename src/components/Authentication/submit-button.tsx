@@ -14,8 +14,7 @@ export function SubmitButton({ children, pendingText, ...props }: Props) {
 
   return (
     <button
-      // className="rounded-full bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
-      className=" rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-80"
+      className="justify-center rounded-lg font-public font-bold w-auto h-auto disabled:text-grey-500 disabled:pointer-events-none bg-primary text-white hover:shadow-hover-primary hover:bg-primary-dark px-5.5 py-2.75 text-button-lg"
       {...props}
       type="submit"
       aria-disabled={pending}
