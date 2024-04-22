@@ -110,6 +110,7 @@ export default function Load() {
       (broker) =>
         broker.id?.toLowerCase().includes(value.toLowerCase()) ||
         broker.name?.toLowerCase().includes(value.toLowerCase()) ||
+        broker.crossing?.toLowerCase().includes(value.toLowerCase()) ||
         broker.address?.toLowerCase().includes(value.toLowerCase()) ||
         broker.city?.toLowerCase().includes(value.toLowerCase()) ||
         broker.state?.toLowerCase().includes(value.toLowerCase()) ||
@@ -142,6 +143,13 @@ export default function Load() {
       setFilteredLoads(data);
     };
 
+    const fetchBrokers = async () => {
+      const brokerageData = await getBrokers(); // Fetch brokerage data
+
+      setBrokerData(brokerageData);
+    };
+
+    fetchBrokers();
     fetchLoads();
   }, []);
 
@@ -199,7 +207,7 @@ export default function Load() {
             }}
           />
           <button
-            className={`custom-button effect1`}
+            className={'custom-button effect1'}
             style={{
               padding: '8px',
               borderRadius: '4px',
@@ -212,7 +220,7 @@ export default function Load() {
             Search
           </button>
           <button
-            className={`custom-button effect1`}
+            className={'custom-button effect1'}
             style={{
               padding: '8px',
               borderRadius: '4px',
@@ -221,7 +229,10 @@ export default function Load() {
               cursor: 'pointer',
               fontWeight: 'bold',
             }}
-            onClick={() => setFilteredLoads(loads)}
+            onClick={() => {
+              setFilteredLoads(loads);
+              setFilteredBrokers(brokerData);
+            }}
           >
             Show All
           </button>
@@ -242,7 +253,7 @@ export default function Load() {
         {/*<AddButton modalOpen={modalOpen} setModalOpen={setModalOpen} />{' '}*/}
         <button
           onClick={handleClick}
-          className={`custom-button effect1`}
+          className={'custom-button effect1'}
           style={{
             padding: '8px',
             borderRadius: '4px',
@@ -259,19 +270,19 @@ export default function Load() {
         </FormModal>
         {/* Updated line */}
         <button
-          className={`custom-button effect1`}
+          className={'custom-button effect1'}
           style={{
             padding: '10px',
             borderRadius: '4px',
             border: '1px solid #ccc',
             fontWeight: 'bold',
           }}
-          onClick={() => setModalOpen(true)} // Added line
+          //onClick={() => setModalOpen(true)} // Added line
         >
           Open Loads
         </button>
         <button
-          className={`custom-button effect1`}
+          className={'custom-button effect1'}
           style={{
             padding: '10px',
             borderRadius: '4px',
@@ -352,7 +363,7 @@ export default function Load() {
         </div>
         <Table
           columns={openTab === 1 ? columns : brokerColumns}
-          data={openTab === 1 ? filteredLoads : brokerData}
+          data={openTab === 1 ? filteredLoads : filteredBrokers}
         ></Table>
       </div>
     </>
