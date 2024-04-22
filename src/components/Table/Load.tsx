@@ -28,6 +28,22 @@ type Load = {
   consignee: string | null;
 };
 
+type Broker = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  name: string;
+  crossing: string;
+  address: string;
+  addressAddOn: string | null;
+  city: string;
+  state: string;
+  postCountry: string;
+  postCode: string;
+  telCountry: string;
+  telephone: string;
+};
+
 const columns = [
   { field: 'loadNum', headerName: 'Load Number' },
   { field: 'payOrderNum', headerName: 'PO Number' },
@@ -40,6 +56,18 @@ const columns = [
   { field: 'status', headerName: 'Status' },
 ];
 
+const brokerColumns = [
+  { field: 'name', headerName: 'Name' },
+  { field: 'crossing', headerName: 'Crossing' },
+  { field: 'address', headerName: 'Address' },
+  { field: 'city', headerName: 'City' },
+  { field: 'state', headerName: 'State' },
+  { field: 'postCountry', headerName: 'Post Country' },
+  { field: 'postCode', headerName: 'Post Code' },
+  { field: 'telCountry', headerName: 'Tel Country' },
+  { field: 'telephone', headerName: 'Telephone' },
+];
+
 export default function Load() {
   const [loads, setLoads] = useState<Load[]>([]);
   const [filteredLoads, setFilteredLoads] = useState<Load[]>([]);
@@ -48,6 +76,8 @@ export default function Load() {
   // UseStates for tabs
   const [openTab, setOpenTab] = useState(1);
   const [data, setData] = useState<Load[]>([]); // State to hold Dispatch (Load) and Brokerage
+  const [brokerData, setBrokerData] = useState<Broker[]>([]);
+  const [filteredBrokers, setFilteredBrokers] = useState<Broker[]>([]);
 
   const handleClick = () => {
     toggleOpen();
@@ -75,6 +105,20 @@ export default function Load() {
         load.consignee?.toLowerCase().includes(value.toLowerCase())
     );
     setFilteredLoads(filteredData);
+
+    const filteredBrokers = brokerData.filter(
+      (broker) =>
+        broker.id?.toLowerCase().includes(value.toLowerCase()) ||
+        broker.name?.toLowerCase().includes(value.toLowerCase()) ||
+        broker.address?.toLowerCase().includes(value.toLowerCase()) ||
+        broker.city?.toLowerCase().includes(value.toLowerCase()) ||
+        broker.state?.toLowerCase().includes(value.toLowerCase()) ||
+        broker.postCountry?.toLowerCase().includes(value.toLowerCase()) ||
+        broker.postCode?.toLowerCase().includes(value.toLowerCase()) ||
+        broker.telCountry?.toLowerCase().includes(value.toLowerCase()) ||
+        broker.telephone?.toLowerCase().includes(value.toLowerCase())
+    );
+    setFilteredBrokers(filteredBrokers);
   };
 
   // useEffect for setting Loads table data and filtering.
@@ -112,27 +156,8 @@ export default function Load() {
 
         // Transform the data into the expected Load type before
         // setting it using setData.
-        const transformedData = brokerageData.map((broker) => ({
-          id: broker.id,
-          ownerId: '', // Add appropriate values for these properties
-          loadNum: '',
-          payOrderNum: '',
-          shipDate: '',
-          deliveryDate: '',
-          carrierId: '',
-          driverId: '',
-          customerId: '',
-          originId: '',
-          destId: '',
-          status: '',
-          carrier: broker.name,
-          driver: null,
-          customer: '',
-          shipper: null,
-          consignee: null,
-        }));
 
-        setData(transformedData);
+        setBrokerData(brokerageData);
       }
     };
 
@@ -325,7 +350,10 @@ export default function Load() {
             Brokerage
           </Link>
         </div>
-        <Table columns={columns} data={filteredLoads}></Table>
+        <Table
+          columns={openTab === 1 ? columns : brokerColumns}
+          data={openTab === 1 ? filteredLoads : brokerData}
+        ></Table>
       </div>
     </>
   );
