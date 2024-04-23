@@ -3,23 +3,14 @@ import Link from 'next/link';
 import { login, signUp } from './actions';
 import { SubmitButton } from '@/components/Authentication/submit-button';
 import AuthButton from '@/components/Authentication/AuthButton';
-import Button from '@/components/UI_Elements/buttons/Button';
 import Image from 'next/image';
 import Temp_Logo from '../../assets/Temp_Logo.png';
-
-// To Do:
-// check to see if user is logged in
-// provide option to log out
 
 export default async function Login({
   searchParams,
 }: {
   searchParams: { message: string };
 }) {
-  // const [user, setUser] = useState(null);
-  // const [loading, setLoading] = useState(true);
-
-  // check if a user is logged in
   const supabase = createClient();
 
   const {
@@ -96,7 +87,7 @@ export default async function Login({
             Sign Up
           </SubmitButton>
           {searchParams?.message && (
-            <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
+            <p className="body2 dark:text-black mt-4 text-center">
               {searchParams.message}
             </p>
           )}
