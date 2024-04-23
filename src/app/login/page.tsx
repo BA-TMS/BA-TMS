@@ -83,11 +83,20 @@ export default async function Login({
           <SubmitButton formAction={login} pendingText="Signing In...">
             Sign In
           </SubmitButton>
-          <SubmitButton formAction={signUp} pendingText="Signing Up...">
-            Sign Up
-          </SubmitButton>
+          <div>
+            <p className="inline-block body2 dark:text-black mt-3 mr-3">
+              Don&apos;t have an account?
+            </p>
+            <SubmitButton
+              variant="text"
+              formAction={signUp}
+              pendingText="Signing Up..."
+            >
+              Sign Up
+            </SubmitButton>
+          </div>
           {searchParams?.message && (
-            <p className="body2 dark:text-black mt-4 text-center">
+            <p className="body2 dark:text-black text-center mt-2">
               {searchParams.message}
             </p>
           )}
