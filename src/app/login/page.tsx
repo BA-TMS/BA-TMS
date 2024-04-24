@@ -1,11 +1,10 @@
-import { createClient } from '@/util/supabase/server';
+import { createClient } from '@util/supabase/server';
 import Link from 'next/link';
 import { login, signUp } from './actions';
 import { SubmitButton } from '@/components/Authentication/submit-button';
 import AuthButton from '@/components/Authentication/AuthButton';
 import Image from 'next/image';
 import Temp_Logo from '../../assets/Temp_Logo.png';
-import Button from '@/components/UI_Elements/buttons/Button';
 
 export default async function Login({
   searchParams,
@@ -84,8 +83,13 @@ export default async function Login({
               Password*
             </label>
           </div>
-          {/* not functional yet */}
-          <Button variant="text">Forgot Password?</Button>
+          {/* Link not functional yet */}
+          <Link
+            className="text-primary hover:text-primary-dark justify-center font-public font-bold w-auto h-auto disabled:text-grey-500 disabled:pointer-events-none text-button-lg my-2"
+            href={''}
+          >
+            Forgot Password?
+          </Link>
 
           <SubmitButton formAction={login} pendingText="Signing In...">
             Sign In
