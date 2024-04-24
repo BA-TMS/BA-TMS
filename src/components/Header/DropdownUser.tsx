@@ -25,7 +25,9 @@ const DropdownUser = () => {
   const signOut = async () => {
     const supabase = createClient();
     await supabase.auth.signOut();
-    router.push('/login');
+    // going to root because middleware will redirect to /login
+    // otherwise it could show the if user logout option
+    router.push('/');
   };
 
   // close on click outside

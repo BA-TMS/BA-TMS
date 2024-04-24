@@ -52,8 +52,10 @@ export default async function Login({
             <input
               type="text"
               name="email"
+              id="email"
               className="block px-2.5 pb-2.5 pt-4 w-full body2 dark:text-black bg-transparent rounded-lg border border-grey-400 appearance-none  focus:outline-none focus:ring-0 focus:border-primary peer"
-              placeholder=" "
+              placeholder=""
+              autoComplete="email"
               required
             />
             <label
@@ -68,8 +70,10 @@ export default async function Login({
             <input
               type="password"
               name="password"
+              id="password"
               className="block px-2.5 pb-2.5 pt-4 w-full body2 dark:text-black bg-transparent rounded-lg border border-grey-400 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer"
-              placeholder=" "
+              placeholder=""
+              autoComplete="current-password"
               required
             />
             <label
