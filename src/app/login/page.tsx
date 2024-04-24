@@ -5,6 +5,7 @@ import { SubmitButton } from '@/components/Authentication/submit-button';
 import AuthButton from '@/components/Authentication/AuthButton';
 import Image from 'next/image';
 import Temp_Logo from '../../assets/Temp_Logo.png';
+import Button from '@/components/UI_Elements/buttons/Button';
 
 export default async function Login({
   searchParams,
@@ -66,7 +67,7 @@ export default async function Login({
             </label>
           </div>
 
-          <div className="relative my-3">
+          <div className="relative mt-3">
             <input
               type="password"
               name="password"
@@ -83,6 +84,8 @@ export default async function Login({
               Password*
             </label>
           </div>
+          {/* not functional yet */}
+          <Button variant="text">Forgot Password?</Button>
 
           <SubmitButton formAction={login} pendingText="Signing In...">
             Sign In
