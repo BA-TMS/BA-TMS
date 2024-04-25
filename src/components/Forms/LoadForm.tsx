@@ -156,6 +156,8 @@ export const LoadForm = () => {
               </div>
             </div>
 
+            <span>Is Drayage</span>
+
             <TextInput control={control} name="Notes" isTextArea={true} />
             {errors.root && (
               <p className="mb-5 text-danger">{errors.root.message}</p>

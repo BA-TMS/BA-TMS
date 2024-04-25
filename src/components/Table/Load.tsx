@@ -28,7 +28,7 @@ type Load = {
   consignee: string | null;
 };
 
-type Broker = {
+/*type Broker = {
   id: string;
   createdAt: Date;
   updatedAt: Date;
@@ -42,7 +42,7 @@ type Broker = {
   postCode: string;
   telCountry: string;
   telephone: string;
-};
+};*/
 
 const columns = [
   { field: 'loadNum', headerName: 'Load Number' },
@@ -76,8 +76,8 @@ export default function Load() {
   // UseStates for tabs
   const [openTab, setOpenTab] = useState(1);
   const [data, setData] = useState<Load[]>([]); // State to hold Dispatch (Load) and Brokerage
-  const [brokerData, setBrokerData] = useState<Broker[]>([]);
-  const [filteredBrokers, setFilteredBrokers] = useState<Broker[]>([]);
+  //const [brokerData, setBrokerData] = useState<Broker[]>([]);
+  //const [filteredBrokers, setFilteredBrokers] = useState<Broker[]>([]);
 
   const handleClick = () => {
     toggleOpen();
@@ -106,7 +106,7 @@ export default function Load() {
     );
     setFilteredLoads(filteredData);
 
-    const filteredBrokers = brokerData.filter(
+    /*const filteredBrokers = brokerData.filter(
       (broker) =>
         broker.id?.toLowerCase().includes(value.toLowerCase()) ||
         broker.name?.toLowerCase().includes(value.toLowerCase()) ||
@@ -119,7 +119,7 @@ export default function Load() {
         broker.telCountry?.toLowerCase().includes(value.toLowerCase()) ||
         broker.telephone?.toLowerCase().includes(value.toLowerCase())
     );
-    setFilteredBrokers(filteredBrokers);
+    setFilteredBrokers(filteredBrokers);*/
   };
 
   // useEffect for setting Loads table data and filtering.
@@ -143,13 +143,13 @@ export default function Load() {
       setFilteredLoads(data);
     };
 
-    const fetchBrokers = async () => {
+    /*const fetchBrokers = async () => {
       const brokerageData = await getBrokers(); // Fetch brokerage data
 
       setBrokerData(brokerageData);
     };
 
-    fetchBrokers();
+    fetchBrokers();*/
     fetchLoads();
   }, []);
 
@@ -159,14 +159,14 @@ export default function Load() {
       if (openTab === 1) {
         const loadData = await getLoads();
         setData(loadData);
-      } else if (openTab === 2) {
+      } /*else if (openTab === 2) {
         const brokerageData = await getBrokers(); // Brokerage needed
 
         // Transform the data into the expected Load type before
         // setting it using setData.
 
         setBrokerData(brokerageData);
-      }
+      }*/
     };
 
     fetchData();
@@ -231,7 +231,7 @@ export default function Load() {
             }}
             onClick={() => {
               setFilteredLoads(loads);
-              setFilteredBrokers(brokerData);
+              //setFilteredBrokers(brokerData);
             }}
           >
             Show All
@@ -351,7 +351,8 @@ export default function Load() {
           >
             Drayage
           </Link>
-          <Link
+          {/*
+            <Link
             href="#"
             className={`border-b-2 py-4 text-sm font-medium hover:text-primary md:text-base ${
               openTab === 2 ? activeClasses : inactiveClasses
@@ -360,10 +361,11 @@ export default function Load() {
           >
             Brokerage
           </Link>
+          */}
         </div>
         <Table
-          columns={openTab === 1 ? columns : brokerColumns}
-          data={openTab === 1 ? filteredLoads : filteredBrokers}
+          columns={columns} //openTab === 1 ? columns : brokerColumns}
+          data={filteredLoads} //openTab === 1 ? filteredLoads : filteredBrokers}
         ></Table>
       </div>
     </>
