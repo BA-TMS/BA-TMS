@@ -34,6 +34,29 @@ const loadSchema = yup.object({
 type Load = yup.InferType<typeof loadSchema>;
 
 export const LoadForm = () => {
+  const { data } = useContext(ModalContext);
+
+  let defaultValues2;
+
+  if (data) {
+    console.log("aaa data's:", data);
+
+    defaultValues2 = {
+      'Load Number': data.loadNum,
+      'Pay Order Number': data.payOrderNum,
+      'Ship Date': data.shipDate,
+      'Received Date': undefined,
+      'Customer': data.customer,
+    };
+  } else {
+    defaultValues2 = {
+      'Load Number': '',
+      'Pay Order Number': '',
+      'Ship Date': undefined,
+      'Received Date': undefined,
+    };
+  }
+
   const {
     handleSubmit,
     setError,
@@ -41,16 +64,13 @@ export const LoadForm = () => {
     control,
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<Load>({
-    defaultValues: {
-      'Load Number': '',
-      'Pay Order Number': '',
-      'Ship Date': undefined,
-      'Received Date': undefined,
-    },
+    defaultValues: defaultValues2,
     resolver: yupResolver(loadSchema),
   });
 
   const { toggleOpen } = useContext(ModalContext);
+
+  console.log("LoadForm's data:", data);
 
   const onSubmit = async (data: Load) => {
     console.log(data); // see the data
@@ -69,6 +89,10 @@ export const LoadForm = () => {
       reset({});
     }
   }, [isSubmitSuccessful, reset]);
+
+  useEffect(() => {
+    console.log('data is: ', data);
+  });
 
   return (
     <div className="flex flex-col gap-9">

@@ -1,20 +1,30 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useContext } from 'react';
 import Link from 'next/link';
 
 import { EditIcon, ElipsisVertical, DeleteIcon } from '@/assets/SVGs';
+import { ModalContext } from '@/Context/modalContext';
 
 type TableActionsProps = {
   id: string;
   deleter: any;
+  data: any;
 };
 
 // pass this component an id from the table it is used in
 
-const TableActionsPopover: React.FC<TableActionsProps> = ({ id, deleter }) => {
+const TableActionsPopover: React.FC<TableActionsProps> = ({ id, deleter, data }) => {
   const [popoversOpen, setPopoversOpen] = useState(false);
 
   const trigger = useRef<any>(null);
   const popovers = useRef<any>(null);
+
+  const { toggleOpen, setData2 } = useContext(ModalContext);
+
+  const handleClick = () => {
+    toggleOpen();
+  };
+
+  // console.log("TableActionsPopover: React.FC<TableActionsProps>'s data:", data);
 
   // close on click outside
   useEffect(() => {
@@ -68,6 +78,10 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({ id, deleter }) => {
                 <Link
                   href="#" // update
                   className="inline-flex items-center justify-center gap-2.5 py-4 px-10 text-center font-medium dark:text-white hover:text-primary dark:hover:text-primary lg:px-8 xl:px-10"
+                  onClick={() => {
+                    setData2(data, () => {});
+                    handleClick();
+                  }}
                 >
                   <span>{EditIcon}</span>
                   Edit

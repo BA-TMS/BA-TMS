@@ -56,38 +56,44 @@ const Table: React.FC<TableProps<any>> = ({ columns, data, deleter }) => {
             </tr>
           </thead>
           <tbody>
-            {data.map((data, dataIndex) => (
-              <tr
-                key={dataIndex}
-                className={
-                  dataIndex === data.length - 1
-                    ? ''
-                    : 'border-b border-[#eee] dark:border-strokedark'
-                }
-              >
-                {columns.map((column, index) => (
-                  <td
-                    key={index}
-                    className={`py-4 px-4 pl-9 text-left ${
-                      index === columns.length - 1
-                        ? ''
-                        : 'border-b border-[#eee] dark:border-strokedark'
-                    } xl:pl-11`}
-                  >
-                    <h5 className="font-medium text-center text-black dark:text-white">
-                      {/* check if the value is a date */}
-                      {isDate(data[column.field])
-                        ? formatDate(data[column.field])
-                        : displayBooleanValue(data[column.field])}
-                    </h5>
+            {data.map((data, dataIndex) => {
+              return (
+                <tr
+                  key={dataIndex}
+                  className={
+                    dataIndex === data.length - 1
+                      ? ''
+                      : 'border-b border-[#eee] dark:border-strokedark'
+                  }
+                >
+                  {columns.map((column, index) => (
+                    <td
+                      key={index}
+                      className={`py-4 px-4 pl-9 text-left ${
+                        index === columns.length - 1
+                          ? ''
+                          : 'border-b border-[#eee] dark:border-strokedark'
+                      } xl:pl-11`}
+                    >
+                      <h5 className="font-medium text-center text-black dark:text-white">
+                        {/* check if the value is a date */}
+                        {isDate(data[column.field])
+                          ? formatDate(data[column.field])
+                          : displayBooleanValue(data[column.field])}
+                      </h5>
+                    </td>
+                  ))}
+                  <td>
+                    {/* Table Actions Popover is not functional yet */}
+                    <TableActionsPopover
+                      id={data.id}
+                      deleter={deleter}
+                      data={data}
+                    ></TableActionsPopover>
                   </td>
-                ))}
-                <td>
-                  {/* Table Actions Popover is not functional yet */}
-                  <TableActionsPopover id={data.id} deleter={deleter}></TableActionsPopover>
-                </td>
-              </tr>
-            ))}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

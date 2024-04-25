@@ -10,6 +10,8 @@ interface ThemeProviderProps {
 export const ModalContext = createContext({
   isOpen: false,
   toggleOpen: () => {},
+  data: undefined,
+  setData2: (data, cb) => {},
 });
 
 export const ContextProvider: React.FC<ThemeProviderProps> = ({ children }) => {
@@ -20,8 +22,15 @@ export const ContextProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     setIsOpen(!isOpen);
   }
 
+  const [data, setData] = useState<any>(undefined);
+
+  function setData2(data, cb) {
+    console.log("setData2's data:", data);
+    setData(data);
+  }
+
   return (
-    <ModalContext.Provider value={{ isOpen, toggleOpen }}>
+    <ModalContext.Provider value={{ isOpen, toggleOpen, data, setData2 }}>
       {children}
     </ModalContext.Provider>
   );

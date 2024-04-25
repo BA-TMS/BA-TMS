@@ -41,7 +41,7 @@ const columns = [
 
 export default function Load() {
   const [loads, setLoads] = useState<Load[]>([]);
-  const { toggleOpen } = useContext(ModalContext);
+  const { toggleOpen, setData2 } = useContext(ModalContext);
 
   const handleClick = () => {
     toggleOpen();
@@ -71,7 +71,10 @@ export default function Load() {
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <button
-        onClick={handleClick}
+        onClick={() => {
+          setData2(undefined);
+          handleClick();
+        }}
         className="float-right rounded-md bg-primary py-3 px-9 font-medium text-white hover:bg-opacity-80"
       >
         Add Load
