@@ -83,10 +83,10 @@ export default async function Login({
               Password*
             </label>
           </div>
-          {/* Link not functional yet */}
+
           <Link
             className="text-primary hover:text-primary-dark justify-center font-public font-bold w-auto h-auto disabled:text-grey-500 disabled:pointer-events-none text-button-lg my-2"
-            href={''}
+            href={'/login/reset-password'}
           >
             Forgot Password?
           </Link>
