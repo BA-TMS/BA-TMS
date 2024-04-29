@@ -1,15 +1,11 @@
 import Link from 'next/link';
+import { resetPassword } from '../actions';
 import { SubmitButton } from '@/components/Authentication/submit-button';
 import Image from 'next/image';
 import Temp_Logo from '../../../assets/Temp_Logo.png';
 
-// page to forward to when a user clicks "forgot password"
-// user enters email
-/// let's check if there is a user with that email?
 // reset password email is sent
 // is this a client component or server component?
-// do we need the search params prop?
-// should we check if there is a user?
 
 export default async function ResetPassword({
   searchParams,
@@ -49,7 +45,7 @@ export default async function ResetPassword({
             </label>
           </div>
 
-          <SubmitButton formAction={''} pendingText="Signing In...">
+          <SubmitButton formAction={resetPassword} pendingText="Signing In...">
             Continue
           </SubmitButton>
 
