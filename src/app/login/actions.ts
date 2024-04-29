@@ -8,7 +8,6 @@ import { headers } from 'next/headers';
 export async function login(formData: FormData) {
   const supabase = createClient();
 
-  // should validate inputs
   const data = {
     email: formData.get('email') as string,
     password: formData.get('password') as string,
@@ -17,18 +16,15 @@ export async function login(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
-    redirect('/error');
+    redirect('/login?message=Invalid Login Credentials');
   }
 
-  // redirect to '/' upon successful login
   revalidatePath('/', 'layout');
   redirect('/');
 }
 
 export const signUp = async (formData: FormData) => {
   'use server';
-
-  // will want to validate inputs
 
   const origin = headers().get('origin');
   const email = formData.get('email') as string;
@@ -39,7 +35,7 @@ export const signUp = async (formData: FormData) => {
     email,
     password,
     options: {
-      emailRedirectTo: `${origin}/auth/callback`,
+      emailRedirectTo: `${origin}/`,
     },
   });
 
@@ -51,4 +47,13 @@ export const signUp = async (formData: FormData) => {
   // could make notification page if we wanted
   // will eventually need a way to send email again
   return redirect('/login?message=Check email to continue sign in process');
+};
+
+export const signOut = async () => {
+  'use server';
+
+  const supabase = createClient();
+  await supabase.auth.signOut();
+  revalidatePath('/login', 'layout');
+  return redirect('/login');
 };

@@ -1,62 +1,113 @@
-// import { headers } from 'next/headers';
-// import { createClient } from '@/util/supabase/server';
-// import { redirect } from 'next/navigation';
-// import { revalidatePath } from 'next/cache';
+import { createClient } from '@util/supabase/server';
+import Link from 'next/link';
 import { login, signUp } from './actions';
 import { SubmitButton } from '@/components/Authentication/submit-button';
+import AuthButton from '@/components/Authentication/AuthButton';
+import Image from 'next/image';
+import Temp_Logo from '../../assets/Temp_Logo.png';
 
-export default function Login({
+export default async function Login({
   searchParams,
 }: {
   searchParams: { message: string };
 }) {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (user) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="border rounded-lg border-grey-300 p-10 w-full max-w-sm">
+          <header className="flex flex-col justify-around items-center mb-3">
+            <Image src={Temp_Logo} alt="A2ZTMS Logo" priority />
+            <p className="body2 dark:text-black my-6">Not {user.email}?</p>
+            <AuthButton></AuthButton>
+            <Link
+              href="/"
+              className="justify-center rounded-lg font-public font-bold text-center w-full h-auto disabled:text-grey-500 disabled:pointer-events-none border-bg-primary text-primary hover:bg-primary/25 px-5.5 py-2.75 text-button-lg bg-white border mt-3"
+            >
+              Continue
+            </Link>
+          </header>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-col justify-center items-center mx-auto">
-      <div className="border rounded-2xl border-stroke p-10 dark:border-strokedark mt-16 w-100">
-        <header className="flex flex-col justify-between items-center h-36 mb-6">
-          <h1 className="text-primary text-5xl">A2ZTMS</h1>
-          <h2 className="text-2xl"> Welcome </h2>
-          <p className="text-xs">Log in to A2ZTMS to continue</p>
+    <div className="flex justify-center items-center h-screen">
+      <div className="border rounded-lg border-grey-300 p-10 w-full max-w-sm">
+        <header className="flex flex-col justify-between items-center mb-3">
+          <Image src={Temp_Logo} alt="A2ZTMS Logo" priority />
+          <h1 className="text-title-md dark:text-black mt-6"> Welcome </h1>
+          <p className="body2 dark:text-black mt-4">
+            Log in to A2ZTMS to continue.
+          </p>
         </header>
         <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground">
-          <div className="relative">
-            <label
-              className="absolute left-0 ml-2 -top-3.5 bg-white px-1 text-md text-gray-500"
-              htmlFor="email"
-            >
-              Email
-            </label>
+          <div className="relative mt-3">
             <input
-              className="rounded-md px-4 py-2 bg-inherit border mb-6 w-full"
+              type="text"
               name="email"
-              placeholder="you@example.com"
+              id="email"
+              className="block px-2.5 pb-2.5 pt-4 w-full body2 dark:text-black bg-transparent rounded-lg border border-grey-400 appearance-none  focus:outline-none focus:ring-0 focus:border-primary peer"
+              placeholder=""
+              autoComplete="email"
               required
             />
-          </div>
-          <div className="relative">
             <label
-              className="absolute left-0 ml-2 -top-3.5 bg-white px-1 text-md text-gray-500"
-              htmlFor="password"
+              htmlFor="email"
+              className="absolute body2 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:text-black px-2 peer-focus:px-2 peer-focus:text-primary  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
             >
-              Password
+              Email*
             </label>
+          </div>
+
+          <div className="relative mt-3">
             <input
-              className="rounded-md px-4 py-2 bg-inherit border mb-6 w-full"
               type="password"
               name="password"
-              placeholder="••••••••"
+              id="password"
+              className="block px-2.5 pb-2.5 pt-4 w-full body2 dark:text-black bg-transparent rounded-lg border border-grey-400 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer"
+              placeholder=""
+              autoComplete="current-password"
               required
             />
+            <label
+              htmlFor="password"
+              className="absolute body2 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:text-black px-2 peer-focus:px-2 peer-focus:text-primary  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
+            >
+              Password*
+            </label>
           </div>
+          {/* Link not functional yet */}
+          <Link
+            className="text-primary hover:text-primary-dark justify-center font-public font-bold w-auto h-auto disabled:text-grey-500 disabled:pointer-events-none text-button-lg my-2"
+            href={''}
+          >
+            Forgot Password?
+          </Link>
 
           <SubmitButton formAction={login} pendingText="Signing In...">
             Sign In
           </SubmitButton>
-          <SubmitButton formAction={signUp} pendingText="Signing Up...">
-            Sign Up
-          </SubmitButton>
+          <div>
+            <p className="inline-block body2 dark:text-black mt-3 mr-3">
+              Don&apos;t have an account?
+            </p>
+            <SubmitButton
+              variant="text"
+              formAction={signUp}
+              pendingText="Signing Up..."
+            >
+              Sign Up
+            </SubmitButton>
+          </div>
           {searchParams?.message && (
-            <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
+            <p className="body2 dark:text-black text-center mt-2">
               {searchParams.message}
             </p>
           )}

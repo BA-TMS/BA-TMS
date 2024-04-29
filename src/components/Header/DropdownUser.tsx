@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+// import Image from 'next/image';
 import {
   AddressBookIcon,
   DropdownIcon,
@@ -10,22 +10,23 @@ import {
   SettingsIcon,
   UserIcon,
 } from '@/assets/SVGs';
-import { createClient } from '../../../util/supabase/client';
-import { useRouter } from 'next/navigation';
+import { createClient } from '@util/supabase/client';
+// import { useRouter } from 'next/navigation';
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const trigger = useRef<any>(null);
-  const dropdown = useRef<any>(null);
+  const trigger = useRef<HTMLAnchorElement>(null);
+  const dropdown = useRef<HTMLDivElement>(null);
 
-  // supabase logs out user and redirects to sign-in
-  const router = useRouter();
+  // const router = useRouter();
 
   const signOut = async () => {
     const supabase = createClient();
     await supabase.auth.signOut();
-    router.push('/login');
+    // reload page upon signOut
+    // middleware will handle it, since there is no auth cookie we go to login
+    window.location.reload();
   };
 
   // close on click outside
@@ -34,8 +35,8 @@ const DropdownUser = () => {
       if (!dropdown.current) return;
       if (
         !dropdownOpen ||
-        dropdown.current.contains(target) ||
-        trigger.current.contains(target)
+        dropdown.current.contains(target as Node) ||
+        (trigger.current && trigger.current.contains(target as Node))
       )
         return;
       setDropdownOpen(false);
