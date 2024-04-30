@@ -67,8 +67,6 @@ export async function forgotPassword(formData: FormData) {
     redirectTo: `${origin}/login/reset-password`,
   });
 
-  // possibly want to change the error redirect
-  // could not authenticate user?
   if (error) {
     redirect('/login?message=Could Not Reset Password');
   }

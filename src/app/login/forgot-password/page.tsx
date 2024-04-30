@@ -11,14 +11,13 @@ export default async function ForgotPassword({
 }: {
   searchParams: { message: string };
 }) {
-  // if there is a session, redirect
   const supabase = createClient();
 
   const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    data: { session },
+  } = await supabase.auth.getSession();
 
-  if (user) {
+  if (session) {
     return redirect('/');
   }
 
