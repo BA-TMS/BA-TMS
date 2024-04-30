@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { createClient } from '@util/supabase/server';
 import { redirect } from 'next/navigation';
-import { resetPassword } from '../actions';
+import { forgotPassword } from '../actions';
 import { SubmitButton } from '@/components/Authentication/submit-button';
 import Image from 'next/image';
 import Temp_Logo from '../../../assets/Temp_Logo.png';
@@ -55,7 +55,7 @@ export default async function ForgotPassword({
             </label>
           </div>
 
-          <SubmitButton formAction={resetPassword} pendingText="...">
+          <SubmitButton formAction={forgotPassword} pendingText="...">
             Continue
           </SubmitButton>
 

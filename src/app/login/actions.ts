@@ -58,13 +58,13 @@ export const signOut = async () => {
   return redirect('/login');
 };
 
-export async function resetPassword(formData: FormData) {
+export async function forgotPassword(formData: FormData) {
   const origin = headers().get('origin');
   const email = formData.get('email') as string;
   const supabase = createClient();
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${origin}/reset-password`,
+    redirectTo: `${origin}/login/reset-password`,
   });
 
   // possibly want to change the error redirect
