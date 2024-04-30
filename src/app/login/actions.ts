@@ -59,18 +59,20 @@ export const signOut = async () => {
 };
 
 export async function resetPassword(formData: FormData) {
+  const origin = headers().get('origin');
+  const email = formData.get('email') as string;
   const supabase = createClient();
 
-  const data = {
-    email: formData.get('email') as string,
-  };
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${origin}/reset-password`,
+  });
 
-  const { error } = await supabase.auth.resetPasswordForEmail(data.email);
-
+  // possibly want to change the error redirect
+  // could not authenticate user?
   if (error) {
     redirect('/login?message=Could Not Reset Password');
   }
 
-  revalidatePath('/', 'layout');
+  // could make a whole /confirm page for this if we want
   return redirect('/login?message=Check email to reset password');
 }

@@ -1,17 +1,27 @@
 import Link from 'next/link';
+import { createClient } from '@util/supabase/server';
+import { redirect } from 'next/navigation';
 import { resetPassword } from '../actions';
 import { SubmitButton } from '@/components/Authentication/submit-button';
 import Image from 'next/image';
 import Temp_Logo from '../../../assets/Temp_Logo.png';
 
-// reset password email is sent
-// is this a client component or server component?
-
-export default async function ResetPassword({
+export default async function ForgotPassword({
   searchParams,
 }: {
   searchParams: { message: string };
 }) {
+  // if there is a session, redirect
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (user) {
+    return redirect('/');
+  }
+
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="border rounded-lg border-grey-300 p-10 w-full max-w-sm">
@@ -45,7 +55,7 @@ export default async function ResetPassword({
             </label>
           </div>
 
-          <SubmitButton formAction={resetPassword} pendingText="Signing In...">
+          <SubmitButton formAction={resetPassword} pendingText="...">
             Continue
           </SubmitButton>
 
