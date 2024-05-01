@@ -8,8 +8,39 @@ import Temp_Logo from '../../../assets/Temp_Logo.png';
 export default async function ResetPassword({
   searchParams,
 }: {
-  searchParams: { message: string; code: string };
+  searchParams: {
+    message: string;
+    code: string;
+    error: string;
+    error_code: string;
+  };
 }) {
+  if (
+    searchParams.error === 'access_denied' &&
+    searchParams.error_code === '403'
+  ) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="border rounded-lg border-grey-300 p-10 w-full max-w-sm text-center">
+          <header className="flex flex-col justify-between items-center mb-3">
+            <Image src={Temp_Logo} alt="A2ZTMS Logo" priority />
+            <h1 className="text-title-md dark:text-black mt-6">
+              Email Link Has Expired
+            </h1>
+            <p className="body2 dark:text-black mt-4">Please Try Again</p>
+          </header>
+
+          <Link
+            className="text-primary hover:text-primary-dark justify-center font-public font-bold w-auto h-auto disabled:text-grey-500 disabled:pointer-events-none text-button-lg my-2 "
+            href={'/'}
+          >
+            Back to A2ZTMS
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   const supabase = createClient();
 
   const {
