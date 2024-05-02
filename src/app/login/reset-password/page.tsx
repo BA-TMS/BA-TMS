@@ -3,7 +3,6 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import Button from '@/components/UI_Elements/buttons/Button';
-import { useEffect } from 'react';
 import { resetPassword } from '../actions';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -33,8 +32,7 @@ export default function ResetPassword({
     register,
     handleSubmit,
     setError,
-    reset,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors, isSubmitting },
   } = useForm<Passwords>({
     defaultValues: {
       password: '',
@@ -44,6 +42,7 @@ export default function ResetPassword({
   });
 
   const onSubmit = async (data: Passwords) => {
+    console.log(data);
     try {
       await resetPassword({ searchParams }, data.password);
     } catch (error) {
@@ -51,15 +50,6 @@ export default function ResetPassword({
       setError('root', { message: 'Error Submitting Form - Please try Again' });
     }
   };
-
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset({
-        password: '',
-        confirmPassword: '',
-      });
-    }
-  }, [isSubmitSuccessful, reset]);
 
   if (
     searchParams.error === 'access_denied' &&
