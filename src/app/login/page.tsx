@@ -107,7 +107,7 @@ export default async function Login({
             </SubmitButton>
           </div>
           {searchParams?.message && (
-            <p className="body2 dark:text-black text-center mt-2">
+            <p className="font-public font-normal text-text-sm text-danger text-center mt-2">
               {searchParams.message}
             </p>
           )}
