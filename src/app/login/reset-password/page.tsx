@@ -1,11 +1,25 @@
+'use client';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
+import Button from '@/components/UI_Elements/buttons/Button';
+import { useEffect } from 'react';
+import { resetPassword } from '../actions';
 import Link from 'next/link';
-import { createClient } from '@util/supabase/server';
-import { redirect } from 'next/navigation';
-import { SubmitButton } from '@/components/Authentication/submit-button';
 import Image from 'next/image';
 import Temp_Logo from '../../../assets/Temp_Logo.png';
 
-export default async function ResetPassword({
+const passwordSchema = yup.object().shape({
+  password: yup.string().required(),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref('password')], 'Passwords must match- Try again!')
+    .required(),
+});
+
+type Passwords = yup.InferType<typeof passwordSchema>;
+
+export default function ResetPassword({
   searchParams,
 }: {
   searchParams: {
@@ -15,6 +29,38 @@ export default async function ResetPassword({
     error_code: string;
   };
 }) {
+  const {
+    register,
+    handleSubmit,
+    setError,
+    reset,
+    formState: { errors, isSubmitting, isSubmitSuccessful },
+  } = useForm<Passwords>({
+    defaultValues: {
+      password: '',
+      confirmPassword: '',
+    },
+    resolver: yupResolver(passwordSchema),
+  });
+
+  const onSubmit = async (data: Passwords) => {
+    try {
+      await resetPassword({ searchParams }, data.password);
+    } catch (error) {
+      console.log('Error submitting form:', error);
+      setError('root', { message: 'Error Submitting Form - Please try Again' });
+    }
+  };
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset({
+        password: '',
+        confirmPassword: '',
+      });
+    }
+  }, [isSubmitSuccessful, reset]);
+
   if (
     searchParams.error === 'access_denied' &&
     searchParams.error_code === '403'
@@ -41,55 +87,6 @@ export default async function ResetPassword({
     );
   }
 
-  const supabase = createClient();
-
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  if (session) {
-    return redirect('/');
-  }
-
-  const resetPassword = async (formData: FormData) => {
-    'use server';
-
-    const password = formData.get('password') as string;
-    const confirmPassword = formData.get('confirmPassword') as string;
-
-    if (password !== confirmPassword) {
-      return redirect(
-        '/login/reset-password?message=Passwords do not match. Try again!'
-      );
-    }
-
-    const supabase = createClient();
-
-    if (searchParams.code) {
-      const supabase = createClient();
-      const { error } = await supabase.auth.exchangeCodeForSession(
-        searchParams.code
-      );
-
-      if (error) {
-        return redirect(
-          '/login?message=Unable to reset Password. Link expired!'
-        );
-      }
-    }
-
-    const { error } = await supabase.auth.updateUser({
-      password,
-    });
-
-    if (error) {
-      return redirect(
-        '/login/reset-password?message=Unable to reset Password. Try again!'
-      );
-    }
-    redirect('/');
-  };
-
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="border rounded-lg border-grey-300 p-10 w-full max-w-sm">
@@ -99,9 +96,13 @@ export default async function ResetPassword({
             Reset Your Password
           </h1>
         </header>
-        <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground"
+        >
           <div className="relative my-3">
             <input
+              {...register('password')}
               type="password"
               name="password"
               id="password"
@@ -120,9 +121,10 @@ export default async function ResetPassword({
 
           <div className="relative mb-3">
             <input
+              {...register('confirmPassword')}
               type="password"
               name="confirmPassword"
-              id="password"
+              id="confirmPassword"
               className="block px-2.5 pb-2.5 pt-4 w-full body2 dark:text-black bg-transparent rounded-lg border border-grey-400 appearance-none  focus:outline-none focus:ring-0 focus:border-primary peer"
               placeholder=""
               autoComplete="false"
@@ -134,11 +136,16 @@ export default async function ResetPassword({
             >
               Confirm New Password*
             </label>
+            {errors.confirmPassword && (
+              <p className="font-public font-normal text-text-sm text-danger text-center mt-4">
+                {errors.confirmPassword.message}
+              </p>
+            )}
           </div>
 
-          <SubmitButton formAction={resetPassword} pendingText="...">
-            Reset Password
-          </SubmitButton>
+          <Button type="submit">
+            {isSubmitting ? 'Submitting' : 'Submit'}
+          </Button>
 
           <Link
             className="text-primary hover:text-primary-dark justify-center font-public font-bold w-auto h-auto disabled:text-grey-500 disabled:pointer-events-none text-button-lg my-2 text-center"
@@ -146,9 +153,13 @@ export default async function ResetPassword({
           >
             Back to A2ZTMS
           </Link>
-
+          {errors.root && (
+            <p className="font-public font-normal text-text-sm text-danger text-center mt-2">
+              {errors.root.message}
+            </p>
+          )}
           {searchParams?.message && (
-            <p className="body2 dark:text-black text-center mt-2">
+            <p className="font-public font-normal text-text-sm text-danger text-center mt-2">
               {searchParams.message}
             </p>
           )}
