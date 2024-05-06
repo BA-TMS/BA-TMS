@@ -156,7 +156,10 @@ export const LoadForm = () => {
               </div>
             </div>
 
-            <span>Is Drayage</span>
+            <div>
+              <span>Is Drayage</span>
+              <input type="checkbox" />
+            </div>
 
             <TextInput control={control} name="Notes" isTextArea={true} />
             {errors.root && (
