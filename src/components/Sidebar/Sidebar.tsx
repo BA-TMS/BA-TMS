@@ -29,7 +29,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const trigger = useRef<any>(null);
   const sidebar = useRef<any>(null);
 
-  let storedSidebarExpanded = 'true';
+  const storedSidebarExpanded = 'true';
 
   const [sidebarExpanded, setSidebarExpanded] = useState(
     storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true'
@@ -305,12 +305,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
                           <li>
                             <Link
-                              href="/dispatch"
+                              href="/consignees"
                               className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === '/dispatch' && 'text-white'
+                                pathname === '/consignees' && 'text-white'
                               } `}
                             >
-                              Dispatch
+                              Consignees
                             </Link>
                           </li>
                           <li>
@@ -341,6 +341,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                               } `}
                             >
                               Third Parties
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/drayage"
+                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
+                                pathname === '/drayage' && 'text-white'
+                              } `}
+                            >
+                              Drayage
                             </Link>
                           </li>
                         </ul>

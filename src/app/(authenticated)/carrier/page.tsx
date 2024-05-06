@@ -1,14 +1,14 @@
 'use client';
 
+import Carriers from '../../../components/Table/Carrier';
 import { ContextProvider } from '@/Context/modalContext';
-import Load from '@/components/Table/Load';
 
-const DashboardHome = () => {
+const CarrierPage = () => {
   return (
     <ContextProvider>
-      <Load />
+      <Carriers />
     </ContextProvider>
   );
 };
 
-export default DashboardHome;
+export default CarrierPage;

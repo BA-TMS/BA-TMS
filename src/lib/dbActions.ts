@@ -56,13 +56,8 @@ export async function getLoads() {
 }
 
 export async function getOrganizations() {
-  const organizations = prisma.organization.findMany();
+  const organizations = await getter(prisma.organization, null);
   return organizations;
-}
-
-export async function getOrgs() {
-  const orgs = await getter(prisma.organization, null);
-  return orgs;
 }
 
 export async function getShippers() {
