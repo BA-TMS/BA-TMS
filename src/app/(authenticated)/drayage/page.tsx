@@ -15,6 +15,7 @@ import StartDate from '@/components/Calendar/StartDate';
 import EndDate from '@/components/Calendar/EndDate';
 
 import 'react-datepicker/dist/react-datepicker.css';
+import Table from '@/components/UI_Elements/Table';
 
 /* CODE THAT CAN REPLACE THE CALENDAR HTML */
 /* 
@@ -26,11 +27,46 @@ import 'react-datepicker/dist/react-datepicker.css';
 </LocalizationProvider>
 */
 
+type dummyData = {
+  steamShipping: string;
+  containerType: string;
+  startDate: Date;
+  endDate: Date;
+};
+
+type dummyTest = dummyData[];
+const placeholder = [
+  {
+    steamShipping: 'CMDU',
+    containerType: '20',
+    startDate: new Date('2024-05-12'),
+    endDate: new Date('2024-08-14'),
+  },
+  {
+    steamShipping: 'COSU',
+    containerType: '40 ST',
+    startDate: new Date('2024-05-23'),
+    endDate: new Date('2024-08-07'),
+  },
+];
+
+const columns = [
+  { field: 'steamShipping', headerName: 'Steam Shipping' },
+  { field: 'containerType', headerName: 'Container Type' },
+  { field: 'startDate', headerName: 'Start Date' },
+  { field: 'endDate', headerName: 'End Date' },
+];
+
 export default function Drayage() {
   const [value, setValue] = React.useState<DateRange<Dayjs>>([
     dayjs('2022-04-17'),
     dayjs('2022-04-21'),
   ]);
+
+  /* TESTING */
+  const xValue: dummyTest = placeholder;
+
+  /* END TESTING */
 
   return (
     <div>
@@ -85,7 +121,7 @@ export default function Drayage() {
           </LocalizationProvider>
         </div>
       </div>
-      <div className="mb-4.5" style={{ float: 'left', marginRight: '1rem' }}>
+      <div className="mb-4.5">
         <label className="mb-2.5 block text-sm font-medium text-black dark:text-white">
           End Date
         </label>
@@ -95,6 +131,8 @@ export default function Drayage() {
           </LocalizationProvider>
         </div>
       </div>
+
+      <Table columns={columns} data={xValue}></Table>
     </div>
   );
 }
