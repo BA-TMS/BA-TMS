@@ -72,36 +72,34 @@ export async function forgotPassword(formData: FormData) {
   }
 
   // could make a whole /confirm page for this if we want
-  return redirect('/login?message=Check email to reset password');
+  return redirect(
+    '/login?message=Check email to reset password. Do not change browsers.'
+  );
 }
 
-// reset password
 export const resetPassword = async (code: string, password: string) => {
   'use server';
 
   const supabase = createClient();
 
   if (code) {
-    console.log('code in resetPassword', code);
     const { error } = await supabase.auth.exchangeCodeForSession(code);
-    // code is not making it past here
+
     if (error) {
-      // have to handle errors better
-      // return redirect('/login?message=Unable to reset Password. Link expired!');
+      // should handle errors better for user experience
+
       console.log('link expired error', error);
       return;
     }
   }
-  console.log('password', password);
+
   const { error } = await supabase.auth.updateUser({
     password: password,
   });
 
   if (error) {
-    // return redirect(
-    //   '/login/reset-password?message=Unable to reset Password. Try again!'
-    // );
-    console.log('unable to reset paassword error', error);
+    // once again should handle errors better for user experience
+    console.log('unable to reset password error', error);
     return;
   }
   redirect('/');

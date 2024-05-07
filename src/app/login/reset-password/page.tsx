@@ -42,7 +42,6 @@ export default function ResetPassword({
   });
 
   const onSubmit = async (data: Passwords) => {
-    console.log('submit data', data);
     try {
       await resetPassword(searchParams.code, data.password);
     } catch (error) {
@@ -68,9 +67,9 @@ export default function ResetPassword({
 
           <Link
             className="text-primary hover:text-primary-dark justify-center font-public font-bold w-auto h-auto disabled:text-grey-500 disabled:pointer-events-none text-button-lg my-2 "
-            href={'/'}
+            href={'/login/forgot-password'}
           >
-            Back to A2ZTMS
+            Resend Email Link
           </Link>
         </div>
       </div>
