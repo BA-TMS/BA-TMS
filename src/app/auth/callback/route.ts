@@ -1,4 +1,4 @@
-import { createClient } from '../../../util/supabase/server';
+import { createClient } from '@util/supabase/server';
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
@@ -17,5 +17,5 @@ export async function GET(request: Request) {
   }
 
   // URL to redirect to after sign up process completes
-  return NextResponse.redirect(`${origin}/protected`);
+  return NextResponse.redirect(`${origin}/`);
 }

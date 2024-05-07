@@ -42,9 +42,9 @@ export default function ResetPassword({
   });
 
   const onSubmit = async (data: Passwords) => {
-    console.log(data);
+    console.log('submit data', data);
     try {
-      await resetPassword({ searchParams }, data.password);
+      await resetPassword(searchParams.code, data.password);
     } catch (error) {
       console.log('Error submitting form:', error);
       setError('root', { message: 'Error Submitting Form - Please try Again' });

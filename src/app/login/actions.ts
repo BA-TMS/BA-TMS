@@ -76,42 +76,25 @@ export async function forgotPassword(formData: FormData) {
 }
 
 // reset password
-export const resetPassword = async (
-  {
-    searchParams,
-  }: {
-    searchParams: {
-      message: string;
-      code: string;
-      // error: string;
-      // error_code: string;
-    };
-  },
-  // formData: FormData
-  password: string
-) => {
+export const resetPassword = async (code: string, password: string) => {
   'use server';
-
-  // const password = formData.get('password') as string;
-  // const confirmPassword = formData.get('confirmPassword') as string;
 
   const supabase = createClient();
 
-  if (searchParams.code) {
-    const supabase = createClient();
-    const { error } = await supabase.auth.exchangeCodeForSession(
-      searchParams.code
-    );
-
+  if (code) {
+    console.log('code in resetPassword', code);
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    // code is not making it past here
     if (error) {
+      // have to handle errors better
       // return redirect('/login?message=Unable to reset Password. Link expired!');
       console.log('link expired error', error);
       return;
     }
   }
-
+  console.log('password', password);
   const { error } = await supabase.auth.updateUser({
-    password,
+    password: password,
   });
 
   if (error) {
