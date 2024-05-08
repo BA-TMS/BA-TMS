@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { createClient } from '../../../util/supabase/server';
+import { createClient } from '@util/supabase/server';
 import { headers } from 'next/headers';
 
 export async function login(formData: FormData) {
@@ -15,11 +15,14 @@ export async function login(formData: FormData) {
 
   const { error } = await supabase.auth.signInWithPassword(data);
 
+  console.log('login error', error?.message);
+
   if (error?.message === 'Email not confirmed') {
-    console.log('login error', error.message);
     return redirect(
       '/login/confirm?message=Could not authenticate user, please confirm your email'
     );
+  } else if (error === null) {
+    redirect('/');
   } else {
     redirect('/login?message=Invalid Login Credentials');
   }
@@ -57,16 +60,15 @@ export const resendConfirmEmail = async (formData: FormData) => {
   const origin = headers().get('origin');
   const email = formData.get('email') as string;
   const supabase = createClient();
-  console.log(email);
+
   const { error } = await supabase.auth.resend({
     type: 'signup',
     email: email,
     options: {
-      emailRedirectTo: `${origin}/login`,
+      emailRedirectTo: `${origin}/`,
     },
   });
   if (error) {
-    console.log(error);
     return redirect('/login/confirm?message=Could not resend email');
   }
 
