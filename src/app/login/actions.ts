@@ -15,12 +15,14 @@ export async function login(formData: FormData) {
 
   const { error } = await supabase.auth.signInWithPassword(data);
 
-  if (error) {
+  if (error?.message === 'Email not confirmed') {
+    console.log('login error', error.message);
+    return redirect(
+      '/login/confirm?message=Could not authenticate user, please confirm your email'
+    );
+  } else {
     redirect('/login?message=Invalid Login Credentials');
   }
-
-  revalidatePath('/', 'layout');
-  redirect('/');
 }
 
 export const signUp = async (formData: FormData) => {
@@ -31,6 +33,7 @@ export const signUp = async (formData: FormData) => {
   const password = formData.get('password') as string;
   const supabase = createClient();
 
+  // this function will need to be changed when refining sign up new user process
   const { error } = await supabase.auth.signUp({
     email,
     password,
@@ -40,13 +43,36 @@ export const signUp = async (formData: FormData) => {
   });
 
   if (error) {
-    return redirect('/login?message=Could not authenticate user');
+    return redirect('/login/confirm?message=Could not authenticate user');
   }
 
   revalidatePath('/', 'layout');
-  // could make notification page if we wanted
-  // will eventually need a way to send email again
-  return redirect('/login?message=Check email to continue sign in process');
+
+  return redirect('/login/confirm');
+};
+
+export const resendConfirmEmail = async (formData: FormData) => {
+  'use server';
+
+  const origin = headers().get('origin');
+  const email = formData.get('email') as string;
+  const supabase = createClient();
+  console.log(email);
+  const { error } = await supabase.auth.resend({
+    type: 'signup',
+    email: email,
+    options: {
+      emailRedirectTo: `${origin}/login`,
+    },
+  });
+  if (error) {
+    console.log(error);
+    return redirect('/login/confirm?message=Could not resend email');
+  }
+
+  revalidatePath('/', 'layout');
+
+  return redirect('/login/confirm?message=Email sent'); // stay on confirm page and display message
 };
 
 export const signOut = async () => {
@@ -71,7 +97,6 @@ export async function forgotPassword(formData: FormData) {
     redirect('/login?message=Could Not Reset Password');
   }
 
-  // could make a whole /confirm page for this if we want
   return redirect(
     '/login?message=Check email to reset password. Do not change browsers.'
   );
