@@ -1,6 +1,4 @@
 'use client';
-import SelectInput from '@/components/Forms/UI_Elements/SelectInput';
-import { usStates } from '@/components/Forms/data/states';
 import ToggleButton from '@/components/Controls/ToggleButton';
 import React, { useState } from 'react';
 
@@ -8,24 +6,10 @@ import React, { useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateRange } from '@mui/x-date-pickers-pro/models';
-import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
 import { DatePicker } from '@mui/x-date-pickers';
-import StartDate from '@/components/Calendar/StartDate';
-import EndDate from '@/components/Calendar/EndDate';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import Table from '@/components/UI_Elements/Table';
-
-/* CODE THAT CAN REPLACE THE CALENDAR HTML */
-/* 
-<LocalizationProvider dateAdapter={AdapterDayjs}>
-  <DateRangePicker
-    value={value}
-    onChange={(newValue) => setValue(newValue)}
-  />
-</LocalizationProvider>
-*/
 
 type dummyData = {
   steamShipping: string;
@@ -62,11 +46,14 @@ export default function Drayage() {
     dayjs('2022-04-17'),
     dayjs('2022-04-21'),
   ]);
+  const [containerFilter, setContainerFilter] = useState('');
+  const [steamShippingFilter, setSteamShippingFilter] = useState('');
 
-  /* TESTING */
-  const xValue: dummyTest = placeholder;
-
-  /* END TESTING */
+  const filteredData = placeholder.filter(
+    (item) =>
+      (containerFilter ? item.containerType === containerFilter : true) &&
+      (steamShippingFilter ? item.steamShipping === steamShippingFilter : true)
+  );
 
   return (
     <div>
@@ -87,12 +74,15 @@ export default function Drayage() {
         <label className="mb-2.5 block text-sm font-medium text-black dark:text-white">
           Steam Shipping Line
         </label>
-        <div
-          x-data="{ isOptionSelected: false }"
-          className="relative z-20 bg-white dark:bg-form-input"
-        >
-          <select className="relative z-20 w-48 rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
-            <option value="Option 1">Steam 1</option>
+        <div className="relative z-20 bg-white dark:bg-form-input">
+          <select
+            className="relative z-20 w-48 rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+            value={steamShippingFilter}
+            onChange={(e) => setSteamShippingFilter(e.target.value)}
+          >
+            <option value="">All</option>
+            <option value="CMDU">CMDU</option>
+            <option value="COSU">COSU</option>
           </select>
         </div>
       </div>
@@ -102,10 +92,14 @@ export default function Drayage() {
           Container Type
         </label>
         <div>
-          <select className="relative z-20 w-48 rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+          <select
+            className="relative z-20 w-48 rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+            value={containerFilter}
+            onChange={(e) => setContainerFilter(e.target.value)}
+          >
+            <option value="">All</option>
             <option value="20">20</option>
-            <option value="40">40</option>
-            <option value="60">60</option>
+            <option value="40 ST">40 ST</option>
           </select>
         </div>
       </div>
@@ -132,7 +126,7 @@ export default function Drayage() {
         </div>
       </div>
 
-      <Table columns={columns} data={xValue}></Table>
+      <Table columns={columns} data={filteredData}></Table>
     </div>
   );
 }
