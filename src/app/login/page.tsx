@@ -83,10 +83,10 @@ export default async function Login({
               Password*
             </label>
           </div>
-          {/* Link not functional yet */}
+
           <Link
             className="text-primary hover:text-primary-dark justify-center font-public font-bold w-auto h-auto disabled:text-grey-500 disabled:pointer-events-none text-button-lg my-2"
-            href={''}
+            href={'/login/forgot-password'}
           >
             Forgot Password?
           </Link>
@@ -107,7 +107,7 @@ export default async function Login({
             </SubmitButton>
           </div>
           {searchParams?.message && (
-            <p className="body2 dark:text-black text-center mt-2">
+            <p className="font-public font-normal text-text-sm text-danger text-center mt-2">
               {searchParams.message}
             </p>
           )}
