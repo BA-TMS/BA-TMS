@@ -48,7 +48,7 @@ export default async function Login({
           </p>
         </header>
         <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground">
-          <div className="relative mt-3">
+          <div className="relative">
             <input
               type="text"
               name="email"
@@ -66,7 +66,7 @@ export default async function Login({
             </label>
           </div>
 
-          <div className="relative mt-3">
+          <div className="relative">
             <input
               type="password"
               name="password"

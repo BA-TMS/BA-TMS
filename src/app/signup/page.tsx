@@ -1,18 +1,35 @@
 'use client';
 import * as yup from 'yup';
+import YupPassword from 'yup-password';
+YupPassword(yup);
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import Link from 'next/link';
 import Button from '@/components/UI_Elements/buttons/Button';
 import Image from 'next/image';
 import Temp_Logo from '../../assets/Temp_Logo.png';
-// import { signUp } from '@/app/login/actions';
+import { signUp } from '@/app/login/actions';
+
+// error messages for yup-password validation
+yup.setLocale({
+  string: {
+    minLowercase: 'Password must contain at least 1 lower case character.',
+    minUppercase: 'Password must contain at least 1 upper case character.',
+    minNumbers: 'Password must contain at least 1 number.',
+    minSymbols: 'Password must contain at least 1 special character.',
+    min: 'Password must be at least 8 characters.',
+  } as any,
+  // per docs- when using typescript, append `as any` to the end of this object to avoid type errors.
+});
 
 const newUserSchema = yup.object().shape({
   name: yup.string().required('Name is required.'),
-  email: yup.string().required('Email is required.'),
+  email: yup
+    .string()
+    .email('Must use a valid email.')
+    .required('Email is required.'),
   tel: yup.string().required('Phone Number is required.'),
-  password: yup.string().required('Password is required.'),
+  password: yup.string().password().required('Password is required.'),
 });
 
 type NewUser = yup.InferType<typeof newUserSchema>;
@@ -40,7 +57,8 @@ export default function Signup({
   const onSubmit = async (data: NewUser) => {
     try {
       console.log(data);
-      //   await resetPassword(searchParams.code, data.password);
+
+      await signUp(data.email, data.password);
     } catch (error) {
       console.log('Error submitting form:', error);
       setError('root', { message: 'Error Submitting Form - Please try Again' });
@@ -62,7 +80,7 @@ export default function Signup({
           onSubmit={handleSubmit(onSubmit)}
           className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground"
         >
-          <div className="relative mt-3">
+          <div className="relative">
             <input
               {...register('name')}
               type="text"
@@ -82,12 +100,12 @@ export default function Signup({
             </label>
           </div>
           {errors.name && (
-            <p className="font-public font-normal text-text-sm text-danger text-center">
+            <p className="font-public font-normal text-text-sm mb-1 text-danger text-center">
               {errors.name.message}
             </p>
           )}
 
-          <div className="relative mt-3">
+          <div className="relative ">
             <input
               {...register('email')}
               type="text"
@@ -106,12 +124,12 @@ export default function Signup({
             </label>
           </div>
           {errors.email && (
-            <p className="font-public font-normal text-text-sm text-danger text-center">
+            <p className="font-public font-normal text-text-sm mb-1 text-danger text-center">
               {errors.email.message}
             </p>
           )}
 
-          <div className="relative mt-3">
+          <div className="relative">
             <input
               {...register('tel')}
               type="text"
@@ -130,12 +148,12 @@ export default function Signup({
             </label>
           </div>
           {errors.tel && (
-            <p className="font-public font-normal text-text-sm text-danger text-center">
+            <p className="font-public font-normal text-text-sm mb-1 text-danger text-center">
               {errors.tel.message}
             </p>
           )}
 
-          <div className="relative mt-3">
+          <div className="relative">
             <input
               {...register('password')}
               type="password"
@@ -154,7 +172,7 @@ export default function Signup({
             </label>
           </div>
           {errors.password && (
-            <p className="font-public font-normal text-text-sm text-danger text-center">
+            <p className="font-public font-normal text-text-sm mb-1 text-danger text-center">
               {errors.password.message}
             </p>
           )}
