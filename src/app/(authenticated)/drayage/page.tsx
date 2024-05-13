@@ -14,6 +14,7 @@ import Table from '@/components/UI_Elements/Table';
 type dummyData = {
   steamShipping: string;
   containerType: string;
+  terminal: string;
   startDate: Date;
   endDate: Date;
 };
@@ -23,12 +24,14 @@ const placeholder = [
   {
     steamShipping: 'CMDU',
     containerType: '20',
+    terminal: 'APM',
     startDate: new Date('2024-05-12'),
     endDate: new Date('2024-08-14'),
   },
   {
     steamShipping: 'COSU',
     containerType: '40 ST',
+    terminal: 'PIERA',
     startDate: new Date('2024-05-23'),
     endDate: new Date('2024-08-07'),
   },
@@ -37,6 +40,7 @@ const placeholder = [
 const columns = [
   { field: 'steamShipping', headerName: 'Steam Shipping' },
   { field: 'containerType', headerName: 'Container Type' },
+  { field: 'terminal', headerName: 'Terminal' },
   { field: 'startDate', headerName: 'Start Date' },
   { field: 'endDate', headerName: 'End Date' },
 ];
@@ -48,11 +52,15 @@ export default function Drayage() {
   ]);
   const [containerFilter, setContainerFilter] = useState('');
   const [steamShippingFilter, setSteamShippingFilter] = useState('');
+  const [terminalFilter, setTerminalFilter] = useState('');
 
   const filteredData = placeholder.filter(
     (item) =>
       (containerFilter ? item.containerType === containerFilter : true) &&
-      (steamShippingFilter ? item.steamShipping === steamShippingFilter : true)
+      (steamShippingFilter
+        ? item.steamShipping === steamShippingFilter
+        : true) &&
+      (terminalFilter ? item.terminal === terminalFilter : true)
   );
 
   return (
@@ -100,6 +108,35 @@ export default function Drayage() {
             <option value="">All</option>
             <option value="20">20</option>
             <option value="40 ST">40 ST</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="mb-4.5" style={{ float: 'left', marginRight: '1rem' }}>
+        <label className="mb-2.5 block text-sm font-medium text-black dark:text-white">
+          Shipping
+        </label>
+        <div>
+          <select
+            className="relative z-20 w-48 rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+            value={terminalFilter}
+            onChange={(e) => setTerminalFilter(e.target.value)}
+          >
+            <option value="">All</option>
+            <option value="APM">APM</option>
+            <option value="PIERA">PIERA</option>
+            <option value="PCT">PCT</option>
+            <option value="LBCT">LBCT</option>
+            <option value="FENIX">FENIX</option>
+            <option value="TRAPAC">TRAPAC</option>
+            <option value="ITS">ITS</option>
+            <option value="WBCT">WBCT</option>
+            <option value="TTI">TTI</option>
+            <option value="ETS">ETS</option>
+            <option value="YTI">YTI</option>
+            <option value="PIERS">PIERS</option>
+            <option value="MATSON">MATSON</option>
+            <option value="STL">STL</option>
           </select>
         </div>
       </div>
