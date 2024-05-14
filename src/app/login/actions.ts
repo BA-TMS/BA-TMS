@@ -19,7 +19,7 @@ export async function login(formData: FormData) {
 
   if (error?.message === 'Email not confirmed') {
     return redirect(
-      '/login/confirm?message=Could not authenticate user, please confirm your email'
+      '/login/confirm?message=Could not authenticate user, please confirm your email.'
     );
   } else if (error === null) {
     redirect('/');
@@ -30,21 +30,17 @@ export async function login(formData: FormData) {
 
 // this function currently does not handle Name and Phone Number fields
 // those need to be stored in a different table
-// export const signUp = async (formData: FormData) => {
 export const signUp = async (email: string, password: string) => {
   'use server';
 
   const origin = headers().get('origin');
-  // const email = formData.get('email') as string;
-  // const password = formData.get('password') as string;
   const supabase = createClient();
 
-  // this function will need to be changed when refining sign up new user process
   const { error } = await supabase.auth.signUp({
     email: email,
     password: password,
     options: {
-      emailRedirectTo: `${origin}/login/confirm`, // redirect to confirm page
+      emailRedirectTo: `${origin}/login`,
     },
   });
 
@@ -55,7 +51,7 @@ export const signUp = async (email: string, password: string) => {
 
   revalidatePath('/', 'layout');
 
-  return redirect('/login');
+  return redirect('/login/confirm');
 };
 
 export const resendConfirmEmail = async (formData: FormData) => {
