@@ -99,8 +99,18 @@ export default function Drayage() {
             onChange={(e) => setSteamShippingFilter(e.target.value)}
           >
             <option value="">All</option>
-            <option value="CMDU">CMDU</option>
             <option value="COSU">COSU</option>
+            <option value="EGLV">EGLV</option>
+            <option value="ONEY">ONEY</option>
+            <option value="HDMU">HDMU</option>
+            <option value="HLCU">HLCU</option>
+            <option value="MAEU">MAEU</option>
+            <option value="MSCU">MSCU</option>
+            <option value="CMDU">CMDU</option>
+            <option value="YMLU">YMLU</option>
+            <option value="OOLU">OOLU</option>
+            <option value="WHLC">WHLC</option>
+            <option value="ZIMU">ZIMU</option>
           </select>
         </div>
       </div>
@@ -118,6 +128,15 @@ export default function Drayage() {
             <option value="">All</option>
             <option value="20">20</option>
             <option value="40 ST">40 ST</option>
+            <option value="40 HC">40 HC</option>
+            <option value="45">45</option>
+            <option value="20 REEFER">20 REEFER</option>
+            <option value="40 REEFER">40 REEFER</option>
+            <option value="20 OPEN TOP">20 OPEN TOP</option>
+            <option value="40 OPEN TOP">40 OPEN TOP</option>
+            <option value="20 FLATRACKS">20 FLATRACKS</option>
+            <option value="40 FLATRACKS">40 FLATRACKS</option>
+            <option value="SPECIALTY">SPECIALTY</option>
           </select>
         </div>
       </div>
