@@ -3,15 +3,22 @@ import ToggleButton from '@/components/Controls/ToggleButton';
 import React, { useState } from 'react';
 
 // DATE IMPORTS
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+dayjs.extend(customParseFormat);
+dayjs.extend(isSameOrBefore);
+dayjs.extend(isSameOrAfter);
+
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers';
+import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
+import { TextField } from '@mui/material';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import Table from '@/components/UI_Elements/Table';
 
-type dummyData = {
+type DrayageData = {
   steamShipping: string;
   containerType: string;
   terminal: string;
@@ -19,8 +26,7 @@ type dummyData = {
   endDate: Date;
 };
 
-type dummyTest = dummyData[];
-const placeholder = [
+const placeholder: DrayageData[] = [
   {
     steamShipping: 'CMDU',
     containerType: '20',
@@ -41,15 +47,15 @@ const columns = [
   { field: 'steamShipping', headerName: 'Steam Shipping' },
   { field: 'containerType', headerName: 'Container Type' },
   { field: 'terminal', headerName: 'Terminal' },
-  { field: 'startDate', headerName: 'Start Date' },
-  { field: 'endDate', headerName: 'End Date' },
+  { field: 'startDate', headerName: 'Start Date', type: 'date' },
+  { field: 'endDate', headerName: 'End Date', type: 'date' },
 ];
 
 export default function Drayage() {
-  const [value, setValue] = React.useState<DateRange<Dayjs>>([
-    dayjs('2022-04-17'),
-    dayjs('2022-04-21'),
-  ]);
+  const [startDateFilter, setStartDateFilter] = useState<dayjs.Dayjs | null>(
+    null
+  );
+  const [endDateFilter, setEndDateFilter] = useState<dayjs.Dayjs | null>(null);
   const [containerFilter, setContainerFilter] = useState('');
   const [steamShippingFilter, setSteamShippingFilter] = useState('');
   const [terminalFilter, setTerminalFilter] = useState('');
@@ -60,7 +66,11 @@ export default function Drayage() {
       (steamShippingFilter
         ? item.steamShipping === steamShippingFilter
         : true) &&
-      (terminalFilter ? item.terminal === terminalFilter : true)
+      (terminalFilter ? item.terminal === terminalFilter : true) &&
+      (!startDateFilter ||
+        dayjs(item.startDate).isSameOrAfter(startDateFilter, 'day')) &&
+      (!endDateFilter ||
+        dayjs(item.endDate).isSameOrBefore(endDateFilter, 'day'))
   );
 
   return (
@@ -148,7 +158,11 @@ export default function Drayage() {
         </label>
         <div>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker className="relative z-20 w-48 rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
+            <DatePicker
+              value={startDateFilter}
+              onChange={(newValue) => setStartDateFilter(newValue)}
+              renderInput={(params) => <TextField {...params} />}
+            />
           </LocalizationProvider>
         </div>
       </div>
@@ -158,7 +172,11 @@ export default function Drayage() {
         </label>
         <div>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker className="relative z-20 w-48 rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
+            <DatePicker
+              value={endDateFilter}
+              onChange={(newValue) => setEndDateFilter(newValue)}
+              renderInput={(params) => <TextField {...params} />}
+            />
           </LocalizationProvider>
         </div>
       </div>
