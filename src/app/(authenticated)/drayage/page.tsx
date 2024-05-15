@@ -24,6 +24,7 @@ type DrayageData = {
   terminal: string;
   startDate: Date;
   endDate: Date;
+  isFavorite: boolean;
 };
 
 const placeholder: DrayageData[] = [
@@ -33,6 +34,7 @@ const placeholder: DrayageData[] = [
     terminal: 'APM',
     startDate: new Date('2024-05-12'),
     endDate: new Date('2024-08-14'),
+    isFavorite: true,
   },
   {
     steamShipping: 'COSU',
@@ -40,6 +42,7 @@ const placeholder: DrayageData[] = [
     terminal: 'PIERA',
     startDate: new Date('2024-05-23'),
     endDate: new Date('2024-08-07'),
+    isFavorite: false,
   },
 ];
 
@@ -59,6 +62,7 @@ export default function Drayage() {
   const [containerFilter, setContainerFilter] = useState('');
   const [steamShippingFilter, setSteamShippingFilter] = useState('');
   const [terminalFilter, setTerminalFilter] = useState('');
+  const [showFavorites, setShowFavorites] = useState(false);
 
   const filteredData = placeholder.filter(
     (item) =>
@@ -70,7 +74,8 @@ export default function Drayage() {
       (!startDateFilter ||
         dayjs(item.startDate).isSameOrAfter(startDateFilter, 'day')) &&
       (!endDateFilter ||
-        dayjs(item.endDate).isSameOrBefore(endDateFilter, 'day'))
+        dayjs(item.endDate).isSameOrBefore(endDateFilter, 'day')) &&
+      (!showFavorites || item.isFavorite)
   );
 
   return (
@@ -84,7 +89,12 @@ export default function Drayage() {
           className="relative z-20 w-32 rounded border border-stroke bg-transparent py-2.5 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
           style={{ float: 'left', marginRight: '1rem' }}
         >
-          <ToggleButton labelText="" descriptionText="" />
+          <ToggleButton
+            labelText=""
+            descriptionText=""
+            checked={showFavorites}
+            onChange={() => setShowFavorites(!showFavorites)}
+          />
         </div>
       </div>
 
