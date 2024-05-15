@@ -17,6 +17,7 @@ import {
   SettingsIcon,
   UserIcon,
 } from '@/assets/SVGs';
+import TempLogo from '@/assets/Temp_Logo.png';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -73,17 +74,19 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   return (
     <aside
       ref={sidebar}
-      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
+      className={`absolute left-0 top-0 z-9999 flex h-screen w-70 flex-col overflow-y-hidden bg-white duration-300 ease-linear lg:static lg:translate-x-0 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}
     >
       {/* <!-- SIDEBAR HEADER --> */}
-      <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-        <Link href="/">
-          {/* <Image width={176} height={32} src={"/images/logo/logo.svg"} alt="Logo" /> */}
-          {/* logo placeholder */}
-          <h2>A2ZTMS</h2>
-        </Link>
+      <div className="flex items-center justify-center gap-2 px-6 py-5.5 lg:py-6.5">
+        <Image
+          width={167.28}
+          src={TempLogo}
+          alt="A2ZTMS Logo"
+          className="mt-7.5"
+          priority
+        />
 
         <button
           ref={trigger}
