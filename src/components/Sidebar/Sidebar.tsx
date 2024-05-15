@@ -1,22 +1,23 @@
 'use client';
 
-import React, { useEffect, useRef, useState, useContext } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import SidebarLinkGroup from './SidebarLinkGroup';
 import {
-  CalendarIcon,
+  // CalendarIcon,
   LeftArrow,
   SidebarUserIcon,
   Squares2x2,
-  TaskIcon,
-  FormsIcon,
-  TablesIcon,
+  // TaskIcon,
+  // FormsIcon,
+  // TablesIcon,
   PagesIcon,
   SettingsIcon,
-  UserIcon,
+  // UserIcon,
 } from '@/assets/SVGs';
+import ContentBlock from './UserContentBlock';
 import TempLogo from '@/assets/Temp_Logo.png';
 
 interface SidebarProps {
@@ -27,8 +28,8 @@ interface SidebarProps {
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const pathname = usePathname();
 
-  const trigger = useRef<any>(null);
-  const sidebar = useRef<any>(null);
+  const trigger = useRef<HTMLButtonElement>(null);
+  const sidebar = useRef<HTMLElement>(null);
 
   const storedSidebarExpanded = 'true';
 
@@ -42,8 +43,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       if (!sidebar.current || !trigger.current) return;
       if (
         !sidebarOpen ||
-        sidebar.current.contains(target) ||
-        trigger.current.contains(target)
+        sidebar.current.contains(target as Node) ||
+        trigger.current.contains(target as Node)
       )
         return;
       setSidebarOpen(false);
@@ -74,19 +75,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   return (
     <aside
       ref={sidebar}
-      className={`absolute left-0 top-0 z-9999 flex h-screen w-70 flex-col overflow-y-hidden bg-white duration-300 ease-linear lg:static lg:translate-x-0 ${
+      className={`absolute left-0 top-0 z-9999 flex h-screen w-70 flex-col overflow-y-hidden bg-white dark:bg-grey-900 duration-300 ease-linear lg:static lg:translate-x-0 border-r-2 border-grey-200 dark:border-grey-700 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}
     >
-      {/* <!-- SIDEBAR HEADER --> */}
-      <div className="flex items-center justify-center gap-2 px-6 py-5.5 lg:py-6.5">
-        <Image
-          width={167.28}
-          src={TempLogo}
-          alt="A2ZTMS Logo"
-          className="mt-7.5"
-          priority
-        />
+      <header className="flex flex-col items-center justify-center gap-8 px-4 py-5.5">
+        <Image width={167.28} src={TempLogo} alt="A2ZTMS Logo" priority />
 
         <button
           ref={trigger}
@@ -97,8 +91,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         >
           {LeftArrow}
         </button>
-      </div>
-      {/* <!-- SIDEBAR HEADER --> */}
+
+        <ContentBlock />
+      </header>
 
       <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
         {/* <!-- Sidebar Menu --> */}

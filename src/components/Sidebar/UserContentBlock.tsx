@@ -5,6 +5,10 @@ import User01 from '@/assets/User01.jpg';
 // update component with auth information:
 // user name
 // role
+const user = {
+  name: 'Jasper',
+  role: 'Admin',
+};
 
 const UserContentBlock = () => {
   return (
@@ -18,9 +22,9 @@ const UserContentBlock = () => {
         />
       </div>
       <div className="ml-4">
-        <p className="subtitle2 text-black dark:text-white">Jasper Hamilton</p>
+        <p className="subtitle2 text-black dark:text-white">{user.name}</p>
         <p className="font-public font-normal text-text-sm text-grey-500 ">
-          Admin
+          {user.role}
         </p>
       </div>
     </section>
