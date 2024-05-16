@@ -95,8 +95,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         <ContentBlock />
       </header>
 
-      <section className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
-        <nav className="py-4 px-4">
+      <section className="py-4 px-4 no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
+        <nav>
           {/* <!-- Menu Group General --> */}
           <div>
             <h3 className="mb-4 ml-4 font-bold text-text-xsm uppercase text-grey-600 dark:text-white">
@@ -155,27 +155,27 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           !open && 'hidden'
                         }`}
                       >
-                        <ul className="my-2 flex flex-col">
-                          <li className="">
+                        <ul className="my-2 list-disc list-inside">
+                          <li className="px-6 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary">
                             <Link
                               href="/dashboard/group1"
-                              className="group relative flex items-center gap-2.5 rounded-lg px-4 py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300 hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary"
+                              className="items-center py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300"
                             >
                               Group 1
                             </Link>
                           </li>
-                          <li>
+                          <li className="px-6 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary">
                             <Link
                               href="/dashboard/group2"
-                              className="group relative flex items-center gap-2.5 rounded-lg px-4 py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300 hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary"
+                              className="items-center py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300"
                             >
                               Group 2
                             </Link>
                           </li>
-                          <li>
+                          <li className="px-6 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary">
                             <Link
                               href="/dashboard/group3"
-                              className="group relative flex items-center gap-2.5 rounded-lg px-4 py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300 hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary"
+                              className="items-center py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300"
                             >
                               Group 3
                             </Link>
@@ -239,52 +239,52 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           !open && 'hidden'
                         }`}
                       >
-                        <ul className="my-2 flex flex-col">
-                          <li>
+                        <ul className="my-2 list-disc list-inside">
+                          <li className="px-6 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary">
                             <Link
                               href="/carrier"
-                              className="group relative flex items-center gap-2.5 rounded-lg px-4 py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300 hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary"
+                              className="items-center py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300"
                             >
                               Carrier
                             </Link>
                           </li>
 
-                          <li>
+                          <li className="px-6 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary">
                             <Link
                               href="/consignees"
-                              className="group relative flex items-center gap-2.5 rounded-lg px-4 py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300 hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary"
+                              className="items-center py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300"
                             >
                               Consignees
                             </Link>
                           </li>
-                          <li>
+                          <li className="px-6 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary">
                             <Link
                               href="/users"
-                              className="group relative flex items-center gap-2.5 rounded-lg px-4 py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300 hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary"
+                              className="items-center py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300"
                             >
                               Users
                             </Link>
                           </li>
-                          <li>
+                          <li className="px-6 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary">
                             <Link
                               href="/other-numbers"
-                              className="group relative flex items-center gap-2.5 rounded-lg px-4 py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300 hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary"
+                              className="items-center py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300"
                             >
                               Other Numbers
                             </Link>
                           </li>
-                          <li>
+                          <li className="px-6 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary">
                             <Link
                               href="/third-party"
-                              className="group relative flex items-center gap-2.5 rounded-lg px-4 py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300 hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary"
+                              className="items-center py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300"
                             >
                               Third Parties
                             </Link>
                           </li>
-                          <li>
+                          <li className="px-6 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary">
                             <Link
                               href="/drayage"
-                              className="group relative flex items-center gap-2.5 rounded-lg px-4 py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300 hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary"
+                              className="items-center py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300"
                             >
                               Drayage
                             </Link>
@@ -365,11 +365,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           !open && 'hidden'
                         }`}
                       >
-                        <ul className="my-2 flex flex-col">
-                          <li>
+                        <ul className="my-2 list-disc list-inside">
+                          <li className="px-6 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary">
                             <Link
                               href="/user/settings"
-                              className="group relative flex items-center gap-2.5 rounded-lg px-4 py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300 hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary"
+                              className="items-center py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300"
                             >
                               Settings
                             </Link>
