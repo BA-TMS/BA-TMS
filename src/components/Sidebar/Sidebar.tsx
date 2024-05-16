@@ -6,19 +6,15 @@ import Link from 'next/link';
 import Image from 'next/image';
 import SidebarLinkGroup from './SidebarLinkGroup';
 import {
-  // CalendarIcon,
   LeftArrow,
   SidebarUserIcon,
   Squares2x2,
-  // TaskIcon,
-  // FormsIcon,
-  // TablesIcon,
   PagesIcon,
   SettingsIcon,
-  // UserIcon,
 } from '@/assets/SVGs';
 import ContentBlock from './UserContentBlock';
 import TempLogo from '@/assets/Temp_Logo.png';
+import Button from '@ui/buttons/Button';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -384,6 +380,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             </ul>
           </div>
         </nav>
+      </section>
+      {/* Support Contact Section */}
+      {/* update with user info */}
+      <section className="px-4 py-4 mt-auto flex flex-col items-center justify-center">
+        <h4 className="mb-3 mt-3 subtitle1 text-grey-600 dark:text-grey-300">
+          Hi, Jasper
+        </h4>
+        <p className="mb-3 text-center body2 text-grey-600 dark:text-grey-300">
+          Need Help? <br /> Please contact us.
+        </p>
+        <Button>Support</Button>
       </section>
     </aside>
   );
