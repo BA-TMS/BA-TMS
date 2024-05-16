@@ -155,13 +155,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           !open && 'hidden'
                         }`}
                       >
-                        <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-                          <li>
+                        <ul className="my-2 flex flex-col">
+                          <li className="">
                             <Link
                               href="/dashboard/group1"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === '/dashboard/group1' && 'text-white'
-                              }`}
+                              className="group relative flex items-center gap-2.5 rounded-lg px-4 py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300 hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary"
                             >
                               Group 1
                             </Link>
@@ -169,9 +167,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           <li>
                             <Link
                               href="/dashboard/group2"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === '/dashboard/group2' && 'text-white'
-                              } `}
+                              className="group relative flex items-center gap-2.5 rounded-lg px-4 py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300 hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary"
                             >
                               Group 2
                             </Link>
@@ -179,9 +175,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           <li>
                             <Link
                               href="/dashboard/group3"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === '/dashboard/group3' && 'text-white'
-                              }`}
+                              className="group relative flex items-center gap-2.5 rounded-lg px-4 py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300 hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary"
                             >
                               Group 3
                             </Link>
@@ -245,13 +239,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           !open && 'hidden'
                         }`}
                       >
-                        <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
+                        <ul className="my-2 flex flex-col">
                           <li>
                             <Link
                               href="/carrier"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === '/carrier' && 'text-white'
-                              }`}
+                              className="group relative flex items-center gap-2.5 rounded-lg px-4 py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300 hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary"
                             >
                               Carrier
                             </Link>
@@ -260,9 +252,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           <li>
                             <Link
                               href="/consignees"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === '/consignees' && 'text-white'
-                              } `}
+                              className="group relative flex items-center gap-2.5 rounded-lg px-4 py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300 hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary"
                             >
                               Consignees
                             </Link>
@@ -270,9 +260,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           <li>
                             <Link
                               href="/users"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === '/users' && 'text-white'
-                              } `}
+                              className="group relative flex items-center gap-2.5 rounded-lg px-4 py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300 hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary"
                             >
                               Users
                             </Link>
@@ -280,9 +268,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           <li>
                             <Link
                               href="/other-numbers"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === '/other-numbers' && 'text-white'
-                              } `}
+                              className="group relative flex items-center gap-2.5 rounded-lg px-4 py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300 hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary"
                             >
                               Other Numbers
                             </Link>
@@ -290,9 +276,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           <li>
                             <Link
                               href="/third-party"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === '/third-party' && 'text-white'
-                              } `}
+                              className="group relative flex items-center gap-2.5 rounded-lg px-4 py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300 hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary"
                             >
                               Third Parties
                             </Link>
@@ -300,9 +284,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           <li>
                             <Link
                               href="/drayage"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === '/drayage' && 'text-white'
-                              } `}
+                              className="group relative flex items-center gap-2.5 rounded-lg px-4 py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300 hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary"
                             >
                               Drayage
                             </Link>
@@ -383,15 +365,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           !open && 'hidden'
                         }`}
                       >
-                        <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
+                        <ul className="my-2 flex flex-col">
                           <li>
                             <Link
                               href="/user/settings"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === '/user/settings' && 'text-white'
-                              }`}
+                              className="group relative flex items-center gap-2.5 rounded-lg px-4 py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300 hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary"
                             >
-                              {SettingsIcon}
                               Settings
                             </Link>
                           </li>
