@@ -241,8 +241,8 @@ export const AddressBookIcon = (
 export const SettingsIcon = (
   <svg
     className="fill-current"
-    width="22"
-    height="22"
+    width="24"
+    height="24"
     viewBox="0 0 22 22"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -372,8 +372,8 @@ export const LeftArrow = (
 export const Squares2x2 = (
   <svg
     className="fill-current"
-    width="18"
-    height="18"
+    width="24"
+    height="24"
     viewBox="0 0 18 18"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -416,8 +416,8 @@ export const CalendarIcon = (
 export const SidebarUserIcon = (
   <svg
     className="fill-current"
-    width="18"
-    height="18"
+    width="24"
+    height="24"
     viewBox="0 0 18 18"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -539,8 +539,8 @@ export const TablesIcon = (
 export const PagesIcon = (
   <svg
     className="fill-current"
-    width="16"
-    height="18"
+    width="24"
+    height="24"
     viewBox="0 0 16 18"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"

@@ -95,17 +95,15 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         <ContentBlock />
       </header>
 
-      <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
-        {/* <!-- Sidebar Menu --> */}
-        <nav className="mt-5 py-4 px-4 lg:mt-9 lg:px-6">
-          {/* <!-- Menu Group --> */}
+      <section className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
+        <nav className="py-4 px-4">
+          {/* <!-- Menu Group General --> */}
           <div>
-            <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
-              MENU
+            <h3 className="mb-4 ml-4 font-bold text-text-xsm uppercase text-grey-600 dark:text-white">
+              General
             </h3>
 
             <ul className="mb-6 flex flex-col gap-1.5">
-              {/* <!-- Menu Item Dashboard --> */}
               <SidebarLinkGroup
                 activeCondition={
                   pathname === '/' || pathname.includes('dashboard')
@@ -116,10 +114,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     <React.Fragment>
                       <Link
                         href="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                          (pathname === '/' ||
-                            pathname.includes('dashboard')) &&
-                          'bg-graydark dark:bg-meta-4'
+                        className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 body2 text-grey-600 dark:text-grey-300 duration-300 ease-in-out  ${
+                          pathname === '/' || pathname.includes('dashboard')
                         }`}
                         onClick={(e) => {
                           e.preventDefault();
@@ -134,9 +130,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
                             open && 'rotate-180'
                           }`}
-                          width="20"
-                          height="20"
-                          viewBox="0 0 20 20"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
                         >
@@ -148,7 +144,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           />
                         </svg>
                       </Link>
-                      {/* <!-- Dropdown Menu Start --> */}
+                      {/* <!-- Dropdown For General --> */}
                       <div
                         className={`translate transform overflow-hidden ${
                           !open && 'hidden'
@@ -187,61 +183,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           </li>
                         </ul>
                       </div>
-                      {/* <!-- Dropdown Menu End --> */}
                     </React.Fragment>
                   );
                 }}
               </SidebarLinkGroup>
-              {/* <!-- Menu Item Dashboard --> */}
 
-              {/* <!-- Menu Item Forms --> */}
-              <SidebarLinkGroup
-                activeCondition={
-                  pathname === '/forms' || pathname.includes('forms')
-                }
-              >
-                {(handleClick, open) => {
-                  return (
-                    <React.Fragment>
-                      {/* <!-- Dropdown Menu Start --> */}
-                      <div
-                        className={`translate transform overflow-hidden ${
-                          !open && 'hidden'
-                        }`}
-                      >
-                        <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-                          <li>
-                            <Link
-                              href="/forms/form-elements"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === '/forms/form-elements' &&
-                                'text-white'
-                              }`}
-                            >
-                              Form Elements
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              href="/forms/form-layout"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === '/forms/form-layout' &&
-                                'text-white'
-                              } `}
-                            >
-                              Form Layout
-                            </Link>
-                          </li>
-                        </ul>
-                      </div>
-                      {/* <!-- Dropdown Menu End --> */}
-                    </React.Fragment>
-                  );
-                }}
-              </SidebarLinkGroup>
-              {/* <!-- Menu Item Forms --> */}
-
-              {/* <!-- Menu Item Pages --> */}
+              {/* <!-- Menu Group Temp Pages --> */}
               <SidebarLinkGroup
                 activeCondition={
                   pathname === '/temp' || pathname.includes('temp')
@@ -252,7 +199,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     <React.Fragment>
                       <Link
                         href="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                        className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 body2 text-grey-600 dark:text-grey-300 duration-300 ease-in-out  ${
                           (pathname === '/temp' || pathname.includes('temp')) &&
                           'bg-graydark dark:bg-meta-4'
                         }`}
@@ -269,9 +216,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
                             open && 'rotate-180'
                           }`}
-                          width="20"
-                          height="20"
-                          viewBox="0 0 20 20"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
                         >
@@ -283,7 +230,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           />
                         </svg>
                       </Link>
-                      {/* <!-- Dropdown Menu Start --> */}
+                      {/* <!-- Dropdown For Temp Pages Start --> */}
                       <div
                         className={`translate transform overflow-hidden ${
                           !open && 'hidden'
@@ -358,20 +305,20 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   );
                 }}
               </SidebarLinkGroup>
-              {/* <!-- Menu Item Pages --> */}
+              {/* <!-- Menu Item Temp Pages --> */}
             </ul>
           </div>
 
           {/* <!-- Management Group --> */}
           <div>
-            <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
-              MANAGEMENT
+            <h3 className="mb-4 ml-4 font-bold text-text-xsm uppercase text-grey-600 dark:text-white">
+              Management
             </h3>
 
             <ul className="mt-4 mb-5.5 flex flex-col gap-1.5">
               <Link
                 href="/preferences"
-                className="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
+                className="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 body2 text-grey-600 dark:text-grey-300 duration-300 ease-in-out"
               >
                 {SettingsIcon}
                 Preferences
@@ -386,7 +333,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     <React.Fragment>
                       <Link
                         href="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                        className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 body2 text-grey-600 dark:text-grey-300 duration-300 ease-in-out  ${
                           (pathname === '/pages' ||
                             pathname.includes('pages')) &&
                           'bg-graydark dark:bg-meta-4'
@@ -446,8 +393,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             </ul>
           </div>
         </nav>
-        {/* <!-- Sidebar Menu --> */}
-      </div>
+      </section>
     </aside>
   );
 };
