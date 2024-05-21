@@ -85,7 +85,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           onClick={() => setSidebarOpen(!sidebarOpen)}
           aria-controls="sidebar"
           aria-expanded={sidebarOpen}
-          className="block lg:hidden absolute -right-3 top-2/3 transform -translate-y-1/2 p-2 rounded-full border-2 border-grey-200 bg-white dark:bg-grey-900 dark:border-grey-700"
+          className="block lg:hidden absolute -right-3 top-1/4 transform -translate-y-1/2 p-2 rounded-full border-2 border-grey-200 bg-white dark:bg-grey-900 dark:border-grey-700"
         >
           {LeftArrow}
         </button>
