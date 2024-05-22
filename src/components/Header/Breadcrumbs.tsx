@@ -10,7 +10,7 @@ type Parameters = {
   capitalizePathComponents?: boolean;
 };
 
-export default ({
+const Breadcrumbs = ({
   className,
   root,
   separator,
@@ -26,7 +26,12 @@ export default ({
   function breadcrumb(linkPath: string, text: string) {
     return (
       <li className={pathComponentClassName}>
-        <Link href={linkPath}>{maybeCapitalize(text)}</Link>
+        <Link
+          className="body2 text-grey-600 dark:text-grey-300"
+          href={linkPath}
+        >
+          {maybeCapitalize(text)}
+        </Link>
       </li>
     );
   }
@@ -58,3 +63,5 @@ export default ({
     </ul>
   );
 };
+
+export default Breadcrumbs;
