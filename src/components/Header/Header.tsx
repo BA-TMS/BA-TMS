@@ -8,7 +8,7 @@ import DarkModeToggle from './DarkModeToggle';
 import DropdownUser from './DropdownUser';
 import Image from 'next/image';
 import { SearchIcon } from '@/assets/SVGs';
-import Breadcrumbs from '@/components/Breadcrumbs';
+import Breadcrumbs from '@/components/Header/Breadcrumbs';
 import { UserContext } from '@/Context/userContextProvider';
 
 type HeaderProps = {
