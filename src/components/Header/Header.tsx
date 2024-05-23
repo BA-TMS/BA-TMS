@@ -71,17 +71,17 @@ const Header = (props: HeaderProps) => {
           </Link>
         </div>
 
+        {/* search bar is not functional */}
         <div className="hidden sm:block">
-          <form action="https://formbold.com/s/unique_form_id" method="POST">
-            <div className="relative">
-              <button className="absolute left-0 top-1/2 -translate-y-1/2">
+          <form>
+            <div className="relative flex">
+              <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none">
                 {SearchIcon}
-              </button>
-
+              </div>
               <input
                 type="text"
-                placeholder="Type to search..."
-                className="w-full bg-transparent pl-9 pr-4 font-medium focus:outline-none xl:w-125"
+                placeholder=""
+                className="w-full pl-9 pr-4 bg-transparent text-grey-600 dark:text-grey-300 body1 focus:outline-none xl:w-125"
               />
             </div>
           </form>
