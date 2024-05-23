@@ -1,15 +1,12 @@
 'use client';
 
-import { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
 import DarkModeToggle from './DarkModeToggle';
-// import DropdownMessage from "./DropdownMessage";
-// import DropdownNotification from "./DropdownNotification";
+// import DropdownNotification from './DropdownNotification';
 import DropdownUser from './DropdownUser';
 import Image from 'next/image';
 import { SearchIcon } from '@/assets/SVGs';
 import Breadcrumbs from '@/components/Header/Breadcrumbs';
-import { UserContext } from '@/Context/userContextProvider';
 
 type HeaderProps = {
   sidebarOpen: string | boolean | undefined;
@@ -17,11 +14,9 @@ type HeaderProps = {
 };
 
 const Header = (props: HeaderProps) => {
-  const { userSession } = useContext(UserContext);
-
   return (
-    <header className="sticky top-0 z-999 bg-white  dark:bg-boxdark ">
-      <div className="flex flex-grow items-center justify-between px-4 py-4 md:px-6 2xl:px-11">
+    <header className="sticky h-22 top-0 z-999 bg-white dark:bg-grey-900">
+      <div className="flex flex-grow items-center justify-between px-10 py-6">
         <div className="flex items-center gap-2 sm:gap-4 lg:hidden">
           {/* <!-- Hamburger Toggle BTN --> */}
           <button
@@ -92,33 +87,18 @@ const Header = (props: HeaderProps) => {
           </form>
         </div>
 
-        <div>
-          Welcome,{' '}
-          <strong>{userSession ? userSession.user.email : 'User'}</strong>!
-        </div>
-
         <div className="flex items-center gap-3 2xsm:gap-7">
           <ul className="flex items-center gap-2 2xsm:gap-4">
-            {/* <!-- Dark Mode Toggler --> */}
             <DarkModeToggle />
-            {/* <!-- Dark Mode Toggler --> */}
 
-            {/* <!-- Notification Menu Area --> */}
             {/* <DropdownNotification /> */}
-            {/* <!-- Notification Menu Area --> */}
-
-            {/* <!-- Chat Notification Area --> */}
-            {/* <DropdownMessage /> */}
-            {/* <!-- Chat Notification Area --> */}
           </ul>
 
-          {/* <!-- User Area --> */}
           <DropdownUser />
-          {/* <!-- User Area --> */}
         </div>
       </div>
       <Breadcrumbs
-        className="px-4 pb-2 md:px-6 2xl:px-11 text-grey-600 dark:text-grey-300"
+        className="px-4 pb-2 text-grey-600 dark:text-grey-300"
         root="Home"
         separator={<p>&#8226;</p>}
         pathComponentClassName="hover:underline mx-2 font-bold"
