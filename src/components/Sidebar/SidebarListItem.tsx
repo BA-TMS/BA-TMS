@@ -1,51 +1,46 @@
+'use client';
+
 import React, { useState } from 'react';
 import Link from 'next/link';
 import SidebarLinkGroup from './SidebarLinkGroup';
 
-// take in an icon prop
-// use sidebar link group
-// pass a pathname
-
 interface SidebarListProps {
-  icon: React.ReactNode;
-  pathname: string;
-  name: string;
-  storedSidebarExpanded: boolean | null;
-  options?: { name: string; href: string }[];
+  icon?: React.ReactNode;
+  path?: string; // path to go to if this is clicked on
+  name: string; // name to show up on the list item
+  pathname?: string; // pathname passed from parent component
+  options?: { name: string; href: string }[]; // any options if this is a dropdown
 }
 
 const SidebarListItem = ({
   icon,
-  pathname,
+  path,
   name,
-  // storedSidebarExpanded,
+  pathname,
   options,
 }: SidebarListProps) => {
-  // const [sidebarExpanded, setSidebarExpanded] = useState(
-  //   storedSidebarExpanded === null ? false : storedSidebarExpanded === true
-  // );
-
   const [showList, setShowList] = useState(false);
 
   return (
-    <SidebarLinkGroup
-      activeCondition={pathname === '/' || pathname.includes('dashboard')}
-    >
+    // active condition is working
+    <SidebarLinkGroup activeCondition={pathname.includes(path) || false}>
       {(handleClick, open) => {
         return (
           <React.Fragment>
             <Link
-              href="#"
+              href={options ? '#' : (path as string)}
               className={`group relative flex items-center gap-2.5 rounded-lg px-4 py-2 body2 text-grey-600 dark:text-grey-300 ${
-                (pathname === '/' || pathname.includes('dashboard')) &&
+                (pathname === '/' || pathname?.includes(`${path}`)) &&
                 'hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary duration-300 ease-in-out'
               } ${
                 open &&
                 'bg-primary/10 dark:bg-primary/20 dark:text-primary text-primary'
               }`}
               onClick={(e) => {
-                e.preventDefault();
-                showList ? handleClick() : setShowList(true);
+                if (options) {
+                  e.preventDefault();
+                  showList ? handleClick() : setShowList(true);
+                }
               }}
             >
               {icon}
