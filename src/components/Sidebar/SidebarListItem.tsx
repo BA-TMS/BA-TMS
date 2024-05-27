@@ -1,14 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import SidebarLinkGroup from './SidebarLinkGroup';
 
 interface SidebarListProps {
-  icon?: React.ReactNode;
-  path?: string; // path to go to if this is clicked on
+  icon?: React.ReactNode; // svg icon
+  path: string; // path to go to if this is clicked on
   name: string; // name to show up on the list item
-  pathname?: string; // pathname passed from parent component
+  pathname: string; // pathname passed from parent component
   options?: { name: string; href: string }[]; // any options if this is a dropdown
 }
 
@@ -19,33 +19,31 @@ const SidebarListItem = ({
   pathname,
   options,
 }: SidebarListProps) => {
-  const [showList, setShowList] = useState(false);
-
   return (
-    // active condition is working
-    <SidebarLinkGroup activeCondition={pathname.includes(path) || false}>
+    <SidebarLinkGroup>
       {(handleClick, open) => {
+        const active = pathname?.includes(path as string);
         return (
           <React.Fragment>
             <Link
               href={options ? '#' : (path as string)}
               className={`group relative flex items-center gap-2.5 rounded-lg px-4 py-2 body2 text-grey-600 dark:text-grey-300 ${
-                (pathname === '/' || pathname?.includes(`${path}`)) &&
+                pathname?.includes(path as string) &&
                 'hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary duration-300 ease-in-out'
               } ${
-                open &&
+                (open || active) &&
                 'bg-primary/10 dark:bg-primary/20 dark:text-primary text-primary'
               }`}
               onClick={(e) => {
                 if (options) {
                   e.preventDefault();
-                  showList ? handleClick() : setShowList(true);
+                  handleClick();
                 }
               }}
             >
               {icon}
               {name}
-              {options && (
+              {options && ( // render the dropdown arrow if options were passed in
                 <svg
                   className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
                     open && 'rotate-180'
