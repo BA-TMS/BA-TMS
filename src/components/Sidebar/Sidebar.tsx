@@ -110,10 +110,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         <ContentBlock />
       </header>
 
-      <section className="py-4 px-4 no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
+      <section className="py-4 px-4 no-scrollbar flex flex-col gap-12 overflow-y-auto duration-300 ease-linear">
         <nav>
           <div>
-            <h3 className="mb-4 ml-4 font-bold text-text-xsm uppercase text-grey-600 dark:text-white">
+            <h3 className="mb-1 ml-4 font-bold text-text-xsm uppercase text-grey-600 dark:text-white">
               General
             </h3>
 
@@ -175,7 +175,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           </div>
 
           <div>
-            <h3 className="my-4 ml-4 font-bold text-text-xsm uppercase text-grey-600 dark:text-white">
+            <h3 className="mt-8 mb-1 ml-4 font-bold text-text-xsm uppercase text-grey-600 dark:text-white">
               Management
             </h3>
 

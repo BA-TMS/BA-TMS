@@ -12,7 +12,7 @@ const SidebarLinkGroup = ({ children }: SidebarLinkGroupProps) => {
     setOpen(!open);
   };
 
-  return <li className="list-none">{children(handleClick, open)}</li>;
+  return <li className="list-none mb-1">{children(handleClick, open)}</li>;
 };
 
 export default SidebarLinkGroup;

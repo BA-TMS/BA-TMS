@@ -27,11 +27,8 @@ const SidebarListItem = ({
           <React.Fragment>
             <Link
               href={options ? '#' : (path as string)}
-              className={`group relative flex items-center gap-2.5 rounded-lg px-4 py-2 body2 text-grey-600 dark:text-grey-300 ${
-                pathname?.includes(path as string) &&
-                'hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary duration-300 ease-in-out'
-              } ${
-                (open || active) &&
+              className={`group relative flex items-center gap-4 rounded-lg h-12 px-4 py-2 body2 text-grey-600 dark:text-grey-300 hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary ${
+                (open || active) && // add these styles if open or active
                 'bg-primary/10 dark:bg-primary/20 dark:text-primary text-primary'
               }`}
               onClick={(e) => {
@@ -43,21 +40,19 @@ const SidebarListItem = ({
             >
               {icon}
               {name}
-              {options && ( // render the dropdown arrow if options were passed in
+              {options && (
                 <svg
                   className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
-                    open && 'rotate-180'
+                    open && 'rotate-90'
                   }`}
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
+                  width="5"
+                  height="10"
+                  viewBox="0 0 5 10"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
+                    d="M0.666682 9.66667C0.510914 9.66698 0.359957 9.61273 0.240016 9.51334C0.103678 9.40031 0.0179172 9.23767 0.00165783 9.06132C-0.0146016 8.88497 0.0399765 8.70939 0.153349 8.57334L3.14002 5L0.260016 1.42C0.148169 1.28227 0.0958365 1.10564 0.114605 0.929216C0.133374 0.752788 0.221696 0.591119 0.360016 0.480004C0.49946 0.357311 0.683767 0.298354 0.868532 0.317336C1.0533 0.336319 1.22177 0.431521 1.33335 0.580004L4.55335 4.58C4.75556 4.82601 4.75556 5.18067 4.55335 5.42667L1.22002 9.42667C1.08437 9.5903 0.878839 9.67945 0.666682 9.66667Z"
                     fill=""
                   />
                 </svg>
