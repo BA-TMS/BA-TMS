@@ -8,12 +8,29 @@ import ContentBlock from './UserContentBlock';
 import TempLogo from '@/assets/Temp_Logo.png';
 import Button from '@ui/buttons/Button';
 import SidebarListItem from './SidebarListItem';
-import { DashboardIcon, DispatchIcon, UserIcon } from '@/assets/icons';
+import {
+  AccountingIcon,
+  AddOnsIcon,
+  AdminIcon,
+  DashboardIcon,
+  DispatchIcon,
+  HelpIcon,
+  IFTAIcon,
+  ReportsIcon,
+  SalesManagerIcon,
+  TerminalCredIcon,
+  UserIcon,
+} from '@/assets/icons';
 
 const dashboardOptions = [
   { name: 'Group1', href: '/dashboard/group1' },
   { name: 'Group2', href: '/dashboard/group2' },
   { name: 'Group3', href: '/dashboard/group3' },
+];
+
+const userOptions = [
+  { name: 'Plans & Pricing', href: '#' },
+  { name: 'Settings', href: '/user/settings' },
 ];
 
 interface SidebarProps {
@@ -113,6 +130,48 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               path={'/temp'}
               name={'Dispatch'}
             />
+            <SidebarListItem
+              icon={AdminIcon}
+              pathname={pathname}
+              path={'/admin'}
+              name={'Admin'}
+            />
+            <SidebarListItem
+              icon={IFTAIcon}
+              pathname={pathname}
+              path={'/ifta'}
+              name={'IFTA'}
+            />
+            <SidebarListItem
+              icon={SalesManagerIcon}
+              pathname={pathname}
+              path={'/sales'}
+              name={'Sales Manager'}
+            />
+            <SidebarListItem
+              icon={AccountingIcon}
+              pathname={pathname}
+              path={'/accounting'}
+              name={'Accounting'}
+            />
+            <SidebarListItem
+              icon={ReportsIcon}
+              pathname={pathname}
+              path={'/reports'}
+              name={'Reports'}
+            />
+            <SidebarListItem
+              icon={AddOnsIcon}
+              pathname={pathname}
+              path={'/addons'}
+              name={'Add-Ons'}
+            />
+            <SidebarListItem
+              icon={HelpIcon}
+              pathname={pathname}
+              path={'/help'}
+              name={'Help'}
+            />
           </div>
 
           <div>
@@ -121,10 +180,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             </h3>
 
             <SidebarListItem
+              icon={TerminalCredIcon}
+              pathname={pathname}
+              path={'/credentials'}
+              name={'Terminal Credentials'}
+            />
+            <SidebarListItem
               pathname={pathname}
               icon={UserIcon}
               path={'/user/settings'}
               name={'User'}
+              options={userOptions}
             />
           </div>
         </nav>
