@@ -2,10 +2,8 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import Image from 'next/image';
 import { LeftArrow } from '@/assets/SVGs';
 import ContentBlock from './UserContentBlock';
-import TempLogo from '@/assets/Temp_Logo.png';
 import Button from '@ui/buttons/Button';
 import SidebarListItem from './SidebarListItem';
 import {
@@ -21,6 +19,7 @@ import {
   TerminalCredIcon,
   UserIcon,
 } from '@/assets/icons';
+import { Logo } from '@/assets/logo';
 
 const dashboardOptions = [
   { name: 'Group1', href: '/dashboard/group1' },
@@ -95,7 +94,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       }`}
     >
       <header className="flex flex-col items-center justify-center gap-8 px-4 py-5.5 relative">
-        <Image width={167.28} src={TempLogo} alt="A2ZTMS Logo" priority />
+        {Logo}
 
         <button
           ref={trigger}
