@@ -1,12 +1,12 @@
 'use client';
 
-import Link from 'next/link';
 import DarkModeToggle from './DarkModeToggle';
-// import DropdownNotification from './DropdownNotification';
+import DropdownNotification from './DropdownNotification';
 import DropdownUser from './DropdownUser';
 import Image from 'next/image';
 import { SearchIcon } from '@/assets/SVGs';
 import Breadcrumbs from '@/components/Header/Breadcrumbs';
+import USFlag from '@/assets/flags/Flag_US.svg';
 
 type HeaderProps = {
   sidebarOpen: string | boolean | undefined;
@@ -60,15 +60,6 @@ const Header = (props: HeaderProps) => {
             </span>
           </button>
           {/* <!-- Hamburger Toggle BTN --> */}
-
-          <Link className="block flex-shrink-0 lg:hidden" href="/">
-            <Image
-              width={32}
-              height={32}
-              src={'/images/logo/logo-icon.svg'}
-              alt="Logo"
-            />
-          </Link>
         </div>
 
         {/* search bar is not functional */}
@@ -87,12 +78,14 @@ const Header = (props: HeaderProps) => {
           </form>
         </div>
 
-        <div className="flex items-center gap-3 2xsm:gap-7">
-          <ul className="flex items-center gap-2 2xsm:gap-4">
-            <DarkModeToggle />
+        <div className="flex items-center gap-3">
+          {/* <DarkModeToggle /> */}
+          <div className="w-10 px-1.5 py-2.5">
+            <Image src={USFlag} alt="Flag" />
+          </div>
 
-            {/* <DropdownNotification /> */}
-          </ul>
+          <DropdownNotification />
+          {/* </ul> */}
 
           <DropdownUser />
         </div>
