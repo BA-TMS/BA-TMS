@@ -9,3 +9,4 @@ export { default as AddOnsIcon } from './AddOnsIcon';
 export { default as HelpIcon } from './HelpIcon';
 export { default as TerminalCredIcon } from './TerminalCredIcon';
 export { default as UserIcon } from './UserIcon';
+export { default as NotificationIcon } from './NotificationIcon';
