@@ -4,7 +4,7 @@ import DarkModeToggle from './DarkModeToggle';
 import DropdownNotification from './DropdownNotification';
 import DropdownUser from './DropdownUser';
 import Image from 'next/image';
-import { SearchIcon } from '@/assets/SVGs';
+import { SearchIcon } from '@/assets/icons';
 import Breadcrumbs from '@/components/Header/Breadcrumbs';
 import USFlag from '@/assets/flags/Flag_US.svg';
 
@@ -59,33 +59,31 @@ const Header = (props: HeaderProps) => {
               </span>
             </span>
           </button>
-          {/* <!-- Hamburger Toggle BTN --> */}
+          {/* <!-- End Hamburger Toggle BTN --> */}
         </div>
 
-        {/* search bar is not functional */}
-        <div className="hidden sm:block">
-          <form>
-            <div className="relative flex">
-              <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none">
-                {SearchIcon}
-              </div>
-              <input
-                type="text"
-                placeholder=""
-                className="w-full pl-9 pr-4 bg-transparent text-grey-600 dark:text-grey-300 body1 focus:outline-none xl:w-125"
-              />
+        {/* search bar is not functional - should we also make separate component? */}
+        <form className="w-full">
+          <div className="relative flex">
+            <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none">
+              {SearchIcon}
             </div>
-          </form>
-        </div>
+            <input
+              type="text"
+              placeholder=""
+              className="w-full pl-9 pr-4 bg-transparent text-grey-600 dark:text-grey-300 body1 focus:outline-none"
+            />
+          </div>
+        </form>
 
         <div className="flex items-center gap-3">
-          {/* <DarkModeToggle /> */}
+          <DarkModeToggle />
+
           <div className="w-10 px-1.5 py-2.5">
             <Image src={USFlag} alt="Flag" />
           </div>
 
           <DropdownNotification />
-          {/* </ul> */}
 
           <DropdownUser />
         </div>
