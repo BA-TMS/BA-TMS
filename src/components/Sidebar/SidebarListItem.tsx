@@ -70,11 +70,11 @@ const SidebarListItem = ({
                   {options.map((item, index) => (
                     <li
                       key={index}
-                      className="px-6 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-primary/20 dark:hover:text-primary hover:text-primary"
+                      className="px-6 py-2 rounded-lg hover:text-primary"
                     >
                       <Link
                         href={item.href}
-                        className="items-center py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300"
+                        className="items-center py-2 duration-300 ease-in-out body2 text-grey-600 dark:text-grey-300 hover:font-semibold hover:text-grey-800 hover:dark:text-grey-200"
                       >
                         {item.name}
                       </Link>

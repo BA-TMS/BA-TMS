@@ -32,6 +32,23 @@ const userOptions = [
   { name: 'Settings', href: '/user/settings' },
 ];
 
+const adminOptions = [
+  { name: 'Customers', href: '#' },
+  { name: 'Shippers', href: '#' },
+  { name: 'Consignees', href: '#' },
+  { name: 'Drivers', href: '#' },
+  { name: 'Trucks', href: '#' },
+  { name: 'Trailers', href: '#' },
+  { name: 'External Carriers', href: '#' },
+  { name: 'Customs Brokers', href: '#' },
+  { name: 'Factoring Companies', href: '#' },
+  { name: 'Users', href: '#' },
+  { name: 'Other Numbers', href: '#' },
+  { name: 'Third Party', href: '#' },
+  { name: 'Preferences', href: '#' },
+  { name: 'Private Labelling', href: '#' },
+];
+
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
@@ -121,7 +138,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               path={'/dashboard'}
               name={'Dashboard'}
               pathname={pathname}
-              options={dashboardOptions}
             />
             <SidebarListItem
               icon={DispatchIcon}
@@ -134,6 +150,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               pathname={pathname}
               path={'/admin'}
               name={'Admin'}
+              options={adminOptions}
             />
             <SidebarListItem
               icon={IFTAIcon}
