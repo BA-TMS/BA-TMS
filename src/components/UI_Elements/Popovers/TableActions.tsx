@@ -12,17 +12,17 @@ type TableActionsProps = {
 const TableActionsPopover: React.FC<TableActionsProps> = ({ id }) => {
   const [popoversOpen, setPopoversOpen] = useState(false);
 
-  const trigger = useRef<any>(null);
-  const popovers = useRef<any>(null);
+  const trigger = useRef<HTMLButtonElement | null>(null);
+  const popovers = useRef<HTMLDivElement | null>(null);
 
   // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
-      if (!popovers.current) return;
+      if (!popovers.current || !trigger.current) return;
       if (
         !popoversOpen ||
-        popovers.current.contains(target) ||
-        trigger.current.contains(target)
+        popovers.current.contains(target as Node) ||
+        trigger.current.contains(target as Node)
       )
         return;
       setPopoversOpen(false);
