@@ -3716,6 +3716,11 @@ yocto-queue@^0.1.0:
   resolved "https://registry.npmjs.org/yocto-queue/-/yocto-queue-0.1.0.tgz"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
+yup-password@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/yup-password/-/yup-password-0.4.0.tgz#83880301b8e593849ce71c226350d9cd8644dd64"
+  integrity sha512-9/OoQ/fXQOzLrCIn5TYd72WoBLadJ9ZwaZXWuGYwyPRxvrJQC3TIOb/i5OY4gIstKSojebCzAf7XDEiqyUuaow==
+
 yup@^1.3.3:
   version "1.3.3"
   resolved "https://registry.npmjs.org/yup/-/yup-1.3.3.tgz"

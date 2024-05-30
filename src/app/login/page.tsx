@@ -1,6 +1,6 @@
 import { createClient } from '@util/supabase/server';
 import Link from 'next/link';
-import { login, signUp } from './actions';
+import { login } from './actions';
 import { SubmitButton } from '@/components/Authentication/submit-button';
 import AuthButton from '@/components/Authentication/AuthButton';
 import Image from 'next/image';
@@ -48,7 +48,7 @@ export default async function Login({
           </p>
         </header>
         <form className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground">
-          <div className="relative mt-3">
+          <div className="relative">
             <input
               type="text"
               name="email"
@@ -66,7 +66,7 @@ export default async function Login({
             </label>
           </div>
 
-          <div className="relative mt-3">
+          <div className="relative">
             <input
               type="password"
               name="password"
@@ -91,20 +91,19 @@ export default async function Login({
             Forgot Password?
           </Link>
 
-          <SubmitButton formAction={login} pendingText="Signing In...">
-            Sign In
+          <SubmitButton formAction={login} pendingText="Logging In...">
+            Log In
           </SubmitButton>
           <div>
             <p className="inline-block body2 dark:text-black mt-3 mr-3">
               Don&apos;t have an account?
             </p>
-            <SubmitButton
-              variant="text"
-              formAction={signUp}
-              pendingText="Signing Up..."
+            <Link
+              className="text-primary hover:text-primary-dark justify-center font-public font-bold w-auto h-auto disabled:text-grey-500 disabled:pointer-events-none text-button-lg my-2"
+              href={'/signup'}
             >
               Sign Up
-            </SubmitButton>
+            </Link>
           </div>
           {searchParams?.message && (
             <p className="font-public font-normal text-text-sm text-danger text-center mt-2">
