@@ -42,8 +42,8 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({ id }) => {
   }, [popoversOpen, popovers]);
 
   return (
-    <div className="w-full pl-5 sm:w-1/2 xl:w-1/4">
-      <div className="mt-1 text-center">
+    <div className="pl-5">
+      <div className="mt-1 text-center text-grey-600 dark:text-grey-300">
         <div className="relative inline-block">
           <button
             ref={trigger}
@@ -52,35 +52,34 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({ id }) => {
           >
             {ElipsisVertical}
           </button>
+          {/* Popover Start */}
           <div
             ref={popovers}
             onFocus={() => setPopoversOpen(true)}
             onBlur={() => setPopoversOpen(false)}
-            className={`absolute top-0 right-full z-20 mr-3 w-max max-w-[311px] rounded bg-white drop-shadow-5 dark:bg-meta-4 ${
+            className={`absolute top-0 right-full z-20 w-40 px-4 rounded-lg border body2 text-grey-600 dark:text-grey-300 bg-white dark:bg-grey-900 border-grey-300 dark:border-grey-700 ${
               popoversOpen === true ? 'block' : 'hidden'
             }`}
           >
-            <span className="absolute -right-1.5 top-2 -z-10 h-2 w-2 rotate-45 rounded-sm bg-white dark:bg-meta-4"></span>
+            <span className="absolute -right-1.5 top-2 -z-10 h-2 w-2 rotate-45 rounded-sm bg-white dark:bg-grey-900 border-r-2 border-t border-grey-300 dark:border-grey-700"></span>
 
-            <div className="text-center">
-              <div className="flex flex-wrap">
-                <Link
-                  href="#" // update
-                  className="inline-flex items-center justify-center gap-2.5 py-4 px-10 text-center font-medium dark:text-white hover:text-primary dark:hover:text-primary lg:px-8 xl:px-10"
-                >
-                  <span>{EditIcon}</span>
-                  Edit
-                </Link>
-              </div>
-              <div className="flex flex-wrap">
-                <Link
-                  href="#" // delete
-                  className="inline-flex items-center justify-center gap-2.5 py-4 px-10 text-center font-medium dark:text-white hover:text-primary dark:hover:text-primary lg:px-8 xl:px-10"
-                >
-                  <span>{DeleteIcon}</span>
-                  Delete
-                </Link>
-              </div>
+            <div className="flex flex-wrap">
+              <Link
+                href="#" // update
+                className="flex w-full gap-2 border-b border-grey-200 dark:border-grey-700 py-3 hover:text-primary"
+              >
+                <span>{EditIcon}</span>
+                Edit
+              </Link>
+            </div>
+            <div className="flex flex-wrap">
+              <Link
+                href="#" // delete
+                className="flex w-full gap-2  py-3 hover:text-primary"
+              >
+                <span>{DeleteIcon}</span>
+                Delete
+              </Link>
             </div>
           </div>
         </div>
