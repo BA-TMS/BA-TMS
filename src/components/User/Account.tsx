@@ -2,6 +2,15 @@
 
 import Image from 'next/image';
 import countryList from 'react-select-country-list';
+import { BsTelephone } from 'react-icons/bs';
+import { FaRegAddressBook, FaCity } from 'react-icons/fa';
+import { MdOutlineEmail } from 'react-icons/md';
+import { IoMdGlobe } from 'react-icons/io';
+
+import React, { useState } from 'react';
+import Select from 'react-select';
+//import { getCountries, getStatesOfCountry } from 'country-state-city';
+import { Country, State } from 'country-state-city';
 
 const secondaryNavigation = [
   { name: 'Account', href: '#', current: true },
@@ -11,6 +20,30 @@ const secondaryNavigation = [
 ];
 
 export default function Account() {
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [selectedState, setSelectedState] = useState(null);
+  const [statesOptions, setStatesOptions] = useState([]);
+
+  const countriesOptions = Country.getAllCountries().map((country) => ({
+    value: country.isoCode,
+    label: country.name,
+  }));
+
+  const handleCountryChange = (option) => {
+    setSelectedCountry(option);
+    const states = State.getStatesOfCountry(option.value);
+    const stateOptions = states.map((state) => ({
+      value: state.isoCode,
+      label: state.name,
+    }));
+    setStatesOptions(stateOptions);
+    setSelectedState(null); // Reset state selection when country changes
+  };
+
+  const handleStateChange = (option) => {
+    setSelectedState(option);
+  };
+
   return (
     <>
       {/* Tabs */}
@@ -206,14 +239,19 @@ export default function Account() {
                       >
                         Email Address
                       </label>
-                      <input
-                        className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="email"
-                        name="emailAddress"
-                        id="emailAddress"
-                        placeholder="devidjond45@gmail.com"
-                        defaultValue="devidjond45@gmail.com"
-                      />
+                      <div className="relative">
+                        <span className="absolute left-4.5 top-4">
+                          <MdOutlineEmail />
+                        </span>
+                        <input
+                          className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                          type="email"
+                          name="emailAddress"
+                          id="emailAddress"
+                          placeholder="devidjond45@gmail.com"
+                          defaultValue="devidjond45@gmail.com"
+                        />
+                      </div>
                     </div>
                   </div>
 
@@ -228,29 +266,7 @@ export default function Account() {
                       </label>
                       <div className="relative">
                         <span className="absolute left-4.5 top-4">
-                          <svg
-                            className="fill-current"
-                            width="20"
-                            height="20"
-                            viewBox="0 0 20 20"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <g opacity="0.8">
-                              <path
-                                fillRule="evenodd"
-                                clipRule="evenodd"
-                                d="M3.72039 12.887C4.50179 12.1056 5.5616 11.6666 6.66667 11.6666H13.3333C14.4384 11.6666 15.4982 12.1056 16.2796 12.887C17.061 13.6684 17.5 14.7282 17.5 15.8333V17.5C17.5 17.9602 17.1269 18.3333 16.6667 18.3333C16.2064 18.3333 15.8333 17.9602 15.8333 17.5V15.8333C15.8333 15.1703 15.5699 14.5344 15.1011 14.0655C14.6323 13.5967 13.9964 13.3333 13.3333 13.3333H6.66667C6.00363 13.3333 5.36774 13.5967 4.8989 14.0655C4.43006 14.5344 4.16667 15.1703 4.16667 15.8333V17.5C4.16667 17.9602 3.79357 18.3333 3.33333 18.3333C2.8731 18.3333 2.5 17.9602 2.5 17.5V15.8333C2.5 14.7282 2.93899 13.6684 3.72039 12.887Z"
-                                fill=""
-                              />
-                              <path
-                                fillRule="evenodd"
-                                clipRule="evenodd"
-                                d="M9.99967 3.33329C8.61896 3.33329 7.49967 4.45258 7.49967 5.83329C7.49967 7.214 8.61896 8.33329 9.99967 8.33329C11.3804 8.33329 12.4997 7.214 12.4997 5.83329C12.4997 4.45258 11.3804 3.33329 9.99967 3.33329ZM5.83301 5.83329C5.83301 3.53211 7.69849 1.66663 9.99967 1.66663C12.3009 1.66663 14.1663 3.53211 14.1663 5.83329C14.1663 8.13448 12.3009 9.99996 9.99967 9.99996C7.69849 9.99996 5.83301 8.13448 5.83301 5.83329Z"
-                                fill=""
-                              />
-                            </g>
-                          </svg>
+                          <BsTelephone />
                         </span>
                         <input
                           className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
@@ -270,14 +286,19 @@ export default function Account() {
                       >
                         Address
                       </label>
-                      <input
-                        className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name="address"
-                        id="address"
-                        placeholder="123 Sesame Street"
-                        defaultValue="123 Sesame Street"
-                      />
+                      <div className="relative">
+                        <span className="absolute left-4.5 top-4">
+                          <FaRegAddressBook />
+                        </span>
+                        <input
+                          className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                          type="text"
+                          name="address"
+                          id="address"
+                          placeholder="123 Sesame Street"
+                          defaultValue="123 Sesame Street"
+                        />
+                      </div>
                     </div>
                   </div>
                   {/* END PHONE NUMBER AND ADDRESS */}
@@ -286,62 +307,57 @@ export default function Account() {
                   <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                     <div className="w-full sm:w-1/2">
                       <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        className="mb-3 block text-sm font-medium text-gray-900 dark:text-gray-100"
                         htmlFor="country"
                       >
                         Country
                       </label>
-                      <div className="relative">
-                        <span className="absolute left-4.5 top-4">
-                          <svg
-                            className="fill-current"
-                            width="20"
-                            height="20"
-                            viewBox="0 0 20 20"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <g opacity="0.8">
-                              <path
-                                fillRule="evenodd"
-                                clipRule="evenodd"
-                                d="M3.72039 12.887C4.50179 12.1056 5.5616 11.6666 6.66667 11.6666H13.3333C14.4384 11.6666 15.4982 12.1056 16.2796 12.887C17.061 13.6684 17.5 14.7282 17.5 15.8333V17.5C17.5 17.9602 17.1269 18.3333 16.6667 18.3333C16.2064 18.3333 15.8333 17.9602 15.8333 17.5V15.8333C15.8333 15.1703 15.5699 14.5344 15.1011 14.0655C14.6323 13.5967 13.9964 13.3333 13.3333 13.3333H6.66667C6.00363 13.3333 5.36774 13.5967 4.8989 14.0655C4.43006 14.5344 4.16667 15.1703 4.16667 15.8333V17.5C4.16667 17.9602 3.79357 18.3333 3.33333 18.3333C2.8731 18.3333 2.5 17.9602 2.5 17.5V15.8333C2.5 14.7282 2.93899 13.6684 3.72039 12.887Z"
-                                fill=""
-                              />
-                              <path
-                                fillRule="evenodd"
-                                clipRule="evenodd"
-                                d="M9.99967 3.33329C8.61896 3.33329 7.49967 4.45258 7.49967 5.83329C7.49967 7.214 8.61896 8.33329 9.99967 8.33329C11.3804 8.33329 12.4997 7.214 12.4997 5.83329C12.4997 4.45258 11.3804 3.33329 9.99967 3.33329ZM5.83301 5.83329C5.83301 3.53211 7.69849 1.66663 9.99967 1.66663C12.3009 1.66663 14.1663 3.53211 14.1663 5.83329C14.1663 8.13448 12.3009 9.99996 9.99967 9.99996C7.69849 9.99996 5.83301 8.13448 5.83301 5.83329Z"
-                                fill=""
-                              />
-                            </g>
-                          </svg>
-                        </span>
-                        <input
-                          className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                          type="text"
-                          name="country"
-                          id="country"
-                          placeholder=" "
-                          defaultValue=" "
-                        />
-                      </div>
+                      <Select
+                        className="text-gray-900 dark:text-gray-100"
+                        classNamePrefix="select"
+                        options={countriesOptions}
+                        value={selectedCountry}
+                        onChange={handleCountryChange}
+                        placeholder="Select Country"
+                        theme={(theme) => ({
+                          ...theme,
+                          borderRadius: 0.375,
+                          colors: {
+                            ...theme.colors,
+                            primary25: 'blue-100',
+                            primary: 'blue-500',
+                            neutral0: 'gray-50 dark:bg-gray-700',
+                            neutral80: 'gray-900 dark:text-gray-100',
+                          },
+                        })}
+                      />
                     </div>
-
                     <div className="w-full sm:w-1/2">
                       <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        className="mb-3 block text-sm font-medium text-gray-900 dark:text-gray-100"
                         htmlFor="stateRegion"
                       >
                         State/Region
                       </label>
-                      <input
-                        className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name="stateRegion"
-                        id="stateRegion"
-                        placeholder=" "
-                        defaultValue=" "
+                      <Select
+                        className="text-gray-900 dark:text-gray-100"
+                        classNamePrefix="select"
+                        options={statesOptions}
+                        value={selectedState}
+                        onChange={handleStateChange}
+                        placeholder="Select State/Region"
+                        isDisabled={!selectedCountry} // Disable until a country is selected
+                        theme={(theme) => ({
+                          ...theme,
+                          borderRadius: 0.375,
+                          colors: {
+                            ...theme.colors,
+                            primary25: 'blue-100',
+                            primary: 'blue-500',
+                            neutral0: 'gray-50 dark:bg-gray-700',
+                            neutral80: 'gray-900 dark:text-gray-100',
+                          },
+                        })}
                       />
                     </div>
                   </div>
@@ -358,29 +374,7 @@ export default function Account() {
                       </label>
                       <div className="relative">
                         <span className="absolute left-4.5 top-4">
-                          <svg
-                            className="fill-current"
-                            width="20"
-                            height="20"
-                            viewBox="0 0 20 20"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <g opacity="0.8">
-                              <path
-                                fillRule="evenodd"
-                                clipRule="evenodd"
-                                d="M3.72039 12.887C4.50179 12.1056 5.5616 11.6666 6.66667 11.6666H13.3333C14.4384 11.6666 15.4982 12.1056 16.2796 12.887C17.061 13.6684 17.5 14.7282 17.5 15.8333V17.5C17.5 17.9602 17.1269 18.3333 16.6667 18.3333C16.2064 18.3333 15.8333 17.9602 15.8333 17.5V15.8333C15.8333 15.1703 15.5699 14.5344 15.1011 14.0655C14.6323 13.5967 13.9964 13.3333 13.3333 13.3333H6.66667C6.00363 13.3333 5.36774 13.5967 4.8989 14.0655C4.43006 14.5344 4.16667 15.1703 4.16667 15.8333V17.5C4.16667 17.9602 3.79357 18.3333 3.33333 18.3333C2.8731 18.3333 2.5 17.9602 2.5 17.5V15.8333C2.5 14.7282 2.93899 13.6684 3.72039 12.887Z"
-                                fill=""
-                              />
-                              <path
-                                fillRule="evenodd"
-                                clipRule="evenodd"
-                                d="M9.99967 3.33329C8.61896 3.33329 7.49967 4.45258 7.49967 5.83329C7.49967 7.214 8.61896 8.33329 9.99967 8.33329C11.3804 8.33329 12.4997 7.214 12.4997 5.83329C12.4997 4.45258 11.3804 3.33329 9.99967 3.33329ZM5.83301 5.83329C5.83301 3.53211 7.69849 1.66663 9.99967 1.66663C12.3009 1.66663 14.1663 3.53211 14.1663 5.83329C14.1663 8.13448 12.3009 9.99996 9.99967 9.99996C7.69849 9.99996 5.83301 8.13448 5.83301 5.83329Z"
-                                fill=""
-                              />
-                            </g>
-                          </svg>
+                          <FaCity />
                         </span>
                         <input
                           className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
