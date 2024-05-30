@@ -77,7 +77,7 @@ const Header = (props: HeaderProps) => {
         </div>
       </div>
       <Breadcrumbs
-        className="px-4 pb-2 text-grey-600 dark:text-grey-300"
+        className="px-4 pb-2 text-grey-600 dark:text-grey-30"
         root="Home"
         separator={<p>&#8226;</p>}
         pathComponentClassName="hover:underline mx-2 font-bold"

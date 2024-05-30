@@ -21,12 +21,6 @@ import {
 } from '@/assets/icons';
 import { Logo } from '@/assets/logo';
 
-const dashboardOptions = [
-  { name: 'Group1', href: '/dashboard/group1' },
-  { name: 'Group2', href: '/dashboard/group2' },
-  { name: 'Group3', href: '/dashboard/group3' },
-];
-
 const userOptions = [
   { name: 'Plans & Pricing', href: '#' },
   { name: 'Settings', href: '/user/settings' },

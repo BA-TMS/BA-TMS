@@ -27,7 +27,7 @@ const Breadcrumbs = ({
     return (
       <li className={pathComponentClassName}>
         <Link
-          className="body2 text-grey-600 dark:text-grey-300"
+          className="body2 text-grey-600 dark:text-grey-300 w-full"
           href={linkPath}
         >
           {maybeCapitalize(text)}
@@ -56,7 +56,11 @@ const Breadcrumbs = ({
   });
 
   return (
-    <ul className={`flex${className ? ` ${className}` : ''}`}>
+    <ul
+      className={`bg-white dark:bg-grey-900 flex${
+        className ? ` ${className}` : ''
+      }`}
+    >
       {breadcrumb('/', root)}
       {maybeSeparator(0)}
       {nonRootBreadcrumbs}
