@@ -14,9 +14,12 @@ interface TableProps<T> {
   data: T[];
 }
 
-const Table: React.FC<TableProps<any>> = ({ columns, data }) => {
+const Table = <T extends { [key: string]: any }>({
+  columns,
+  data,
+}: TableProps<T>) => {
   // check if data type is Date object
-  function isDate(value: any): boolean {
+  function isDate(value: unknown): boolean {
     return value instanceof Date;
   }
   // format date
@@ -25,13 +28,13 @@ const Table: React.FC<TableProps<any>> = ({ columns, data }) => {
   }
 
   // helper function for checking boolean values
-  function displayBooleanValue(value: any) {
+  function displayBooleanValue(value: unknown) {
     if (typeof value === 'boolean') {
       // 'yes' for true, and nothing for false
       return value ? 'Yes' : '';
     } else {
       // if not a boolean will return just the value
-      return value;
+      return value as React.ReactNode;
     }
   }
 
