@@ -105,6 +105,7 @@ const config: Config = {
         'button-lg': ['15px', '26px'],
         'button-md': ['14px', '24px'],
         'button-sm': ['13px', '22px'],
+        'table-title': ['13px', '24px'],
       },
       screens: {
         '2xsm': '375px',

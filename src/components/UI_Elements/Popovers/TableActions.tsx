@@ -42,7 +42,7 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({ id }) => {
   }, [popoversOpen, popovers]);
 
   return (
-    <div className="pl-5">
+    <div>
       <div className="mt-1 text-center text-grey-600 dark:text-grey-300">
         <div className="relative inline-block">
           <button
