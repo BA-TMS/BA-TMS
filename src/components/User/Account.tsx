@@ -326,7 +326,7 @@ export default function Account() {
                             ...theme.colors,
                             primary25: 'blue-100',
                             primary: 'blue-500',
-                            neutral0: 'gray-50 dark:bg-gray-700',
+                            neutral0: 'white dark:bg-gray-700',
                             neutral80: 'gray-900 dark:text-gray-100',
                           },
                         })}
@@ -354,7 +354,7 @@ export default function Account() {
                             ...theme.colors,
                             primary25: 'blue-100',
                             primary: 'blue-500',
-                            neutral0: 'gray-50 dark:bg-gray-700',
+                            neutral0: 'white dark:bg-gray-700',
                             neutral80: 'gray-900 dark:text-gray-100',
                           },
                         })}
