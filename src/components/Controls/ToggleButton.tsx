@@ -1,12 +1,12 @@
 import Switch from 'react-switch';
-import { useState, useId } from 'react';
+import { useId } from 'react';
 
 export default function ToggleButton(props: {
   labelText: string;
   descriptionText: string;
+  checked: boolean;
+  onChange: () => void;
 }) {
-  const [twoStepToggle, setTwoStepToggle] = useState<boolean>(false);
-
   // Create a unique ID for every Switch component that's created in page.tsx.
   const firstSwitchID = useId();
 
@@ -22,8 +22,8 @@ export default function ToggleButton(props: {
     <div className="flex">
       <Switch
         id={firstSwitchID}
-        onChange={() => setTwoStepToggle(!twoStepToggle)}
-        checked={twoStepToggle}
+        onChange={props.onChange}
+        checked={props.checked}
       />
 
       <div style={{ paddingLeft: '10px' }}>

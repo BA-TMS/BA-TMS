@@ -26,27 +26,27 @@
 
 /* typographic styles */
 .subtitle1 {
-  @apply font-public font-semibold text-text-lg text-black dark:text-white;
+  @apply font-public font-semibold text-text-lg;
 }
 
 .subtitle2 {
-  @apply font-public font-semibold text-text-sm text-black dark:text-white;
+  @apply font-public font-semibold text-text-sm;
 }
 
 .body1 {
-  @apply font-public font-normal text-text-lg text-black dark:text-white;
+  @apply font-public font-normal text-text-lg;
 }
 
 .body2 {
-  @apply font-public font-normal text-text-sm text-black dark:text-white;
+  @apply font-public font-normal text-text-sm;
 }
 
 .caption {
-  @apply font-public font-normal text-text-xsm text-black dark:text-white;
+  @apply font-public font-normal text-text-xsm;
 }
 
 .overline {
-  @apply font-public font-bold text-text-xsm no-underline uppercase text-black dark:text-white;
+  @apply font-public font-bold text-text-xsm no-underline uppercase;
 }
 
 .box {
