@@ -42,45 +42,43 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({ id }) => {
   }, [popoversOpen, popovers]);
 
   return (
-    <div>
-      <div className="mt-1 text-center text-grey-600 dark:text-grey-300">
-        <div className="relative inline-block">
-          <button
-            ref={trigger}
-            onClick={() => setPopoversOpen(!popoversOpen)}
-            className="hover:text-primary"
-          >
-            {ElipsisVertical}
-          </button>
-          {/* Popover Start */}
-          <div
-            ref={popovers}
-            onFocus={() => setPopoversOpen(true)}
-            onBlur={() => setPopoversOpen(false)}
-            className={`absolute top-0 right-full z-20 w-40 px-4 rounded-lg border body2 text-grey-600 dark:text-grey-300 bg-white dark:bg-grey-900 border-grey-300 dark:border-grey-700 ${
-              popoversOpen === true ? 'block' : 'hidden'
-            }`}
-          >
-            <span className="absolute -right-1.5 top-2 -z-10 h-2 w-2 rotate-45 rounded-sm bg-white dark:bg-grey-900 border-r-2 border-t border-grey-300 dark:border-grey-700"></span>
+    <div className="absolute text-grey-600 dark:text-grey-300">
+      <div className="relative inline-block">
+        <button
+          ref={trigger}
+          onClick={() => setPopoversOpen(!popoversOpen)}
+          className="hover:text-primary"
+        >
+          {ElipsisVertical}
+        </button>
+        {/* Popover Start */}
+        <div
+          ref={popovers}
+          onFocus={() => setPopoversOpen(true)}
+          onBlur={() => setPopoversOpen(false)}
+          className={`absolute top-0 right-full z-20 w-40 px-4 rounded-lg border body2 text-grey-600 dark:text-grey-300 bg-white dark:bg-grey-900 border-grey-300 dark:border-grey-700 ${
+            popoversOpen === true ? 'block' : 'hidden'
+          }`}
+        >
+          <span className="absolute -right-1.5 top-2 -z-10 h-2 w-2 rotate-45 rounded-sm bg-white dark:bg-grey-900 border-r-2 border-t border-grey-300 dark:border-grey-700"></span>
 
-            <div className="flex flex-wrap">
-              <Link
-                href="#" // update
-                className="flex w-full gap-2 border-b border-grey-200 dark:border-grey-700 py-3 hover:text-primary"
-              >
-                <span>{EditIcon}</span>
-                Edit
-              </Link>
-            </div>
-            <div className="flex flex-wrap">
-              <Link
-                href="#" // delete
-                className="flex w-full gap-2  py-3 hover:text-primary"
-              >
-                <span>{DeleteIcon}</span>
-                Delete
-              </Link>
-            </div>
+          <div className="flex flex-wrap">
+            <Link
+              href="#" // update
+              className="flex w-full gap-2 border-b border-grey-200 dark:border-grey-700 py-3 hover:text-primary"
+            >
+              <span>{EditIcon}</span>
+              Edit
+            </Link>
+          </div>
+          <div className="flex flex-wrap">
+            <Link
+              href="#" // delete
+              className="flex w-full gap-2  py-3 hover:text-primary"
+            >
+              <span>{DeleteIcon}</span>
+              Delete
+            </Link>
           </div>
         </div>
       </div>
