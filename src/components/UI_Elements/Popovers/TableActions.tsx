@@ -43,7 +43,7 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({ id }) => {
 
   return (
     <div className="absolute text-grey-600 dark:text-grey-300">
-      <div className="relative inline-block">
+      <div className="relative top-[-10px] inline-block">
         <button
           ref={trigger}
           onClick={() => setPopoversOpen(!popoversOpen)}

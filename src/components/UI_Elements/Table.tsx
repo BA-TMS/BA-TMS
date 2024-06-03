@@ -75,7 +75,7 @@ const Table = <T extends { [key: string]: any }>({
                     </p>
                   </td>
                 ))}
-                <td className="p-4 text-left">
+                <td>
                   {/* Table Actions Popover is not functional yet */}
                   <TableActionsPopover id={data.id}></TableActionsPopover>
                 </td>
