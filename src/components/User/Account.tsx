@@ -313,7 +313,10 @@ export default function Account() {
                         Country
                       </label>
                       <Select
-                        className="text-gray-900 dark:text-gray-100"
+                        classNames={{
+                          menu: () => 'bg-white dark:bg-black p-4',
+                          menuList: () => 'body2',
+                        }}
                         classNamePrefix="select"
                         options={countriesOptions}
                         value={selectedCountry}
@@ -340,7 +343,10 @@ export default function Account() {
                         State/Region
                       </label>
                       <Select
-                        className="text-gray-900 dark:text-gray-100"
+                        classNames={{
+                          menu: () => 'bg-white dark:bg-black p-4',
+                          menuList: () => 'body2',
+                        }}
                         classNamePrefix="select"
                         options={statesOptions}
                         value={selectedState}
@@ -444,7 +450,7 @@ export default function Account() {
                         rows={5}
                         cols={35}
                         wrap="on"
-                        placeholder={'Wrap on'}
+                        placeholder={'Bio here'}
                       />
                     </div>
                   </div>
