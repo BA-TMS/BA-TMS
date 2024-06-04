@@ -34,9 +34,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
                 />
 
                 <main>
-                  <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-                    {children}
-                  </div>
+                  <div className="mx-auto max-w-screen-2xl">{children}</div>
                 </main>
               </div>
             </div>
