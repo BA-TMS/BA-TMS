@@ -11,6 +11,7 @@ import React, { useState } from 'react';
 import Select from 'react-select';
 //import { getCountries, getStatesOfCountry } from 'country-state-city';
 import { Country, State } from 'country-state-city';
+import * as Yup from 'yup';
 
 const secondaryNavigation = [
   { name: 'Account', href: '#', current: true },
@@ -23,6 +24,34 @@ export default function Account() {
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [selectedState, setSelectedState] = useState(null);
   const [statesOptions, setStatesOptions] = useState([]);
+
+  const [formData, setFormData] = useState({
+    fullName: '',
+    emailAddress: '',
+    phoneNumber: '',
+    address: '',
+    country: null,
+    state: null,
+    city: '',
+    postalCode: '',
+  });
+
+  const accountSchema = Yup.object().shape({
+    fullName: Yup.string(),
+    emailAddress: Yup.string().email(),
+    phoneNumber: Yup.string(),
+    address: Yup.string(),
+    country: Yup.object().shape({
+      label: Yup.string().required(),
+      value: Yup.string().required(),
+    }),
+    state: Yup.object().shape({
+      label: Yup.string().required(),
+      value: Yup.string().required(),
+    }),
+    city: Yup.string(),
+    postalCode: Yup.string(),
+  });
 
   const countriesOptions = Country.getAllCountries().map((country) => ({
     value: country.isoCode,
@@ -43,6 +72,34 @@ export default function Account() {
   const handleStateChange = (option) => {
     setSelectedState(option);
   };
+
+  const handleInputChange = (field, value) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  // Use formData to handle form submission and validation with Yup
+  const handleSubmit = async () => {
+    try {
+      await accountSchema.validate(formData, { abortEarly: false });
+      // Proceed with form submission logic
+    } catch (error) {
+      // Handle validation errors
+      console.error(error);
+    }
+  };
+
+  // This code is to test if we're saving the data.
+  function PrintData() {
+    console.log('Account Schema Properties:');
+    console.log('Full Name:', accountSchema.fields.fullName.describe());
+    console.log('Email Address:', accountSchema.fields.emailAddress.describe());
+    console.log('Phone Number:', accountSchema.fields.phoneNumber.describe());
+    console.log('Address:', accountSchema.fields.address.describe());
+    console.log('Country:', accountSchema.fields.country.describe());
+    console.log('State:', accountSchema.fields.state.describe());
+    console.log('City:', accountSchema.fields.city.describe());
+    console.log('Postal Code:', accountSchema.fields.postalCode.describe());
+  }
 
   return (
     <>
@@ -228,6 +285,9 @@ export default function Account() {
                           id="fullName"
                           placeholder="Devid Jhon"
                           defaultValue="Devid Jhon"
+                          onChange={(e) =>
+                            handleInputChange('fullName', e.target.value)
+                          }
                         />
                       </div>
                     </div>
@@ -235,7 +295,7 @@ export default function Account() {
                     <div className="w-full sm:w-1/2">
                       <label
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="phoneNumber"
+                        htmlFor="emailAddress"
                       >
                         Email Address
                       </label>
@@ -250,6 +310,9 @@ export default function Account() {
                           id="emailAddress"
                           placeholder="devidjond45@gmail.com"
                           defaultValue="devidjond45@gmail.com"
+                          onChange={(e) =>
+                            handleInputChange('emailAddress', e.target.value)
+                          }
                         />
                       </div>
                     </div>
@@ -275,6 +338,9 @@ export default function Account() {
                           id="phoneNumber"
                           placeholder="+990 3343 7865"
                           defaultValue="+990 3343 7865"
+                          onChange={(e) =>
+                            handleInputChange('phoneNumber', e.target.value)
+                          }
                         />
                       </div>
                     </div>
@@ -297,6 +363,9 @@ export default function Account() {
                           id="address"
                           placeholder="123 Sesame Street"
                           defaultValue="123 Sesame Street"
+                          onChange={(e) =>
+                            handleInputChange('address', e.target.value)
+                          }
                         />
                       </div>
                     </div>
@@ -320,7 +389,9 @@ export default function Account() {
                         classNamePrefix="select"
                         options={countriesOptions}
                         value={selectedCountry}
-                        onChange={handleCountryChange}
+                        onChange={(e) => {
+                          handleCountryChange(e);
+                        }}
                         placeholder="Select Country"
                         theme={(theme) => ({
                           ...theme,
@@ -350,7 +421,9 @@ export default function Account() {
                         classNamePrefix="select"
                         options={statesOptions}
                         value={selectedState}
-                        onChange={handleStateChange}
+                        onChange={(e) => {
+                          handleStateChange(e);
+                        }}
                         placeholder="Select State/Region"
                         isDisabled={!selectedCountry} // Disable until a country is selected
                         theme={(theme) => ({
@@ -389,6 +462,9 @@ export default function Account() {
                           id="city"
                           placeholder=" "
                           defaultValue=" "
+                          onChange={(e) =>
+                            handleInputChange('city', e.target.value)
+                          }
                         />
                       </div>
                     </div>
@@ -407,6 +483,9 @@ export default function Account() {
                         id="postalCode"
                         placeholder=" "
                         defaultValue=" "
+                        onChange={(e) =>
+                          handleInputChange('postalCode', e.target.value)
+                        }
                       />
                     </div>
                   </div>
@@ -476,12 +555,14 @@ export default function Account() {
                     <button
                       className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                       type="submit"
+                      onClick={() => PrintData()}
                     >
                       Cancel
                     </button>
                     <button
                       className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-95"
                       type="submit"
+                      onClick={() => PrintData()}
                     >
                       Save
                     </button>
