@@ -49,6 +49,10 @@
   @apply font-public font-bold text-text-xsm no-underline uppercase;
 }
 
+.pagetitle {
+  @apply font-public font-semibold text-text-xl text-black dark:text-white;
+}
+
 .box {
   float: left;
   height: 20px;

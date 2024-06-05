@@ -106,8 +106,6 @@ export default function Load() {
           marginBottom: '20px',
         }}
       >
-        <h1 style={{ fontSize: '30px', fontWeight: 'bold' }}>DISPATCH BOARD</h1>
-
         <div>
           <input
             style={{
@@ -127,7 +125,7 @@ export default function Load() {
             }}
           />
           <button
-            className={`custom-button effect1`}
+            className={'custom-button effect1'}
             style={{
               padding: '8px',
               borderRadius: '4px',
@@ -140,7 +138,7 @@ export default function Load() {
             Search
           </button>
           <button
-            className={`custom-button effect1`}
+            className={'custom-button effect1'}
             style={{
               padding: '8px',
               borderRadius: '4px',
@@ -170,7 +168,7 @@ export default function Load() {
         {/*<AddButton modalOpen={modalOpen} setModalOpen={setModalOpen} />{' '}*/}
         <button
           onClick={handleClick}
-          className={`custom-button effect1`}
+          className={'custom-button effect1'}
           style={{
             padding: '8px',
             borderRadius: '4px',
@@ -187,7 +185,7 @@ export default function Load() {
         </FormModal>
         {/* Updated line */}
         <button
-          className={`custom-button effect1`}
+          className={'custom-button effect1'}
           style={{
             padding: '10px',
             borderRadius: '4px',
@@ -199,7 +197,7 @@ export default function Load() {
           Open Loads
         </button>
         <button
-          className={`custom-button effect1`}
+          className={'custom-button effect1'}
           style={{
             padding: '10px',
             borderRadius: '4px',
