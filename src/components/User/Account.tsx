@@ -129,13 +129,13 @@ export default function Account() {
       </div>
 
       {/* Start of Info form */}
-      <div className="max-w-270 ">
+      <div className="max-w-350 ">
         {/* <Breadcrumb pageName="Settings" /> */}
 
         <div className="grid grid-cols-5 gap-8">
           <div className="col-span-5 xl:col-span-2">
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
+            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-gray-800 dark:bg-black">
+              <div className="border-b border-stroke py-4 px-7 dark:border-gray-800">
                 <h3 className="font-medium text-black dark:text-white">
                   Your Photo
                 </h3>
@@ -235,8 +235,8 @@ export default function Account() {
           </div>
 
           <div className="col-span-5 xl:col-span-3">
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
+            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-gray-800 dark:bg-black">
+              <div className="border-b border-stroke py-4 px-7 dark:border-gray-800">
                 <h3 className="font-medium text-black dark:text-white">
                   Personal Information
                 </h3>
@@ -398,8 +398,8 @@ export default function Account() {
                           borderRadius: 0.375,
                           colors: {
                             ...theme.colors,
-                            primary25: 'blue-100',
-                            primary: 'blue-500',
+                            primary25: 'green-100',
+                            primary: 'green-500',
                             neutral0: 'white dark:bg-gray-700',
                             neutral80: 'gray-900 dark:text-gray-100',
                           },
@@ -431,8 +431,8 @@ export default function Account() {
                           borderRadius: 0.375,
                           colors: {
                             ...theme.colors,
-                            primary25: 'blue-100',
-                            primary: 'blue-500',
+                            primary25: 'green-100',
+                            primary: 'green-500',
                             neutral0: 'white dark:bg-gray-700',
                             neutral80: 'gray-900 dark:text-gray-100',
                           },
