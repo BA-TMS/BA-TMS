@@ -26,7 +26,7 @@ export default function TablePagination() {
   };
 
   return (
-    <tfoot className="w-full h-14 body2 text-grey-800 dark:text-grey-200">
+    <tfoot className="w-full body2 text-grey-800 dark:text-grey-200">
       <tr className="w-full flex justify-end">
         <CustomTablePagination
           rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
@@ -65,7 +65,7 @@ const CustomTablePagination = React.forwardRef<
     <MuiTablePagination
       ref={ref}
       {...props}
-      className={clsx('CustomTablePagination p-4', props.className)}
+      className={clsx('CustomTablePagination', props.className)}
       slotProps={{
         ...props.slotProps,
         select: (ownerState) => {
@@ -76,7 +76,7 @@ const CustomTablePagination = React.forwardRef<
           return {
             ...resolvedSlotProps,
             className: clsx(
-              'body2 bg-transparent p-2 transition',
+              'body2 bg-transparent py-2 transition',
               resolvedSlotProps?.className
             ),
           };
@@ -89,7 +89,7 @@ const CustomTablePagination = React.forwardRef<
           return {
             ...resolvedSlotProps,
             className: clsx(
-              'flex gap-2 text-center [&>button]:my-0 [&>button]:p-0 [&>button]:flex [&>button]:items-center [&>button]:rounded-full [&>button]:bg-transparent [&>button:hover]:bg-transparent [&>button:focus]:outline-0 [&>button>svg]:text-[22px] [&>button:disabled]:opacity-[0.3]',
+              'flex gap-2 p-2 mr-2 text-center [&>button]:my-0 [&>button]:p-0 [&>button]:flex [&>button]:items-center [&>button]:rounded-full [&>button]:bg-transparent [&>button:hover]:bg-transparent [&>button:focus]:outline-0 [&>button>svg]:text-[22px] [&>button:disabled]:opacity-[0.3]',
               resolvedSlotProps?.className
             ),
           };
@@ -112,10 +112,7 @@ const CustomTablePagination = React.forwardRef<
           );
           return {
             ...resolvedSlotProps,
-            className: clsx(
-              'flex flex-col items-start gap-6 md:flex-row md:items-center',
-              resolvedSlotProps?.className
-            ),
+            className: clsx('flex', resolvedSlotProps?.className),
           };
         },
         selectLabel: (ownerState) => {
@@ -125,7 +122,7 @@ const CustomTablePagination = React.forwardRef<
           );
           return {
             ...resolvedSlotProps,
-            className: clsx('m-0', resolvedSlotProps?.className),
+            className: clsx('py-2 mr-6', resolvedSlotProps?.className),
           };
         },
         displayedRows: (ownerState) => {
@@ -135,7 +132,10 @@ const CustomTablePagination = React.forwardRef<
           );
           return {
             ...resolvedSlotProps,
-            className: clsx('m-0 md:ml-auto', resolvedSlotProps?.className),
+            className: clsx(
+              'py-2 w-20 mx-6 text-center',
+              resolvedSlotProps?.className
+            ),
           };
         },
       }}
