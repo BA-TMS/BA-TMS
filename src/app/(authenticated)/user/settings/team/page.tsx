@@ -261,9 +261,8 @@ const SettingsPage = () => {
         <Popup
           trigger={
             <button
-              className="modal-button"
+              className="modal-button bg-primary"
               style={{
-                backgroundColor: '#3E2F84',
                 color: 'white',
                 padding: '8px 16px',
                 borderRadius: '4px',
@@ -404,8 +403,9 @@ const SettingsPage = () => {
               <div style={{ display: 'flex', float: 'left' }}>
                 <p>
                   <Button
+                    className="bg-primary"
                     style={{
-                      backgroundColor: '#3E2F84',
+                      //backgroundColor: '#3E2F84',
                       color: 'white',
                       padding: '10px 20px',
                       borderRadius: '5px',
@@ -419,9 +419,9 @@ const SettingsPage = () => {
               </div>
             </Form>
             <button
-              className="button"
+              className="button bg-primary"
               style={{
-                backgroundColor: '#3E2F84',
+                //backgroundColor: '#3E2F84',
                 color: 'white',
                 padding: '10px 20px',
                 borderRadius: '5px',
@@ -454,13 +454,13 @@ const SettingsPage = () => {
           <div className="border-b border-stroke px-4 pb-5 dark:border-strokedark md:px-6 xl:px-7.5">
             <div className="flex items-center gap-3">
               <div className="w-2/12 xl:w-3/12">
-                <span className="font-medium">Name</span>
+                <span className="font-medium">Member</span>
               </div>
               <div className="w-6/12 2xsm:w-5/12 md:w-3/12">
-                <span className="font-medium">Email</span>
+                <span className="font-medium">Email Address</span>
               </div>
               <div className="hidden w-4/12 md:block xl:w-3/12">
-                <span className="font-medium">Role</span>
+                <span className="font-medium">Roles</span>
               </div>
               <div className="hidden w-4/12 xl:block">
                 <span className="font-medium">Authentication</span>
@@ -480,9 +480,6 @@ const SettingsPage = () => {
                 <div className="flex items-center gap-3" key={key}>
                   <div className="w-2/12 xl:w-3/12">
                     <div className="flex items-center gap-4">
-                      <div className="2xsm:h-11 2xsm:w-full 2xsm:max-w-11 2xsm:rounded-full">
-                        <img src={lead.avatar} alt="User" />
-                      </div>
                       <span className="hidden font-medium xl:block">
                         {lead.name}
                       </span>
@@ -492,7 +489,9 @@ const SettingsPage = () => {
                     <span className="font-medium">{lead.email}</span>
                   </div>
                   <div className="hidden w-4/12 md:block xl:w-3/12">
-                    <span className="font-medium">{lead.role}</span>
+                    <span className="inline-block rounded  py-0.5 px-2.5 text-sm font-medium text-meta-3 bg-meta-3/[0.08]">
+                      {lead.role}
+                    </span>
                   </div>
                   <div className="hidden w-4/12 xl:block">
                     <span className="font-medium">{lead.authentication}</span>
