@@ -7,6 +7,9 @@ import {
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 
+// how to function this?
+// take in props
+
 export default function TablePagination() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -54,8 +57,17 @@ export default function TablePagination() {
   );
 }
 
-const resolveSlotProps = (fn: any, args: any) =>
-  typeof fn === 'function' ? fn(args) : fn;
+type SlotPropsFn<TArgs, TResult> = (args: TArgs) => TResult;
+type SlotProps<TArgs, TResult> = TResult | SlotPropsFn<TArgs, TResult>;
+
+const resolveSlotProps = <TArgs, TResult>(
+  fn: SlotProps<TArgs, TResult>,
+  args: TArgs
+): TResult => {
+  return typeof fn === 'function'
+    ? (fn as SlotPropsFn<TArgs, TResult>)(args)
+    : fn;
+};
 
 const CustomTablePagination = React.forwardRef<
   HTMLTableCellElement,
