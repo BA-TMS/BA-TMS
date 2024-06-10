@@ -33,56 +33,56 @@ type Members = Member[];
 const placeholderMembers = [
   {
     avatar: '/images/user/user-17.png',
-    name: 'Dude',
-    email: 'samuel@a2zport.com',
+    name: 'Andrei Statescu',
+    email: 'Andrei@a2zport.com',
     role: 'Developer',
     authentication: 'Yes',
-    lastLogin: 'January 22, 2024',
+    lastLogin: 'Jan 22, 2024, 8:33 PM',
     status: 'active',
   },
   {
     avatar: '/images/user/user-18.png',
-    name: 'John',
-    email: 'john@example.com',
+    name: 'Daniel Lepe',
+    email: 'Dan@example.com',
     role: 'Manager',
     authentication: 'No',
-    lastLogin: 'February 15, 2024',
+    lastLogin: 'Feb 15, 2024, 1:45 PM',
     status: 'active',
   },
   {
     avatar: '/images/user/user-19.png',
-    name: 'Alice',
-    email: 'alice@example.com',
+    name: 'Jacob Reola',
+    email: 'Jacob@example.com',
     role: 'Designer',
     authentication: 'Yes',
-    lastLogin: 'March 10, 2024',
+    lastLogin: 'Mar 10, 2024, 10:02 AM',
     status: 'lost',
   },
   {
     avatar: '/images/user/user-20.png',
-    name: 'Bob',
-    email: 'bob@example.com',
+    name: 'Josh Reola',
+    email: 'Josh@example.com',
     role: 'Engineer',
     authentication: 'No',
-    lastLogin: 'April 5, 2024',
+    lastLogin: 'Apr 5, 2024, 12:54 PM',
     status: 'active',
   },
   {
     avatar: '/images/user/user-21.png',
-    name: 'Eve',
-    email: 'eve@example.com',
+    name: 'Mrutunjay Singh',
+    email: 'Mrutunjay@example.com',
     role: 'Analyst',
     authentication: 'Yes',
-    lastLogin: 'May 1, 2024',
+    lastLogin: 'May 1, 2024, 5:30 PM',
     status: 'lost',
   },
   {
     avatar: '/images/user/user-22.png',
-    name: 'Grace',
-    email: 'grace@example.com',
+    name: 'Leonardo Cabral',
+    email: 'Leonardo@example.com',
     role: 'Tester',
     authentication: 'No',
-    lastLogin: 'June 20, 2024',
+    lastLogin: 'Jun 20, 2024, 3:45 PM',
     status: 'active',
   },
   {
@@ -91,7 +91,7 @@ const placeholderMembers = [
     email: 'example@example.com',
     role: 'Tester',
     authentication: 'No',
-    lastLogin: 'June 16, 2024',
+    lastLogin: 'Jun 16, 2024, 1:40 PM',
     status: 'active',
   },
 ];
@@ -463,10 +463,7 @@ const SettingsPage = () => {
                 <span className="font-medium">Roles</span>
               </div>
               <div className="hidden w-4/12 xl:block">
-                <span className="font-medium">Authentication</span>
-              </div>
-              <div className="w-4/12 2xsm:w-3/12 md:w-2/12 xl:w-1/12">
-                <span className="font-medium">Status</span>
+                <span className="font-medium">Last Login</span>
               </div>
               <div className="hidden w-2/12 text-center 2xsm:block md:w-1/12">
                 <span className="font-medium">Actions</span>
@@ -475,7 +472,7 @@ const SettingsPage = () => {
           </div>
 
           <div className="p-4 md:p-6 xl:p-7.5">
-            <div className="flex flex-col gap-7">
+            <div className="flex flex-col gap-10">
               {filteredMembers.map((lead, key) => (
                 <div className="flex items-center gap-3" key={key}>
                   <div className="w-2/12 xl:w-3/12">
@@ -494,23 +491,11 @@ const SettingsPage = () => {
                     </span>
                   </div>
                   <div className="hidden w-4/12 xl:block">
-                    <span className="font-medium">{lead.authentication}</span>
-                  </div>
-                  <div className="w-4/12 2xsm:w-3/12 md:w-2/12 xl:w-1/12">
-                    <span
-                      className={`inline-block rounded  py-0.5 px-2.5 text-sm font-medium ${
-                        lead.status === 'lost'
-                          ? 'bg-red/[0.08] text-red'
-                          : 'text-meta-3 bg-meta-3/[0.08]'
-                      } `}
-                    >
-                      {lead.status === 'lost' ? 'Lost Lead' : 'Active'}
-                    </span>
+                    <span className="font-medium">{lead.lastLogin}</span>
                   </div>
                   <div className="hidden w-2/12 2xsm:block md:w-1/12">
                     <TableActionsPopover></TableActionsPopover>
                     {/*<button className="mx-auto block hover:text-meta-1">*/}
-
                     {/*</button>*/}
                   </div>
                 </div>
