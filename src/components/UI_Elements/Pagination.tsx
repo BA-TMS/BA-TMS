@@ -7,35 +7,43 @@ import {
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 
-// how to function this?
-// take in props
+interface PaginationProps {
+  length: number;
+  postsPerPage: number;
+  handlePagination: (page: number) => void;
+  setPostsPerPage: (event: number) => void;
+  currentPage: number;
+}
 
-export default function TablePagination() {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
+export default function TablePagination({
+  length,
+  postsPerPage,
+  handlePagination,
+  setPostsPerPage,
+  currentPage,
+}: PaginationProps) {
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
   ) => {
-    setPage(newPage);
+    handlePagination(newPage);
   };
 
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+    console.log('change rows', event.target.value);
+    setPostsPerPage(Number(event.target.value));
   };
 
   return (
-    <tfoot className="w-full body2 text-grey-800 dark:text-grey-200">
-      <tr className="w-full flex justify-end">
+    <tr className="w-full body2 text-grey-800 dark:text-grey-200">
+      <td className="w-full flex justify-end">
         <CustomTablePagination
-          rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-          count={13} // total number of rows- get from data
-          rowsPerPage={rowsPerPage}
-          page={page}
+          rowsPerPageOptions={[5, 10, 25]}
+          count={length}
+          rowsPerPage={postsPerPage}
+          page={currentPage}
           slotProps={{
             select: {
               'aria-label': 'rows per page',
@@ -52,8 +60,8 @@ export default function TablePagination() {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
-      </tr>
-    </tfoot>
+      </td>
+    </tr>
   );
 }
 

@@ -6,6 +6,8 @@ import FormModal from '../Modals/FormModal';
 import LoadForm from '../Forms/LoadForm';
 import Table from '../UI_Elements/Table';
 import { getLoads } from '@/lib/dbActions';
+import Button from '@ui/buttons/Button';
+import Searchbar from '@ui/Searchbar';
 
 type Load = {
   id: string;
@@ -97,65 +99,6 @@ export default function Load() {
 
   return (
     <>
-      {/* HEADER & SEARCH BAR */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '20px',
-        }}
-      >
-        <div>
-          <input
-            style={{
-              width: '300px',
-              padding: '8px',
-              borderRadius: '4px',
-              border: '1px solid #ccc',
-              background: 'rgba(0,0,0,0)',
-              fontWeight: 'bold',
-            }}
-            type="search"
-            placeholder="Search..."
-            className="datatable-input"
-            onChange={(e) => {
-              const value = e.target.value;
-              handleSearch(value);
-            }}
-          />
-          <button
-            className={'custom-button effect1'}
-            style={{
-              padding: '8px',
-              borderRadius: '4px',
-              border: '1px solid #ccc',
-              marginLeft: '10px',
-              cursor: 'pointer',
-              fontWeight: 'bold',
-            }}
-          >
-            Search
-          </button>
-          <button
-            className={'custom-button effect1'}
-            style={{
-              padding: '8px',
-              borderRadius: '4px',
-              border: '1px solid #ccc',
-              marginLeft: '10px',
-              cursor: 'pointer',
-              fontWeight: 'bold',
-            }}
-            onClick={() => setFilteredLoads(loads)}
-          >
-            Show All
-          </button>
-        </div>
-      </div>
-      <br />
-      {/* END HEADER & SEARCH BAR */}
-
       {/* ADD LOAD BUTTONS */}
       <div
         style={{
@@ -166,47 +109,17 @@ export default function Load() {
         }}
       >
         {/*<AddButton modalOpen={modalOpen} setModalOpen={setModalOpen} />{' '}*/}
-        <button
-          onClick={handleClick}
-          className={'custom-button effect1'}
-          style={{
-            padding: '8px',
-            borderRadius: '4px',
-            border: '1px solid #ccc',
-            marginLeft: '10px',
-            cursor: 'pointer',
-            fontWeight: 'bold',
-          }}
-        >
-          Add Load
-        </button>
+        <Button onClick={handleClick}>Add Load</Button>
         <FormModal>
           <LoadForm />
         </FormModal>
         {/* Updated line */}
-        <button
-          className={'custom-button effect1'}
-          style={{
-            padding: '10px',
-            borderRadius: '4px',
-            border: '1px solid #ccc',
-            fontWeight: 'bold',
-          }}
-          onClick={() => setModalOpen(true)} // Added line
+        <Button
+        // onClick={() => setModalOpen(true)} // Added line
         >
           Open Loads
-        </button>
-        <button
-          className={'custom-button effect1'}
-          style={{
-            padding: '10px',
-            borderRadius: '4px',
-            border: '1px solid #ccc',
-            fontWeight: 'bold',
-          }}
-        >
-          Delivered/Completed Loads
-        </button>
+        </Button>
+        <Button>Delivered/Completed Loads</Button>
       </div>
       <br />
       {/* END ADD LOAD BUTTONS*/}
@@ -254,6 +167,16 @@ export default function Load() {
         </div>
       </div>
       <br />
+      {/* SEARCH BAR */}
+      <div className="h-26 p-4">
+        <Searchbar
+          placeholder="Search client or invoice number..."
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            const value = e.target.value;
+            handleSearch(value);
+          }}
+        />
+      </div>
       <Table columns={columns} data={filteredLoads}></Table>
     </>
   );
