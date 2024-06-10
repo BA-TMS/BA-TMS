@@ -4,7 +4,7 @@ import { useContext, useState, useEffect } from 'react';
 import { ModalContext } from '@/Context/modalContext';
 import FormModal from '../Modals/FormModal';
 import DriverForm from '../Forms/DriverForm';
-import Table from '../UI_Elements/Table';
+import Table from '../UI_Elements/Table/Table';
 import { getDrivers } from '@/lib/dbActions';
 
 type Driver = {

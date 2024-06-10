@@ -4,7 +4,7 @@ import { useContext, useState, useEffect } from 'react';
 import { ModalContext } from '@/Context/modalContext';
 import FormModal from '../Modals/FormModal';
 import LoadForm from '../Forms/LoadForm';
-import Table from '../UI_Elements/Table';
+import Table from '../UI_Elements/Table/Table';
 import { getLoads } from '@/lib/dbActions';
 import Button from '@ui/buttons/Button';
 import Searchbar from '@ui/Searchbar';

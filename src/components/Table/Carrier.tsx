@@ -4,7 +4,7 @@ import { useContext, useState, useEffect } from 'react';
 import React from 'react';
 import { ModalContext } from '@/Context/modalContext';
 import FormModal from '../Modals/FormModal';
-import Table from '../UI_Elements/Table';
+import Table from '../UI_Elements/Table/Table';
 import { getCarriers } from '@/lib/dbActions';
 import CarrierForm from '../Forms/CarrierForm';
 
