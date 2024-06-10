@@ -37,30 +37,28 @@ export default function TablePagination({
   };
 
   return (
-    <tr className="w-full body2 text-grey-800 dark:text-grey-200">
-      <td className="w-full flex justify-end">
-        <CustomTablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          count={length}
-          rowsPerPage={postsPerPage}
-          page={currentPage}
-          slotProps={{
-            select: {
-              'aria-label': 'rows per page',
+    <tr className="body2 text-grey-800 dark:text-grey-200">
+      <CustomTablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        count={length}
+        rowsPerPage={postsPerPage}
+        page={currentPage}
+        slotProps={{
+          select: {
+            'aria-label': 'rows per page',
+          },
+          actions: {
+            showFirstButton: false,
+            showLastButton: false,
+            slots: {
+              nextPageIcon: ChevronRightRoundedIcon,
+              backPageIcon: ChevronLeftRoundedIcon,
             },
-            actions: {
-              showFirstButton: false,
-              showLastButton: false,
-              slots: {
-                nextPageIcon: ChevronRightRoundedIcon,
-                backPageIcon: ChevronLeftRoundedIcon,
-              },
-            },
-          }}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </td>
+          },
+        }}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </tr>
   );
 }
@@ -132,7 +130,7 @@ const CustomTablePagination = React.forwardRef<
           );
           return {
             ...resolvedSlotProps,
-            className: clsx('flex', resolvedSlotProps?.className),
+            className: clsx('flex justify-end', resolvedSlotProps?.className),
           };
         },
         selectLabel: (ownerState) => {

@@ -59,7 +59,7 @@ const Table = <T extends { [key: string]: unknown }>({
               <th className="text-left p-4 font-public font-semibold text-table-title text-grey-600 dark:text-white"></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="border-b border-grey-300 dark:border-grey-700">
             {currentData.map((row, dataIndex) => (
               <tr key={dataIndex}>
                 {columns.map((column, index) => (
@@ -81,16 +81,17 @@ const Table = <T extends { [key: string]: unknown }>({
               </tr>
             ))}
           </tbody>
+
+          <tfoot className="h-14">
+            <TablePagination
+              length={data.length}
+              postsPerPage={postsPerPage}
+              setPostsPerPage={setPostsPerPage}
+              handlePagination={handlePagination}
+              currentPage={currentPage}
+            />
+          </tfoot>
         </table>
-        <div className="h-14 flex justify-end items-center border-t border-grey-300 dark:border-grey-700">
-          <TablePagination
-            length={data.length}
-            postsPerPage={postsPerPage}
-            setPostsPerPage={setPostsPerPage}
-            handlePagination={handlePagination}
-            currentPage={currentPage}
-          />
-        </div>
       </div>
     </div>
   );
