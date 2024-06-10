@@ -105,6 +105,7 @@ const config: Config = {
         'button-lg': ['15px', '26px'],
         'button-md': ['14px', '24px'],
         'button-sm': ['13px', '22px'],
+        'table-title': ['13px', '24px'],
       },
       screens: {
         '2xsm': '375px',
@@ -116,7 +117,7 @@ const config: Config = {
         4.5: '1.125rem',
         5.5: '1.375rem',
         6.5: '1.625rem',
-        7.5: '1.875rem',
+        7.5: '1.875rem', // 30px
         8.5: '2.125rem',
         9.5: '2.375rem',
         10.5: '2.625rem',
@@ -135,7 +136,7 @@ const config: Config = {
         17.5: '4.375rem',
         18: '4.5rem',
         18.5: '4.625rem',
-        19: '4.75rem',
+        19: '4.75rem', // 76px
         19.5: '4.875rem',
         21: '5.25rem',
         21.5: '5.375rem',
@@ -175,12 +176,12 @@ const config: Config = {
         55: '13.75rem',
         55.5: '13.875rem',
         59: '14.75rem',
-        60: '15rem',
+        60: '15rem', // 240px
         62.5: '15.625rem',
         65: '16.25rem',
         67: '16.75rem',
         67.5: '16.875rem',
-        70: '17.5rem',
+        70: '17.5rem', // 280px
         72.5: '18.125rem',
         73: '18.25rem',
         75: '18.75rem',
