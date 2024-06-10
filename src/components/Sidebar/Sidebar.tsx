@@ -209,7 +209,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       {/* update with user info */}
       <section className="px-4 py-4 mt-auto flex flex-col items-center justify-center">
         <h4 className="mb-3 mt-3 subtitle1 text-grey-600 dark:text-grey-300">
-          Hi, Jasper
+          {`Hi, ${sessionStorage.getItem('name')}`}
         </h4>
         <p className="mb-3 text-center body2 text-grey-600 dark:text-grey-300">
           Need Help? <br /> Please contact us.
