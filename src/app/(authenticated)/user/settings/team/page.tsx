@@ -114,8 +114,12 @@ const SettingsPage = () => {
 
   const [filteredMembers, setFilteredMembers] = useState<Members>(teamMembers);
   const [filteredRoleGroups, setFilteredRoleGroups] = useState(roleGroups);
+  const [currentPage, setCurrentPage] = useState(1); // Initialize currentPage with a default value, e.g., 1
   const [isOpen, setIsOpen] = useState(false);
   const [filterText, setFilterText] = useState('');
+
+  const membersPerPage = 5; // Adjust this number based on your design
+  const totalPages = Math.ceil(filteredMembers.length / membersPerPage);
 
   const nameEmailTemplate = (rowData: Member) => (
     <>
@@ -473,38 +477,77 @@ const SettingsPage = () => {
 
           <div className="p-4 md:p-6 xl:p-7.5">
             <div className="flex flex-col gap-10">
-              {filteredMembers.map((lead, key) => (
-                <div className="flex items-center gap-3" key={key}>
-                  <div className="w-2/12 xl:w-3/12">
-                    <div className="flex items-center gap-4">
-                      <span className="hidden font-medium xl:block">
-                        {lead.name}
+              {filteredMembers
+                .slice(
+                  (currentPage - 1) * membersPerPage,
+                  currentPage * membersPerPage
+                )
+                .map((lead, key) => (
+                  <div className="flex items-center gap-3" key={key}>
+                    <div className="w-2/12 xl:w-3/12">
+                      <div className="flex items-center gap-4">
+                        <span className="hidden font-medium xl:block">
+                          {lead.name}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="w-6/12 2xsm:w-5/12 md:w-3/12">
+                      <span className="font-medium">{lead.email}</span>
+                    </div>
+                    <div className="hidden w-4/12 md:block xl:w-3/12">
+                      <span className="inline-block rounded  py-0.5 px-2.5 text-sm font-medium text-meta-3 bg-meta-3/[0.08]">
+                        {lead.role}
                       </span>
                     </div>
+                    <div className="hidden w-4/12 xl:block">
+                      <span className="font-medium">{lead.lastLogin}</span>
+                    </div>
+                    <div className="hidden w-2/12 2xsm:block md:w-1/12">
+                      <TableActionsPopover></TableActionsPopover>
+                      {/*<button className="mx-auto block hover:text-meta-1">*/}
+                      {/*</button>*/}
+                    </div>
                   </div>
-                  <div className="w-6/12 2xsm:w-5/12 md:w-3/12">
-                    <span className="font-medium">{lead.email}</span>
-                  </div>
-                  <div className="hidden w-4/12 md:block xl:w-3/12">
-                    <span className="inline-block rounded  py-0.5 px-2.5 text-sm font-medium text-meta-3 bg-meta-3/[0.08]">
-                      {lead.role}
-                    </span>
-                  </div>
-                  <div className="hidden w-4/12 xl:block">
-                    <span className="font-medium">{lead.lastLogin}</span>
-                  </div>
-                  <div className="hidden w-2/12 2xsm:block md:w-1/12">
-                    <TableActionsPopover></TableActionsPopover>
-                    {/*<button className="mx-auto block hover:text-meta-1">*/}
-                    {/*</button>*/}
-                  </div>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
         </div>
       </div>
       {/* End Data Table Block */}
+
+      {/* Paginator Block of code */}
+      <div className="flex justify-between items-center mt-8">
+        <div className="flex gap-1">
+          <button
+            className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-black rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage(currentPage - 1)}
+          >
+            Previous
+          </button>
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index + 1}
+              className={`px-4 py-2 text-sm font-medium rounded-md ${
+                currentPage === index + 1
+                  ? 'bg-blue-500 dark:bg-blue-700 text-white bg-primary dark:bg-black'
+                  : 'text-gray-700 dark:text-gray-200 bg-white dark:bg-black border border-black'
+              } hover:bg-blue-50 dark:hover:bg-blue-600`}
+              onClick={() => setCurrentPage(index + 1)}
+            >
+              {index + 1}
+            </button>
+          ))}
+          <button
+            className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-black rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage(currentPage + 1)}
+          >
+            Next
+          </button>
+        </div>
+      </div>
+      {/* End Paginator Block */}
     </>
   );
 };
