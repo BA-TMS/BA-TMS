@@ -384,8 +384,8 @@ const SettingsPage = () => {
                             </span>
                           </td>
                         </tr>
-                        {groupRoles.map((role) => (
-                          <tr className="role">
+                        {groupRoles.map((role, index) => (
+                          <tr key={role + index} className="role">
                             <td>
                               <input
                                 required
@@ -444,7 +444,7 @@ const SettingsPage = () => {
 
       {/* Data Table Block */}
       <div className="col-span-12">
-        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+        <div className="rounded-t-lg border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="p-4 md:p-6 xl:p-7.5">
             <div className="flex items-start justify-between">
               <div>
@@ -516,7 +516,7 @@ const SettingsPage = () => {
       {/* End Data Table Block */}
 
       {/* Paginator Block of code */}
-      <div className="flex justify-between items-center mt-8">
+      <div className="flex justify-end items-center rounded-b-lg border-8 border-white dark:border-boxdark bg-white dark:bg-boxdark shadow-default">
         <div className="flex gap-1">
           <button
             className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-black rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
