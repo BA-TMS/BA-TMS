@@ -1,8 +1,7 @@
+'use client';
+import { useState } from 'react';
 import TableActionsPopover from '@ui/Popovers/TableActions';
-
-// pass this table an array of objects containing keys field and headerName
-// field is what the property is on the data object from the database
-// headerName is what we want the table column name to be
+import TablePagination from './Pagination';
 
 interface TableColumn {
   field: string;
@@ -14,38 +13,40 @@ interface TableProps<T> {
   data: T[];
 }
 
-const Table = <T extends { [key: string]: any }>({
+const Table = <T extends { [key: string]: unknown }>({
   columns,
   data,
 }: TableProps<T>) => {
-  // check if data type is Date object
-  function isDate(value: unknown): boolean {
+  const [currentPage, setCurrentPage] = useState(0);
+  const [postsPerPage, setPostsPerPage] = useState(5);
+
+  const indexOfLastPost = (currentPage + 1) * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentData = data.slice(indexOfFirstPost, indexOfLastPost);
+
+  const handlePagination = (pageNumber: number) => setCurrentPage(pageNumber);
+
+  function isDate(value: unknown): value is Date {
     return value instanceof Date;
   }
-  // format date
+
   function formatDate(date: Date): string {
     return new Intl.DateTimeFormat('en-US').format(date);
   }
 
-  // helper function for checking boolean values
   function displayBooleanValue(value: unknown) {
     if (typeof value === 'boolean') {
-      // 'yes' for true, and nothing for false
       return value ? 'Yes' : '';
     } else {
-      // if not a boolean will return just the value
       return value as React.ReactNode;
     }
   }
 
   return (
-    <div className="rounded-2xl border border-grey-300 dark:border-grey-700 bg-white dark:bg-grey-900">
-      <div className="h-26 p-4">
-        <p>Searchbar Placeholder</p>
-      </div>
+    <div className="rounded-b-2xl border border-grey-300 dark:border-grey-700 bg-white dark:bg-grey-900">
       <div className="max-w-full overflow-x-auto overflow-y-scroll">
         <table className="w-full table-auto">
-          <thead className=" bg-grey-200 dark:bg-grey-700">
+          <thead className="bg-grey-200 dark:bg-grey-700">
             <tr>
               {columns.map((column, index) => (
                 <th
@@ -58,30 +59,38 @@ const Table = <T extends { [key: string]: any }>({
               <th className="text-left p-4 font-public font-semibold text-table-title text-grey-600 dark:text-white"></th>
             </tr>
           </thead>
-          <tbody>
-            {data.map((data, dataIndex) => (
+          <tbody className="border-b border-grey-300 dark:border-grey-700">
+            {currentData.map((row, dataIndex) => (
               <tr key={dataIndex}>
                 {columns.map((column, index) => (
                   <td key={index} className="p-4">
                     <p
                       className={`${
-                        index === 0 ? 'subtitle2' : 'body2' // only the first column is bold
+                        index === 0 ? 'subtitle2' : 'body2'
                       } text-grey-800 dark:text-white`}
                     >
-                      {/* check if the value is a date */}
-                      {isDate(data[column.field])
-                        ? formatDate(data[column.field])
-                        : displayBooleanValue(data[column.field])}
+                      {isDate(row[column.field])
+                        ? formatDate(row[column.field] as Date)
+                        : displayBooleanValue(row[column.field])}
                     </p>
                   </td>
                 ))}
                 <td>
-                  {/* Table Actions Popover is not functional yet */}
-                  <TableActionsPopover id={data.id}></TableActionsPopover>
+                  <TableActionsPopover id={row['id'] as string} />
                 </td>
               </tr>
             ))}
           </tbody>
+
+          <tfoot className="h-14">
+            <TablePagination
+              length={data.length}
+              postsPerPage={postsPerPage}
+              setPostsPerPage={setPostsPerPage}
+              handlePagination={handlePagination}
+              currentPage={currentPage}
+            />
+          </tfoot>
         </table>
       </div>
     </div>

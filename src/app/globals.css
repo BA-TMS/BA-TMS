@@ -49,6 +49,10 @@
   @apply font-public font-bold text-text-xsm no-underline uppercase;
 }
 
+.pagetitle {
+  @apply font-public font-semibold text-text-xl text-black dark:text-white;
+}
+
 .box {
   float: left;
   height: 20px;
@@ -88,15 +92,6 @@
 
 .hotpink {
   background-color: hotpink;
-}
-
-.effect1 {
-  transition: transform 0.3s, background-color 0.3s, color 0.3s;
-}
-.effect1:hover {
-  transform: scale(1.1);
-  background-color: #4caf50;
-  color: white;
 }
 
 .custom-input-date::-webkit-calendar-picker-indicator {
