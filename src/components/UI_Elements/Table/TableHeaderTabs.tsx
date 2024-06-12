@@ -4,30 +4,21 @@ import { Tabs } from '@mui/base/Tabs';
 import { TabsList as BaseTabsList, TabsListProps } from '@mui/base/TabsList';
 import { TabPanel as BaseTabPanel, TabPanelProps } from '@mui/base/TabPanel';
 import { Tab as BaseTab, TabProps } from '@mui/base/Tab';
-import { useTheme } from '@mui/system';
 
-function useIsDarkMode() {
-  const theme = useTheme();
-  return theme.palette.mode === 'dark';
-}
+// props will need to be tab names + number
 
 export default function CustomTabs() {
-  // Replace this with your app logic for determining dark mode
-  const isDarkMode = useIsDarkMode();
-
   return (
-    <div className={isDarkMode ? 'dark' : ''}>
-      <Tabs defaultValue={0}>
-        <TabsList>
-          <Tab value={0}>My account</Tab>
-          <Tab value={1}>Profile</Tab>
-          <Tab value={2}>Language</Tab>
-        </TabsList>
-        <TabPanel value={0}>My account page</TabPanel>
+    <Tabs defaultValue={0}>
+      <TabsList>
+        <Tab value={0}>All</Tab>
+        <Tab value={1}>On Route</Tab>
+        <Tab value={2}>Open</Tab>
+      </TabsList>
+      {/* <TabPanel value={0}>My account page</TabPanel>
         <TabPanel value={1}>Profile page</TabPanel>
-        <TabPanel value={2}>Language page</TabPanel>
-      </Tabs>
-    </div>
+        <TabPanel value={2}>Language page</TabPanel> */}
+    </Tabs>
   );
 }
 
@@ -50,7 +41,7 @@ const TabsList = React.forwardRef<HTMLDivElement, TabsListProps>(
       <BaseTabsList
         ref={ref}
         className={clsx(
-          'mb-4 rounded-xl bg-purple-500 flex font-sans items-center justify-center content-between min-w-tabs-list shadow-lg',
+          'subtitle2 px-6 h-14 rounded-t-2xl border-x border-t border-grey-300 dark:border-grey-700 bg-grey-200 dark:bg-grey-700 flex items-center justify-start content-between gap-10',
           className
         )}
         {...other}
@@ -76,15 +67,17 @@ const Tab = React.forwardRef<HTMLButtonElement, TabProps>((props, ref) => {
           return {
             ...resolvedSlotProps,
             className: clsx(
-              `font-sans ${
+              `subtitle2 ${
+                // font family
                 ownerState.selected
-                  ? 'text-purple-500 bg-white'
-                  : 'text-white bg-transparent focus:text-white hover:bg-purple-400'
+                  ? 'text-grey-800 bg-transparent border-b border-b-grey-800 border-b-2'
+                  : 'text-grey-600 bg-transparent hover:border-b hover:border-b-grey-800 hover:border-b-2'
               } ${
                 ownerState.disabled
                   ? 'cursor-not-allowed opacity-50'
                   : 'cursor-pointer'
-              } text-sm leading-[1.3] font-semibold w-full py-2.5 px-3 m-1.5 border-0 rounded-md flex justify-center focus:outline-0 focus:shadow-outline-purple-light`,
+              } w-auto py-2.5 flex border-b border-transparent border-b-2 justify-center`,
+              // this is where the width of the actual tabs changes
               resolvedSlotProps?.className
             ),
           };
@@ -103,7 +96,7 @@ const TabPanel = React.forwardRef<HTMLDivElement, TabPanelProps>(
       <BaseTabPanel
         ref={ref}
         className={clsx(
-          'py-5 px-3 bg-white dark:bg-slate-900 border border-solid border-slate-200 dark:border-slate-700 rounded-xl opacity-60 w-full font-sans text-sm',
+          // 'py-5 px-3 bg-primary dark:bg-slate-900 border border-solid border-slate-200 dark:border-slate-700 rounded-xl opacity-60 w-full font-sans text-sm',
           className
         )}
         {...other}
