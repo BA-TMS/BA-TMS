@@ -247,10 +247,10 @@ const SettingsPage = () => {
       </div>
 
       {/* Filter */}
-      <div className="rounded-t-lg border-8 border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+      <div className="rounded-t-lg border border-stroke bg-white dark:border-strokedark dark:bg-black p-6">
         <input
           style={{
-            width: '300px',
+            width: '1000px',
             display: 'inline',
             padding: '8px',
             borderRadius: '4px',
