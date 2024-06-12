@@ -5,13 +5,20 @@ import { TabsList as BaseTabsList, TabsListProps } from '@mui/base/TabsList';
 import { TabPanel as BaseTabPanel, TabPanelProps } from '@mui/base/TabPanel';
 import { Tab as BaseTab, TabProps } from '@mui/base/Tab';
 
-// props will need to be tab names + number
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
+//
 
 export default function CustomTabs() {
   return (
-    <Tabs defaultValue={0}>
+    <Tabs
+      defaultValue={0}
+      aria-label="tabs" // find a better label
+      onClick={() => console.log('tab click')} // this will need to switch between tabs/ sort data
+    >
       <TabsList>
-        <Tab value={0}>All</Tab>
+        <Tab value={0}>
+          <MailOutlineIcon sx={{ marginRight: '24px' }} /> All
+        </Tab>
         <Tab value={1}>On Route</Tab>
         <Tab value={2}>Open</Tab>
       </TabsList>
@@ -68,7 +75,6 @@ const Tab = React.forwardRef<HTMLButtonElement, TabProps>((props, ref) => {
             ...resolvedSlotProps,
             className: clsx(
               `subtitle2 ${
-                // font family
                 ownerState.selected
                   ? 'text-grey-800 bg-transparent border-b border-b-grey-800 border-b-2'
                   : 'text-grey-600 bg-transparent hover:border-b hover:border-b-grey-800 hover:border-b-2'
@@ -77,7 +83,6 @@ const Tab = React.forwardRef<HTMLButtonElement, TabProps>((props, ref) => {
                   ? 'cursor-not-allowed opacity-50'
                   : 'cursor-pointer'
               } w-auto py-2.5 flex border-b border-transparent border-b-2 justify-center`,
-              // this is where the width of the actual tabs changes
               resolvedSlotProps?.className
             ),
           };
@@ -95,10 +100,7 @@ const TabPanel = React.forwardRef<HTMLDivElement, TabPanelProps>(
     return (
       <BaseTabPanel
         ref={ref}
-        className={clsx(
-          // 'py-5 px-3 bg-primary dark:bg-slate-900 border border-solid border-slate-200 dark:border-slate-700 rounded-xl opacity-60 w-full font-sans text-sm',
-          className
-        )}
+        className={clsx('px-6 h-14', className)}
         {...other}
       />
     );
