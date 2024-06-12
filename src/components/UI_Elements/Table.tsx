@@ -6,6 +6,7 @@ import TablePagination from './Pagination';
 interface TableColumn {
   field: string;
   headerName: string;
+  cellRenderer?: (value: any, row: any) => React.ReactNode;
 }
 
 interface TableProps<T> {
@@ -64,15 +65,19 @@ const Table = <T extends { [key: string]: unknown }>({
               <tr key={dataIndex}>
                 {columns.map((column, index) => (
                   <td key={index} className="p-4">
-                    <p
-                      className={`${
-                        index === 0 ? 'subtitle2' : 'body2'
-                      } text-grey-800 dark:text-white`}
-                    >
-                      {isDate(row[column.field])
-                        ? formatDate(row[column.field] as Date)
-                        : displayBooleanValue(row[column.field])}
-                    </p>
+                    {column.cellRenderer ? (
+                      column.cellRenderer(row[column.field], row)
+                    ) : (
+                      <p
+                        className={`${
+                          index === 0 ? 'subtitle2' : 'body2'
+                        } text-grey-800 dark:text-white`}
+                      >
+                        {isDate(row[column.field])
+                          ? formatDate(row[column.field] as Date)
+                          : displayBooleanValue(row[column.field])}
+                      </p>
+                    )}
                   </td>
                 ))}
                 <td>

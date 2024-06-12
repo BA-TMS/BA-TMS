@@ -10,6 +10,8 @@ import { useRef } from 'react';
 import ToggleButton from '@/components/Controls/ToggleButton';
 import Popup from 'reactjs-popup';
 import TableActionsPopover from '@/components/UI_Elements/Popovers/TableActions';
+import TablePagination from '@/components/UI_Elements/Pagination';
+import Table from '@/components/UI_Elements/Table';
 
 type Member = {
   avatar: string;
@@ -29,6 +31,21 @@ const secondaryNavigation = [
 ];
 
 type Members = Member[];
+
+const columns = [
+  { field: 'name', headerName: 'Member' },
+  { field: 'email', headerName: 'Email Address' },
+  {
+    field: 'role',
+    headerName: 'Roles',
+    cellRenderer: (role, row) => (
+      <span className="inline-block rounded py-0.5 px-2.5 text-sm font-medium text-meta-3 bg-meta-3/[0.08]">
+        {role}
+      </span>
+    ),
+  },
+  { field: 'lastLogin', headerName: 'Last Login' },
+];
 
 const placeholderMembers = [
   {
@@ -229,18 +246,8 @@ const SettingsPage = () => {
         </div>
       </div>
 
-      <h1 style={{ fontSize: '32px', fontWeight: 'bold' }}>Team</h1>
-      <br />
-
-      {/* Rounded Toggle */}
-      <ToggleButton
-        labelText="Require two-step authentication for your team"
-        descriptionText="This will require any team member without two-step authentication to enable it the next time they sign in."
-      />
-      <br />
-
       {/* Filter */}
-      <div>
+      <div className="rounded-t-lg border-8 border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <input
           style={{
             width: '300px',
@@ -325,7 +332,7 @@ const SettingsPage = () => {
                   type="text"
                   label="Enter team member email addresses"
                   id="email"
-                  placeholder="jacob@a2zport.com, joshua@a2zport.com, etc."
+                  placeholder="josh@a2zport.com"
                 />
               </div>
 
@@ -443,111 +450,15 @@ const SettingsPage = () => {
       {/* End New Member Block */}
 
       {/* Data Table Block */}
-      <div className="col-span-12">
-        <div className="rounded-t-lg border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-          <div className="p-4 md:p-6 xl:p-7.5">
-            <div className="flex items-start justify-between">
-              <div>
-                <h2 className="text-title-sm2 font-bold text-black dark:text-white">
-                  Leads Report
-                </h2>
-              </div>
-            </div>
-          </div>
-
-          <div className="border-b border-stroke px-4 pb-5 dark:border-strokedark md:px-6 xl:px-7.5">
-            <div className="flex items-center gap-3">
-              <div className="w-2/12 xl:w-3/12">
-                <span className="font-medium">Member</span>
-              </div>
-              <div className="w-6/12 2xsm:w-5/12 md:w-3/12">
-                <span className="font-medium">Email Address</span>
-              </div>
-              <div className="hidden w-4/12 md:block xl:w-3/12">
-                <span className="font-medium">Roles</span>
-              </div>
-              <div className="hidden w-4/12 xl:block">
-                <span className="font-medium">Last Login</span>
-              </div>
-              <div className="hidden w-2/12 text-center 2xsm:block md:w-1/12">
-                <span className="font-medium">Actions</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="p-4 md:p-6 xl:p-7.5">
-            <div className="flex flex-col gap-10">
-              {filteredMembers
-                .slice(
-                  (currentPage - 1) * membersPerPage,
-                  currentPage * membersPerPage
-                )
-                .map((lead, key) => (
-                  <div className="flex items-center gap-3" key={key}>
-                    <div className="w-2/12 xl:w-3/12">
-                      <div className="flex items-center gap-4">
-                        <span className="hidden font-medium xl:block">
-                          {lead.name}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="w-6/12 2xsm:w-5/12 md:w-3/12">
-                      <span className="font-medium">{lead.email}</span>
-                    </div>
-                    <div className="hidden w-4/12 md:block xl:w-3/12">
-                      <span className="inline-block rounded  py-0.5 px-2.5 text-sm font-medium text-meta-3 bg-meta-3/[0.08]">
-                        {lead.role}
-                      </span>
-                    </div>
-                    <div className="hidden w-4/12 xl:block">
-                      <span className="font-medium">{lead.lastLogin}</span>
-                    </div>
-                    <div className="hidden w-2/12 2xsm:block md:w-1/12">
-                      <TableActionsPopover></TableActionsPopover>
-                      {/*<button className="mx-auto block hover:text-meta-1">*/}
-                      {/*</button>*/}
-                    </div>
-                  </div>
-                ))}
-            </div>
-          </div>
-        </div>
-      </div>
+      <Table
+        columns={columns.map((member) => ({
+          field: member.field, // Assuming 'field' is a unique identifier for columns
+          headerName: member.headerName,
+          cellRenderer: member.cellRenderer,
+        }))}
+        data={filteredMembers}
+      />
       {/* End Data Table Block */}
-
-      {/* Paginator Block of code */}
-      <div className="flex justify-end items-center rounded-b-lg border-8 border-white dark:border-boxdark bg-white dark:bg-boxdark shadow-default">
-        <div className="flex gap-1">
-          <button
-            className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-black rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage(currentPage - 1)}
-          >
-            Previous
-          </button>
-          {Array.from({ length: totalPages }, (_, index) => (
-            <button
-              key={index + 1}
-              className={`px-4 py-2 text-sm font-medium rounded-md ${
-                currentPage === index + 1
-                  ? 'bg-blue-500 dark:bg-blue-700 text-white bg-primary dark:bg-black'
-                  : 'text-gray-700 dark:text-gray-200 bg-white dark:bg-black border border-black'
-              } hover:bg-blue-50 dark:hover:bg-blue-600`}
-              onClick={() => setCurrentPage(index + 1)}
-            >
-              {index + 1}
-            </button>
-          ))}
-          <button
-            className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-black rounded-md border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
-            disabled={currentPage === totalPages}
-            onClick={() => setCurrentPage(currentPage + 1)}
-          >
-            Next
-          </button>
-        </div>
-      </div>
-      {/* End Paginator Block */}
     </>
   );
 };
