@@ -12,6 +12,7 @@ import Popup from 'reactjs-popup';
 import TableActionsPopover from '@/components/UI_Elements/Popovers/TableActions';
 import TablePagination from '@/components/UI_Elements/Pagination';
 import Table from '@/components/UI_Elements/Table';
+import Searchbar from '@/components/UI_Elements/Searchbar';
 
 type Member = {
   avatar: string;
@@ -247,21 +248,11 @@ const SettingsPage = () => {
       </div>
 
       {/* Filter */}
-      <div className="rounded-t-lg border border-stroke bg-white dark:border-strokedark dark:bg-black p-6">
-        <input
-          style={{
-            width: '1000px',
-            display: 'inline',
-            padding: '8px',
-            borderRadius: '4px',
-            border: '1px solid #ccc',
-          }}
-          type="text"
-          placeholder="Filter by name or email..."
-          className="text-input"
-          onChange={(e) => {
+      <div className="rounded-t-lg space-between border border-stroke bg-white dark:border-strokedark dark:bg-black p-6">
+        <Searchbar
+          placeholder="Search by name or email..."
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             const value = e.target.value;
-            setFilterText(value);
             updateFilteredMembers(value);
           }}
         />
@@ -279,7 +270,7 @@ const SettingsPage = () => {
                 borderRadius: '4px',
                 border: 'none',
                 cursor: 'pointer',
-                float: 'right',
+                //float: 'right',
               }}
             >
               + New Member
