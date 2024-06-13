@@ -25,7 +25,7 @@ const labelStyles = cva(
   }
 );
 
-export const TabLabel = ({ color, children, ...props }: TabProps) => {
+const TabLabel = ({ color, children, ...props }: TabProps) => {
   return (
     <span
       className={labelStyles({
@@ -37,3 +37,5 @@ export const TabLabel = ({ color, children, ...props }: TabProps) => {
     </span>
   );
 };
+
+export default TabLabel;

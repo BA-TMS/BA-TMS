@@ -4,11 +4,28 @@ import { Tabs } from '@mui/base/Tabs';
 import { TabsList as BaseTabsList, TabsListProps } from '@mui/base/TabsList';
 import { TabPanel as BaseTabPanel, TabPanelProps } from '@mui/base/TabPanel';
 import { Tab as BaseTab, TabProps } from '@mui/base/Tab';
+import TabLabel from './TabLabel';
 
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
-//
+// pass an array of objects to generate Tab Labels
 
-export default function CustomTabs() {
+export interface TabData {
+  color:
+    | 'primary'
+    | 'secondary'
+    | 'info'
+    | 'success'
+    | 'warning'
+    | 'error'
+    | 'default';
+  content: number;
+  text: string;
+}
+
+interface CustomTabsProps {
+  tabs: TabData[];
+}
+
+export function CustomTabs({ tabs }: CustomTabsProps) {
   return (
     <Tabs
       defaultValue={0}
@@ -16,11 +33,12 @@ export default function CustomTabs() {
       onClick={() => console.log('tab click')} // this will need to switch between tabs/ sort data
     >
       <TabsList>
-        <Tab value={0}>
-          <MailOutlineIcon sx={{ marginRight: '24px' }} /> All
-        </Tab>
-        <Tab value={1}>On Route</Tab>
-        <Tab value={2}>Open</Tab>
+        {tabs.map((label, index) => (
+          <Tab key={index} value={index}>
+            <TabLabel color={label.color}>{label.content}</TabLabel>
+            {label.text}
+          </Tab>
+        ))}
       </TabsList>
       {/* <TabPanel value={0}>My account page</TabPanel>
         <TabPanel value={1}>Profile page</TabPanel>
@@ -76,8 +94,8 @@ const Tab = React.forwardRef<HTMLButtonElement, TabProps>((props, ref) => {
             className: clsx(
               `subtitle2 ${
                 ownerState.selected
-                  ? 'text-grey-800 bg-transparent border-b border-b-grey-800 border-b-2'
-                  : 'text-grey-600 bg-transparent hover:border-b hover:border-b-grey-800 hover:border-b-2'
+                  ? 'text-grey-800 bg-transparent border-b border-b-primary border-b-2'
+                  : 'text-grey-600 bg-transparent '
               } ${
                 ownerState.disabled
                   ? 'cursor-not-allowed opacity-50'
@@ -98,11 +116,7 @@ const TabPanel = React.forwardRef<HTMLDivElement, TabPanelProps>(
   (props, ref) => {
     const { className, ...other } = props;
     return (
-      <BaseTabPanel
-        ref={ref}
-        className={clsx('px-6 h-14', className)}
-        {...other}
-      />
+      <BaseTabPanel ref={ref} className={clsx('px-6', className)} {...other} />
     );
   }
 );
