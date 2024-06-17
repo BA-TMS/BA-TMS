@@ -8,6 +8,7 @@ import Table from '../UI_Elements/Table/Table';
 import { getLoads } from '@/lib/dbActions';
 import Button from '@ui/buttons/Button';
 import Searchbar from '@ui/Searchbar';
+import { CustomTabs, TabData } from '../UI_Elements/Table/TableHeaderTabs';
 
 type Load = {
   id: string;
@@ -39,6 +40,18 @@ const columns = [
   { field: 'shipper', headerName: 'Shipper' },
   { field: 'consignee', headerName: 'Consignee' },
   { field: 'status', headerName: 'Status' },
+];
+
+// need a function/ sort to determine content
+const tabsData: TabData[] = [
+  { color: 'default', content: 24, text: 'All' },
+  { color: 'info', content: 12 + 12, text: 'On Route' },
+  { color: 'primary', content: 5, text: 'Open' },
+  { color: 'primary', content: 5, text: 'Refused' },
+  { color: 'primary', content: 5, text: 'Covered' },
+  { color: 'primary', content: 5, text: 'Pending' },
+  { color: 'primary', content: 5, text: 'Dispatched' },
+  { color: 'default', content: 5, text: '(Un)Loading' },
 ];
 
 export default function Load() {
@@ -99,76 +112,16 @@ export default function Load() {
 
   return (
     <>
-      {/* ADD LOAD BUTTONS */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          gap: '15px',
-          marginBottom: '20px',
-        }}
-      >
-        {/*<AddButton modalOpen={modalOpen} setModalOpen={setModalOpen} />{' '}*/}
+      <div className="flex justify-end">
         <Button onClick={handleClick}>Add Load</Button>
         <FormModal>
           <LoadForm />
         </FormModal>
-        {/* Updated line */}
-        <Button
-        // onClick={() => setModalOpen(true)} // Added line
-        >
-          Open Loads
-        </Button>
-        <Button>Delivered/Completed Loads</Button>
       </div>
-      <br />
-      {/* END ADD LOAD BUTTONS*/}
 
-      {/* STATUS COLORS */}
-      <div style={{ display: 'flex', position: 'absolute' }}>
-        <div>
-          <div className="box yellow"></div>
-          Pending
-        </div>
-
-        <div style={{ paddingLeft: '20px' }}>
-          <div className="box red"></div>
-          Open
-        </div>
-
-        <div style={{ paddingLeft: '20px' }}>
-          <div className="box purple"></div>
-          Refused
-        </div>
-
-        <div style={{ paddingLeft: '20px' }}>
-          <div className="box blue"></div>
-          Covered
-        </div>
-
-        <div style={{ paddingLeft: '20px' }}>
-          <div className="box wine"></div>
-          Dispatched
-        </div>
-
-        <div style={{ paddingLeft: '20px' }}>
-          <div className="box green"></div>
-          On Route
-        </div>
-
-        <div style={{ paddingLeft: '20px' }}>
-          <div className="box gray"></div>
-          (Un)Loading
-        </div>
-
-        <div style={{ paddingLeft: '20px' }}>
-          <div className="box hotpink"></div>
-          In Yard
-        </div>
-      </div>
-      <br />
       {/* SEARCH BAR */}
-      <div className="h-26 p-4">
+      <CustomTabs tabs={tabsData} />
+      <div className="h-26 p-4 bg-white dark:bg-grey-900 border-x border-grey-300 dark:border-grey-700">
         <Searchbar
           placeholder="Search client or invoice number..."
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
