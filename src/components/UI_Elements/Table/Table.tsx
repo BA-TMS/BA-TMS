@@ -43,7 +43,7 @@ const Table = <T extends { [key: string]: unknown }>({
   }
 
   return (
-    <div className="rounded-b-2xl border border-grey-300 dark:border-grey-700 bg-white dark:bg-grey-900">
+    <div className="rounded-b-2xl border-b border-l border-r border-grey-300 dark:border-grey-700 bg-white dark:bg-grey-900">
       <div className="max-w-full overflow-x-auto overflow-y-scroll">
         <table className="w-full table-auto">
           <thead className="bg-grey-200 dark:bg-grey-700">
