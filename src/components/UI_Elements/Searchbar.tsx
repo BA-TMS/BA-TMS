@@ -7,7 +7,7 @@ interface SearchbarProps {
 
 export default function Searchbar({ placeholder, onChange }: SearchbarProps) {
   return (
-    <form className="max-w-md mx-auto">
+    <form className="w-auto">
       <label
         htmlFor="default-search"
         className="mb-2 body1 text-gray-900 sr-only dark:text-white"
@@ -21,7 +21,7 @@ export default function Searchbar({ placeholder, onChange }: SearchbarProps) {
         <input
           type="search"
           id="default-search"
-          className="block w-full p-4 ps-10 body1 text-grey-900 placeholder-grey-500 border border-grey-300 rounded-lg focus:ring-primary focus:border-primary dark:bg-grey-800 dark:border-grey-700  dark:text-white dark:focus:ring-primary dark:focus:border-primary"
+          className="block w-full p-4 ps-10 body1 text-grey-900 placeholder-grey-500 border border-grey-300 rounded-lg  dark:bg-grey-800 dark:border-grey-700 dark:text-white focus:outline-none" // however, we should have focus visual indicators
           placeholder={placeholder}
           onChange={onChange}
           //   required
