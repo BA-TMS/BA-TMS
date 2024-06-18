@@ -6,8 +6,8 @@ import User01 from '@/assets/User01.jpg';
 // user name
 // role
 const user = {
-  name: 'Jasper',
-  role: 'Admin',
+  name: sessionStorage.getItem('name'),
+  role: sessionStorage.getItem('role'),
 };
 
 const UserContentBlock = () => {
