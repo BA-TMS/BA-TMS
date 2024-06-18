@@ -63,23 +63,13 @@ export const MemberForm = () => {
           <div className="p-6.5">
             <TextInput control={control} name="Full Name" required={true} />
 
-            <div className=" flex flex-col gap-6 xl:flex-row">
-              <div className="w-full xl:w-1/2">
-                <TextInput
-                  control={control}
-                  name="Email Address"
-                  required={true}
-                />
-              </div>
+            <TextInput control={control} name="Email Address" required={true} />
 
-              <div className="w-full xl:w-1/2">
-                <TextInput
-                  control={control}
-                  name="Pay Order Number"
-                  required={true}
-                />
-              </div>
-            </div>
+            <TextInput control={control} name="Role" required={true} />
+
+            <TextInput control={control} name="Country" required={true} />
+
+            <TextInput control={control} name="Phone Number" required={true} />
 
             <TextInput control={control} name="Notes" isTextArea={true} />
             {errors.root && (

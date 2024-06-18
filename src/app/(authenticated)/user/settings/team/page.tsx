@@ -170,7 +170,7 @@ export default function SettingsPage() {
       </div>
 
       {/* Filter */}
-      <div className="rounded-t-lg space-between border border-stroke bg-white dark:border-strokedark dark:bg-black p-6">
+      <div className="rounded-t-lg flex flex-end space-between border border-stroke bg-white dark:border-strokedark dark:bg-black p-6">
         <Searchbar
           placeholder="Search by name or email..."
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
