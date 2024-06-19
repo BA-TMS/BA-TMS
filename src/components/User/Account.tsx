@@ -88,9 +88,11 @@ export default function Account() {
 
   useEffect(() => {
     const savedFormData = localStorage.getItem('formData');
+    console.log('Loaded from storage:', savedFormData);
     if (savedFormData) {
-      console.log('Loading form data from local storage');
-      setFormData(JSON.parse(savedFormData));
+      const parsedData = JSON.parse(savedFormData);
+      //console.log('Loading form data from local storage');
+      setFormData(parsedData);
     }
   }, []);
 
@@ -309,7 +311,7 @@ export default function Account() {
                           name="fullName"
                           id="fullName"
                           placeholder="Devid Jhon"
-                          defaultValue="Devid Jhon"
+                          value={formData.fullName}
                           onChange={(e) =>
                             handleInputChange('fullName', e.target.value)
                           }
@@ -334,7 +336,7 @@ export default function Account() {
                           name="emailAddress"
                           id="emailAddress"
                           placeholder="devidjond45@gmail.com"
-                          defaultValue="devidjond45@gmail.com"
+                          value={formData.emailAddress}
                           onChange={(e) =>
                             handleInputChange('emailAddress', e.target.value)
                           }
@@ -362,7 +364,7 @@ export default function Account() {
                           name="phoneNumber"
                           id="phoneNumber"
                           placeholder="+990 3343 7865"
-                          defaultValue="+990 3343 7865"
+                          value={formData.phoneNumber}
                           onChange={(e) =>
                             handleInputChange('phoneNumber', e.target.value)
                           }
@@ -387,7 +389,7 @@ export default function Account() {
                           name="address"
                           id="address"
                           placeholder="123 Sesame Street"
-                          defaultValue="123 Sesame Street"
+                          value={formData.address}
                           onChange={(e) =>
                             handleInputChange('address', e.target.value)
                           }
@@ -413,7 +415,7 @@ export default function Account() {
                         }}
                         classNamePrefix="select"
                         options={countriesOptions}
-                        value={selectedCountry}
+                        value={formData.country}
                         onChange={(e) => {
                           handleCountryChange(e);
                         }}
@@ -445,7 +447,7 @@ export default function Account() {
                         }}
                         classNamePrefix="select"
                         options={statesOptions}
-                        value={selectedState}
+                        value={formData.state}
                         onChange={(e) => {
                           handleStateChange(e);
                         }}
@@ -486,7 +488,7 @@ export default function Account() {
                           name="city"
                           id="city"
                           placeholder=" "
-                          defaultValue=" "
+                          value={formData.city}
                           onChange={(e) =>
                             handleInputChange('city', e.target.value)
                           }
@@ -507,7 +509,7 @@ export default function Account() {
                         name="postalCode"
                         id="postalCode"
                         placeholder=" "
-                        defaultValue=" "
+                        value={formData.postalCode}
                         onChange={(e) =>
                           handleInputChange('postalCode', e.target.value)
                         }
