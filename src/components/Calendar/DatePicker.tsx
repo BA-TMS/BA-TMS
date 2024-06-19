@@ -1,16 +1,18 @@
 import React from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { styled } from '@mui/material/styles';
 import { TextField } from '@mui/material';
 
 // does not use tailwind
 // does not handle darkMode
+// needs functionality
 
 const StyledTextField = styled(TextField)({
   '& .MuiOutlinedInput-root': {
-    color: '#919EAB', // there seems to be some transparency
+    fontFamily: 'var(--font-publicsans)',
+    color: '#919EAB',
     fontSize: '16px',
     lineHeight: '24px',
     height: '56px',
@@ -27,12 +29,23 @@ const StyledTextField = styled(TextField)({
       border: '1px solid #DFE3E8',
     },
   },
+  '& .MuiFormLabel-root': {
+    color: '#919EAB',
+    fontFamily: 'var(--font-publicsans)',
+  },
 });
 
-export default function DatePicker() {
+interface DatePickerProps {
+  label: string;
+}
+
+export default function DatePicker({ label }: DatePickerProps) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DesktopDatePicker
+      <MuiDatePicker
+        // value={}
+        // onChange={(newValue) => setValue(newValue)}
+        label={label}
         slots={{
           textField: StyledTextField,
         }}
