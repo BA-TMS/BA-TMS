@@ -32,6 +32,9 @@ const StyledTextField = styled(TextField)({
   '& .MuiFormLabel-root': {
     color: '#919EAB',
     fontFamily: 'var(--font-publicsans)',
+    '&.Mui-focused': {
+      color: '#919EAB',
+    },
   },
 });
 
@@ -43,6 +46,7 @@ export default function DatePicker({ label }: DatePickerProps) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <MuiDatePicker
+        className="dark:bg-grey-800"
         // value={}
         // onChange={(newValue) => setValue(newValue)}
         label={label}
