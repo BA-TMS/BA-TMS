@@ -7,7 +7,7 @@ import { FaRegAddressBook, FaCity } from 'react-icons/fa';
 import { MdOutlineEmail } from 'react-icons/md';
 import { IoMdGlobe } from 'react-icons/io';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 //import { getCountries, getStatesOfCountry } from 'country-state-city';
 import { Country, State } from 'country-state-city';
@@ -60,6 +60,7 @@ export default function Account() {
 
   const handleCountryChange = (option) => {
     setSelectedCountry(option);
+    setFormData((prev) => ({ ...prev, country: option }));
     const states = State.getStatesOfCountry(option.value);
     const stateOptions = states.map((state) => ({
       value: state.isoCode,
@@ -67,24 +68,48 @@ export default function Account() {
     }));
     setStatesOptions(stateOptions);
     setSelectedState(null); // Reset state selection when country changes
+    setFormData((prev) => ({ ...prev, state: null })); // Also reset state in formData.
   };
 
   const handleStateChange = (option) => {
     setSelectedState(option);
+    setFormData((prev) => ({ ...prev, state: option }));
   };
 
   const handleInputChange = (field, value) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+    setFormData((prev) => {
+      const updatedFormData = { ...prev, [field]: value };
+      // Save updated form data to local storage
+      localStorage.setItem('formData', JSON.stringify(updatedFormData));
+      console.log('Saved to local storage:', updatedFormData);
+      return updatedFormData;
+    });
   };
 
+  useEffect(() => {
+    const savedFormData = localStorage.getItem('formData');
+    if (savedFormData) {
+      console.log('Loading form data from local storage');
+      setFormData(JSON.parse(savedFormData));
+    }
+  }, []);
+
   // Use formData to handle form submission and validation with Yup
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
       await accountSchema.validate(formData, { abortEarly: false });
+      // Save the form data to local storage
+      localStorage.setItem('formData', JSON.stringify(formData));
+      console.log('Form data submitted and saved to local storage:', formData);
       // Proceed with form submission logic
     } catch (error) {
       // Handle validation errors
-      console.error(error);
+      console.error('Validation error:', error);
+      if (error instanceof Yup.ValidationError) {
+        // Here you can handle errors, for example by setting state
+        console.error('Validation errors:', error.errors);
+      }
     }
   };
 
@@ -142,7 +167,7 @@ export default function Account() {
               </div>
 
               <div className="p-7">
-                <form action="#">
+                <form action="#" onSubmit={handleSubmit}>
                   <div className="mb-4 flex items-center gap-3">
                     <div className="h-14 w-14 rounded-full">
                       <Image
@@ -242,7 +267,7 @@ export default function Account() {
                 </h3>
               </div>
               <div className="p-7">
-                <form action="#">
+                <form action="#" onSubmit={handleSubmit}>
                   {/* NAME AND EMAIL */}
                   <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                     <div className="w-full sm:w-1/2">
