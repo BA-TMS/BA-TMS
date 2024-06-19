@@ -34,6 +34,7 @@ export default function Account() {
     state: null,
     city: '',
     postalCode: '',
+    bio: '',
   });
 
   const accountSchema = Yup.object().shape({
@@ -51,6 +52,7 @@ export default function Account() {
     }),
     city: Yup.string(),
     postalCode: Yup.string(),
+    bio: Yup.string(),
   });
 
   const countriesOptions = Country.getAllCountries().map((country) => ({
@@ -126,6 +128,7 @@ export default function Account() {
     console.log('State:', accountSchema.fields.state.describe());
     console.log('City:', accountSchema.fields.city.describe());
     console.log('Postal Code:', accountSchema.fields.postalCode.describe());
+    console.log('Bio', accountSchema.fields.bio.describe());
   }
 
   return (
@@ -557,6 +560,10 @@ export default function Account() {
                         cols={35}
                         wrap="on"
                         placeholder={'Bio here'}
+                        value={formData.bio}
+                        onChange={(e) =>
+                          handleInputChange('bio', e.target.value)
+                        }
                       />
                     </div>
                   </div>
