@@ -7,7 +7,7 @@ interface SearchbarProps {
 
 export default function Searchbar({ placeholder, onChange }: SearchbarProps) {
   return (
-    <div className="w-full max-w-96">
+    <div className="w-full">
       <label
         htmlFor="default-search"
         className="body1 text-gray-900 sr-only dark:text-white"
