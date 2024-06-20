@@ -7,8 +7,8 @@ import LoadForm from '../Forms/LoadForm';
 import Table from '../UI_Elements/Table/Table';
 import { getLoads } from '@/lib/dbActions';
 import Button from '@ui/buttons/Button';
-import Searchbar from '@ui/Searchbar';
 import { CustomTabs, TabData } from '../UI_Elements/Table/TableHeaderTabs';
+import { TableSearch } from '../UI_Elements/Table/TableSearch';
 
 type Load = {
   id: string;
@@ -112,24 +112,19 @@ export default function Load() {
 
   return (
     <>
-      <div className="flex justify-end">
-        <Button onClick={handleClick}>Add Load</Button>
+      <div className="relative flex justify-end mb-6">
+        <div className="absolute right-4 bottom-2">
+          <Button onClick={handleClick}>Add Load</Button>
+        </div>
         <FormModal>
           <LoadForm />
         </FormModal>
       </div>
-
-      {/* SEARCH BAR */}
       <CustomTabs tabs={tabsData} />
-      <div className="h-26 p-4 bg-white dark:bg-grey-900 border-x border-grey-300 dark:border-grey-700">
-        <Searchbar
-          placeholder="Search client or invoice number..."
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            const value = e.target.value;
-            handleSearch(value);
-          }}
-        />
-      </div>
+      <TableSearch
+        search={handleSearch}
+        placeholder={'Search client or invoice number...'}
+      />
       <Table columns={columns} data={filteredLoads}></Table>
     </>
   );
