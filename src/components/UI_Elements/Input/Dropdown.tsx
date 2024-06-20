@@ -3,9 +3,14 @@ import { useState, useEffect, useRef } from 'react';
 
 interface DropdownProps {
   label: string;
+  options: string[];
 }
 
-export default function Dropdown({ label }: DropdownProps) {
+// THIS COMPONENT IS NOT FUNCTIONAL
+// what is the intention of this dropdown?
+// what do we want the options passed in to represent + desired action?
+
+export default function Dropdown({ label, options }: DropdownProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setOpen] = useState(false);
 
@@ -46,7 +51,7 @@ export default function Dropdown({ label }: DropdownProps) {
   return (
     <div ref={dropdownRef}>
       <button
-        className="w-full min-w-40 body1 h-14 p-4 text-grey-500 border border-grey-300 rounded-lg dark:bg-grey-800 dark:border-grey-700 dark:text-white focus:outline-none text-center inline-flex items-center box-border"
+        className="w-full min-w-40 body1 h-14 p-4 text-grey-500 border border-grey-300 rounded-lg dark:bg-grey-800 dark:border-grey-700 focus:outline-none text-center inline-flex items-center box-border"
         type="button"
         role="button"
         onClick={handleDropDown}
@@ -80,12 +85,17 @@ export default function Dropdown({ label }: DropdownProps) {
         aria-labelledby={label}
       >
         <ul className="w-full min-w-40" aria-labelledby="dropdownDefaultButton">
-          {/* DO MAPPING HERE FOR LI */}
-          <li className="px-4 py-2 hover:bg-grey-300">
-            <a href="#" className="">
-              Dashboard
-            </a>
-          </li>
+          {options.map((option: string, index: number) => (
+            <li
+              key={index}
+              value={option}
+              className="px-4 py-2 hover:bg-grey-300 dark:hover:bg-grey-700"
+            >
+              <a href="#" className="">
+                {option}
+              </a>
+            </li>
+          ))}
         </ul>
       </div>
     </div>
