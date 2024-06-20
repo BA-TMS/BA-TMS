@@ -1,21 +1,28 @@
 'use client';
+import { useState } from 'react';
 
 interface DropdownProps {
   label: string;
 }
 
 export default function Dropdown({ label }: DropdownProps) {
+  const [isOpen, setOpen] = useState(false);
+
+  const handleDropDown = () => {
+    console.log('click');
+    setOpen(!isOpen);
+  };
+
   return (
     <div>
       <button
-        id="dropdownDefaultButton"
-        data-dropdown-toggle="dropdown"
         className="w-full min-w-40 body1 h-14 p-4 text-grey-500 border border-grey-300 rounded-lg dark:bg-grey-800 dark:border-grey-700 dark:text-white focus:outline-none text-center inline-flex items-center box-border"
         type="button"
+        onClick={handleDropDown}
       >
         {label}
         <svg
-          className="w-2.5 h-2.5 ms-3"
+          className={`w-2.5 h-2.5 ml-auto ${isOpen ? 'rotate-180' : ''}`}
           width="15"
           height="8"
           viewBox="0 0 15 8"
@@ -32,42 +39,15 @@ export default function Dropdown({ label }: DropdownProps) {
       {/* menu */}
       <div
         id="dropdown"
-        className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
+        className={`absolute z-auto py-2 bg-white body2 text-grey-500 border border-grey-300 rounded-lg dark:bg-grey-800 dark:border-grey-700 dark:text-white ${
+          isOpen ? 'block' : 'hidden'
+        }`}
       >
-        <ul
-          className="py-2 text-sm text-gray-700 dark:text-gray-200"
-          aria-labelledby="dropdownDefaultButton"
-        >
-          <li>
-            <a
-              href="#"
-              className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >
+        <ul className="w-full min-w-40" aria-labelledby="dropdownDefaultButton">
+          {/* DO MAPPING HERE FOR LI */}
+          <li className="px-4 py-2 hover:bg-grey-300">
+            <a href="#" className="">
               Dashboard
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              Settings
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              Earnings
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              Sign out
             </a>
           </li>
         </ul>
@@ -75,5 +55,3 @@ export default function Dropdown({ label }: DropdownProps) {
     </div>
   );
 }
-
-// export default function Dropdown() {}
