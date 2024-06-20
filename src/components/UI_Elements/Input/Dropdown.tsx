@@ -1,24 +1,58 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface DropdownProps {
   label: string;
 }
 
 export default function Dropdown({ label }: DropdownProps) {
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setOpen] = useState(false);
 
   const handleDropDown = () => {
-    console.log('click');
     setOpen(!isOpen);
   };
 
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
+      setOpen(false);
+    }
+  };
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'Escape' || event.key === 'Return') {
+      setOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleKeyDown);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen]);
+
   return (
-    <div>
+    <div ref={dropdownRef}>
       <button
         className="w-full min-w-40 body1 h-14 p-4 text-grey-500 border border-grey-300 rounded-lg dark:bg-grey-800 dark:border-grey-700 dark:text-white focus:outline-none text-center inline-flex items-center box-border"
         type="button"
+        role="button"
         onClick={handleDropDown}
+        aria-haspopup="true"
+        aria-expanded={isOpen}
+        aria-controls="dropdown-menu"
       >
         {label}
         <svg
@@ -42,6 +76,8 @@ export default function Dropdown({ label }: DropdownProps) {
         className={`absolute z-auto py-2 bg-white body2 text-grey-500 border border-grey-300 rounded-lg dark:bg-grey-800 dark:border-grey-700 dark:text-white ${
           isOpen ? 'block' : 'hidden'
         }`}
+        role="menu"
+        aria-labelledby={label}
       >
         <ul className="w-full min-w-40" aria-labelledby="dropdownDefaultButton">
           {/* DO MAPPING HERE FOR LI */}
