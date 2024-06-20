@@ -166,7 +166,7 @@ export default function Account() {
 
         <div className="grid grid-cols-5 gap-8">
           <div className="col-span-5 xl:col-span-2">
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-gray-800 dark:bg-black">
+            <div className="rounded-box-large border border-stroke bg-white shadow-default dark:border-gray-800 dark:bg-black">
               <div className="border-b border-stroke py-4 px-7 dark:border-gray-800">
                 <h3 className="font-medium text-black dark:text-white">
                   Your Photo
@@ -267,7 +267,7 @@ export default function Account() {
           </div>
 
           <div className="col-span-5 xl:col-span-3">
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-gray-800 dark:bg-black">
+            <div className="rounded-box-large border border-stroke bg-white shadow-default dark:border-gray-800 dark:bg-black">
               <div className="border-b border-stroke py-4 px-7 dark:border-gray-800">
                 <h3 className="font-medium text-black dark:text-white">
                   Personal Information
