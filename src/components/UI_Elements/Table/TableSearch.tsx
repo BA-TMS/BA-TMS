@@ -2,7 +2,6 @@ import { useState } from 'react';
 import DatePicker from '@/components/Calendar/DatePicker';
 import Searchbar from '../Searchbar';
 import Dropdown from '../Input/Dropdown';
-
 import dayjs from 'dayjs';
 
 // pass this component a function to handle field search
@@ -11,13 +10,12 @@ import dayjs from 'dayjs';
 interface SearchProps {
   placeholder: string;
   search: (arg: string) => void; // handles field search from parent component
-  // dateSearch?: any; // handle date searching
   dateSearch: (
+    // handles search by date
     startDate: dayjs.Dayjs | null,
     endDate: dayjs.Dayjs | null
-  ) => void; // maybe
+  ) => void;
 }
-// might want to make a clear button for dates
 
 export function TableSearch({ placeholder, search, dateSearch }: SearchProps) {
   const [startDate, setStartDate] = useState<dayjs.Dayjs | null>(null);
