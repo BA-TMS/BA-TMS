@@ -58,7 +58,6 @@ export default function DatePicker({
   // ensures that DatePicker stays in sync with the parent component's state
   useEffect(() => {
     setValue(date);
-    console.log('date', date);
   }, [date]);
 
   return (
@@ -67,7 +66,6 @@ export default function DatePicker({
         className="dark:bg-grey-800"
         value={value}
         onChange={(newValue) => {
-          console.log('new value', newValue);
           setValue(newValue);
           handleChange(newValue);
         }}

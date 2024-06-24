@@ -10,6 +10,14 @@ import Button from '@ui/buttons/Button';
 import { CustomTabs, TabData } from '../UI_Elements/Table/TableHeaderTabs';
 import { TableSearch } from '../UI_Elements/Table/TableSearch';
 
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+dayjs.extend(customParseFormat);
+dayjs.extend(isSameOrBefore);
+dayjs.extend(isSameOrAfter);
+
 type Load = {
   id: string;
   ownerId: string;
@@ -63,6 +71,34 @@ export default function Load() {
     toggleOpen();
   };
 
+  // specifically handling date range search
+  // shipped date is "start date" datepicker
+  // delivery date is "end date" datepicker
+  const searchByDateRange = (
+    startDate: dayjs.Dayjs | null = null,
+    endDate: dayjs.Dayjs | null = null
+  ) => {
+    const filtered = loads.filter((item) => {
+      const shippedDate = dayjs(item.shipDate);
+      const deliveryDate = dayjs(item.deliveryDate);
+
+      // Check if the shipped date is after the start date (if provided)
+      const isAfterStart = startDate
+        ? shippedDate.isSameOrAfter(startDate, 'day')
+        : true;
+
+      // Check if the delivery date is before the end date (if provided)
+      const isBeforeEnd = endDate
+        ? deliveryDate.isSameOrBefore(endDate, 'day')
+        : true;
+
+      return isAfterStart && isBeforeEnd;
+    });
+
+    setFilteredLoads(filtered);
+  };
+
+  // handling other search
   const handleSearch = (value: string) => {
     const filteredData = loads.filter(
       (load) =>
@@ -123,6 +159,7 @@ export default function Load() {
       <CustomTabs tabs={tabsData} />
       <TableSearch
         search={handleSearch}
+        dateSearch={searchByDateRange}
         placeholder={'Search client or invoice number...'}
       />
       <Table columns={columns} data={filteredLoads}></Table>
