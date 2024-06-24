@@ -24,15 +24,11 @@ export function TableSearch({ placeholder, search, dateSearch }: SearchProps) {
   const [endDate, setEndDate] = useState<dayjs.Dayjs | null>(null);
 
   const handleStartDateChange = (date: dayjs.Dayjs | null) => {
-    console.log('date passed to handle start', date);
-    // pass this to datepicker
     setStartDate(date);
     dateSearch(date, endDate);
   };
 
   const handleEndDateChange = (date: dayjs.Dayjs | null) => {
-    console.log('date passed to handle end', date);
-    // pass this to datepicker
     setEndDate(date);
     dateSearch(startDate, date);
   };

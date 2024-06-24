@@ -73,6 +73,9 @@ export default function DatePicker({
         slots={{
           textField: StyledTextField,
         }}
+        slotProps={{
+          field: { clearable: true, onClear: () => setValue(null) },
+        }}
       />
     </LocalizationProvider>
   );
