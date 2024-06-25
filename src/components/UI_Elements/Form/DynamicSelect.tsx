@@ -45,30 +45,39 @@ const DynamicSelect = <T extends { id: string; name: string }>({
   }, [dbaction]);
 
   return (
-    <div className="mb-4.5">
-      <label className="mb-2.5 block text-black dark:text-white">
+    <div className="relative mt-5">
+      <select
+        {...field}
+        name={name}
+        id={name}
+        className="block px-2.5 pb-2.5 pt-4 w-full body2 dark:text-black bg-transparent rounded-[7px] border border-grey-400 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer"
+      >
+        <option value="">{`Select ${name}`}</option>
+        {/* if not loading, map through fetched data */}
+        {loading ? (
+          <option value="">Loading...</option>
+        ) : (
+          options.map((option) => (
+            <option key={option.id} value={option.id}>
+              {option.name}
+            </option>
+          ))
+        )}
+      </select>
+
+      <label
+        htmlFor={name}
+        className="absolute body2 duration-300 transform -translate-y-5 scale- top-2 z-10 origin-[0] text-grey-500 bg-white dark:bg-grey-900 dark:text-white px-2 start-3"
+      >
         {name}
         {required && <span className="text-danger"> *</span>}
-        <select
-          {...field}
-          className="relative z-20 w-full rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-        >
-          <option value="">{`Select ${name}`}</option>
-          {/* if not loading, map through fetched data */}
-          {loading ? (
-            <option value="">Loading...</option>
-          ) : (
-            options.map((option) => (
-              <option key={option.id} value={option.id}>
-                {option.name}
-              </option>
-            ))
-          )}
-        </select>
-        {fieldState.error && (
-          <p className="mt-1 text-danger">{fieldState.error.message}</p>
-        )}
       </label>
+
+      {fieldState.error && (
+        <p className="font-public font-normal text-text-sm mb-1 text-danger">
+          {fieldState.error.message}
+        </p>
+      )}
     </div>
   );
 };
