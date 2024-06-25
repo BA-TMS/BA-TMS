@@ -86,7 +86,7 @@ const FormModal = ({ children }: FormModalProps) => {
           ref={modalRef}
           className="fixed z-999999 top-0 left-0 flex h-full min-h-screen w-full items-start justify-center bg-black/90 px-4 py-5"
         >
-          <div className="my-auto w-[694px] rounded-[14.5px] border-grey-300 dark:border-grey-700 bg-white dark:bg-grey-900">
+          <div className="my-auto w-[694px] h-5/6 overflow-auto px-4.5 py-4 rounded-[14.5px] border-grey-300 dark:border-grey-700 bg-white dark:bg-grey-900">
             {children}
           </div>
         </div>
