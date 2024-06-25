@@ -71,119 +71,109 @@ export const LoadForm = () => {
   }, [isSubmitSuccessful, reset]);
 
   return (
-    <div className="flex flex-col gap-9">
-      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark w-full max-w-xl mx-auto overflow-y-auto max-h-screen">
-        <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-          <h3 className="font-medium text-black dark:text-white">New Load</h3>
-        </div>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="p-6.5">
-            <DynamicSelect
-              control={control}
-              name="Owner"
-              required={true}
-              dbaction={getOrganizations}
-            />
+    <section className="w-full h-full">
+      <header className="px-4.5 py-4 border-b border-grey-300 dark:border-grey-700">
+        <h6 className="subtitle2 text-grey-800 dark:text-white">New Load</h6>
+      </header>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="p-6.5">
+          <DynamicSelect
+            control={control}
+            name="Owner"
+            required={true}
+            dbaction={getOrganizations}
+          />
 
-            <div className=" flex flex-col gap-6 xl:flex-row">
-              <div className="w-full xl:w-1/2">
-                <TextInput
-                  control={control}
-                  name="Load Number"
-                  required={true}
-                />
-              </div>
-
-              <div className="w-full xl:w-1/2">
-                <TextInput
-                  control={control}
-                  name="Pay Order Number"
-                  required={true}
-                />
-              </div>
+          <div className=" flex flex-col gap-6 xl:flex-row">
+            <div className="w-full xl:w-1/2">
+              <TextInput control={control} name="Load Number" required={true} />
             </div>
 
-            <DynamicSelect
-              control={control}
-              name="Customer"
-              required={true}
-              dbaction={getCustomers}
-            />
-
-            <DynamicSelect
-              control={control}
-              name="Driver"
-              required={false}
-              dbaction={getDrivers}
-            />
-
-            <DynamicSelect
-              control={control}
-              name="Carrier"
-              required={true}
-              dbaction={getCarriers}
-            />
-
-            <DynamicSelect
-              control={control}
-              name="Shipper"
-              required={false}
-              dbaction={getShippers}
-            />
-
-            <DynamicSelect
-              control={control}
-              name="Consignee"
-              required={false}
-              dbaction={getConsignees}
-            />
-
-            <div className=" flex flex-col gap-6 xl:flex-row">
-              <div className="w-full xl:w-1/2">
-                <DateSelect
-                  control={control}
-                  name="Ship Date"
-                  required={false}
-                />
-              </div>
-
-              <div className="w-full xl:w-1/2">
-                <DateSelect
-                  control={control}
-                  name="Received Date"
-                  required={false}
-                />
-              </div>
-            </div>
-
-            <TextInput control={control} name="Notes" isTextArea={true} />
-            {errors.root && (
-              <p className="mb-5 text-danger">{errors.root.message}</p>
-            )}
-            <div className="flex justify-end">
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-1/4 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-80"
-              >
-                {isSubmitting ? 'Submitting' : 'Add'}
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  reset();
-                  toggleOpen();
-                }}
-                disabled={isSubmitting}
-                className="rounded bg-red p-3 font-medium text-gray ml-2 hover:bg-opacity-80"
-              >
-                Cancel
-              </button>
+            <div className="w-full xl:w-1/2">
+              <TextInput
+                control={control}
+                name="Pay Order Number"
+                required={true}
+              />
             </div>
           </div>
-        </form>
-      </div>
-    </div>
+
+          <DynamicSelect
+            control={control}
+            name="Customer"
+            required={true}
+            dbaction={getCustomers}
+          />
+
+          <DynamicSelect
+            control={control}
+            name="Driver"
+            required={false}
+            dbaction={getDrivers}
+          />
+
+          <DynamicSelect
+            control={control}
+            name="Carrier"
+            required={true}
+            dbaction={getCarriers}
+          />
+
+          <DynamicSelect
+            control={control}
+            name="Shipper"
+            required={false}
+            dbaction={getShippers}
+          />
+
+          <DynamicSelect
+            control={control}
+            name="Consignee"
+            required={false}
+            dbaction={getConsignees}
+          />
+
+          <div className=" flex flex-col gap-6 xl:flex-row">
+            <div className="w-full xl:w-1/2">
+              <DateSelect control={control} name="Ship Date" required={false} />
+            </div>
+
+            <div className="w-full xl:w-1/2">
+              <DateSelect
+                control={control}
+                name="Received Date"
+                required={false}
+              />
+            </div>
+          </div>
+
+          <TextInput control={control} name="Notes" isTextArea={true} />
+          {errors.root && (
+            <p className="mb-5 text-danger">{errors.root.message}</p>
+          )}
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-1/4 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-80"
+            >
+              {isSubmitting ? 'Submitting' : 'Add'}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                reset();
+                toggleOpen();
+              }}
+              disabled={isSubmitting}
+              className="rounded bg-red p-3 font-medium text-gray ml-2 hover:bg-opacity-80"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </form>
+    </section>
   );
 };
 
