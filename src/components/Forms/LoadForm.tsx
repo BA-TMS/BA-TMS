@@ -17,6 +17,19 @@ import {
   getShippers,
 } from '@/lib/dbActions';
 import DateSelect from '../UI_Elements/Form/DateSelect';
+import Button from '../UI_Elements/buttons/Button';
+import SelectInput from '../UI_Elements/Form/SelectInput';
+
+const status: string[] = [
+  'Pending',
+  'Open',
+  'Refused',
+  'Covered',
+  'Dispatched',
+  'On Route',
+  '(Un)Loading',
+  'In Yard',
+];
 
 const loadSchema = yup.object({
   Owner: yup.string(),
@@ -53,7 +66,6 @@ export const LoadForm = () => {
   const { toggleOpen } = useContext(ModalContext);
 
   const onSubmit = async (data: Load) => {
-    console.log(data); // see the data
     try {
       await addLoad({ load: data });
       console.log('load dispatched successfully');
@@ -70,13 +82,20 @@ export const LoadForm = () => {
     }
   }, [isSubmitSuccessful, reset]);
 
+  // might need this to be a flex container with gap-4
   return (
     <section className="w-full h-full">
-      <header className="px-4.5 py-4 border-b border-grey-300 dark:border-grey-700">
-        <h6 className="subtitle2 text-grey-800 dark:text-white">New Load</h6>
+      <header className="py-4 px-4.5 border-b border-grey-300 dark:border-grey-700">
+        <h6 className="subtitle1 text-grey-800 dark:text-white">New Load</h6>
       </header>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="p-6.5">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col gap-5 justify-between"
+      >
+        <p className="px-4.5 mt-3.5 body2 text-grey-800 dark:text-white">
+          Set the details
+        </p>
+        <div className="px-4.5">
           <DynamicSelect
             control={control}
             name="Owner"
@@ -84,61 +103,59 @@ export const LoadForm = () => {
             dbaction={getOrganizations}
           />
 
-          <div className=" flex flex-col gap-6 xl:flex-row">
-            <div className="w-full xl:w-1/2">
-              <TextInput control={control} name="Load Number" required={true} />
-            </div>
+          <div className="mt-5 flex flex-col gap-5 xl:flex-row">
+            <div className="flex flex-col gap-5 w-full xl:w-1/2">
+              <SelectInput
+                control={control}
+                name="Status"
+                options={status}
+                required={true}
+              />
 
-            <div className="w-full xl:w-1/2">
+              <TextInput control={control} name="Load Number" required={true} />
+
               <TextInput
                 control={control}
                 name="Pay Order Number"
                 required={true}
               />
-            </div>
-          </div>
-
-          <DynamicSelect
-            control={control}
-            name="Customer"
-            required={true}
-            dbaction={getCustomers}
-          />
-
-          <DynamicSelect
-            control={control}
-            name="Driver"
-            required={false}
-            dbaction={getDrivers}
-          />
-
-          <DynamicSelect
-            control={control}
-            name="Carrier"
-            required={true}
-            dbaction={getCarriers}
-          />
-
-          <DynamicSelect
-            control={control}
-            name="Shipper"
-            required={false}
-            dbaction={getShippers}
-          />
-
-          <DynamicSelect
-            control={control}
-            name="Consignee"
-            required={false}
-            dbaction={getConsignees}
-          />
-
-          <div className=" flex flex-col gap-6 xl:flex-row">
-            <div className="w-full xl:w-1/2">
+              <DynamicSelect
+                control={control}
+                name="Customer"
+                required={true}
+                dbaction={getCustomers}
+              />
               <DateSelect control={control} name="Ship Date" required={false} />
             </div>
 
-            <div className="w-full xl:w-1/2">
+            <div className="mb-5 flex flex-col gap-5 w-full xl:w-1/2">
+              <DynamicSelect
+                control={control}
+                name="Carrier"
+                required={true}
+                dbaction={getCarriers}
+              />
+
+              <DynamicSelect
+                control={control}
+                name="Driver"
+                required={false}
+                dbaction={getDrivers}
+              />
+
+              <DynamicSelect
+                control={control}
+                name="Shipper"
+                required={false}
+                dbaction={getShippers}
+              />
+              <DynamicSelect
+                control={control}
+                name="Consignee"
+                required={false}
+                dbaction={getConsignees}
+              />
+
               <DateSelect
                 control={control}
                 name="Received Date"
@@ -148,29 +165,28 @@ export const LoadForm = () => {
           </div>
 
           <TextInput control={control} name="Notes" isTextArea={true} />
+
           {errors.root && (
-            <p className="mb-5 text-danger">{errors.root.message}</p>
+            <p className="mb-5 text-error-dark">{errors.root.message}</p>
           )}
-          <div className="flex justify-end">
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-1/4 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-80"
-            >
-              {isSubmitting ? 'Submitting' : 'Add'}
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                reset();
-                toggleOpen();
-              }}
-              disabled={isSubmitting}
-              className="rounded bg-red p-3 font-medium text-gray ml-2 hover:bg-opacity-80"
-            >
-              Cancel
-            </button>
-          </div>
+        </div>
+        <div className="py-3.5 px-4.5 border-t border-grey-300 dark:border-grey-700 flex justify-end gap-2.5">
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Submitting' : 'Add'}
+          </Button>
+
+          <Button
+            type="button"
+            disabled={isSubmitting}
+            onClick={() => {
+              reset();
+              toggleOpen();
+            }}
+            variant="outline"
+            intent="default"
+          >
+            Cancel
+          </Button>
         </div>
       </form>
     </section>
