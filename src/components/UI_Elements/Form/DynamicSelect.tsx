@@ -46,11 +46,18 @@ const DynamicSelect = <T extends { id: string; name: string }>({
 
   return (
     <div className="relative mt-5">
+      <label
+        htmlFor={name}
+        className="absolute body2 duration-300 transform -translate-y-5 scale- top-2 z-10 origin-[0] text-grey-500 bg-white dark:bg-grey-900 dark:text-white px-2 start-3"
+      >
+        {name}
+        {required && <span className="text-error-dark"> *</span>}
+      </label>
       <select
         {...field}
         name={name}
         id={name}
-        className="block px-2.5 pb-2.5 pt-4 w-full body2 dark:text-black bg-transparent rounded-[7px] border border-grey-400 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer"
+        className="block px-3 py-3.5 w-full body2 text-grey-800 dark:text-white bg-transparent rounded-[7px] border border-grey-400 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer"
       >
         <option value="">{`Select ${name}`}</option>
         {/* if not loading, map through fetched data */}
@@ -65,16 +72,8 @@ const DynamicSelect = <T extends { id: string; name: string }>({
         )}
       </select>
 
-      <label
-        htmlFor={name}
-        className="absolute body2 duration-300 transform -translate-y-5 scale- top-2 z-10 origin-[0] text-grey-500 bg-white dark:bg-grey-900 dark:text-white px-2 start-3"
-      >
-        {name}
-        {required && <span className="text-danger"> *</span>}
-      </label>
-
       {fieldState.error && (
-        <p className="font-public font-normal text-text-sm mb-1 text-danger">
+        <p className="caption mb-1 text-error-dark">
           {fieldState.error.message}
         </p>
       )}
