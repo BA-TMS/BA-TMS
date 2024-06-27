@@ -33,7 +33,6 @@ const DynamicSelect = <T extends { id: string; name: string }>({
     const fetchData = async () => {
       try {
         const data = await dbaction();
-        console.log(data);
         setOptions(data);
         setLoading(false);
       } catch (error) {
@@ -72,7 +71,7 @@ const DynamicSelect = <T extends { id: string; name: string }>({
             ))
           )}
         </select>
-        <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none">
+        <div className="absolute inset-y-0 right-4 -mt-5 flex items-center pointer-events-none">
           <svg
             width="12"
             height="7"
