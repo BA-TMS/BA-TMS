@@ -21,18 +21,24 @@ import Button from '../UI_Elements/buttons/Button';
 import SelectInput from '../UI_Elements/Form/SelectInput';
 
 const status: string[] = [
-  'Pending',
-  'Open',
-  'Refused',
-  'Covered',
-  'Dispatched',
-  'On Route',
-  '(Un)Loading',
-  'In Yard',
+  // 'Pending',
+  // 'Open',
+  // 'Refused',
+  // 'Covered',
+  // 'Dispatched',
+  // 'On Route',
+  // '(Un)Loading',
+  // 'In Yard',
+  'OPENED',
+  'ASSIGNED',
+  'IN_TRANSIT',
+  'DELIVERED',
+  'PAID',
 ];
 
 const loadSchema = yup.object({
-  Owner: yup.string(),
+  Owner: yup.string().required('Enter owner for this load'),
+  Status: yup.string().required('Enter status for this load'),
   'Load Number': yup.string().required('Enter load number for your records'),
   'Pay Order Number': yup.string().required('Enter PO number for your records'),
   Customer: yup.string().required('Enter customer for load'),
@@ -55,6 +61,7 @@ export const LoadForm = () => {
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<Load>({
     defaultValues: {
+      Status: '',
       'Load Number': '',
       'Pay Order Number': '',
       'Ship Date': undefined,
@@ -82,7 +89,6 @@ export const LoadForm = () => {
     }
   }, [isSubmitSuccessful, reset]);
 
-  // might need this to be a flex container with gap-4
   return (
     <section className="w-full h-full">
       <header className="py-4 px-4.5 border-b border-grey-300 dark:border-grey-700">
@@ -90,9 +96,9 @@ export const LoadForm = () => {
       </header>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-5 justify-between"
+        className="flex flex-col justify-between"
       >
-        <p className="px-4.5 mt-3.5 body2 text-grey-800 dark:text-white">
+        <p className="px-4.5 mt-3.5 mb-5 body2 text-grey-800 dark:text-white">
           Set the details
         </p>
         <div className="px-4.5">
@@ -103,8 +109,8 @@ export const LoadForm = () => {
             dbaction={getOrganizations}
           />
 
-          <div className="mt-5 flex flex-col gap-5 xl:flex-row">
-            <div className="flex flex-col gap-5 w-full xl:w-1/2">
+          <div className="flex flex-col gap-5 xl:flex-row">
+            <div className="flex flex-col w-full xl:w-1/2">
               <SelectInput
                 control={control}
                 name="Status"
@@ -119,16 +125,18 @@ export const LoadForm = () => {
                 name="Pay Order Number"
                 required={true}
               />
+
               <DynamicSelect
                 control={control}
                 name="Customer"
                 required={true}
                 dbaction={getCustomers}
               />
+
               <DateSelect control={control} name="Ship Date" required={false} />
             </div>
 
-            <div className="mb-5 flex flex-col gap-5 w-full xl:w-1/2">
+            <div className="flex flex-col w-full xl:w-1/2">
               <DynamicSelect
                 control={control}
                 name="Carrier"
@@ -149,6 +157,7 @@ export const LoadForm = () => {
                 required={false}
                 dbaction={getShippers}
               />
+
               <DynamicSelect
                 control={control}
                 name="Consignee"
@@ -165,10 +174,13 @@ export const LoadForm = () => {
           </div>
 
           <TextInput control={control} name="Notes" isTextArea={true} />
-
-          {errors.root && (
-            <p className="mb-5 text-error-dark">{errors.root.message}</p>
-          )}
+          <div className="min-h-5">
+            {errors.root && (
+              <p className="caption mb-1 text-error-dark">
+                {errors.root.message}
+              </p>
+            )}
+          </div>
         </div>
         <div className="py-3.5 px-4.5 border-t border-grey-300 dark:border-grey-700 flex justify-end gap-2.5">
           <Button type="submit" disabled={isSubmitting}>
