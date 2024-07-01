@@ -158,7 +158,6 @@ export default function Load() {
       return;
     }
     const filtered = loads.filter((load) => {
-      console.log(load);
       return load.status === value.toUpperCase();
     });
     setFilteredLoads(filtered);
@@ -187,7 +186,6 @@ export default function Load() {
         if (load.shipper) load.shipper = load.shipper.name;
         if (load.consignee) load.consignee = load.consignee.name;
       }
-      console.log('loads', data);
 
       setLoads(data);
       setFilteredLoads(data);

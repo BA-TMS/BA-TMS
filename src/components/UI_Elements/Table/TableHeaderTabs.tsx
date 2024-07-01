@@ -77,79 +77,81 @@ const resolveSlotProps = <TArgs, TResult>(
     : fn;
 };
 
-const TabsList = React.forwardRef<HTMLDivElement, TabsListProps>((props) => {
-  const { className, ...other } = props;
-  const [isOverflowing, setIsOverflowing] = React.useState({
-    left: false,
-    right: false,
-  });
-  const containerRef = React.useRef<HTMLDivElement>(null);
+const TabsList = React.forwardRef<HTMLDivElement, TabsListProps>(
+  (props, ref) => {
+    const { className, ...other } = props;
+    const [isOverflowing, setIsOverflowing] = React.useState({
+      left: false,
+      right: false,
+    });
+    const containerRef = React.useRef<HTMLDivElement>(null);
 
-  const checkOverflow = React.useCallback(() => {
-    if (containerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
-      setIsOverflowing({
-        left: scrollLeft > 0,
-        right: scrollLeft + clientWidth < scrollWidth,
-      });
-    }
-  }, []);
-
-  React.useEffect(() => {
-    if (containerRef.current) {
-      checkOverflow();
-      containerRef.current.addEventListener('scroll', checkOverflow);
-      window.addEventListener('resize', checkOverflow);
-    }
-    return () => {
+    const checkOverflow = React.useCallback(() => {
       if (containerRef.current) {
-        containerRef.current.removeEventListener('scroll', checkOverflow);
+        const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
+        setIsOverflowing({
+          left: scrollLeft > 0,
+          right: scrollLeft + clientWidth < scrollWidth,
+        });
       }
-      window.removeEventListener('resize', checkOverflow);
+    }, []);
+
+    React.useEffect(() => {
+      if (containerRef.current) {
+        checkOverflow();
+        containerRef.current.addEventListener('scroll', checkOverflow);
+        window.addEventListener('resize', checkOverflow);
+      }
+      return () => {
+        if (containerRef.current) {
+          containerRef.current.removeEventListener('scroll', checkOverflow);
+        }
+        window.removeEventListener('resize', checkOverflow);
+      };
+    }, [checkOverflow]);
+
+    const scrollLeft = () => {
+      if (containerRef.current) {
+        containerRef.current.scrollBy({ left: -200, behavior: 'smooth' });
+      }
     };
-  }, [checkOverflow]);
 
-  const scrollLeft = () => {
-    if (containerRef.current) {
-      containerRef.current.scrollBy({ left: -200, behavior: 'smooth' });
-    }
-  };
-
-  const scrollRight = () => {
-    if (containerRef.current) {
-      containerRef.current.scrollBy({ left: 200, behavior: 'smooth' });
-    }
-  };
-  return (
-    // container that houses the tabs
-    <div className="relative">
-      {isOverflowing.left && (
-        <button
-          className="absolute left-0 top-0 h-full flex items-center justify-center bg-grey-200 dark:bg-grey-700 rounded-tl-2xl border-l border-t border-grey-300 dark:border-grey-700 z-10"
-          onClick={scrollLeft}
-        >
-          <ChevronLeftIcon />
-        </button>
-      )}
-      <BaseTabsList
-        ref={containerRef}
-        className={clsx(
-          'subtitle2 px-6 h-14 rounded-t-2xl border-x border-t border-grey-300 dark:border-grey-700 bg-grey-200 dark:bg-grey-700 flex items-center justify-start content-between gap-10 overflow-hidden',
-          className
+    const scrollRight = () => {
+      if (containerRef.current) {
+        containerRef.current.scrollBy({ left: 200, behavior: 'smooth' });
+      }
+    };
+    return (
+      // container that houses the tabs
+      <div className="relative">
+        {isOverflowing.left && (
+          <button
+            className="absolute left-0 top-0 h-full flex items-center justify-center bg-grey-200 dark:bg-grey-700 rounded-tl-2xl border-l border-t border-grey-300 dark:border-grey-700 z-10"
+            onClick={scrollLeft}
+          >
+            <ChevronLeftIcon />
+          </button>
         )}
-        {...other}
-      />
-      {isOverflowing.right && (
-        <button
-          className="absolute right-0 top-0 h-full flex items-center justify-center bg-grey-200 dark:bg-grey-700 z-10 rounded-tr-2xl border-r border-t border-grey-300 dark:border-grey-700"
-          onClick={scrollRight}
-        >
-          <ChevronRightIcon />
-        </button>
-      )}
-    </div>
-  );
-});
+        <BaseTabsList
+          ref={containerRef}
+          className={clsx(
+            'subtitle2 px-6 h-14 rounded-t-2xl border-x border-t border-grey-300 dark:border-grey-700 bg-grey-200 dark:bg-grey-700 flex items-center justify-start content-between gap-10 overflow-hidden',
+            className
+          )}
+          {...other}
+        />
+        {isOverflowing.right && (
+          <button
+            className="absolute right-0 top-0 h-full flex items-center justify-center bg-grey-200 dark:bg-grey-700 z-10 rounded-tr-2xl border-r border-t border-grey-300 dark:border-grey-700"
+            onClick={scrollRight}
+          >
+            <ChevronRightIcon />
+          </button>
+        )}
+      </div>
+    );
+  }
+);
 
 TabsList.displayName = 'TabsList';
 
