@@ -5,7 +5,6 @@ import { TabsList as BaseTabsList, TabsListProps } from '@mui/base/TabsList';
 import { TabPanel as BaseTabPanel, TabPanelProps } from '@mui/base/TabPanel';
 import { Tab as BaseTab, TabProps } from '@mui/base/Tab';
 import TabLabel from './TabLabel';
-
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 

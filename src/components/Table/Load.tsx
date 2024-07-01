@@ -9,7 +9,6 @@ import { getLoads } from '@/lib/dbActions';
 import Button from '@ui/buttons/Button';
 import { CustomTabs, TabData } from '../UI_Elements/Table/TableHeaderTabs';
 import { TableSearch } from '../UI_Elements/Table/TableSearch';
-
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
@@ -38,6 +37,20 @@ type Load = {
   consignee: string | null;
 };
 
+// colors to be used for status on the table
+const statusColors = {
+  ASSIGNED: 'info',
+  'On Route': 'warning',
+  Covered: 'warning',
+  OPENED: 'primary',
+  Refused: 'secondary',
+  Pending: 'error',
+};
+
+const getColorByStatus = (status) => {
+  return statusColors[status] || 'text-grey-600 dark:text-white';
+};
+
 // columns passed to table
 const columns = [
   { field: 'loadNum', headerName: 'Load Number' },
@@ -48,7 +61,20 @@ const columns = [
   { field: 'carrier', headerName: 'Carrier' },
   { field: 'shipper', headerName: 'Shipper' },
   { field: 'consignee', headerName: 'Consignee' },
-  { field: 'status', headerName: 'Status' },
+  {
+    field: 'status',
+    headerName: 'Status',
+    cellRenderer: (status: string) => {
+      const textColor = getColorByStatus(status);
+      return (
+        <span
+          className={`inline-block px-2 py-1 rounded-md text-text-xsm font-public font-bold text-${textColor}-dark bg-${textColor} bg-opacity-16`}
+        >
+          {status}
+        </span>
+      );
+    },
+  },
 ];
 
 // info passed to tabs
