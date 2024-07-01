@@ -357,6 +357,9 @@ const config: Config = {
         'spin-2': 'spin 2s linear infinite',
         'spin-3': 'spin 3s linear infinite',
       },
+      borderRadius: {
+        'box-large': '0.884375rem',
+      },
     },
   },
   plugins: [],

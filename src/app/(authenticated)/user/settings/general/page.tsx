@@ -1,7 +1,6 @@
 'use client';
 
-import Image from "next/image";
-
+import Image from 'next/image';
 
 const Settings = () => {
   return (
@@ -212,8 +211,7 @@ const Settings = () => {
             </div>
           </div>
 
-
-           {/* Start of Photo */}
+          {/* Start of Photo */}
           <div className="col-span-5 xl:col-span-2">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
@@ -226,7 +224,7 @@ const Settings = () => {
                   <div className="mb-4 flex items-center gap-3">
                     <div className="h-14 w-14 rounded-full">
                       <Image
-                        src={"/images/user/user-03.png"}
+                        src={'/images/user/user-03.png'}
                         width={55}
                         height={55}
                         alt="User"
