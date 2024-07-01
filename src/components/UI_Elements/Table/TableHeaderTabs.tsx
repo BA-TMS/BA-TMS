@@ -9,6 +9,8 @@ import TabLabel from './TabLabel';
 // this is the MUI tab
 // is styled by TabLabel
 // pass an array of objects to generate Tab Labels
+// color is the color we want the tab
+// value is the name on the tab
 
 export interface TabData {
   color:
@@ -19,33 +21,44 @@ export interface TabData {
     | 'warning'
     | 'error'
     | 'default';
-  content: number;
-  text: string;
+  value: string;
 }
 
 interface CustomTabsProps {
   tabs: TabData[];
+  sort: (value: string) => void;
+  count: (value: string) => number;
 }
 
-export function CustomTabs({ tabs }: CustomTabsProps) {
+export function CustomTabs({ tabs, sort, count }: CustomTabsProps) {
+  const [activeTab, setActiveTab] = React.useState('All');
+
+  const handleTabChange = (
+    event: React.SyntheticEvent<Element, Event> | null,
+    newValue: string | number | null
+  ) => {
+    if (typeof newValue === 'string') {
+      // must be string for our state
+      setActiveTab(newValue);
+      sort(newValue);
+    }
+  };
+
   return (
     <Tabs
-      defaultValue={0} // a value for what is being displayed (ex: all?)
-      aria-label="tabs" // find a better label
-      onClick={() => console.log('tab click')} // this will need to switch between tabs/ sort data
+      value={activeTab}
+      aria-label="tabs"
+      onChange={handleTabChange} // Callback invoked when new value is being set
     >
       <TabsList>
         {tabs.map((label, index) => (
-          <Tab key={index} value={index}>
-            <TabLabel color={label.color}>{label.content}</TabLabel>
-            {label.text}
+          <Tab key={index} value={label.value}>
+            <TabLabel color={label.color}>{count(label.value)}</TabLabel>
+            {label.value}
           </Tab>
         ))}
       </TabsList>
-      {/* may not need tab panel if clicking will just do a search */}
-      {/* <TabPanel value={0}>My account page</TabPanel>
-        <TabPanel value={1}>Profile page</TabPanel>
-        <TabPanel value={2}>Language page</TabPanel> */}
+      {/* tab panel? */}
     </Tabs>
   );
 }

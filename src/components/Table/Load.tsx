@@ -38,6 +38,7 @@ type Load = {
   consignee: string | null;
 };
 
+// columns passed to table
 const columns = [
   { field: 'loadNum', headerName: 'Load Number' },
   { field: 'payOrderNum', headerName: 'PO Number' },
@@ -50,16 +51,17 @@ const columns = [
   { field: 'status', headerName: 'Status' },
 ];
 
-// need a function/ sort to determine content
+// info passed to tabs
 const tabsData: TabData[] = [
-  { color: 'default', content: 24, text: 'All' },
-  { color: 'info', content: 12 + 12, text: 'On Route' },
-  { color: 'primary', content: 5, text: 'Open' },
-  { color: 'primary', content: 5, text: 'Refused' },
-  { color: 'primary', content: 5, text: 'Covered' },
-  { color: 'primary', content: 5, text: 'Pending' },
-  { color: 'primary', content: 5, text: 'Dispatched' },
-  { color: 'default', content: 5, text: '(Un)Loading' },
+  { color: 'info', value: 'Assigned' },
+  { color: 'info', value: 'All' },
+  { color: 'warning', value: 'On Route' },
+  { color: 'primary', value: 'Open' },
+  { color: 'secondary', value: 'Refused' },
+  { color: 'warning', value: 'Covered' },
+  { color: 'error', value: 'Pending' },
+  { color: 'default', value: 'Dispatched' },
+  { color: 'default', value: '(Un)Loading' },
 ];
 
 export default function Load() {
@@ -123,6 +125,28 @@ export default function Load() {
     setFilteredLoads(filteredData);
   };
 
+  // handling status search
+  const searchByStatus = (value: string) => {
+    if (value === 'All') {
+      setFilteredLoads(loads);
+      return;
+    }
+    const filtered = loads.filter((load) => {
+      console.log(load);
+      return load.status === value.toUpperCase();
+    });
+    setFilteredLoads(filtered);
+  };
+
+  // count how many loads per status
+  const getCount = (value: string) => {
+    if (value === 'All') return loads.length;
+    const filtered = loads.filter((load) => {
+      return load.status === value.toUpperCase();
+    });
+    return filtered.length;
+  };
+
   useEffect(() => {
     const fetchLoads = async () => {
       const data = await getLoads();
@@ -156,7 +180,7 @@ export default function Load() {
           <LoadForm />
         </FormModal>
       </div>
-      <CustomTabs tabs={tabsData} />
+      <CustomTabs tabs={tabsData} sort={searchByStatus} count={getCount} />
       <TableSearch
         search={handleSearch}
         dateSearch={searchByDateRange}
