@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import DatePicker from '@/components/Calendar/DatePicker';
+import DatePicker from '@/components/UI_Elements/Input/DatePicker';
 import Searchbar from '../Searchbar';
 import Dropdown from '../Input/Dropdown';
 import dayjs from 'dayjs';
