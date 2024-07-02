@@ -5,7 +5,6 @@ import DropdownNotification from './DropdownNotification';
 import DropdownUser from './DropdownUser';
 import Image from 'next/image';
 import { SearchIcon } from '@/assets/icons';
-import Breadcrumbs from '@/components/Header/Breadcrumbs';
 import USFlag from '@/assets/flags/Flag_US.svg';
 
 type HeaderProps = {
@@ -67,9 +66,8 @@ const Header = (props: HeaderProps) => {
         <div className="flex items-center gap-3">
           <DarkModeToggle />
 
-          <div>
-            Welcome,{' '}
-            <strong>{userSession ? userSession.user.email : 'User'}</strong>!
+          <div className="w-10 px-1.5 py-2.5">
+            <Image src={USFlag} alt="Flag" />
           </div>
 
           <DropdownNotification />
@@ -77,13 +75,6 @@ const Header = (props: HeaderProps) => {
           <DropdownUser />
         </div>
       </div>
-      <Breadcrumbs
-        className="px-4 pb-2 text-grey-600 dark:text-grey-30"
-        root="Home"
-        separator={<p>&#8226;</p>}
-        pathComponentClassName="hover:underline mx-2 font-bold"
-        capitalizePathComponents
-      />
     </header>
   );
 };

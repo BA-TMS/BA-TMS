@@ -155,23 +155,3 @@ const addListener = (client: SupabaseClient) => {
     }
   });
 };
-
-const addListener = (client: SupabaseClient) => {
-  client.auth.onAuthStateChange((event, session) => {
-    if (event === 'INITIAL_SESSION') {
-      console.log("Ayy, I'm initial-sessionin' heah!");
-    }
-    // We do not, at present, appear to emit ANY of these events. Should we?
-    else if (event === 'SIGNED_IN') {
-      console.log("Ayy, I'm signin' in heah!");
-    } else if (event === 'SIGNED_OUT') {
-      console.log("Ayy, I'm signin' out heah!");
-    } else if (event === 'PASSWORD_RECOVERY') {
-      console.log("Ayy, I'm recoverin' my passwuhd heah!");
-    } else if (event === 'TOKEN_REFRESHED') {
-      console.log("More like tokin' my refreshment, amirite?");
-    } else if (event === 'USER_UPDATED') {
-      console.log("Ayy, I'm updatin' my usah heah!");
-    }
-  });
-};
