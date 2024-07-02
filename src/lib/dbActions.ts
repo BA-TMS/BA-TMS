@@ -3,7 +3,7 @@
 import { PrismaClient } from '@prisma/client';
 import { ConsigneeFormDataState } from '@/types/formTypes';
 
-const prisma = new PrismaClient(); // TODO: Is this better off as a const?
+const prisma = new PrismaClient();
 
 /** Get existing table data */
 async function getter(table: any, relations: any) {
@@ -83,6 +83,13 @@ export async function getTrucks() {
 export async function getUsers() {
   const users = prisma.user.findMany();
   return users;
+}
+
+export async function getUser(targetId: string) {
+  const user = prisma.user.findUnique(
+    {where: {id: targetId}}
+  );
+  return user;
 }
 
 export async function getAccountPreferences() {
@@ -281,10 +288,15 @@ export async function addTruck({ truck }: { truck: any }) {
 export async function addUser({ user }: { user: any }) {
   const resp = await prisma.user.create({
     data: {
+      id: user['ID'],
       email: user['Email'],
-      password: user['Password'],
-      orgId: user['Organization'],
+      firstName: user['First Name'],
+      lastName: user['Last Name'],
+      telCountry: user['Country Code'],
+      telephone: user['Phone Number'],
+      orgId: user['Oganization'],
       role: user['Role'],
+      imageURL: user['Image URL']
     },
   });
 }

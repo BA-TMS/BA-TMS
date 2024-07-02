@@ -19,10 +19,16 @@ async function main() {
     orgIds.push(resp.id);
   }
 
+  const a2zresp = await prisma.organization.upsert({
+    where: {name: a2zorg.name},
+    update: {},
+    create: a2zorg
+  });
+
   for (const currUser of users) {
     currUser.orgId = orgIds[userPos % orgIds.length];
     const resp = await prisma.user.upsert({
-      where: { email: currUser.email },
+      where: { id: currUser.id },
       update: {},
       create: currUser,
     });
@@ -185,15 +191,25 @@ const orgs = [
   },
 ];
 
+const a2zorg = {
+  name: 'A2Z Port',
+  address: '55 Place Street',
+  city: 'Long Beach',
+  state: 'CA',
+  postCountry: 'USA',
+  postCode: '90712',
+  telephone: '7373300444'
+};
+
 const users = [
   {
+    id: '11111',
     email: 'testuser1@org1.com',
-    password: 'test1234',
     orgId: null,
   },
   {
+    id: '2222',
     email: 'testuser2@org2.com',
-    password: 'test1234',
     orgId: null,
   },
 ];

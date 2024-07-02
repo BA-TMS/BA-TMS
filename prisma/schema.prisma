@@ -28,14 +28,18 @@ model Organization { // This is a collection of TMS users
 }
 
 model User { // Individual users at an organization
-  id            String        @id @default(uuid())
+  id            String        @id
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
   email         String        @unique
-  password      String
+  firstName     String        @default("Alex")
+  lastName      String        @default("Doe")
+  telCountry    String        @default("1")
+  telephone     String?
   organization  Organization  @relation(fields: [orgId], references: [id])
   orgId         String
   role          UserRole      @default(USER)
+  imageURL      String?
 }
 
 enum UserRole {
