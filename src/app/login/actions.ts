@@ -31,19 +31,38 @@ export async function login(formData: FormData) {
   }
 }
 
-// this function currently does not handle Name and Phone Number fields
-// those need to be stored in a different table
-export const signUp = async (email: string, password: string) => {
+interface NewUser {
+  firstName: string;
+  lastName: string;
+  email: string;
+  tel: string;
+  password: string;
+}
+
+export const signUp = async (data: NewUser) => {
   'use server';
+
+  console.log('form data', data);
+
+  const newData = {
+    email: data.email,
+    password: data.password,
+  };
 
   const origin = headers().get('origin');
   const supabase = createClient();
 
   const { error } = await supabase.auth.signUp({
-    email: email,
-    password: password,
+    email: newData.email,
+    password: newData.password,
     options: {
       emailRedirectTo: `${origin}/login`,
+      data: {
+        // sends this info to auth users table raw_user_metadata
+        first_name: data.firstName,
+        last_name: data.lastName,
+        phone_number: data.tel,
+      },
     },
   });
 

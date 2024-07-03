@@ -59,9 +59,9 @@ export default function Signup({
 
   const onSubmit = async (data: NewUser) => {
     try {
-      console.log(data);
+      console.log('data:', data);
 
-      await signUp(data.email, data.password);
+      await signUp(data);
     } catch (error) {
       console.log('Error submitting form:', error);
       setError('root', { message: 'Error Submitting Form - Please try Again' });
