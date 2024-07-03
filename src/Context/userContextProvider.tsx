@@ -55,15 +55,8 @@ export const UserContextProvider: React.FC<UserProviderProps> = ({
       } = await supabase.auth.getUser();
 
       const metadata = user?.user_metadata as UserMetadata;
-      console.log('metadata', metadata);
 
       setUserSession(metadata);
-
-      sessionStorage.setItem(
-        'name',
-        `${metadata?.first_name} ${metadata?.last_name}`
-      );
-      sessionStorage.setItem('role', metadata?.role ?? 'undefined');
     };
 
     fetchData();
