@@ -59,7 +59,7 @@ export default function Signup({
 
   const onSubmit = async (data: NewUser) => {
     try {
-      console.log('data:', data);
+      console.log('signup data:', data);
 
       await signUp(data);
     } catch (error) {

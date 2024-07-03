@@ -1,67 +1,77 @@
-'use client';
-// this creates a context to provide user session information to the app
-// so we do not have to call it in every component that needs the information
 import { createContext, useState, useEffect } from 'react';
-import { createClient } from '@/util/supabase/client';
-import { SupabaseUserSession } from '@/types/supabase';
-import { getUser } from '@/lib/dbActions';
-import User01 from '@/assets/User01.jpg';
+import { createClient } from '@util/supabase/client';
+// import { UserMetadata } from '@supabase/supabase-js';
+
+interface UserMetadata {
+  id: string | null;
+  email: string | null;
+  email_verified: boolean;
+  first_name: string | null;
+  last_name: string | null;
+  phone_number: string | null;
+  phone_verified: boolean;
+  sub: string | null;
+  role?: string;
+}
 
 interface UserProviderProps {
   children: React.ReactNode;
 }
 
-// default values are initial state to provide
-export const UserContext = createContext({
-  userSession: {
-    user: {
-      id: null,
-      email: null,
-      // add defaults for other properties if needed
-    },
-    expires_at: null,
-    access_token: null,
-    // Add other session-related properties as needed}
-  },
-  updateSession: (arg: any) => {},
+interface UserContextProps {
+  userSession: UserMetadata;
+  updateSession: (newValue: UserMetadata) => void;
+}
+
+// Default values are initial state to provide
+const defaultUserMetadata: UserMetadata = {
+  id: null,
+  email: null,
+  email_verified: false,
+  first_name: null,
+  last_name: null,
+  phone_number: null,
+  phone_verified: false,
+  sub: null,
+};
+
+export const UserContext = createContext<UserContextProps>({
+  userSession: defaultUserMetadata,
+  updateSession: () => {},
 });
 
 export const UserContextProvider: React.FC<UserProviderProps> = ({
   children,
 }) => {
-  // create instance of supabase
   const supabase = createClient();
 
-  const [userSession, setUserSession] = useState<any>(undefined); // should be a supabase session
+  const [userSession, setUserSession] =
+    useState<UserMetadata>(defaultUserMetadata);
 
   useEffect(() => {
-    const getUserProps = async(id: string) => {
-      const data = await getUser(id);
-      console.log(data);
-      sessionStorage.setItem('name', `${data?.firstName} ${data?.lastName}`);
-      sessionStorage.setItem('role', data.role);
-      if (data?.imageURL === 'NULL') {
-        sessionStorage.setItem('imageurl', '');
-      } else {
-        sessionStorage.setItem('imageurl', data.imageURL);
-      }
+    const fetchData = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      const metadata = user?.user_metadata as UserMetadata;
+      console.log('metadata', metadata);
+
+      setUserSession(metadata);
+
+      sessionStorage.setItem(
+        'name',
+        `${metadata?.first_name} ${metadata?.last_name}`
+      );
+      sessionStorage.setItem('role', metadata?.role ?? 'undefined');
     };
 
-    supabase.auth.getSession().then((session) => {
-      // console.log(session);
-      // do something here with the session if needed
-      getUserProps(session.data.session.user.id);
+    fetchData();
+  }, [supabase.auth]);
 
-      if (session.data.session !== null) {
-        setUserSession(session.data.session);
-      } else console.log('No user sesh');
-    });
-  }, []);
-
-  // not sure if this is correct/ relevant
-  const updateSession = (newValue: SupabaseUserSession) => {
+  const updateSession = (newValue: UserMetadata) => {
     console.log(newValue);
-    setUserSession({ ...userSession, newValue });
+    setUserSession({ ...userSession, ...newValue });
   };
 
   return (
