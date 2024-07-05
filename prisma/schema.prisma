@@ -70,16 +70,19 @@ model Load {
   originId      String?
   consignee     Consignee?    @relation(fields: [destId], references: [id])
   destId        String?
-  status        LoadStatus    @default(OPENED)
+  status        LoadStatus    @default(OPEN)
   @@unique([ownerId, loadNum])  // Loads can be numbered by user, but a user can't have two loads with the same number
 }
 
 enum LoadStatus {
-  OPENED
-  ASSIGNED
-  IN_TRANSIT
-  DELIVERED
-  PAID
+  PENDING
+  OPEN
+  REFUSED
+  COVERED
+  DISPATCHED
+  ON_ROUTE
+  LOADING_UNLOADING
+  IN_YARD
 }
 
 model Carrier {
