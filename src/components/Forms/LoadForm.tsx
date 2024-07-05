@@ -17,9 +17,28 @@ import {
   getShippers,
 } from '@/lib/dbActions';
 import DateSelect from '../UI_Elements/Form/DateSelect';
+import Button from '../UI_Elements/buttons/Button';
+import SelectInput from '../UI_Elements/Form/SelectInput';
+
+const status: string[] = [
+  // 'Pending',
+  // 'Open',
+  // 'Refused',
+  // 'Covered',
+  // 'Dispatched',
+  // 'On Route',
+  // '(Un)Loading',
+  // 'In Yard',
+  'OPENED',
+  'ASSIGNED',
+  'IN_TRANSIT',
+  'DELIVERED',
+  'PAID',
+];
 
 const loadSchema = yup.object({
-  Owner: yup.string(),
+  Owner: yup.string().required('Enter owner for this load'),
+  Status: yup.string().required('Enter status for this load'),
   'Load Number': yup.string().required('Enter load number for your records'),
   'Pay Order Number': yup.string().required('Enter PO number for your records'),
   Customer: yup.string().required('Enter customer for load'),
@@ -42,6 +61,7 @@ export const LoadForm = () => {
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<Load>({
     defaultValues: {
+      Status: '',
       'Load Number': '',
       'Pay Order Number': '',
       'Ship Date': undefined,
@@ -53,7 +73,6 @@ export const LoadForm = () => {
   const { toggleOpen } = useContext(ModalContext);
 
   const onSubmit = async (data: Load) => {
-    console.log(data); // see the data
     try {
       await addLoad({ load: data });
       console.log('load dispatched successfully');
@@ -71,119 +90,118 @@ export const LoadForm = () => {
   }, [isSubmitSuccessful, reset]);
 
   return (
-    <div className="flex flex-col gap-9">
-      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark w-full max-w-xl mx-auto overflow-y-auto max-h-screen">
-        <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-          <h3 className="font-medium text-black dark:text-white">New Load</h3>
-        </div>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="p-6.5">
-            <DynamicSelect
-              control={control}
-              name="Owner"
-              required={true}
-              dbaction={getOrganizations}
-            />
+    <section className="w-full h-full">
+      <header className="py-4 px-4.5 border-b border-grey-300 dark:border-grey-700">
+        <h6 className="subtitle1 text-grey-800 dark:text-white">New Load</h6>
+      </header>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col justify-between"
+      >
+        <p className="px-4.5 mt-3.5 mb-5 body2 text-grey-800 dark:text-white">
+          Set the details
+        </p>
+        <div className="px-4.5">
+          <DynamicSelect
+            control={control}
+            name="Owner"
+            required={true}
+            dbaction={getOrganizations}
+          />
 
-            <div className=" flex flex-col gap-6 xl:flex-row">
-              <div className="w-full xl:w-1/2">
-                <TextInput
-                  control={control}
-                  name="Load Number"
-                  required={true}
-                />
-              </div>
+          <div className="flex flex-col gap-5 xl:flex-row">
+            <div className="flex flex-col w-full xl:w-1/2">
+              <SelectInput
+                control={control}
+                name="Status"
+                options={status}
+                required={true}
+              />
 
-              <div className="w-full xl:w-1/2">
-                <TextInput
-                  control={control}
-                  name="Pay Order Number"
-                  required={true}
-                />
-              </div>
+              <TextInput control={control} name="Load Number" required={true} />
+
+              <TextInput
+                control={control}
+                name="Pay Order Number"
+                required={true}
+              />
+
+              <DynamicSelect
+                control={control}
+                name="Customer"
+                required={true}
+                dbaction={getCustomers}
+              />
+
+              <DateSelect control={control} name="Ship Date" required={false} />
             </div>
 
-            <DynamicSelect
-              control={control}
-              name="Customer"
-              required={true}
-              dbaction={getCustomers}
-            />
+            <div className="flex flex-col w-full xl:w-1/2">
+              <DynamicSelect
+                control={control}
+                name="Carrier"
+                required={true}
+                dbaction={getCarriers}
+              />
 
-            <DynamicSelect
-              control={control}
-              name="Driver"
-              required={false}
-              dbaction={getDrivers}
-            />
+              <DynamicSelect
+                control={control}
+                name="Driver"
+                required={false}
+                dbaction={getDrivers}
+              />
 
-            <DynamicSelect
-              control={control}
-              name="Carrier"
-              required={true}
-              dbaction={getCarriers}
-            />
+              <DynamicSelect
+                control={control}
+                name="Shipper"
+                required={false}
+                dbaction={getShippers}
+              />
 
-            <DynamicSelect
-              control={control}
-              name="Shipper"
-              required={false}
-              dbaction={getShippers}
-            />
+              <DynamicSelect
+                control={control}
+                name="Consignee"
+                required={false}
+                dbaction={getConsignees}
+              />
 
-            <DynamicSelect
-              control={control}
-              name="Consignee"
-              required={false}
-              dbaction={getConsignees}
-            />
-
-            <div className=" flex flex-col gap-6 xl:flex-row">
-              <div className="w-full xl:w-1/2">
-                <DateSelect
-                  control={control}
-                  name="Ship Date"
-                  required={false}
-                />
-              </div>
-
-              <div className="w-full xl:w-1/2">
-                <DateSelect
-                  control={control}
-                  name="Received Date"
-                  required={false}
-                />
-              </div>
-            </div>
-
-            <TextInput control={control} name="Notes" isTextArea={true} />
-            {errors.root && (
-              <p className="mb-5 text-danger">{errors.root.message}</p>
-            )}
-            <div className="flex justify-end">
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-1/4 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-80"
-              >
-                {isSubmitting ? 'Submitting' : 'Add'}
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  reset();
-                  toggleOpen();
-                }}
-                disabled={isSubmitting}
-                className="rounded bg-red p-3 font-medium text-gray ml-2 hover:bg-opacity-80"
-              >
-                Cancel
-              </button>
+              <DateSelect
+                control={control}
+                name="Received Date"
+                required={false}
+              />
             </div>
           </div>
-        </form>
-      </div>
-    </div>
+
+          <TextInput control={control} name="Notes" isTextArea={true} />
+          <div className="min-h-5">
+            {errors.root && (
+              <p className="caption mb-1 text-error-dark">
+                {errors.root.message}
+              </p>
+            )}
+          </div>
+        </div>
+        <div className="py-3.5 px-4.5 border-t border-grey-300 dark:border-grey-700 flex justify-end gap-2.5">
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Submitting' : 'Add'}
+          </Button>
+
+          <Button
+            type="button"
+            disabled={isSubmitting}
+            onClick={() => {
+              reset();
+              toggleOpen();
+            }}
+            variant="outline"
+            intent="default"
+          >
+            Cancel
+          </Button>
+        </div>
+      </form>
+    </section>
   );
 };
 

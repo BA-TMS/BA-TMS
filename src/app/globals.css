@@ -49,54 +49,8 @@
   @apply font-public font-bold text-text-xsm no-underline uppercase;
 }
 
-.box {
-  float: left;
-  height: 20px;
-  width: 20px;
-  margin-bottom: 15px;
-  border: 1px solid black;
-  clear: both;
-}
-
-.yellow {
-  background-color: yellow;
-}
-
-.red {
-  background-color: red;
-}
-
-.purple {
-  background-color: purple;
-}
-
-.blue {
-  background-color: #007fff;
-}
-
-.wine {
-  background-color: #4e0707;
-}
-
-.green {
-  background-color: green;
-}
-
-.gray {
-  background-color: gray;
-}
-
-.hotpink {
-  background-color: hotpink;
-}
-
-.effect1 {
-  transition: transform 0.3s, background-color 0.3s, color 0.3s;
-}
-.effect1:hover {
-  transform: scale(1.1);
-  background-color: #4caf50;
-  color: white;
+.pagetitle {
+  @apply font-public font-semibold text-text-xl text-black dark:text-white;
 }
 
 .custom-input-date::-webkit-calendar-picker-indicator {

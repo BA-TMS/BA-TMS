@@ -56,11 +56,7 @@ const Breadcrumbs = ({
   });
 
   return (
-    <ul
-      className={`bg-white dark:bg-grey-900 flex${
-        className ? ` ${className}` : ''
-      }`}
-    >
+    <ul className={`flex${className ? ` ${className}` : ''}`}>
       {breadcrumb('/', root)}
       {maybeSeparator(0)}
       {nonRootBreadcrumbs}

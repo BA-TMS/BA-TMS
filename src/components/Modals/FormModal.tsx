@@ -7,9 +7,9 @@ interface FormModalProps {
   children: ReactNode;
 }
 
-// The child elements will be displayed based on context isOpen
 const FormModal = ({ children }: FormModalProps) => {
-  const modalRef = useRef(null);
+  // const modalRef = useRef(null);
+  const modalRef = useRef<HTMLDivElement | null>(null);
 
   const { isOpen, toggleOpen } = useContext(ModalContext);
 
@@ -22,15 +22,18 @@ const FormModal = ({ children }: FormModalProps) => {
       // query all focusable elements within the modal using the querySelectorAll method.
       // This includes buttons, links, inputs, selects, textareas, and elements with explicit tabindex values.
       // TypeScript doesn't like when modalRef.current is null
-      const modalElement: any = modalRef.current;
+      // const modalElement: HTMLDivElement | null = modalRef.current;
+      const modalElement = modalRef.current as HTMLDivElement;
 
       const focusableElements = modalElement.querySelectorAll(
         'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-      );
+      ) as NodeListOf<HTMLElement>;
 
       // store the first and last focusable elements in firstElement and lastElement variables
-      const firstElement = focusableElements[0];
-      const lastElement = focusableElements[focusableElements.length - 1];
+      const firstElement = focusableElements[0] as HTMLElement;
+      const lastElement = focusableElements[
+        focusableElements.length - 1
+      ] as HTMLElement;
 
       // handleTabKeyPress event handler gets triggered when the “Tab” key is pressed.
       // by using event.shiftKey condition, the logic ensures that pressing the "Tab" key alone or with the "Shift" key behaves correctly for both forward and backward navigation within the focusable elements of the modal.
@@ -83,7 +86,9 @@ const FormModal = ({ children }: FormModalProps) => {
           ref={modalRef}
           className="fixed z-999999 top-0 left-0 flex h-full min-h-screen w-full items-start justify-center bg-black/90 px-4 py-5"
         >
-          <div className="max-w-142.5 rounded-lg bg-white">{children}</div>
+          <div className="my-auto w-[694px] h-5/6 overflow-auto rounded-[14.5px] border-grey-300 dark:border-grey-700 bg-white dark:bg-grey-900">
+            {children}
+          </div>
         </div>
       )}
     </div>
