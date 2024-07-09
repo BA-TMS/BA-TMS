@@ -4,6 +4,8 @@
 import { createContext, useState, useEffect } from 'react';
 import { createClient } from '@/util/supabase/client';
 import { SupabaseUserSession } from '@/types/supabase';
+import { getUser } from '@/lib/dbActions';
+import User01 from '@/assets/User01.jpg';
 
 interface UserProviderProps {
   children: React.ReactNode;
@@ -33,10 +35,22 @@ export const UserContextProvider: React.FC<UserProviderProps> = ({
   const [userSession, setUserSession] = useState<any>(undefined); // should be a supabase session
 
   useEffect(() => {
-    supabase.auth.getSession().then((session) => {
-      console.log(session);
+    const getUserProps = async(id: string) => {
+      const data = await getUser(id);
+      console.log(data);
+      sessionStorage.setItem('name', `${data?.firstName} ${data?.lastName}`);
+      sessionStorage.setItem('role', data.role);
+      if (data?.imageURL === 'NULL') {
+        sessionStorage.setItem('imageurl', '');
+      } else {
+        sessionStorage.setItem('imageurl', data.imageURL);
+      }
+    };
 
+    supabase.auth.getSession().then((session) => {
+      // console.log(session);
       // do something here with the session if needed
+      getUserProps(session.data.session.user.id);
 
       if (session.data.session !== null) {
         setUserSession(session.data.session);

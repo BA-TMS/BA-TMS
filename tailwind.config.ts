@@ -21,6 +21,9 @@ const config: Config = {
       primary: '#01C37A',
       'primary-light': '#80DEBC',
       'primary-dark': '#1B806A',
+      secondary: '#3366FF',
+      // 'secondary-light': '#',
+      'secondary-dark': '#1939B7',
       'grey-100': '#F9FAFB',
       'grey-200': '#F4F6F8',
       'grey-300': '#DFE3E8',
@@ -59,7 +62,6 @@ const config: Config = {
       bodydark: '#AEB7C0',
       bodydark1: '#DEE4EE',
       bodydark2: '#8A99AF',
-      secondary: '#80CAEE',
       stroke: '#E2E8F0',
       gray: '#EFF4FB',
       graydark: '#333A48',
@@ -108,6 +110,7 @@ const config: Config = {
         'button-md': ['14px', '24px'],
         'button-sm': ['13px', '22px'],
         'table-title': ['13px', '24px'],
+        'tab-label': ['12px', '20px'],
       },
       screens: {
         '2xsm': '375px',
@@ -263,6 +266,7 @@ const config: Config = {
         1: '1',
       },
       opacity: {
+        16: '.16',
         65: '.65',
       },
       aspectRatio: {
@@ -358,6 +362,9 @@ const config: Config = {
         'spin-1.5': 'spin 1.5s linear infinite',
         'spin-2': 'spin 2s linear infinite',
         'spin-3': 'spin 3s linear infinite',
+      },
+      borderRadius: {
+        'box-large': '0.884375rem',
       },
     },
   },

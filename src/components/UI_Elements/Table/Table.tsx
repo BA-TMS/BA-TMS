@@ -6,7 +6,7 @@ import TablePagination from './Pagination';
 interface TableColumn {
   field: string;
   headerName: string;
-  cellRenderer?: (value: any, row: any) => React.ReactNode;
+  cellRenderer?: (value: any) => React.ReactNode;
 }
 
 interface TableProps<T> {
@@ -66,7 +66,7 @@ const Table = <T extends { [key: string]: unknown }>({
                 {columns.map((column, index) => (
                   <td key={index} className="p-4">
                     {column.cellRenderer ? (
-                      column.cellRenderer(row[column.field], row)
+                      column.cellRenderer(row[column.field])
                     ) : (
                       <p
                         className={`${
