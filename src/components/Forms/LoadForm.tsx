@@ -20,20 +20,15 @@ import DateSelect from '../UI_Elements/Form/DateSelect';
 import Button from '../UI_Elements/buttons/Button';
 import SelectInput from '../UI_Elements/Form/SelectInput';
 
-const status: string[] = [
-  // 'Pending',
-  // 'Open',
-  // 'Refused',
-  // 'Covered',
-  // 'Dispatched',
-  // 'On Route',
-  // '(Un)Loading',
-  // 'In Yard',
-  'OPENED',
-  'ASSIGNED',
-  'IN_TRANSIT',
-  'DELIVERED',
-  'PAID',
+const status = [
+  'ON_ROUTE',
+  'OPEN',
+  'REFUSED',
+  'COVERED',
+  'PENDING',
+  'DISPATCHED',
+  'LOADING_UNLOADING',
+  'IN_YARD',
 ];
 
 const loadSchema = yup.object({
