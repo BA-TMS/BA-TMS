@@ -1,17 +1,6 @@
 'use client';
-import { ReactNode, useState, useContext } from 'react';
-//import 'primereact/resources/themes/lara-light-indigo/theme.css';
-
-// TESTING
-import Input from '../../../../../components/Settings-General/Input';
-import Form, { type FormHandle } from '@/components/Settings-General/Form';
-//import Button from '@/components/Settings-General/Button';
-import { useRef } from 'react';
-import ToggleButton from '@/components/Controls/ToggleButton';
-import Popup from 'reactjs-popup';
-import TableActionsPopover from '@/components/UI_Elements/Popovers/TableActions';
-import TablePagination from '@/components/UI_Elements/Pagination';
-import Table from '@/components/UI_Elements/Table';
+import { useState, useContext } from 'react';
+import Table from '@ui/Table/Table';
 import Searchbar from '@/components/UI_Elements/Searchbar';
 
 import { ModalContext } from '@/Context/modalContext';
