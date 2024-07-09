@@ -80,8 +80,10 @@ export async function getTrucks() {
   return trucks;
 }
 
-export async function getUsers() {
-  const users = prisma.user.findMany();
+export async function getUsers(parentOrg: string) {
+  const users = prisma.user.findMany({
+    where: {orgId: parentOrg}
+  });
   return users;
 }
 

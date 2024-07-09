@@ -5,6 +5,7 @@ import Loader from '@/components/common/Loader';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import Header from '@/components/Header/Header';
 import { UserContextProvider } from '@/Context/userContextProvider';
+import { ContextProvider } from '@/Context/modalContext';
 
 export default function Template({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
