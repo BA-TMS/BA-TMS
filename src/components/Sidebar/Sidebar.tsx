@@ -20,6 +20,8 @@ import {
   UserIcon,
 } from '@/assets/icons';
 import { Logo } from '@/assets/logo';
+import { useContext } from 'react';
+import { UserContext } from '@/Context/userContextProvider';
 
 const userOptions = [
   { name: 'Plans & Pricing', href: '#' },
@@ -49,6 +51,8 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
+  const { userSession } = useContext(UserContext);
+
   const pathname = usePathname();
 
   const trigger = useRef<HTMLButtonElement>(null);
@@ -117,7 +121,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           {LeftArrow}
         </button>
 
-        <ContentBlock />
+        <ContentBlock
+          firstName={userSession.first_name}
+          lastName={userSession.last_name}
+          role={userSession.role}
+        />
       </header>
 
       <section className="py-4 px-4 no-scrollbar flex flex-col gap-12 overflow-y-auto duration-300 ease-linear">
@@ -205,11 +213,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           </div>
         </nav>
       </section>
+
       {/* Support Contact Section */}
-      {/* update with user info */}
       <section className="px-4 py-4 mt-auto flex flex-col items-center justify-center">
         <h4 className="mb-3 mt-3 subtitle1 text-grey-600 dark:text-grey-300">
-          {`Hi, ${sessionStorage.getItem('name')}`}
+          {`Hi, ${userSession.first_name}`}
         </h4>
         <p className="mb-3 text-center body2 text-grey-600 dark:text-grey-300">
           Need Help? <br /> Please contact us.

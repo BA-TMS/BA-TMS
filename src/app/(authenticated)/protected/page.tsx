@@ -1,5 +1,5 @@
 import AuthButton from '@/components/Authentication/AuthButton';
-import { createClient } from '@/util/supabase/server';
+import { createClient } from '../../../../util/supabase/server';
 import FetchDataSteps from '@/components/tutorial/FetchDataSteps';
 import { redirect } from 'next/navigation';
 

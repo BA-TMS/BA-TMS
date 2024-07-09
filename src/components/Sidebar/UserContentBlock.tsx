@@ -1,16 +1,16 @@
 'use client';
+// import { useContext } from 'react';
+// import { UserContext } from '@/Context/userContextProvider';
 import Image from 'next/image';
 import User01 from '@/assets/User01.jpg';
 
-// update component with auth information:
-// user name
-// role
-const user = {
-  name: sessionStorage.getItem('name'),
-  role: sessionStorage.getItem('role'),
-};
+interface UserContentProps {
+  firstName: string | null;
+  lastName: string | null;
+  role: string | undefined;
+}
 
-const UserContentBlock = () => {
+const UserContentBlock = ({ firstName, lastName, role }: UserContentProps) => {
   return (
     <section className="flex items-center bg-grey-200 dark:bg-grey-700 w-60 h-19 rounded-xl py-4 px-5 overflow-hidden">
       <div className="relative w-10 h-10">
@@ -22,9 +22,11 @@ const UserContentBlock = () => {
         />
       </div>
       <div className="ml-4">
-        <p className="subtitle2 text-black dark:text-white">{user.name}</p>
+        <p className="subtitle2 text-black dark:text-white">
+          {`${firstName} ${lastName}`}
+        </p>
         <p className="font-public font-normal text-text-sm text-grey-500 ">
-          {user.role}
+          {role ? role : 'user'}
         </p>
       </div>
     </section>
