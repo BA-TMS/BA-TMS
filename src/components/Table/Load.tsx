@@ -41,15 +41,14 @@ type Load = {
 
 // colors to be used for status on the table
 const statusColors = {
-  ASSIGNED: 'info',
-  'On Route': 'warning',
-  Covered: 'warning',
-  OPENED: 'primary',
-  Refused: 'secondary',
-  Pending: 'error',
+  ON_ROUTE: 'warning',
+  COVERED: 'warning',
+  OPEN: 'primary',
+  REFUSED: 'secondary',
+  PENDING: 'error',
 };
 
-const getColorByStatus = (status) => {
+const getColorByStatus = (status: string) => {
   return statusColors[status] || 'text-grey-600 dark:text-white';
 };
 
@@ -81,7 +80,6 @@ const columns = [
 
 // info passed to tabs
 const tabsData: TabData[] = [
-  { color: 'info', value: 'Assigned' },
   { color: 'info', value: 'All' },
   { color: 'warning', value: 'On Route' },
   { color: 'primary', value: 'Open' },
@@ -170,9 +168,25 @@ export default function Load() {
   // count how many loads per status
   const getCount = (value: string) => {
     if (value === 'All') return loads.length;
-    const filtered = loads.filter((load) => {
-      return load.status === value.toUpperCase();
+
+    const statusMapping: { [key: string]: string } = {
+      'On Route': 'ON_ROUTE',
+      Open: 'OPEN',
+      Refused: 'REFUSED',
+      Covered: 'COVERED',
+      Pending: 'PENDING',
+      Dispatched: 'DISPATCHED',
+      '(Un)Loading': 'LOADING_UNLOADING',
+      'In Yard': 'IN_YARD',
+    };
+
+    const status = statusMapping[value];
+    console.log('status', status);
+
+    const filtered = loads.filter((load: { status: string }) => {
+      return load.status === status;
     });
+
     return filtered.length;
   };
 
