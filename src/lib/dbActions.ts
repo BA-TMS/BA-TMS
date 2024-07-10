@@ -228,6 +228,7 @@ export async function addLoad({ load }: { load: any }) {
       deliveryDate: load['Received Date']
     },
   });
+  return resp;
 }
 
 export async function addShipper({ shipper }: { shipper: any }) {
