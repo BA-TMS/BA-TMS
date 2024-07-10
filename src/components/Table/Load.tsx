@@ -159,8 +159,22 @@ export default function Load() {
       setFilteredLoads(loads);
       return;
     }
-    const filtered = loads.filter((load) => {
-      return load.status === value.toUpperCase();
+
+    const statusMapping: { [key: string]: string } = {
+      'On Route': 'ON_ROUTE',
+      Open: 'OPEN',
+      Refused: 'REFUSED',
+      Covered: 'COVERED',
+      Pending: 'PENDING',
+      Dispatched: 'DISPATCHED',
+      '(Un)Loading': 'LOADING_UNLOADING',
+      'In Yard': 'IN_YARD',
+    };
+
+    const status = statusMapping[value];
+
+    const filtered = loads.filter((load: { status: string }) => {
+      return load.status === status;
     });
     setFilteredLoads(filtered);
   };
@@ -181,7 +195,6 @@ export default function Load() {
     };
 
     const status = statusMapping[value];
-    console.log('status', status);
 
     const filtered = loads.filter((load: { status: string }) => {
       return load.status === status;
