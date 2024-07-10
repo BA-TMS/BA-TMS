@@ -9,7 +9,7 @@ import {
   SettingsIcon,
   UserIcon,
 } from '@/assets/SVGs';
-import { createClient } from '@/util/supabase/client';
+import { createClient } from '@util/supabase/client';
 import { useRouter } from 'next/navigation';
 import User01 from '@/assets/User01.jpg'; // replace with user uploaded image
 

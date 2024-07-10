@@ -12,6 +12,7 @@ const FormModal = ({ children }: FormModalProps) => {
   const modalRef = useRef<HTMLDivElement | null>(null);
 
   const { isOpen, toggleOpen } = useContext(ModalContext);
+  console.log('Modal is opened: ' + isOpen);
 
   // Define a useEffect hook inside the Modal component.
   // We will then check if the isOpen prop is true.
