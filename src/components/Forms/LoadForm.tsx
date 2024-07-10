@@ -21,14 +21,14 @@ import Button from '../UI_Elements/buttons/Button';
 import SelectInput from '../UI_Elements/Form/SelectInput';
 
 const status = [
-  'ON_ROUTE',
-  'OPEN',
-  'REFUSED',
-  'COVERED',
-  'PENDING',
-  'DISPATCHED',
-  'LOADING_UNLOADING',
-  'IN_YARD',
+  { 'On Route': 'ON_ROUTE' },
+  { Open: 'OPEN' },
+  { Refused: 'REFUSED' },
+  { Covered: 'COVERED' },
+  { Pending: 'PENDING' },
+  { Dispatched: 'DISPATCHED' },
+  { '(Un)Loading': 'LOADING_UNLOADING' },
+  // { 'In Yard': 'IN_YARD' },
 ];
 
 const loadSchema = yup.object({
