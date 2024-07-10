@@ -33,7 +33,7 @@ const status = [
 
 const loadSchema = yup.object({
   Owner: yup.string().required('Enter owner for this load'),
-  Status: yup.string().required('Enter status for this load'),
+  Status: yup.string(),
   'Load Number': yup.string().required('Enter load number for your records'),
   'Pay Order Number': yup.string().required('Enter PO number for your records'),
   Customer: yup.string().required('Enter customer for load'),
@@ -56,7 +56,6 @@ export const LoadForm = () => {
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<Load>({
     defaultValues: {
-      Status: '',
       'Load Number': '',
       'Pay Order Number': '',
       'Ship Date': undefined,
@@ -106,12 +105,7 @@ export const LoadForm = () => {
 
           <div className="flex flex-col gap-5 xl:flex-row">
             <div className="flex flex-col w-full xl:w-1/2">
-              <SelectInput
-                control={control}
-                name="Status"
-                options={status}
-                required={true}
-              />
+              <SelectInput control={control} name="Status" options={status} />
 
               <TextInput control={control} name="Load Number" required={true} />
 
