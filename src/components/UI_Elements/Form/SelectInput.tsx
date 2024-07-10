@@ -1,10 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { UseControllerProps, useController } from 'react-hook-form';
 
-// select input takes in an array as options prop
-// options are mapped to create dropdown <option> elements
+// select input takes in an array of objects
+// options are mapped to create dropdown <option> elements and values
+// this solves if the display name and the value will be different
+
+interface Options {
+  [key: string]: any;
+}
 
 interface SelectInputProps extends UseControllerProps {
-  options: any[];
+  options: Options[];
   control?: any;
   required?: boolean;
 }
@@ -29,9 +35,9 @@ const SelectInput = (props: SelectInputProps) => {
           className="block px-3 py-3.5 w-full body2 text-grey-800 dark:text-white bg-transparent rounded-[7px] border border-grey-400 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer"
         >
           <option value="">{`Select ${props.name}`}</option>
-          {props.options.map((option: any, index: number) => (
-            <option key={index} value={option}>
-              {option}
+          {props.options.map((option: Options, index: number) => (
+            <option key={index} value={Object.values(option)}>
+              {Object.keys(option)}
             </option>
           ))}
         </select>

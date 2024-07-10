@@ -20,25 +20,20 @@ import DateSelect from '../UI_Elements/Form/DateSelect';
 import Button from '../UI_Elements/buttons/Button';
 import SelectInput from '../UI_Elements/Form/SelectInput';
 
-const status: string[] = [
-  // 'Pending',
-  // 'Open',
-  // 'Refused',
-  // 'Covered',
-  // 'Dispatched',
-  // 'On Route',
-  // '(Un)Loading',
-  // 'In Yard',
-  'OPENED',
-  'ASSIGNED',
-  'IN_TRANSIT',
-  'DELIVERED',
-  'PAID',
+const status = [
+  { 'On Route': 'ON_ROUTE' },
+  { Open: 'OPEN' },
+  { Refused: 'REFUSED' },
+  { Covered: 'COVERED' },
+  { Pending: 'PENDING' },
+  { Dispatched: 'DISPATCHED' },
+  { '(Un)Loading': 'LOADING_UNLOADING' },
+  // { 'In Yard': 'IN_YARD' },
 ];
 
 const loadSchema = yup.object({
   Owner: yup.string().required('Enter owner for this load'),
-  Status: yup.string().required('Enter status for this load'),
+  Status: yup.string(),
   'Load Number': yup.string().required('Enter load number for your records'),
   'Pay Order Number': yup.string().required('Enter PO number for your records'),
   Customer: yup.string().required('Enter customer for load'),
@@ -61,7 +56,6 @@ export const LoadForm = () => {
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<Load>({
     defaultValues: {
-      Status: '',
       'Load Number': '',
       'Pay Order Number': '',
       'Ship Date': undefined,
@@ -111,12 +105,7 @@ export const LoadForm = () => {
 
           <div className="flex flex-col gap-5 xl:flex-row">
             <div className="flex flex-col w-full xl:w-1/2">
-              <SelectInput
-                control={control}
-                name="Status"
-                options={status}
-                required={true}
-              />
+              <SelectInput control={control} name="Status" options={status} />
 
               <TextInput control={control} name="Load Number" required={true} />
 
