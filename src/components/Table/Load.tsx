@@ -223,7 +223,7 @@ export default function Load() {
     };
 
     fetchLoads();
-  }, []);
+  }, [loads]);
 
   return (
     <>

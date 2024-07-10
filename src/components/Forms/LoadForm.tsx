@@ -19,6 +19,7 @@ import {
 import DateSelect from '../UI_Elements/Form/DateSelect';
 import Button from '../UI_Elements/buttons/Button';
 import SelectInput from '../UI_Elements/Form/SelectInput';
+import { useDispatch } from 'react-redux';
 
 const status = [
   { 'On Route': 'ON_ROUTE' },
@@ -48,6 +49,8 @@ const loadSchema = yup.object({
 type Load = yup.InferType<typeof loadSchema>;
 
 export const LoadForm = () => {
+  const dispatch = useDispatch();
+  const addLoadLocal = (data) => dispatch({ type: 'ADD_LOAD', payload: data });
   const {
     handleSubmit,
     setError,
@@ -68,7 +71,8 @@ export const LoadForm = () => {
 
   const onSubmit = async (data: Load) => {
     try {
-      await addLoad({ load: data });
+      const resp = await addLoad({ load: data });
+      addLoadLocal(resp);
       console.log('load dispatched successfully');
       toggleOpen();
     } catch (error) {
