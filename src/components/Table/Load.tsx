@@ -13,6 +13,8 @@ import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import { useDispatch, useSelector } from 'react-redux';
+
 dayjs.extend(customParseFormat);
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
@@ -91,7 +93,9 @@ const tabsData: TabData[] = [
 ];
 
 export default function Load() {
-  const [loads, setLoads] = useState<Load[]>([]);
+  const dispatch = useDispatch();
+  const loads = useSelector((state) => state.loads);
+  const setLoads = (data) => dispatch({ type: 'SET_LOADS', payload: data });
   const [filteredLoads, setFilteredLoads] = useState<Load[]>([]);
   const { toggleOpen } = useContext(ModalContext);
 
