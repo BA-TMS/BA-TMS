@@ -6,8 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import Link from 'next/link';
 import Button from '@/components/UI_Elements/buttons/Button';
-import Image from 'next/image';
-import Temp_Logo from '../../assets/Temp_Logo.png';
+import { Logo } from '@/assets/logo';
 import { signUp } from '@/app/login/actions';
 
 // error messages for yup-password validation
@@ -72,11 +71,9 @@ export default function Signup({
     <div className="flex justify-center items-center h-screen">
       <div className="border rounded-lg border-grey-300 p-10 w-full max-w-sm">
         <header className="flex flex-col justify-between items-center mb-3">
-          <Image src={Temp_Logo} alt="A2ZTMS Logo" priority />
+          {Logo}
           <h1 className="text-title-md dark:text-black mt-6"> Welcome </h1>
-          <p className="body2 dark:text-black mt-4">
-            Sign up to continue to A2ZTMS.
-          </p>
+          <p className="body2 dark:text-black mt-4">Sign up to continue.</p>
         </header>
 
         <form
