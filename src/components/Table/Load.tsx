@@ -95,20 +95,22 @@ export default function Load() {
   const loads = useSelector((state) => state.loads);
   const setLoads = (data) => dispatch({ type: 'SET_LOADS', payload: data });
   const [filteredLoads, setFilteredLoads] = useState<Load[]>([]);
+  const [searchByDateRangeStart, setSearchByDateRangeStart] = useState();
+  const [searchByDateRangeEnd, setSearchByDateRangeEnd] = useState();
+  const [handleSearchValue, setHandleSearchValue] = useState();
+  const [statusValue, setStatusValue] = useState();
   const { toggleOpen } = useContext(ModalContext);
 
   const handleClick = () => {
     toggleOpen();
   };
 
-  // specifically handling date range search
-  // shipped date is "start date" datepicker
-  // delivery date is "end date" datepicker
-  const searchByDateRange = (
-    startDate: dayjs.Dayjs | null = null,
-    endDate: dayjs.Dayjs | null = null
-  ) => {
-    const filtered = loads.filter((item) => {
+  function searchByDateRangeFilter(incLoads, startDate, endDate) {
+    if (!startDate && !endDate) {
+      return incLoads;
+    }
+
+    const filtered = incLoads.filter((item) => {
       const shippedDate = dayjs(item.shipDate);
       const deliveryDate = dayjs(item.deliveryDate);
 
@@ -125,12 +127,27 @@ export default function Load() {
       return isAfterStart && isBeforeEnd;
     });
 
-    setFilteredLoads(filtered);
+    return filtered;
+  }
+
+  // specifically handling date range search
+  // shipped date is "start date" datepicker
+  // delivery date is "end date" datepicker
+  const searchByDateRange = (
+    startDate: dayjs.Dayjs | null = null,
+    endDate: dayjs.Dayjs | null = null
+  ) => {
+    setSearchByDateRangeStart(startDate);
+    setSearchByDateRangeEnd(endDate);
+    setFilteredLoads(searchByDateRangeFilter(loads, startDate, endDate));
   };
 
-  // handling other search
-  const handleSearch = (value: string) => {
-    const filteredData = loads.filter(
+  function handleSearchFilter(incLoads, value) {
+    if (!handleSearchValue) {
+      return incLoads;
+    }
+
+    const filteredData = incLoads.filter(
       (load) =>
         load.id?.toLowerCase().includes(value.toLowerCase()) ||
         load.ownerId?.toLowerCase().includes(value.toLowerCase()) ||
@@ -150,14 +167,23 @@ export default function Load() {
         load.shipper?.toLowerCase().includes(value.toLowerCase()) ||
         load.consignee?.toLowerCase().includes(value.toLowerCase())
     );
+    return filteredData;
+  }
+
+  // handling other search
+  const handleSearch = (value: string) => {
+    setHandleSearchValue(value);
+    const filteredData = handleSearchFilter(loads, value);
     setFilteredLoads(filteredData);
   };
 
-  // handling status search
-  const searchByStatus = (value: string) => {
+  function searchByStatusFilter(incLoads, value) {
+    if (!value) {
+      return incLoads;
+    }
+
     if (value === 'All') {
-      setFilteredLoads(loads);
-      return;
+      return incLoads;
     }
 
     const statusMapping: { [key: string]: string } = {
@@ -173,10 +199,16 @@ export default function Load() {
 
     const status = statusMapping[value];
 
-    const filtered = loads.filter((load: { status: string }) => {
+    const filtered = incLoads.filter((load: { status: string }) => {
       return load.status === status;
     });
-    setFilteredLoads(filtered);
+    return filtered;
+  }
+
+  // handling status search
+  const searchByStatus = (value: string) => {
+    setStatusValue(value);
+    setFilteredLoads(searchByStatusFilter(loads, value));
   };
 
   // count how many loads per status
@@ -219,7 +251,19 @@ export default function Load() {
       }
 
       setLoads(data);
-      setFilteredLoads(data);
+      setFilteredLoads(
+        searchByStatusFilter(
+          handleSearchFilter(
+            searchByDateRangeFilter(
+              data,
+              searchByDateRangeStart,
+              searchByDateRangeEnd
+            ),
+            handleSearchValue
+          ),
+          statusValue
+        )
+      );
     };
 
     fetchLoads();
