@@ -203,27 +203,30 @@ export default function Load() {
     return filtered.length;
   };
 
+  const fetchLoads = async (loadSetter) => {
+    const data = await getLoads();
+    for (const load of data) {
+      // Pull strings out of relations and format dates.
+      if (load.shipDate) load.shipDate = load.shipDate.toDateString();
+      if (load.deliveryDate)
+        load.deliveryDate = load.deliveryDate.toDateString();
+      load.carrier = load.carrier.name;
+      if (load.driver) load.driver = load.driver.name;
+      load.customer = load.customer.name;
+      if (load.shipper) load.shipper = load.shipper.name;
+      if (load.consignee) load.consignee = load.consignee.name;
+    }
+
+    loadSetter(data);
+  };
+
   useEffect(() => {
-    const fetchLoads = async () => {
-      const data = await getLoads();
-      for (const load of data) {
-        // Pull strings out of relations and format dates.
-        if (load.shipDate) load.shipDate = load.shipDate.toDateString();
-        if (load.deliveryDate)
-          load.deliveryDate = load.deliveryDate.toDateString();
-        load.carrier = load.carrier.name;
-        if (load.driver) load.driver = load.driver.name;
-        load.customer = load.customer.name;
-        if (load.shipper) load.shipper = load.shipper.name;
-        if (load.consignee) load.consignee = load.consignee.name;
-      }
-
-      setLoads(data);
-      setFilteredLoads(data);
-    };
-
-    fetchLoads();
+    fetchLoads(setLoads);
   }, [loads]);
+
+  useEffect(() => {
+    fetchLoads(setFilteredLoads);
+  }, []);
 
   return (
     <>
