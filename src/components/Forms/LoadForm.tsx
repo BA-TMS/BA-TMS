@@ -20,6 +20,7 @@ import DateSelect from '../UI_Elements/Form/DateSelect';
 import Button from '../UI_Elements/buttons/Button';
 import SelectInput from '../UI_Elements/Form/SelectInput';
 import { useDispatch } from 'react-redux';
+import { createLoad } from '@/store/slices/loadSlice';
 
 const status = [
   { 'On Route': 'ON_ROUTE' },
@@ -69,15 +70,15 @@ export const LoadForm = () => {
 
   const { toggleOpen } = useContext(ModalContext);
 
+  // Form submission handler
   const onSubmit = async (data: Load) => {
     try {
-      const resp = await addLoad({ load: data });
-      addLoadLocal(resp);
-      console.log('load dispatched successfully');
+      await dispatch(createLoad(data)).unwrap();
+      reset();
       toggleOpen();
     } catch (error) {
-      console.log('Error submitting form:', error);
-      setError('root', { message: 'Error Submitting Form - Please try Again' });
+      // Handle submission error (e.g., show a message)
+      console.error('Error creating load:', error);
     }
   };
 
