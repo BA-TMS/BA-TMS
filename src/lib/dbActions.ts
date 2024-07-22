@@ -43,6 +43,16 @@ export async function getFactor() {
   return factor;
 }
 
+export async function getLoad(id) {
+  const load = await prisma.load.findUnique({
+    where: {
+      id: id,
+    },
+  });
+  console.log('get load', load);
+  return load;
+}
+
 export async function getLoads() {
   const relations = {
     carrier: { select: { name: true } },
@@ -82,15 +92,13 @@ export async function getTrucks() {
 
 export async function getUsers(parentOrg: string) {
   const users = prisma.user.findMany({
-    where: {orgId: parentOrg}
+    where: { orgId: parentOrg },
   });
   return users;
 }
 
 export async function getUser(targetId: string) {
-  const user = prisma.user.findUnique(
-    {where: {id: targetId}}
-  );
+  const user = prisma.user.findUnique({ where: { id: targetId } });
   return user;
 }
 
@@ -225,7 +233,7 @@ export async function addLoad({ load }: { load: any }) {
       destId: load['Consignee'],
       status: load['Status'],
       shipDate: load['Ship Date'],
-      deliveryDate: load['Received Date']
+      deliveryDate: load['Received Date'],
     },
   });
   return resp;
@@ -299,7 +307,7 @@ export async function addUser({ user }: { user: any }) {
       telephone: user['Phone Number'],
       orgId: user['Oganization'],
       role: user['Role'],
-      imageURL: user['Image URL']
+      imageURL: user['Image URL'],
     },
   });
 }
