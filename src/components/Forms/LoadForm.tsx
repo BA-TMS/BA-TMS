@@ -19,6 +19,8 @@ import {
 import DateSelect from '../UI_Elements/Form/DateSelect';
 import Button from '../UI_Elements/buttons/Button';
 import SelectInput from '../UI_Elements/Form/SelectInput';
+import { useDispatch } from 'react-redux';
+import { createLoad } from '@/store/slices/loadSlice';
 
 const status = [
   { 'On Route': 'ON_ROUTE' },
@@ -48,6 +50,8 @@ const loadSchema = yup.object({
 type Load = yup.InferType<typeof loadSchema>;
 
 export const LoadForm = () => {
+  const dispatch = useDispatch();
+  const addLoadLocal = (data) => dispatch({ type: 'ADD_LOAD', payload: data });
   const {
     handleSubmit,
     setError,
@@ -66,14 +70,15 @@ export const LoadForm = () => {
 
   const { toggleOpen } = useContext(ModalContext);
 
+  // Form submission handler
   const onSubmit = async (data: Load) => {
     try {
-      await addLoad({ load: data });
-      console.log('load dispatched successfully');
+      await dispatch(createLoad(data)).unwrap();
+      reset();
       toggleOpen();
     } catch (error) {
-      console.log('Error submitting form:', error);
-      setError('root', { message: 'Error Submitting Form - Please try Again' });
+      // Handle submission error (e.g., show a message)
+      console.error('Error creating load:', error);
     }
   };
 

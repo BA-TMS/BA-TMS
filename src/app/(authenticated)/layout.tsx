@@ -8,7 +8,7 @@ import { UserContextProvider } from '@/Context/userContextProvider';
 import { ContextProvider } from '@/Context/modalContext';
 
 import { Provider } from 'react-redux';
-import store from '@/redux/store';
+import store from '@/store/store';
 
 export default function Template({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
