@@ -49,7 +49,6 @@ export async function getLoad(id) {
       id: id,
     },
   });
-  console.log('get load', load);
   return load;
 }
 
@@ -352,7 +351,26 @@ export async function updateDriver(
 }
 
 export async function updateLoad(id: number, { formData }: { formData: any }) {
-  const resp = updater(prisma.load, id, formData);
+  // map to convert formData keys to database keys
+  const mapLoadData = (load: any) => {
+    return {
+      ownerId: load['Owner'],
+      loadNum: load['Load Number'],
+      payOrderNum: load['Pay Order Number'],
+      carrierId: load['Carrier'],
+      driverId: load['Driver'],
+      customerId: load['Customer'],
+      originId: load['Shipper'],
+      destId: load['Consignee'],
+      status: load['Status'],
+      shipDate: load['Ship Date'],
+      deliveryDate: load['Received Date'],
+    };
+  };
+
+  const mappedData = mapLoadData(formData);
+  const resp = await updater(prisma.load, id, mappedData);
+  return resp;
 }
 
 export async function updateShipper(

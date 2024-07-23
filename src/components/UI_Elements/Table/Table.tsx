@@ -13,11 +13,13 @@ interface TableColumn {
 interface TableProps<T> {
   columns: TableColumn[];
   data: T[];
+  update: any; // function for updating table entry
 }
 
 const Table = <T extends { [key: string]: unknown }>({
   columns,
   data,
+  update,
 }: TableProps<T>) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [postsPerPage, setPostsPerPage] = useState(5);
@@ -82,7 +84,10 @@ const Table = <T extends { [key: string]: unknown }>({
                   </td>
                 ))}
                 <td>
-                  <TableActionsPopover id={row['id'] as string} />
+                  <TableActionsPopover
+                    id={row['id'] as string}
+                    update={update}
+                  />
                 </td>
               </tr>
             ))}

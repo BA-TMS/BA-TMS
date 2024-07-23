@@ -14,6 +14,7 @@ import {
   getDrivers,
   getOrganizations,
   getShippers,
+  updateLoad,
 } from '@/lib/dbActions';
 import DateSelect from '../UI_Elements/Form/DateSelect';
 import Button from '../UI_Elements/buttons/Button';
@@ -35,13 +36,13 @@ const status = [
 const loadSchema = yup.object({
   Owner: yup.string().required('Enter owner for this load'),
   Status: yup.string(),
-  'Load Number': yup.string().required('Enter load number for your records'),
-  'Pay Order Number': yup.string().required('Enter PO number for your records'),
+  'Load Number': yup.string().required('Enter load number for your records'), // do we need a max number of characters?
+  'Pay Order Number': yup.string().required('Enter PO number for your records'), // do we need a max number of characters?
   Customer: yup.string().required('Enter customer for load'),
-  Driver: yup.string(),
+  Driver: yup.string().nullable(),
   Carrier: yup.string().required('Who will be carrying this load?'),
-  Shipper: yup.string(),
-  Consignee: yup.string(),
+  Shipper: yup.string().nullable(),
+  Consignee: yup.string().nullable(),
   'Ship Date': yup.date().nullable(),
   'Received Date': yup.date().nullable(),
 });
@@ -50,7 +51,7 @@ type Load = yup.InferType<typeof loadSchema>;
 
 export const LoadForm = () => {
   const dispatch = useDispatch();
-  const addLoadLocal = (data) => dispatch({ type: 'ADD_LOAD', payload: data });
+  // const addLoadLocal = (data) => dispatch({ type: 'ADD_LOAD', payload: data }); // outdated?
   const {
     setValue,
     handleSubmit,
@@ -84,20 +85,30 @@ export const LoadForm = () => {
       setValue('Consignee', data['destId']);
       setValue('Ship Date', data['shipDate']);
       setValue('Received Date', data['deliveryDate']);
-      // submit updated data - modify submit handler?
-      // close modal
     }
   }, [data, setValue]);
 
   // Form submission handler
-  const onSubmit = async (data: Load) => {
-    try {
-      await dispatch(createLoad(data)).unwrap();
-      reset();
-      toggleOpen();
-    } catch (error) {
-      // Handle submission error (e.g., show a message)
-      console.error('Error creating load:', error);
+  // submit updated data - modify submit handler?
+  // close modal
+  const onSubmit = async (load: Load) => {
+    if (data === null) {
+      try {
+        await dispatch(createLoad(load)).unwrap();
+        reset();
+        toggleOpen();
+      } catch (error) {
+        // Handle submission error (e.g., show a message)
+        console.error('Error creating load:', error);
+      }
+    } else {
+      try {
+        await updateLoad(data['id'], { formData: load }); // replace with redux action
+        reset();
+        toggleOpen();
+      } catch (error) {
+        console.error('Error updating load:', error);
+      }
     }
   };
 
