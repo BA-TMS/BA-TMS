@@ -8,7 +8,6 @@ import TextInput from '../UI_Elements/Form/TextInput';
 import DynamicSelect from '../UI_Elements/Form/DynamicSelect';
 import { ModalContext } from '@/Context/modalContext';
 import {
-  addLoad,
   getCarriers,
   getConsignees,
   getCustomers,
@@ -53,6 +52,7 @@ export const LoadForm = () => {
   const dispatch = useDispatch();
   const addLoadLocal = (data) => dispatch({ type: 'ADD_LOAD', payload: data });
   const {
+    setValue,
     handleSubmit,
     setError,
     reset,
@@ -68,7 +68,27 @@ export const LoadForm = () => {
     resolver: yupResolver(loadSchema),
   });
 
-  const { toggleOpen } = useContext(ModalContext);
+  const { toggleOpen, data } = useContext(ModalContext);
+
+  useEffect(() => {
+    if (data !== null) {
+      // populate form with data
+      // there has got to be another way to do this
+      setValue('Owner', data['ownerId']);
+      setValue('Status', data['status']);
+      setValue('Load Number', data['loadNum']);
+      setValue('Pay Order Number', data['payOrderNum']);
+      setValue('Customer', data['customerId']);
+      setValue('Driver', data['driverId']);
+      setValue('Carrier', data['carrierId']);
+      setValue('Shipper', data['shipper']); // having issues getting this info
+      setValue('Consignee', data['consignee']); // having issues getting this info
+      setValue('Ship Date', data['shipDate']);
+      setValue('Received Date', data['deliveryDate']);
+      // submit updated data - modify submit handler?
+      // close modal
+    }
+  }, [data, setValue]);
 
   // Form submission handler
   const onSubmit = async (data: Load) => {
