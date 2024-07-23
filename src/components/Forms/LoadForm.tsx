@@ -72,8 +72,7 @@ export const LoadForm = () => {
 
   useEffect(() => {
     if (data !== null) {
-      // populate form with data
-      // there has got to be another way to do this
+      // populate form with data- there has got to be another way to do this?
       setValue('Owner', data['ownerId']);
       setValue('Status', data['status']);
       setValue('Load Number', data['loadNum']);
@@ -81,8 +80,8 @@ export const LoadForm = () => {
       setValue('Customer', data['customerId']);
       setValue('Driver', data['driverId']);
       setValue('Carrier', data['carrierId']);
-      setValue('Shipper', data['shipper']); // having issues getting this info
-      setValue('Consignee', data['consignee']); // having issues getting this info
+      setValue('Shipper', data['originId']);
+      setValue('Consignee', data['destId']);
       setValue('Ship Date', data['shipDate']);
       setValue('Received Date', data['deliveryDate']);
       // submit updated data - modify submit handler?

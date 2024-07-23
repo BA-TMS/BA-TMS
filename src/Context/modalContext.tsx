@@ -24,7 +24,6 @@ export const ContextProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   function toggleOpen(data = null) {
     if (data !== null) {
       setData(data);
-      console.log('toggle modal data', data);
     }
     setIsOpen(!isOpen);
   }
