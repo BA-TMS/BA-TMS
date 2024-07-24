@@ -350,9 +350,13 @@ export async function updateDriver(
   const resp = updater(prisma.driver, id, formData);
 }
 
-export async function updateLoad(id: number, { formData }: { formData: any }) {
+export async function updateLoad(id: string, { formData }: { formData: any }) {
   // map to convert formData keys to database keys
   const mapLoadData = (load: any) => {
+    if (!load) {
+      throw new Error('Load data is undefined or null');
+    }
+
     return {
       ownerId: load['Owner'],
       loadNum: load['Load Number'],

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { useState } from 'react';
 import TableActionsPopover from '@ui/Popovers/TableActions';
@@ -6,7 +7,6 @@ import TablePagination from './Pagination';
 interface TableColumn {
   field: string;
   headerName: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   cellRenderer?: (value: any) => React.ReactNode;
 }
 

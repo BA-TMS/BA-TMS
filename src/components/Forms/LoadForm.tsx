@@ -14,13 +14,13 @@ import {
   getDrivers,
   getOrganizations,
   getShippers,
-  updateLoad,
+  // updateLoad,
 } from '@/lib/dbActions';
 import DateSelect from '../UI_Elements/Form/DateSelect';
 import Button from '../UI_Elements/buttons/Button';
 import SelectInput from '../UI_Elements/Form/SelectInput';
 import { useDispatch } from 'react-redux';
-import { createLoad } from '@/store/slices/loadSlice';
+import { createLoad, updateLoad } from '@/store/slices/loadSlice';
 
 const status = [
   { 'On Route': 'ON_ROUTE' },
@@ -51,11 +51,11 @@ type Load = yup.InferType<typeof loadSchema>;
 
 export const LoadForm = () => {
   const dispatch = useDispatch();
-  // const addLoadLocal = (data) => dispatch({ type: 'ADD_LOAD', payload: data }); // outdated?
+
   const {
     setValue,
     handleSubmit,
-    setError,
+    // setError,
     reset,
     control,
     formState: { errors, isSubmitting, isSubmitSuccessful },
@@ -89,8 +89,6 @@ export const LoadForm = () => {
   }, [data, setValue]);
 
   // Form submission handler
-  // submit updated data - modify submit handler?
-  // close modal
   const onSubmit = async (load: Load) => {
     if (data === null) {
       try {
@@ -98,12 +96,16 @@ export const LoadForm = () => {
         reset();
         toggleOpen();
       } catch (error) {
-        // Handle submission error (e.g., show a message)
         console.error('Error creating load:', error);
       }
     } else {
       try {
-        await updateLoad(data['id'], { formData: load }); // replace with redux action
+        console.log('ID', data['id']);
+        console.log('load', load);
+        await dispatch(
+          updateLoad({ id: data['id'], updatedLoad: load })
+        ).unwrap();
+
         reset();
         toggleOpen();
       } catch (error) {
