@@ -20,7 +20,7 @@ const Table = <T extends { [key: string]: unknown }>({
   data,
 }: TableProps<T>) => {
   const [currentPage, setCurrentPage] = useState(0);
-  const [postsPerPage, setPostsPerPage] = useState(5);
+  const [postsPerPage, setPostsPerPage] = useState(25);
 
   const indexOfLastPost = (currentPage + 1) * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
