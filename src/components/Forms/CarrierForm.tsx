@@ -9,8 +9,10 @@ import TextInput from '../UI_Elements/Form/TextInput';
 import SelectInput from '../UI_Elements/Form/SelectInput';
 import DynamicSelect from '../UI_Elements/Form/DynamicSelect';
 import { usStates } from '@/components/Forms/data/states';
-import { addCarrier, getFactor } from '@/lib/dbActions';
+import { getFactor } from '@/lib/dbActions';
 import { ModalContext } from '@/Context/modalContext';
+import { createCarrier } from '@/store/slices/carrierSlice';
+import { useDispatch } from 'react-redux';
 
 const carrierSchema = yup.object({
   'Carrier Name': yup.string().required('Carrier Name is required'),
@@ -45,6 +47,7 @@ const carrierSchema = yup.object({
 type Carrier = yup.InferType<typeof carrierSchema>;
 
 export const CarrierForm = () => {
+  const dispatch = useDispatch();
   const {
     handleSubmit,
     setError,
@@ -73,34 +76,18 @@ export const CarrierForm = () => {
   const { toggleOpen } = useContext(ModalContext);
 
   const onSubmit = async (data: Carrier) => {
-    console.log(data);
     try {
-      await addCarrier({ carrier: data });
-      console.log('Carrier added successfully');
+      await dispatch(createCarrier(data)).unwrap();
+      reset();
       toggleOpen();
     } catch (error) {
-      console.log('Error submitting form:', error);
-      setError('root', { message: 'Error Submitting Form - Please try Again' });
+      console.error('Error submitting carrier create form:', error);
     }
   };
 
   useEffect(() => {
     if (isSubmitSuccessful) {
-      reset({
-        'Carrier Name': '',
-        Address: '',
-        'Address Line 2': '',
-        City: '',
-        State: '',
-        Zip: '',
-        Country: '',
-        'Country Code': '',
-        'Phone Number': '',
-        'DOT ID': '',
-        'Factor ID': '',
-        'Tax ID': '',
-        Notes: '',
-      });
+      reset({});
     }
   }, [isSubmitSuccessful, reset]);
 

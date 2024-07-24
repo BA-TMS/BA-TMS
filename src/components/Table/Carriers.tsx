@@ -51,9 +51,9 @@ export default function Carriers() {
     error
   } = useSelector((state: RootState) => state.carriers);
 
-  const handleClick = () => {
-    toggleOpen();
-  };
+  // const handleClick = () => {
+  //   toggleOpen();
+  // };
 
   useEffect(() => {
     dispatch(fetchCarriers());

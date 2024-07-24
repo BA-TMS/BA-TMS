@@ -9,6 +9,14 @@ export const fetchCarriers = createAsyncThunk(
   }
 );
 
+export const createCarrier = createAsyncThunk(
+  'carriers/createCarrier',
+  async (carrier: any) => {
+    const newCarrier = await addCarrier({ carrier });
+    return newCarrier;
+  }
+);
+
 const carrierSlice = createSlice({
   name: 'carriers',
   initialState: {
@@ -29,6 +37,9 @@ const carrierSlice = createSlice({
       .addCase(fetchCarriers.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
+      })
+      .addCase(createCarrier.fulfilled, (state, action) => {
+        state.items.push(action.payload);
       });
   },
 });
