@@ -1,12 +1,14 @@
 'use client';
 
 import { useState, useEffect, useContext } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { ModalContext } from '@/Context/modalContext';
-import { getCarriers } from '@/lib/dbActions';
 import CarrierForm from '../Forms/CarrierForm';
 import FormModal from '@/components/Modals/FormModal';
 import Table from '../UI_Elements/Table/Table';
 import Button from '../UI_Elements/buttons/Button';
+import { fetchCarriers } from '@/store/slices/carrierSlice';
+import { AppDispatch, RootState } from '@/store/store';
 
 type Carrier = {
   name: string;
@@ -40,23 +42,22 @@ const columns = [
 ];
 
 export default function Carriers() {
-  const [carriers, setCarriers] = useState<Carrier[]>([]);
-
+  const dispatch = useDispatch<AppDispatch>();
   const { toggleOpen } = useContext(ModalContext);
+
+  const {
+    items: carriers,
+    status,
+    error
+  } = useSelector((state: RootState) => state.carriers);
 
   const handleClick = () => {
     toggleOpen();
   };
 
-  // data fetched and passed to Table
   useEffect(() => {
-    const fetchDrivers = async () => {
-      const data = await getCarriers();
-      setCarriers(data);
-    };
-
-    fetchDrivers();
-  }, []);
+    dispatch(fetchCarriers());
+  }, [dispatch]);
 
   return (
     <>
