@@ -39,7 +39,7 @@ export default function TablePagination({
   return (
     <tr className="body2 text-grey-800 dark:text-grey-200">
       <CustomTablePagination
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={[25, 50, 100]}
         count={length}
         rowsPerPage={postsPerPage}
         page={currentPage}
