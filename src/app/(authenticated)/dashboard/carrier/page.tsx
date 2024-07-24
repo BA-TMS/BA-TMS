@@ -5,12 +5,13 @@
 import { ContextProvider } from '@/Context/modalContext';
 import Carriers from '@/components/Table/Carriers';
 
-export default function Home() {
+export default function CarrierPage() {
   return (
-    <>
-      <ContextProvider>
+    <ContextProvider>
+      <div className="px-10 py-11.5 bg-grey-100 dark:bg-grey-800">
+        <h1 className='pagetitle'>Available Carriers</h1>
         <Carriers />
-      </ContextProvider>
-    </>
+      </div>
+    </ContextProvider>
   );
 }
