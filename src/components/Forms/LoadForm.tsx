@@ -14,7 +14,6 @@ import {
   getDrivers,
   getOrganizations,
   getShippers,
-  // updateLoad,
 } from '@/lib/dbActions';
 import DateSelect from '../UI_Elements/Form/DateSelect';
 import Button from '../UI_Elements/buttons/Button';
@@ -72,8 +71,10 @@ export const LoadForm = () => {
   const { toggleOpen, data } = useContext(ModalContext);
 
   useEffect(() => {
-    if (data !== null) {
-      // populate form with data- there has got to be another way to do this?
+    console.log('context data', data);
+    // if data is not a synthetic event
+    if (data['id']) {
+      // populate form with data from context
       setValue('Owner', data['ownerId']);
       setValue('Status', data['status']);
       setValue('Load Number', data['loadNum']);
@@ -90,7 +91,8 @@ export const LoadForm = () => {
 
   // Form submission handler
   const onSubmit = async (load: Load) => {
-    if (data === null) {
+    if (!data['id']) {
+      // if data does not have this property, we are creating a new load
       try {
         await dispatch(createLoad(load)).unwrap();
         reset();
@@ -100,8 +102,6 @@ export const LoadForm = () => {
       }
     } else {
       try {
-        console.log('ID', data['id']);
-        console.log('load', load);
         await dispatch(
           updateLoad({ id: data['id'], updatedLoad: load })
         ).unwrap();
