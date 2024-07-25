@@ -19,6 +19,7 @@ import DateSelect from '../UI_Elements/Form/DateSelect';
 import Button from '../UI_Elements/buttons/Button';
 import SelectInput from '../UI_Elements/Form/SelectInput';
 import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/store/store';
 import { createLoad, updateLoad } from '@/store/slices/loadSlice';
 
 const status = [
@@ -49,7 +50,7 @@ const loadSchema = yup.object({
 type Load = yup.InferType<typeof loadSchema>;
 
 export const LoadForm = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const {
     setValue,
@@ -73,7 +74,7 @@ export const LoadForm = () => {
   useEffect(() => {
     console.log('context data', data);
     // if data is not a synthetic event
-    if (data['id']) {
+    if (data !== null && data['id']) {
       // populate form with data from context
       setValue('Owner', data['ownerId']);
       setValue('Status', data['status']);
@@ -91,8 +92,8 @@ export const LoadForm = () => {
 
   // Form submission handler
   const onSubmit = async (load: Load) => {
-    if (!data['id']) {
-      // if data does not have this property, we are creating a new load
+    if (data !== null && !data['id']) {
+      // if data does not have id property, we are creating a new load
       try {
         await dispatch(createLoad(load)).unwrap();
         reset();

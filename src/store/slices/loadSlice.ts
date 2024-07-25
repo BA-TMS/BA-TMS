@@ -7,14 +7,14 @@ import {
 } from '@/lib/dbActions';
 
 interface Load {
-  id: number;
-  ownerId: number;
-  loadNum: number;
-  carrierId: number;
-  driverId: number | null;
-  customerId: number;
-  originId: number | null;
-  destId: number | null;
+  id: string;
+  ownerId: string;
+  loadNum: string;
+  carrierId: string;
+  driverId: string | null;
+  customerId: string;
+  originId: string | null;
+  destId: string | null;
   status: string;
   shipDate: Date | null;
   deliveryDate: Date | null;
@@ -54,9 +54,14 @@ export const fetchLoads = createAsyncThunk<Load[]>(
   }
 );
 
+// export const createLoad = createAsyncThunk('loads/createLoad', async (load) => {
+//   const newLoad = await apiAddLoad({ load });
+//   return newLoad;
+// });
+
 export const createLoad = createAsyncThunk<Load, Load>(
   'loads/createLoad',
-  async (load: Load) => {
+  async (load) => {
     const newLoad = await apiAddLoad({ load });
     return newLoad;
   }
