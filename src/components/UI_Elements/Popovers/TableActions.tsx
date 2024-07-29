@@ -1,15 +1,17 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-
+import Button from '@ui/buttons/Button';
 import { EditIcon, ElipsisVertical, DeleteIcon } from '@/assets/SVGs';
 
 type TableActionsProps = {
   id: string;
+  deleter: (id: string) => void; // delete function
 };
 
 // pass this component an id from the table it is used in
+// pass this component a delete action that makes use of the id
 
-const TableActionsPopover: React.FC<TableActionsProps> = ({ id }) => {
+const TableActionsPopover: React.FC<TableActionsProps> = ({ id, deleter }) => {
   const [popoversOpen, setPopoversOpen] = useState(false);
 
   const trigger = useRef<HTMLButtonElement | null>(null);
@@ -72,13 +74,15 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({ id }) => {
             </Link>
           </div>
           <div className="flex flex-wrap">
-            <Link
-              href="#" // delete
-              className="flex w-full gap-2  py-3 hover:text-primary"
+            <Button
+              onClick={() => {
+                deleter(id); // delete entry from db at this id
+              }}
+              className="flex w-full gap-2 border-b border-grey-200 dark:border-grey-700 py-3 hover:text-primary"
             >
               <span>{DeleteIcon}</span>
               Delete
-            </Link>
+            </Button>
           </div>
         </div>
       </div>

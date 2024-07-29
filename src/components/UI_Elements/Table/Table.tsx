@@ -13,11 +13,13 @@ interface TableColumn {
 interface TableProps<T> {
   columns: TableColumn[];
   data: T[];
+  deleter: any; // is a database action function
 }
 
 const Table = <T extends { [key: string]: unknown }>({
   columns,
   data,
+  deleter,
 }: TableProps<T>) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [postsPerPage, setPostsPerPage] = useState(5);
@@ -82,7 +84,10 @@ const Table = <T extends { [key: string]: unknown }>({
                   </td>
                 ))}
                 <td>
-                  <TableActionsPopover id={row['id'] as string} />
+                  <TableActionsPopover
+                    id={row['id'] as string}
+                    deleter={deleter}
+                  />
                 </td>
               </tr>
             ))}

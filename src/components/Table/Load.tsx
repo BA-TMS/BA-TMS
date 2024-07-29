@@ -15,6 +15,7 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import { fetchLoads } from '@/store/slices/loadSlice';
 import { AppDispatch, RootState } from '@/store/store';
+import { deleteLoad } from '@/lib/dbActions';
 
 dayjs.extend(customParseFormat);
 dayjs.extend(isSameOrBefore);
@@ -220,7 +221,7 @@ const Load = () => {
         }}
         placeholder={'Search client or invoice number...'}
       />
-      <Table columns={columns} data={filteredLoads} />
+      <Table columns={columns} data={filteredLoads} deleter={deleteLoad} />
     </>
   );
 };
