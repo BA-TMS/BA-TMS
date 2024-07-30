@@ -29,12 +29,13 @@ export const createLoad = createAsyncThunk(
   }
 );
 
-export const deleteLoad = createAsyncThunk('loads/deleteLoad', async (id) => {
-  // need to see what the load is
-  console.log('delete load id ', id);
-  const response = await apiDeleteLoad(id);
-  return response;
-});
+export const deleteLoad = createAsyncThunk(
+  'loads/deleteLoad',
+  async (id: number) => {
+    const response = await apiDeleteLoad(id);
+    return response;
+  }
+);
 
 const loadSlice = createSlice({
   name: 'loads',
@@ -59,6 +60,9 @@ const loadSlice = createSlice({
       })
       .addCase(createLoad.fulfilled, (state, action) => {
         state.items.push(action.payload);
+      })
+      .addCase(deleteLoad.fulfilled, (state, action) => {
+        state.items = state.items.filter((load) => load.id !== action.meta.arg); //property contains the id argument passed to the deleteLoad
       });
   },
 });
