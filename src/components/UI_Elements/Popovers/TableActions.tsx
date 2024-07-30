@@ -77,6 +77,7 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({ id, deleter }) => {
             <Button
               onClick={() => {
                 deleter(id);
+                setPopoversOpen(!popoversOpen);
               }}
               className="flex w-full gap-2 border-b border-grey-200 dark:border-grey-700 py-3 hover:text-primary"
             >
