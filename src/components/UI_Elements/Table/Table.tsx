@@ -13,7 +13,7 @@ interface TableColumn {
 interface TableProps<T> {
   columns: TableColumn[];
   data: T[];
-  deleter: any; // is a database action function
+  deleter: (id: string) => void; // is a database action function
 }
 
 const Table = <T extends { [key: string]: unknown }>({
