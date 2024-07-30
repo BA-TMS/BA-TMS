@@ -41,7 +41,7 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({ id }) => {
   }, [popoversOpen, popovers]);
 
   return (
-    <div className="relative top-[-10px] inline-block">
+    <div className="relative inline-block">
       <button
         ref={trigger}
         onClick={() => setPopoversOpen(!popoversOpen)}
