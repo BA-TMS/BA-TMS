@@ -81,7 +81,7 @@ const Table = <T extends { [key: string]: unknown }>({
                     )}
                   </td>
                 ))}
-                <td>
+                <td className="p-4">
                   <TableActionsPopover id={row['id'] as string} />
                 </td>
               </tr>
