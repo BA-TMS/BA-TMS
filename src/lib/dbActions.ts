@@ -43,6 +43,15 @@ export async function getFactor() {
   return factor;
 }
 
+export async function getLoad(id) {
+  const load = await prisma.load.findUnique({
+    where: {
+      id: id,
+    },
+  });
+  return load;
+}
+
 export async function getLoads() {
   const relations = {
     carrier: { select: { name: true } },
@@ -82,15 +91,13 @@ export async function getTrucks() {
 
 export async function getUsers(parentOrg: string) {
   const users = prisma.user.findMany({
-    where: {orgId: parentOrg}
+    where: { orgId: parentOrg },
   });
   return users;
 }
 
 export async function getUser(targetId: string) {
-  const user = prisma.user.findUnique(
-    {where: {id: targetId}}
-  );
+  const user = prisma.user.findUnique({ where: { id: targetId } });
   return user;
 }
 
@@ -225,7 +232,7 @@ export async function addLoad({ load }: { load: any }) {
       destId: load['Consignee'],
       status: load['Status'],
       shipDate: load['Ship Date'],
-      deliveryDate: load['Received Date']
+      deliveryDate: load['Received Date'],
     },
   });
   return resp;
@@ -299,7 +306,7 @@ export async function addUser({ user }: { user: any }) {
       telephone: user['Phone Number'],
       orgId: user['Oganization'],
       role: user['Role'],
-      imageURL: user['Image URL']
+      imageURL: user['Image URL'],
     },
   });
 }
@@ -343,8 +350,31 @@ export async function updateDriver(
   const resp = updater(prisma.driver, id, formData);
 }
 
-export async function updateLoad(id: number, { formData }: { formData: any }) {
-  const resp = updater(prisma.load, id, formData);
+export async function updateLoad(id: string, { formData }: { formData: any }) {
+  // map to convert formData keys to database keys
+  const mapLoadData = (load: any) => {
+    if (!load) {
+      throw new Error('Load data is undefined or null');
+    }
+
+    return {
+      ownerId: load['Owner'],
+      loadNum: load['Load Number'],
+      payOrderNum: load['Pay Order Number'],
+      carrierId: load['Carrier'],
+      driverId: load['Driver'],
+      customerId: load['Customer'],
+      originId: load['Shipper'],
+      destId: load['Consignee'],
+      status: load['Status'],
+      shipDate: load['Ship Date'],
+      deliveryDate: load['Received Date'],
+    };
+  };
+
+  const mappedData = mapLoadData(formData);
+  const resp = await updater(prisma.load, id, mappedData);
+  return resp;
 }
 
 export async function updateShipper(

@@ -8,7 +8,6 @@ import TextInput from '../UI_Elements/Form/TextInput';
 import DynamicSelect from '../UI_Elements/Form/DynamicSelect';
 import { ModalContext } from '@/Context/modalContext';
 import {
-  addLoad,
   getCarriers,
   getConsignees,
   getCustomers,
@@ -20,7 +19,8 @@ import DateSelect from '../UI_Elements/Form/DateSelect';
 import Button from '../UI_Elements/buttons/Button';
 import SelectInput from '../UI_Elements/Form/SelectInput';
 import { useDispatch } from 'react-redux';
-import { createLoad } from '@/store/slices/loadSlice';
+import { AppDispatch } from '@/store/store';
+import { createLoad, updateLoad } from '@/store/slices/loadSlice';
 
 const status = [
   { 'On Route': 'ON_ROUTE' },
@@ -36,13 +36,13 @@ const status = [
 const loadSchema = yup.object({
   Owner: yup.string().required('Enter owner for this load'),
   Status: yup.string(),
-  'Load Number': yup.string().required('Enter load number for your records'),
-  'Pay Order Number': yup.string().required('Enter PO number for your records'),
+  'Load Number': yup.string().required('Enter load number for your records'), // do we need a max number of characters?
+  'Pay Order Number': yup.string().required('Enter PO number for your records'), // do we need a max number of characters?
   Customer: yup.string().required('Enter customer for load'),
-  Driver: yup.string(),
+  Driver: yup.string().nullable(),
   Carrier: yup.string().required('Who will be carrying this load?'),
-  Shipper: yup.string(),
-  Consignee: yup.string(),
+  Shipper: yup.string().nullable(),
+  Consignee: yup.string().nullable(),
   'Ship Date': yup.date().nullable(),
   'Received Date': yup.date().nullable(),
 });
@@ -50,11 +50,12 @@ const loadSchema = yup.object({
 type Load = yup.InferType<typeof loadSchema>;
 
 export const LoadForm = () => {
-  const dispatch = useDispatch();
-  const addLoadLocal = (data) => dispatch({ type: 'ADD_LOAD', payload: data });
+  const dispatch = useDispatch<AppDispatch>();
+
   const {
+    setValue,
     handleSubmit,
-    setError,
+    // setError,
     reset,
     control,
     formState: { errors, isSubmitting, isSubmitSuccessful },
@@ -68,17 +69,49 @@ export const LoadForm = () => {
     resolver: yupResolver(loadSchema),
   });
 
-  const { toggleOpen } = useContext(ModalContext);
+  const { toggleOpen, data } = useContext(ModalContext);
+
+  useEffect(() => {
+    console.log('context data', data);
+    // if data is not a synthetic event
+    if (data !== null && data['id']) {
+      // populate form with data from context
+      setValue('Owner', data['ownerId']);
+      setValue('Status', data['status']);
+      setValue('Load Number', data['loadNum']);
+      setValue('Pay Order Number', data['payOrderNum']);
+      setValue('Customer', data['customerId']);
+      setValue('Driver', data['driverId']);
+      setValue('Carrier', data['carrierId']);
+      setValue('Shipper', data['originId']);
+      setValue('Consignee', data['destId']);
+      setValue('Ship Date', data['shipDate']);
+      setValue('Received Date', data['deliveryDate']);
+    }
+  }, [data, setValue]);
 
   // Form submission handler
-  const onSubmit = async (data: Load) => {
-    try {
-      await dispatch(createLoad(data)).unwrap();
-      reset();
-      toggleOpen();
-    } catch (error) {
-      // Handle submission error (e.g., show a message)
-      console.error('Error creating load:', error);
+  const onSubmit = async (load: Load) => {
+    if (data !== null && !data['id']) {
+      // if data does not have id property, we are creating a new load
+      try {
+        await dispatch(createLoad(load)).unwrap();
+        reset();
+        toggleOpen();
+      } catch (error) {
+        console.error('Error creating load:', error);
+      }
+    } else {
+      try {
+        await dispatch(
+          updateLoad({ id: data['id'], updatedLoad: load })
+        ).unwrap();
+
+        reset();
+        toggleOpen();
+      } catch (error) {
+        console.error('Error updating load:', error);
+      }
     }
   };
 
