@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react';
-import Link from 'next/link';
 import Button from '@ui/buttons/Button';
 import { EditIcon, ElipsisVertical, DeleteIcon } from '@/assets/SVGs';
 
@@ -22,6 +21,13 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({
 
   const trigger = useRef<HTMLButtonElement | null>(null);
   const popovers = useRef<HTMLDivElement | null>(null);
+
+  function handleDelete() {
+    if (window.confirm('Would you like to delete this load?')) {
+      deleter(id); // call function passed to component
+      setPopoversOpen(!popoversOpen);
+    }
+  }
 
   // close on click outside
   useEffect(() => {
@@ -83,10 +89,7 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({
           </div>
           <div className="flex flex-wrap">
             <Button
-              onClick={() => {
-                deleter(id);
-                setPopoversOpen(!popoversOpen);
-              }}
+              onClick={handleDelete}
               className="flex w-full gap-2 border-b border-grey-200 dark:border-grey-700 py-3 hover:text-primary"
             >
               <span>{DeleteIcon}</span>
