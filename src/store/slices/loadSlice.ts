@@ -21,11 +21,24 @@ export const fetchLoads = createAsyncThunk('loads/fetchLoads', async () => {
   }));
 });
 
-export const createLoad = createAsyncThunk(
+// export const createLoad = createAsyncThunk('loads/createLoad', async (load) => {
+//   const newLoad = await apiAddLoad({ load });
+//   return newLoad;
+// });
+
+export const createLoad = createAsyncThunk<Load, Load>(
   'loads/createLoad',
-  async (load: any) => {
+  async (load) => {
     const newLoad = await apiAddLoad({ load });
     return newLoad;
+  }
+);
+
+export const updateLoad = createAsyncThunk<Load, UpdateLoadPayload>(
+  'loads/updateLoad',
+  async ({ id, updatedLoad }: UpdateLoadPayload) => {
+    const load = await apiUpdateLoad(id, { formData: updatedLoad });
+    return load;
   }
 );
 
@@ -39,7 +52,7 @@ export const deleteLoad = createAsyncThunk(
 
 const loadSlice = createSlice({
   name: 'loads',
-  initialState: {
+  initialState: <LoadState>{
     items: [],
     status: 'idle',
     error: null,
@@ -50,16 +63,24 @@ const loadSlice = createSlice({
       .addCase(fetchLoads.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(fetchLoads.fulfilled, (state, action) => {
+      .addCase(fetchLoads.fulfilled, (state, action: PayloadAction<Load[]>) => {
         state.status = 'succeeded';
         state.items = action.payload;
       })
       .addCase(fetchLoads.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message;
+        state.error = action.error.message || 'Failed to fetch loads';
       })
-      .addCase(createLoad.fulfilled, (state, action) => {
+      .addCase(createLoad.fulfilled, (state, action: PayloadAction<Load>) => {
         state.items.push(action.payload);
+      })
+      .addCase(updateLoad.fulfilled, (state, action: PayloadAction<Load>) => {
+        const index = state.items.findIndex(
+          (load) => load.id === action.payload.id
+        );
+        if (index !== -1) {
+          state.items[index] = action.payload;
+        }
       })
       .addCase(deleteLoad.fulfilled, (state, action) => {
         state.items = state.items.filter((load) => load.id !== action.meta.arg); //property contains the id argument passed to the deleteLoad

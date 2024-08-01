@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { useState } from 'react';
 import TableActionsPopover from '@ui/Popovers/TableActions';
@@ -6,19 +7,20 @@ import TablePagination from './Pagination';
 interface TableColumn {
   field: string;
   headerName: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   cellRenderer?: (value: any) => React.ReactNode;
 }
 
 interface TableProps<T> {
   columns: TableColumn[];
   data: T[];
+  update: any; // function for updating table entry
   deleter: (id: string) => void; // is a database action function
 }
 
 const Table = <T extends { [key: string]: unknown }>({
   columns,
   data,
+  update,
   deleter,
 }: TableProps<T>) => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -86,6 +88,7 @@ const Table = <T extends { [key: string]: unknown }>({
                 <td>
                   <TableActionsPopover
                     id={row['id'] as string}
+                    update={update}
                     deleter={deleter}
                   />
                 </td>

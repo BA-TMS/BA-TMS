@@ -14,6 +14,7 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import { fetchLoads } from '@/store/slices/loadSlice';
 import { AppDispatch, RootState } from '@/store/store';
+import { getLoad } from '@/lib/dbActions';
 import { deleteLoad } from '@/store/slices/loadSlice';
 
 dayjs.extend(customParseFormat);
@@ -201,6 +202,14 @@ const Load = () => {
     return loads.filter((load) => load.status === statusMapping[value]).length;
   };
 
+  // function to update load
+  const updateLoad = async (id: string) => {
+    // fetch entry
+    const data = await getLoad(id);
+    // open modal with this data
+    toggleOpen(data);
+  };
+
   // delete a load
   const loadDelete = async (id: string) => {
     try {
@@ -229,7 +238,12 @@ const Load = () => {
         }}
         placeholder={'Search client or invoice number...'}
       />
-      <Table columns={columns} data={filteredLoads} deleter={loadDelete} />
+      <Table
+        columns={columns}
+        data={filteredLoads}
+        update={updateLoad}
+        deleter={loadDelete}
+      />
     </>
   );
 };
