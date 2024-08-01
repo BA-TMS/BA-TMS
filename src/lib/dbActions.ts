@@ -5,6 +5,14 @@ import { ConsigneeFormDataState } from '@/types/formTypes';
 
 const prisma = new PrismaClient();
 
+const LOAD_RELATIONS = {
+  carrier: { select: { name: true } },
+  driver: { select: { name: true } },
+  customer: { select: { name: true } },
+  shipper: { select: { name: true } },
+  consignee: { select: { name: true } },
+};
+
 /** Get existing table data */
 async function getter(table: any, relations: any) {
   const resp = await table.findMany({
@@ -44,14 +52,7 @@ export async function getFactor() {
 }
 
 export async function getLoads() {
-  const relations = {
-    carrier: { select: { name: true } },
-    driver: { select: { name: true } },
-    customer: { select: { name: true } },
-    shipper: { select: { name: true } },
-    consignee: { select: { name: true } },
-  };
-  const loads = await getter(prisma.load, relations);
+  const loads = await getter(prisma.load, LOAD_RELATIONS);
   return loads;
 }
 
@@ -227,13 +228,7 @@ export async function addLoad({ load }: { load: any }) {
       shipDate: load['Ship Date'],
       deliveryDate: load['Received Date']
     },
-    include: {
-      carrier: { select: { name: true } },
-      driver: { select: { name: true } },
-      customer: { select: { name: true } },
-      shipper: { select: { name: true } },
-      consignee: { select: { name: true } }
-    }
+    include: LOAD_RELATIONS
   });
   return resp;
 }
