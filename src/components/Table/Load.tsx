@@ -104,6 +104,8 @@ const Load = () => {
     error,
   } = useSelector((state: RootState) => state.loads);
 
+  // const status = 'loading';
+
   const [filteredLoads, setFilteredLoads] = useState<Load[]>([]);
   const [searchByDateRangeStart, setSearchByDateRangeStart] =
     useState<dayjs.Dayjs | null>(null);
@@ -221,8 +223,11 @@ const Load = () => {
         }}
         placeholder={'Search client or invoice number...'}
       />
-      {/* <Table columns={columns} data={filteredLoads} /> */}
-      <TableSkeleton />
+      {status === 'loading' ? (
+        <TableSkeleton columns={columns} />
+      ) : (
+        <Table columns={columns} data={filteredLoads} />
+      )}
     </>
   );
 };
