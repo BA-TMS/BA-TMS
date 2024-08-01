@@ -227,6 +227,13 @@ export async function addLoad({ load }: { load: any }) {
       shipDate: load['Ship Date'],
       deliveryDate: load['Received Date']
     },
+    include: {
+      carrier: { select: { name: true } },
+      driver: { select: { name: true } },
+      customer: { select: { name: true } },
+      shipper: { select: { name: true } },
+      consignee: { select: { name: true } }
+    }
   });
   return resp;
 }

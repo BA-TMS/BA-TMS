@@ -24,7 +24,17 @@ export const createLoad = createAsyncThunk(
   'loads/createLoad',
   async (load: any) => {
     const newLoad = await apiAddLoad({ load });
-    return newLoad;
+    // return newLoad;
+    return {
+        ...newLoad,
+        shipDate: newLoad.shipDate ? newLoad.shipDate.toDateString() : null,
+        deliveryDate: newLoad.deliveryDate ? newLoad.deliveryDate.toDateString() : null,
+        carrier: newLoad.carrier.name,
+        driver: newLoad.driver ? newLoad.driver.name : null,
+        customer: newLoad.customer.name,
+        shipper: newLoad.shipper ? newLoad.shipper.name : null,
+        consignee: newLoad.consignee ? newLoad.consignee.name : null,
+    }
   }
 );
 
