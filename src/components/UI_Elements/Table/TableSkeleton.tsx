@@ -33,27 +33,27 @@ const TableSkeleton = ({ columns }: TableSkeletonProps) => {
           <tbody className="border-b border-grey-300 dark:border-grey-700">
             <tr>
               <td colSpan={columns.length + 1}>
-                <div className="h-8 bg-grey-200 dark:bg-grey-700 rounded-full my-2"></div>
+                <div className="h-8 bg-grey-300 dark:bg-grey-700 rounded-full my-2 animate-pulse"></div>
               </td>
             </tr>
             <tr>
               <td colSpan={columns.length + 1}>
-                <div className="h-8 bg-grey-200 dark:bg-grey-700 rounded-full mb-2"></div>
+                <div className="h-8 bg-grey-300 dark:bg-grey-700 rounded-full mb-2 animate-pulse"></div>
               </td>
             </tr>
             <tr>
               <td colSpan={columns.length + 1}>
-                <div className="h-8 bg-grey-200 dark:bg-grey-700 rounded-full mb-2"></div>
+                <div className="h-8 bg-grey-300 dark:bg-grey-700 rounded-full mb-2 animate-pulse"></div>
               </td>
             </tr>
             <tr>
               <td colSpan={columns.length + 1}>
-                <div className="h-8 bg-grey-200 dark:bg-grey-700 rounded-full mb-2"></div>
+                <div className="h-8 bg-grey-300 dark:bg-grey-700 rounded-full mb-2 animate-pulse"></div>
               </td>
             </tr>
             <tr>
               <td colSpan={columns.length + 1}>
-                <div className="h-8 bg-grey-200 dark:bg-grey-700 rounded-full mb-2"></div>
+                <div className="h-8 bg-grey-300 dark:bg-grey-700 rounded-full mb-2 animate-pulse"></div>
               </td>
             </tr>
           </tbody>

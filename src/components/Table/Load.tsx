@@ -104,8 +104,6 @@ const Load = () => {
     error,
   } = useSelector((state: RootState) => state.loads);
 
-  // const status = 'loading';
-
   const [filteredLoads, setFilteredLoads] = useState<Load[]>([]);
   const [searchByDateRangeStart, setSearchByDateRangeStart] =
     useState<dayjs.Dayjs | null>(null);
