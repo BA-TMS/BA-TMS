@@ -2,6 +2,22 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { getLoads, addLoad as apiAddLoad } from '@/lib/dbActions';
 
+// Format a load to show its human-facing info.
+const formatron = function (rawLoad: any) {
+  return {
+    ...rawLoad,
+    shipDate: rawLoad.shipDate ? rawLoad.shipDate.toDateString() : null,
+    deliveryDate: rawLoad.deliveryDate
+      ? rawLoad.deliveryDate.toDateString()
+      : null,
+    carrier: rawLoad.carrier.name,
+    driver: rawLoad.driver ? rawLoad.driver.name : null,
+    customer: rawLoad.customer.name,
+    shipper: rawLoad.shipper ? rawLoad.shipper.name : null,
+    consignee: rawLoad.consignee ? rawLoad.consignee.name : null,
+  };
+};
+
 // Define Async Thunks
 export const fetchLoads = createAsyncThunk(
   'loads/fetchLoads',
@@ -24,17 +40,7 @@ export const createLoad = createAsyncThunk(
   'loads/createLoad',
   async (load: any) => {
     const newLoad = await apiAddLoad({ load });
-    // return newLoad;
-    return {
-        ...newLoad,
-        shipDate: newLoad.shipDate ? newLoad.shipDate.toDateString() : null,
-        deliveryDate: newLoad.deliveryDate ? newLoad.deliveryDate.toDateString() : null,
-        carrier: newLoad.carrier.name,
-        driver: newLoad.driver ? newLoad.driver.name : null,
-        customer: newLoad.customer.name,
-        shipper: newLoad.shipper ? newLoad.shipper.name : null,
-        consignee: newLoad.consignee ? newLoad.consignee.name : null,
-    }
+    return formatron(newLoad);
   }
 );
 
