@@ -1,7 +1,6 @@
 // components/Load.tsx
 import { useContext, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
 import { ModalContext } from '@/Context/modalContext';
 import FormModal from '../Modals/FormModal';
 import LoadForm from '../Forms/LoadForm';
@@ -15,6 +14,7 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import { fetchLoads } from '@/store/slices/loadSlice';
 import { AppDispatch, RootState } from '@/store/store';
+import { getLoad } from '@/lib/dbActions';
 
 dayjs.extend(customParseFormat);
 dayjs.extend(isSameOrBefore);
@@ -201,6 +201,14 @@ const Load = () => {
     return loads.filter((load) => load.status === statusMapping[value]).length;
   };
 
+  // function to update load
+  const updateLoad = async (id: string) => {
+    // fetch entry
+    const data = await getLoad(id);
+    // open modal with this data
+    toggleOpen(data);
+  };
+
   return (
     <>
       <div className="relative flex justify-end mb-6">
@@ -220,7 +228,7 @@ const Load = () => {
         }}
         placeholder={'Search client or invoice number...'}
       />
-      <Table columns={columns} data={filteredLoads} />
+      <Table columns={columns} data={filteredLoads} update={updateLoad} />
     </>
   );
 };
