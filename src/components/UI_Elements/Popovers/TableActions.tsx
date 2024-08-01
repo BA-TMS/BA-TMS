@@ -1,14 +1,17 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import Button from '@ui/buttons/Button';
 import { EditIcon, ElipsisVertical, DeleteIcon } from '@/assets/SVGs';
 
 type TableActionsProps = {
   id: string;
+  update: (param: string) => void;
 };
 
 // pass this component an id from the table it is used in
+// id is used to fetch data + populate corresponding form with current information
 
-const TableActionsPopover: React.FC<TableActionsProps> = ({ id }) => {
+const TableActionsPopover: React.FC<TableActionsProps> = ({ id, update }) => {
   const [popoversOpen, setPopoversOpen] = useState(false);
 
   const trigger = useRef<HTMLButtonElement | null>(null);
@@ -61,13 +64,15 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({ id }) => {
         <span className="absolute -right-1.5 top-2 -z-10 h-2 w-2 rotate-45 rounded-sm bg-white dark:bg-grey-900 border-r-2 border-t border-grey-300 dark:border-grey-700"></span>
 
         <div className="flex flex-wrap">
-          <Link
-            href="#" // update
+          <Button
+            onClick={() => {
+              update(id); // call whichever function is passed to component
+            }}
             className="flex w-full gap-2 border-b border-grey-200 dark:border-grey-700 py-3 hover:text-primary"
           >
             <span>{EditIcon}</span>
             Edit
-          </Link>
+          </Button>
         </div>
         <div className="flex flex-wrap">
           <Link
