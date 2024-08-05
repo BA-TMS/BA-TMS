@@ -233,7 +233,7 @@ const Load = () => {
       {status === 'loading' ? (
         <TableSkeleton columns={columns} />
       ) : (
-      <Table columns={columns} data={filteredLoads} update={updateLoad} />
+        <Table columns={columns} data={filteredLoads} update={updateLoad} />
       )}
     </>
   );

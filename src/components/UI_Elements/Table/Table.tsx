@@ -83,6 +83,7 @@ const Table = <T extends { [key: string]: unknown }>({
                     )}
                   </td>
                 ))}
+
                 <td>
                   <TableActionsPopover
                     id={row['id'] as string}
@@ -91,6 +92,23 @@ const Table = <T extends { [key: string]: unknown }>({
                 </td>
               </tr>
             ))}
+            {/* some empty rows to match the loading state if we have less than 5 entries in table */}
+            {currentData.length < 5 &&
+              Array.from({ length: 5 - currentData.length }).map((_, index) => (
+                <tr key={`empty-${index}`}>
+                  {columns.map((column, colIndex) => (
+                    <td key={colIndex} className="p-4">
+                      <p
+                        className={`${
+                          colIndex === 0 ? 'subtitle2' : 'body2'
+                        } text-grey-800 dark:text-white`}
+                      >
+                        &nbsp;
+                      </p>
+                    </td>
+                  ))}
+                </tr>
+              ))}
           </tbody>
 
           <tfoot className="h-14">
