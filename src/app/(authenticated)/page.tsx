@@ -1,5 +1,5 @@
 // this page should redirect to /login if a user is not authenticated
-// if user is authenticated, redirect to /dispatch
+// if user is authenticated, redirect to /dashboard
 // do we need this page?
 
 export default function Home() {
