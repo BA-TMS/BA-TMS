@@ -1,15 +1,23 @@
 import { UseControllerProps, useController } from 'react-hook-form';
 
-// component for date selector
-// needs some style updates / integrate with the MUI date selector
+// component for date selector to work with react-hook-form
 
 interface DateSelectProps extends UseControllerProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control?: any;
   required?: boolean;
 }
 
 const DateSelect = (props: DateSelectProps) => {
   const { field, fieldState } = useController(props);
+
+  function isDate(value: Date | number) {
+    return value instanceof Date;
+  }
+
+  if (isDate(field.value)) {
+    field.value = field.value?.toISOString().split('T')[0];
+  }
 
   return (
     <div className="mb-1.5">
