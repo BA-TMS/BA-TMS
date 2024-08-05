@@ -15,9 +15,11 @@ const DateSelect = (props: DateSelectProps) => {
     return value instanceof Date;
   }
 
+  // date value will populate when updating a form
+  // or, not browser error for changing value of uncontrolled component
   if (isDate(field.value)) {
     field.value = field.value?.toISOString().split('T')[0];
-  }
+  } else field.value = undefined;
 
   return (
     <div className="mb-1.5">
