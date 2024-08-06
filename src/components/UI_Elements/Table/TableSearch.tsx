@@ -5,13 +5,13 @@ import Dropdown from '../Input/Dropdown';
 import dayjs from 'dayjs';
 
 // pass this component a function to handle field search
-// and a function to handle date search
+// and an optional function to handle date search
 
 interface SearchProps {
-  placeholder: string;
+  placeholder: string; // placeholder text for search bar
   search: (arg: string) => void; // handles field search from parent component
-  dateSearch: (
-    // handles search by date
+  dateSearch?: (
+    // optional function to handle search by date
     startDate: dayjs.Dayjs | null,
     endDate: dayjs.Dayjs | null
   ) => void;
@@ -23,16 +23,16 @@ export function TableSearch({ placeholder, search, dateSearch }: SearchProps) {
 
   const handleStartDateChange = (date: dayjs.Dayjs | null) => {
     setStartDate(date);
-    dateSearch(date, endDate);
+    dateSearch?.(date, endDate);
   };
 
   const handleEndDateChange = (date: dayjs.Dayjs | null) => {
     setEndDate(date);
-    dateSearch(startDate, date);
+    dateSearch?.(startDate, date);
   };
 
   return (
-    <div className="h-26 px-5 py-6 flex gap-4 bg-white dark:bg-grey-900 border-x border-grey-300 dark:border-grey-700">
+    <div className="h-26 px-5 py-6 flex gap-4 bg-white dark:bg-grey-900 border-x border-t border-grey-300 dark:border-grey-700">
       <Searchbar
         placeholder={placeholder}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,16 +44,21 @@ export function TableSearch({ placeholder, search, dateSearch }: SearchProps) {
         label="Field"
         options={['Option #1', 'Option #2', 'Option #3']}
       />
-      <DatePicker
-        label="Start Date"
-        date={startDate}
-        handleChange={handleStartDateChange}
-      />
-      <DatePicker
-        label="End Date"
-        date={endDate}
-        handleChange={handleEndDateChange}
-      />
+
+      {dateSearch && (
+        <>
+          <DatePicker
+            label="Start Date"
+            date={startDate}
+            handleChange={handleStartDateChange}
+          />
+          <DatePicker
+            label="End Date"
+            date={endDate}
+            handleChange={handleEndDateChange}
+          />
+        </>
+      )}
     </div>
   );
 }
