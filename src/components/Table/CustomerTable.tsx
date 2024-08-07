@@ -40,8 +40,21 @@ const columns = [
 const CustomerTable = (): JSX.Element => {
   const [customers, setCustomers] = useState<CustomerData[]>([]);
   const [status, setStatus] = useState<'loading' | 'fulfilled'>('loading'); // replace with redux
+  const [searchValue, setSearchValue] = useState<string>(''); // search
+  const [filteredValue, setFilteredValue] = useState<CustomerData[]>([]);
 
   const { toggleOpen } = useContext(ModalContext);
+
+  // search
+  function handleSearchFilter(customers: CustomerData[], value: string) {
+    if (!value) return customers;
+
+    return customers.filter((customer) =>
+      Object.values(customer).some((field) =>
+        field?.toString().toLowerCase().includes(value.toLowerCase())
+      )
+    );
+  }
 
   // Fetch customers from db
   // non-redux version
@@ -55,6 +68,13 @@ const CustomerTable = (): JSX.Element => {
     setStatus('fulfilled'); // replace with redux
   }, []);
 
+  // Update filtered customers when customer or searchValue changes
+  useEffect(() => {
+    let updatedCustomers = [...customers];
+    updatedCustomers = handleSearchFilter(updatedCustomers, searchValue);
+    setFilteredValue(updatedCustomers);
+  }, [customers, searchValue]);
+
   return (
     <>
       <div className="relative flex justify-end mb-6">
@@ -67,8 +87,8 @@ const CustomerTable = (): JSX.Element => {
       </div>
       <TableHeaderBlank />
       <TableSearch
-        placeholder={'Search client or invoice number...'}
-        search={() => {}} // add search function
+        placeholder={'Search...'}
+        search={setSearchValue}
         // handle the dropdowns
       />
 
@@ -76,7 +96,7 @@ const CustomerTable = (): JSX.Element => {
         <TableSkeleton columns={columns} />
       ) : (
         // will have to add delete to this when that's merged
-        <Table columns={columns} data={customers} update={null} />
+        <Table columns={columns} data={filteredValue} update={null} />
       )}
     </>
   );
