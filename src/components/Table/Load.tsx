@@ -5,6 +5,7 @@ import { ModalContext } from '@/Context/modalContext';
 import FormModal from '../Modals/FormModal';
 import LoadForm from '../Forms/LoadForm';
 import Table from '../UI_Elements/Table/Table';
+import TableSkeleton from '../UI_Elements/Table/TableSkeleton';
 import Button from '../UI_Elements/buttons/Button';
 import { CustomTabs, TabData } from '../UI_Elements/Table/TableHeaderTabs';
 import { TableSearch } from '../UI_Elements/Table/TableSearch';
@@ -238,12 +239,18 @@ const Load = () => {
         }}
         placeholder={'Search client or invoice number...'}
       />
-      <Table
+
+
+      {status === 'loading' ? (
+        <TableSkeleton columns={columns} />
+      ) : (
+        <Table
         columns={columns}
         data={filteredLoads}
         update={updateLoad}
         deleter={loadDelete}
       />
+      )}
     </>
   );
 };

@@ -5,7 +5,6 @@ import Loader from '@/components/common/Loader';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import Header from '@/components/Header/Header';
 import { UserContextProvider } from '@/Context/userContextProvider';
-import { ContextProvider } from '@/Context/modalContext';
 
 import { Provider } from 'react-redux';
 import store from '@/store/store';
@@ -38,7 +37,11 @@ export default function Template({ children }: { children: React.ReactNode }) {
                 />
 
                 <main>
-                  <div className="mx-auto max-w-screen-2xl">{children}</div>
+                  <div className="mx-auto max-w-screen-2xl">
+                    <div className="px-10 py-11.5 bg-grey-100 dark:bg-grey-800">
+                      {children}
+                    </div>
+                  </div>
                 </main>
               </div>
             </div>

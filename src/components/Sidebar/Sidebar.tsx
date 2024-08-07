@@ -144,7 +144,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             <SidebarListItem
               icon={DispatchIcon}
               pathname={pathname}
-              path={'/temp'}
+              path={'/dispatch'}
               name={'Dispatch'}
             />
             <SidebarListItem
