@@ -4,6 +4,7 @@ import {
   getLoads,
   addLoad as apiAddLoad,
   updateLoad as apiUpdateLoad,
+  deleteLoad as apiDeleteLoad,
 } from '@/lib/dbActions';
 
 interface Load {
@@ -54,11 +55,6 @@ export const fetchLoads = createAsyncThunk<Load[]>(
   }
 );
 
-// export const createLoad = createAsyncThunk('loads/createLoad', async (load) => {
-//   const newLoad = await apiAddLoad({ load });
-//   return newLoad;
-// });
-
 export const createLoad = createAsyncThunk<Load, Load>(
   'loads/createLoad',
   async (load) => {
@@ -72,6 +68,14 @@ export const updateLoad = createAsyncThunk<Load, UpdateLoadPayload>(
   async ({ id, updatedLoad }: UpdateLoadPayload) => {
     const load = await apiUpdateLoad(id, { formData: updatedLoad });
     return load;
+  }
+);
+
+export const deleteLoad = createAsyncThunk(
+  'loads/deleteLoad',
+  async (id: number) => {
+    const response = await apiDeleteLoad(id);
+    return response;
   }
 );
 
@@ -106,6 +110,9 @@ const loadSlice = createSlice({
         if (index !== -1) {
           state.items[index] = action.payload;
         }
+      })
+      .addCase(deleteLoad.fulfilled, (state, action) => {
+        state.items = state.items.filter((load) => load.id !== action.meta.arg); //property contains the id argument passed to the deleteLoad
       });
   },
 });

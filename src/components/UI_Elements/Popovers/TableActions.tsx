@@ -1,21 +1,33 @@
 import { useState, useRef, useEffect } from 'react';
-import Link from 'next/link';
 import Button from '@ui/buttons/Button';
 import { EditIcon, ElipsisVertical, DeleteIcon } from '@/assets/SVGs';
 
 type TableActionsProps = {
   id: string;
   update: (param: string) => void;
+  deleter: (id: string) => void; // delete function
 };
 
 // pass this component an id from the table it is used in
 // id is used to fetch data + populate corresponding form with current information
+// pass this component a delete action that makes use of the id
 
-const TableActionsPopover: React.FC<TableActionsProps> = ({ id, update }) => {
+const TableActionsPopover: React.FC<TableActionsProps> = ({
+  id,
+  update,
+  deleter,
+}) => {
   const [popoversOpen, setPopoversOpen] = useState(false);
 
   const trigger = useRef<HTMLButtonElement | null>(null);
   const popovers = useRef<HTMLDivElement | null>(null);
+
+  function handleDelete() {
+    if (window.confirm('Would you like to delete this load?')) {
+      deleter(id); // call function passed to component
+      setPopoversOpen(!popoversOpen);
+    }
+  }
 
   // close on click outside
   useEffect(() => {
@@ -76,13 +88,13 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({ id, update }) => {
             </Button>
           </div>
           <div className="flex flex-wrap">
-            <Link
-              href="#" // delete
-              className="flex w-full gap-2  py-3 hover:text-primary"
+            <Button
+              onClick={handleDelete}
+              className="flex w-full gap-2 border-b border-grey-200 dark:border-grey-700 py-3 hover:text-primary"
             >
               <span>{DeleteIcon}</span>
               Delete
-            </Link>
+            </Button>
           </div>
         </div>
       </div>

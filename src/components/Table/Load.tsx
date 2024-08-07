@@ -16,6 +16,7 @@ import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import { fetchLoads } from '@/store/slices/loadSlice';
 import { AppDispatch, RootState } from '@/store/store';
 import { getLoad } from '@/lib/dbActions';
+import { deleteLoad } from '@/store/slices/loadSlice';
 
 dayjs.extend(customParseFormat);
 dayjs.extend(isSameOrBefore);
@@ -210,6 +211,15 @@ const Load = () => {
     toggleOpen(data);
   };
 
+  // delete a load
+  const loadDelete = async (id: string) => {
+    try {
+      await dispatch(deleteLoad(id)).unwrap();
+    } catch (error) {
+      console.error('Error deleting load:', error);
+    }
+  };
+
   return (
     <>
       <div className="relative flex justify-end mb-6">
@@ -230,10 +240,16 @@ const Load = () => {
         placeholder={'Search client or invoice number...'}
       />
 
+
       {status === 'loading' ? (
         <TableSkeleton columns={columns} />
       ) : (
-        <Table columns={columns} data={filteredLoads} update={updateLoad} />
+        <Table
+        columns={columns}
+        data={filteredLoads}
+        update={updateLoad}
+        deleter={loadDelete}
+      />
       )}
     </>
   );

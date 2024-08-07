@@ -14,12 +14,14 @@ interface TableProps<T> {
   columns: TableColumn[];
   data: T[];
   update: any; // function for updating table entry
+  deleter: (id: string) => void; // is a database action function
 }
 
 const Table = <T extends { [key: string]: unknown }>({
   columns,
   data,
   update,
+  deleter,
 }: TableProps<T>) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [postsPerPage, setPostsPerPage] = useState(5);
@@ -88,6 +90,7 @@ const Table = <T extends { [key: string]: unknown }>({
                   <TableActionsPopover
                     id={row['id'] as string}
                     update={update}
+                    deleter={deleter}
                   />
                 </td>
               </tr>
