@@ -96,8 +96,12 @@ const CustomerTable = (): JSX.Element => {
       {status === 'loading' ? (
         <TableSkeleton columns={columns} />
       ) : (
-        // will have to add delete to this when that's merged
-        <Table columns={columns} data={filteredValue} update={null} />
+        <Table
+          columns={columns}
+          data={filteredValue}
+          update={null} // update w/ redux
+          deleter={() => {}} // update w/ redux
+        />
       )}
     </>
   );
