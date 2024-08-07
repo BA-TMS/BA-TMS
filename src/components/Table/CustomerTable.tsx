@@ -9,6 +9,7 @@ import CustomerForm from '../Forms/CustomerForm';
 import Table from '../UI_Elements/Table/Table';
 import TableSkeleton from '../UI_Elements/Table/TableSkeleton';
 import { TableSearch } from '../UI_Elements/Table/TableSearch';
+import TableHeaderBlank from '../UI_Elements/Table/TableHeaderBlank';
 
 // Define customer type
 type CustomerData = {
@@ -64,10 +65,11 @@ const CustomerTable = (): JSX.Element => {
           <CustomerForm />
         </FormModal>
       </div>
-
+      <TableHeaderBlank />
       <TableSearch
         placeholder={'Search client or invoice number...'}
         search={() => {}} // add search function
+        // handle the dropdowns
       />
 
       {status === 'loading' ? (

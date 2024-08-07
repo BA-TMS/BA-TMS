@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 
 // pass this component a function to handle field search
 // and an optional function to handle date search
+// TODO: This element needs dropdowns handled
 
 interface SearchProps {
   placeholder: string; // placeholder text for search bar
