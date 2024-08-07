@@ -122,113 +122,108 @@ export const LoadForm = () => {
   }, [isSubmitSuccessful, reset]);
 
   return (
-    <section className="w-full h-full">
-      <header className="py-4 px-4.5 border-b border-grey-300 dark:border-grey-700">
-        <h6 className="subtitle1 text-grey-800 dark:text-white">New Load</h6>
-      </header>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col justify-between"
-      >
-        <p className="px-4.5 mt-3.5 mb-5 body2 text-grey-800 dark:text-white">
-          Set the details
-        </p>
-        <div className="px-4.5">
-          <DynamicSelect
-            control={control}
-            name="Owner"
-            required={true}
-            dbaction={getOrganizations}
-          />
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col justify-between"
+    >
+      <p className="px-4.5 mt-3.5 mb-5 body2 text-grey-800 dark:text-white">
+        Set the details
+      </p>
+      <div className="px-4.5">
+        <DynamicSelect
+          control={control}
+          name="Owner"
+          required={true}
+          dbaction={getOrganizations}
+        />
 
-          <div className="flex flex-col gap-5 xl:flex-row">
-            <div className="flex flex-col w-full xl:w-1/2">
-              <SelectInput control={control} name="Status" options={status} />
+        <div className="flex flex-col gap-5 xl:flex-row">
+          <div className="flex flex-col w-full xl:w-1/2">
+            <SelectInput control={control} name="Status" options={status} />
 
-              <TextInput control={control} name="Load Number" required={true} />
+            <TextInput control={control} name="Load Number" required={true} />
 
-              <TextInput
-                control={control}
-                name="Pay Order Number"
-                required={true}
-              />
+            <TextInput
+              control={control}
+              name="Pay Order Number"
+              required={true}
+            />
 
-              <DynamicSelect
-                control={control}
-                name="Customer"
-                required={true}
-                dbaction={getCustomers}
-              />
+            <DynamicSelect
+              control={control}
+              name="Customer"
+              required={true}
+              dbaction={getCustomers}
+            />
 
-              <DateSelect control={control} name="Ship Date" required={false} />
-            </div>
-
-            <div className="flex flex-col w-full xl:w-1/2">
-              <DynamicSelect
-                control={control}
-                name="Carrier"
-                required={true}
-                dbaction={getCarriers}
-              />
-
-              <DynamicSelect
-                control={control}
-                name="Driver"
-                required={false}
-                dbaction={getDrivers}
-              />
-
-              <DynamicSelect
-                control={control}
-                name="Shipper"
-                required={false}
-                dbaction={getShippers}
-              />
-
-              <DynamicSelect
-                control={control}
-                name="Consignee"
-                required={false}
-                dbaction={getConsignees}
-              />
-
-              <DateSelect
-                control={control}
-                name="Received Date"
-                required={false}
-              />
-            </div>
+            <DateSelect control={control} name="Ship Date" required={false} />
           </div>
 
-          <TextInput control={control} name="Notes" isTextArea={true} />
-          <div className="min-h-5">
-            {errors.root && (
-              <p className="caption mb-1 text-error-dark">
-                {errors.root.message}
-              </p>
-            )}
+          <div className="flex flex-col w-full xl:w-1/2">
+            <DynamicSelect
+              control={control}
+              name="Carrier"
+              required={true}
+              dbaction={getCarriers}
+            />
+
+            <DynamicSelect
+              control={control}
+              name="Driver"
+              required={false}
+              dbaction={getDrivers}
+            />
+
+            <DynamicSelect
+              control={control}
+              name="Shipper"
+              required={false}
+              dbaction={getShippers}
+            />
+
+            <DynamicSelect
+              control={control}
+              name="Consignee"
+              required={false}
+              dbaction={getConsignees}
+            />
+
+            <DateSelect
+              control={control}
+              name="Received Date"
+              required={false}
+            />
           </div>
         </div>
-        <div className="py-3.5 px-4.5 border-t border-grey-300 dark:border-grey-700 flex justify-end gap-2.5">
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Submitting' : 'Add'}
-          </Button>
 
-          <Button
-            type="button"
-            disabled={isSubmitting}
-            onClick={() => {
-              reset();
-              toggleOpen();
-            }}
-            variant="outline"
-            intent="default"
-          >
-            Cancel
-          </Button>
+        <TextInput control={control} name="Notes" isTextArea={true} />
+        <div className="min-h-5">
+          {errors.root && (
+            <p className="caption mb-1 text-error-dark">
+              {errors.root.message}
+            </p>
+          )}
         </div>
-      </form>
-    </section>
+      </div>
+      <div className="py-3.5 px-4.5 border-t border-grey-300 dark:border-grey-700 flex justify-end gap-2.5">
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? 'Submitting' : 'Add'}
+        </Button>
+
+        <Button
+          type="button"
+          disabled={isSubmitting}
+          onClick={() => {
+            reset();
+            toggleOpen();
+          }}
+          variant="outline"
+          intent="default"
+        >
+          Cancel
+        </Button>
+      </div>
+    </form>
   );
 };
 

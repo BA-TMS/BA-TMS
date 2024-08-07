@@ -81,7 +81,7 @@ const CustomerTable = (): JSX.Element => {
         <div className="absolute right-4 bottom-2">
           <Button onClick={toggleOpen}>Add Customer</Button>
         </div>
-        <FormModal>
+        <FormModal formTitle="Add Customer">
           <CustomerForm />
         </FormModal>
       </div>

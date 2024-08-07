@@ -226,12 +226,13 @@ const Load = () => {
         <div className="absolute right-4 bottom-2">
           <Button onClick={toggleOpen}>Add Load</Button>
         </div>
-        <FormModal>
+        <FormModal formTitle="New Load">
           <LoadForm />
         </FormModal>
       </div>
       <CustomTabs tabs={tabsData} sort={setStatusValue} count={getCount} />
       <TableSearch
+        dropdownOptions={['Option 1', 'Option 2', 'Option 3']}
         search={setHandleSearchValue}
         dateSearch={(startDate, endDate) => {
           setSearchByDateRangeStart(startDate);

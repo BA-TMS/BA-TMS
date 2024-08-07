@@ -4,10 +4,11 @@ import React, { useEffect, useRef, useContext, ReactNode } from 'react';
 import { ModalContext } from '@/Context/modalContext';
 
 interface FormModalProps {
+  formTitle: string; // what you want to name the form
   children: ReactNode;
 }
 
-const FormModal = ({ children }: FormModalProps) => {
+const FormModal = ({ formTitle, children }: FormModalProps) => {
   const modalRef = useRef<HTMLDivElement | null>(null);
 
   const { isOpen, toggleOpen } = useContext(ModalContext);
@@ -86,7 +87,14 @@ const FormModal = ({ children }: FormModalProps) => {
           className="fixed z-999999 top-0 left-0 flex h-full min-h-screen w-full items-start justify-center bg-black/90 px-4 py-5"
         >
           <div className="my-auto w-[694px] h-5/6 overflow-auto rounded-[14.5px] border-grey-300 dark:border-grey-700 bg-white dark:bg-grey-900">
-            {children}
+            <section className="w-full h-full">
+              <header className="py-4 px-4.5 border-b border-grey-300 dark:border-grey-700">
+                <h6 className="subtitle1 text-grey-800 dark:text-white">
+                  {formTitle}
+                </h6>
+              </header>
+              {children}
+            </section>
           </div>
         </div>
       )}
