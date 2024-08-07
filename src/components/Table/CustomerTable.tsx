@@ -88,8 +88,9 @@ const CustomerTable = (): JSX.Element => {
       <TableHeaderBlank />
       <TableSearch
         placeholder={'Search...'}
+        dropdownLabel="Status"
+        dropdownOptions={['Active', 'Inactive']}
         search={setSearchValue}
-        // handle the dropdowns
       />
 
       {status === 'loading' ? (

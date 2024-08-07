@@ -6,10 +6,12 @@ import dayjs from 'dayjs';
 
 // pass this component a function to handle field search
 // and an optional function to handle date search
-// TODO: This element needs dropdowns handled
+// TODO: This element needs dropdowns handled, currently does not have functionality
 
 interface SearchProps {
   placeholder: string; // placeholder text for search bar
+  dropdownLabel?: string; // optional label for dropdown component
+  dropdownOptions: string[]; // options to pass to dropdown
   search: (arg: string) => void; // handles field search from parent component
   dateSearch?: (
     // optional function to handle search by date
@@ -18,7 +20,13 @@ interface SearchProps {
   ) => void;
 }
 
-export function TableSearch({ placeholder, search, dateSearch }: SearchProps) {
+export function TableSearch({
+  placeholder,
+  dropdownLabel,
+  dropdownOptions,
+  search,
+  dateSearch,
+}: SearchProps) {
   const [startDate, setStartDate] = useState<dayjs.Dayjs | null>(null);
   const [endDate, setEndDate] = useState<dayjs.Dayjs | null>(null);
 
@@ -42,8 +50,8 @@ export function TableSearch({ placeholder, search, dateSearch }: SearchProps) {
         }}
       />
       <Dropdown
-        label="Field"
-        options={['Option #1', 'Option #2', 'Option #3']}
+        label={dropdownLabel ? dropdownLabel : 'Field'}
+        options={dropdownOptions}
       />
 
       {dateSearch && (
