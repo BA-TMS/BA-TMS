@@ -1,7 +1,6 @@
 'use client';
 
 import { useContext, useState, useEffect } from 'react';
-import { getCustomers } from '@/lib/dbActions';
 import { ModalContext } from '@/Context/modalContext';
 import Button from '../UI_Elements/buttons/Button';
 import FormModal from '../Modals/FormModal';
@@ -10,6 +9,9 @@ import Table from '../UI_Elements/Table/Table';
 import TableSkeleton from '../UI_Elements/Table/TableSkeleton';
 import { TableSearch } from '../UI_Elements/Table/TableSearch';
 import TableHeaderBlank from '../UI_Elements/Table/TableHeaderBlank';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/store/store';
+import { fetchCustomers } from '@/store/slices/customerSlice';
 
 // Define customer type
 type CustomerData = {
@@ -38,10 +40,16 @@ const columns = [
 ];
 
 const CustomerTable = (): JSX.Element => {
-  const [customers, setCustomers] = useState<CustomerData[]>([]);
-  const [status, setStatus] = useState<'loading' | 'fulfilled'>('loading'); // replace with redux
   const [searchValue, setSearchValue] = useState<string>(''); // search
   const [filteredValue, setFilteredValue] = useState<CustomerData[]>([]);
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  const {
+    items: customers,
+    status,
+    // error, // are we going to handle errors?
+  } = useSelector((state: RootState) => state.customers);
 
   const { toggleOpen } = useContext(ModalContext);
 
@@ -57,16 +65,9 @@ const CustomerTable = (): JSX.Element => {
   }
 
   // Fetch customers from db
-  // non-redux version
   useEffect(() => {
-    const fetchCustomers = async () => {
-      const data = await getCustomers();
-      console.log('customers', data);
-      setCustomers(data);
-    };
-    fetchCustomers();
-    setStatus('fulfilled'); // replace with redux
-  }, []);
+    dispatch(fetchCustomers());
+  }, [dispatch]);
 
   // Update filtered customers when customer or searchValue changes
   useEffect(() => {
@@ -100,7 +101,7 @@ const CustomerTable = (): JSX.Element => {
           columns={columns}
           data={filteredValue}
           update={null} // update w/ redux
-          deleter={() => {}} // update w/ redux
+          deleter={() => {}} // update component, don't delete customers
         />
       )}
     </>
