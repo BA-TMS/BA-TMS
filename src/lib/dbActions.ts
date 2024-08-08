@@ -39,7 +39,7 @@ export async function getConsignees() {
 export async function getCustomers() {
   // const customers = await prisma.customer.findMany();
   const relations = {
-    factor: { select: { name: true } }
+    factor: { select: { name: true } },
   };
   const customers = await getter(prisma.customer, relations);
   return customers;
@@ -197,7 +197,7 @@ export async function addConsignee({ consignee }: { consignee: any }) {
 
 export async function addCustomer({ customer }: { customer: any }) {
   const resp = await prisma.customer.create({
-    data: customer
+    data: customer,
   });
   return resp;
 }
