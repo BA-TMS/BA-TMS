@@ -12,6 +12,7 @@ import TableHeaderBlank from '../UI_Elements/Table/TableHeaderBlank';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
 import { fetchCustomers } from '@/store/slices/customerSlice';
+import { getCustomer } from '@/lib/dbActions';
 
 // Define customer type
 type CustomerData = {
@@ -64,6 +65,13 @@ const CustomerTable = (): JSX.Element => {
     );
   }
 
+  // update customer
+  const updateCustomer = async (id: string) => {
+    console.log('update id', id);
+    const data = await getCustomer(id);
+    toggleOpen(data);
+  };
+
   // Fetch customers from db
   useEffect(() => {
     dispatch(fetchCustomers());
@@ -100,7 +108,7 @@ const CustomerTable = (): JSX.Element => {
         <Table
           columns={columns}
           data={filteredValue}
-          update={null} // update w/ redux
+          update={updateCustomer}
           deleter={() => {}} // update component, don't delete customers
         />
       )}
