@@ -45,10 +45,12 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
 
   const { toggleOpen, data } = useContext(ModalContext);
 
+  const isUpdate = data !== null && data['id'];
+
   const {
     setValue,
     handleSubmit,
-    setError, // async error handling
+    // setError, // async error handling
     reset, // for resetting form
     control, // based on schema
     formState: { errors, isSubmitting, isSubmitSuccessful }, // boolean values representing form state
@@ -99,7 +101,7 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
   useEffect(() => {
     console.log('context data', data);
     // if data is not a synthetic event
-    if (data !== null && data['id']) {
+    if (isUpdate) {
       // populate form with data from context
       setValue('Customer Name', data['name']);
       setValue('Address', data['address']);
@@ -112,7 +114,7 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
       setValue('Phone Number', data['telephone']);
       // notes + new values
     }
-  }, [data, setValue]);
+  }, [data, setValue, isUpdate]);
 
   // reset form if submit successful
   useEffect(() => {
@@ -155,7 +157,7 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
               options={usStates}
               required={true}
             />
-            <TextInput control={control} name="Country Code" required={true} />
+            <TextInput control={control} name="Country Code" required={false} />
           </div>
           <div className="w-full xl:w-1/2">
             <TextInput control={control} name="Zip" required={true} />
@@ -176,7 +178,7 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
       </div>
       <div className="py-3.5 px-4.5 border-t border-grey-300 dark:border-grey-700 flex justify-end gap-2.5">
         <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Submitting' : 'Add'}
+          {isSubmitting ? 'Submitting' : isUpdate ? 'Update' : 'Add'}
         </Button>
         <Button
           type="button"
