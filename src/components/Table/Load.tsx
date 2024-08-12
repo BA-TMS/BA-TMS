@@ -241,16 +241,15 @@ const Load = () => {
         placeholder={'Search client or invoice number...'}
       />
 
-
       {status === 'loading' ? (
         <TableSkeleton columns={columns} />
       ) : (
         <Table
-        columns={columns}
-        data={filteredLoads}
-        update={updateLoad}
-        deleter={loadDelete}
-      />
+          columns={columns}
+          data={filteredLoads}
+          update={updateLoad}
+          deleter={loadDelete}
+        />
       )}
     </>
   );

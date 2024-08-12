@@ -1,5 +1,9 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { getCustomers } from '@/lib/dbActions';
+import {
+  getCustomers,
+  addCustomer,
+  updateCustomer as apiUpdateCustomer,
+} from '@/lib/dbActions';
 
 interface CustomerData {
   id: string;
@@ -16,10 +20,10 @@ interface CustomerData {
   telephone: string;
 }
 
-// interface UpdatedCustomerPayload {
-//   id: string;
-//   updatedLoad: Partial<CustomerData>;
-// }
+interface UpdatedCustomerPayload {
+  id: string;
+  updatedLoad: Partial<CustomerData>;
+}
 
 interface CustomerState {
   items: CustomerData[];
@@ -36,6 +40,34 @@ export const fetchCustomers = createAsyncThunk<CustomerData[]>(
     return data.map((customer: CustomerData) => ({
       ...customer,
     }));
+  }
+);
+
+export const createCustomer = createAsyncThunk<CustomerData, CustomerData>(
+  'customers/createCustomer',
+  async (customer: CustomerData, { rejectWithValue }) => {
+    try {
+      const response = await addCustomer({ customer });
+
+      if (!response) {
+        return rejectWithValue('Error creating customer');
+      }
+
+      return response; // is response of type CustomerData?
+    } catch (error) {
+      return rejectWithValue('Error creating customer');
+    }
+  }
+);
+
+export const updateCustomer = createAsyncThunk<
+  CustomerData,
+  UpdatedCustomerPayload
+>(
+  'customers/updateCustomer',
+  async ({ id, updatedCustomer }: UpdatedCustomerPayload) => {
+    const customer = await apiUpdateCustomer(id, { formData: updatedCustomer });
+    return customer;
   }
 );
 
@@ -62,18 +94,24 @@ const customerSlice = createSlice({
       .addCase(fetchCustomers.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message || 'Failed to fetch loads';
-      });
-    //   .addCase(createLoad.fulfilled, (state, action: PayloadAction<Load>) => {
-    //     state.items.push(action.payload);
-    //   })
-    //   .addCase(updateLoad.fulfilled, (state, action: PayloadAction<Load>) => {
-    //     const index = state.items.findIndex(
-    //       (load) => load.id === action.payload.id
-    //     );
-    //     if (index !== -1) {
-    //       state.items[index] = action.payload;
-    //     }
-    //   });
+      })
+      .addCase(
+        createCustomer.fulfilled,
+        (state, action: PayloadAction<CustomerData>) => {
+          state.items.push(action.payload);
+        }
+      )
+      .addCase(
+        updateCustomer.fulfilled,
+        (state, action: PayloadAction<CustomerData>) => {
+          const index = state.items.findIndex(
+            (customer) => customer.id === action.payload.id
+          );
+          if (index !== -1) {
+            state.items[index] = action.payload;
+          }
+        }
+      );
   },
 });
 
