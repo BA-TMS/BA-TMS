@@ -49,7 +49,7 @@ const CustomerTable = (): JSX.Element => {
   const {
     items: customers,
     status,
-    // error, // are we going to handle errors?
+    error, // are we going to handle errors?
   } = useSelector((state: RootState) => state.customers);
 
   const { toggleOpen } = useContext(ModalContext);
@@ -67,7 +67,6 @@ const CustomerTable = (): JSX.Element => {
 
   // update customer
   const updateCustomer = async (id: string) => {
-    console.log('update id', id);
     const data = await getCustomer(id);
     toggleOpen(data);
   };
@@ -105,12 +104,7 @@ const CustomerTable = (): JSX.Element => {
       {status === 'loading' ? (
         <TableSkeleton columns={columns} />
       ) : (
-        <Table
-          columns={columns}
-          data={filteredValue}
-          update={updateCustomer}
-          deleter={() => {}} // update component, don't delete customers
-        />
+        <Table columns={columns} data={filteredValue} update={updateCustomer} />
       )}
     </>
   );

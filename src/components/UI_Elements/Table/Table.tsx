@@ -14,7 +14,7 @@ interface TableProps<T> {
   columns: TableColumn[];
   data: T[];
   update: any; // function for updating table entry
-  deleter: (id: string) => void; // is a database action function
+  deleter?: (id: string) => void; // optional database action function
 }
 
 const Table = <T extends { [key: string]: unknown }>({
