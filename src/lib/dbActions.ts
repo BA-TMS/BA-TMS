@@ -36,6 +36,15 @@ export async function getConsignees() {
   return consignees;
 }
 
+export async function getCustomer(id) {
+  const customer = await prisma.customer.findUnique({
+    where: {
+      id: id,
+    },
+  });
+  return customer;
+}
+
 export async function getCustomers() {
   // const customers = await prisma.customer.findMany();
   const relations = {
@@ -351,10 +360,32 @@ export async function updateConsignee(
 }
 
 export async function updateCustomer(
-  id: number,
+  id: string,
   { formData }: { formData: any }
 ) {
-  const resp = updater(prisma.customer, id, formData);
+  // Map to convert formData keys to database keys
+  const mapCustomerData = (customer: any) => {
+    if (!customer) {
+      throw new Error('Customer data is undefined or null');
+    }
+
+    return {
+      name: customer['Customer Name'],
+      address: customer['Address'],
+      addressAddOn: customer['Address Line 2'],
+      city: customer['City'],
+      state: customer['State'],
+      postCode: customer['Zip'],
+      postCountry: customer['Country'],
+      telCountry: customer['Country Code'],
+      telephone: customer['Phone Number'],
+      // will need to update mappings as needed
+    };
+  };
+
+  const mappedData = mapCustomerData(formData);
+  const resp = await updater(prisma.customer, id, mappedData);
+  return resp;
 }
 
 export async function updateDriver(

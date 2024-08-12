@@ -49,7 +49,7 @@ const CustomerTable = (): JSX.Element => {
   const {
     items: customers,
     status,
-    error, // are we going to handle errors?
+    // error, // are we going to handle errors?
   } = useSelector((state: RootState) => state.customers);
 
   const { toggleOpen } = useContext(ModalContext);

@@ -108,6 +108,7 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
       setValue('State', data['state']);
       setValue('Zip', data['postCode']);
       setValue('Country', data['postCountry']);
+      setValue('Country Code', data['telCountry']);
       setValue('Phone Number', data['telephone']);
       // notes + new values
     }
