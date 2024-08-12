@@ -135,6 +135,7 @@ model Customer {
   contactTelephone        String
   contactTollFree         String?
   contactFax              String?
+  contactCountry          String
   
   contactAddress          String
   contactAddressField2    String?
@@ -145,6 +146,7 @@ model Customer {
 
   billingEmail            String
   billingTelephone        String
+  billingCountry          String
   billingAddress          String
   billingAddressField2    String?
   billingAddressField3    String?
