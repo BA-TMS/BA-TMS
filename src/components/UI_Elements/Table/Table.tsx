@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { useState } from 'react';
 import TableActionsPopover from '@ui/Popovers/TableActions';
@@ -6,18 +7,21 @@ import TablePagination from './Pagination';
 interface TableColumn {
   field: string;
   headerName: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   cellRenderer?: (value: any) => React.ReactNode;
 }
 
 interface TableProps<T> {
   columns: TableColumn[];
   data: T[];
+  update: any; // function for updating table entry
+  deleter: (id: string) => void; // is a database action function
 }
 
 const Table = <T extends { [key: string]: unknown }>({
   columns,
   data,
+  update,
+  deleter,
 }: TableProps<T>) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [postsPerPage, setPostsPerPage] = useState(5);
@@ -81,11 +85,33 @@ const Table = <T extends { [key: string]: unknown }>({
                     )}
                   </td>
                 ))}
+
                 <td>
-                  <TableActionsPopover id={row['id'] as string} />
+                  <TableActionsPopover
+                    id={row['id'] as string}
+                    update={update}
+                    deleter={deleter}
+                  />
                 </td>
               </tr>
             ))}
+            {/* some empty rows to match the loading state if we have less than 5 entries in table */}
+            {currentData.length < 5 &&
+              Array.from({ length: 5 - currentData.length }).map((_, index) => (
+                <tr key={`empty-${index}`}>
+                  {columns.map((column, colIndex) => (
+                    <td key={colIndex} className="p-4">
+                      <p
+                        className={`${
+                          colIndex === 0 ? 'subtitle2' : 'body2'
+                        } text-grey-800 dark:text-white`}
+                      >
+                        &nbsp;
+                      </p>
+                    </td>
+                  ))}
+                </tr>
+              ))}
           </tbody>
 
           <tfoot className="h-14">

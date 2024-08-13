@@ -1,15 +1,17 @@
 'use client';
 
 import { ContextProvider } from '@/Context/modalContext';
+import Load from '@/components/Table/Load';
+
 import PageTitle from '@/components/Page/PageTitle';
 
-const DashboardHome = () => {
+const DispatchPage = () => {
   return (
     <ContextProvider>
-      <PageTitle pageTitle="Dashboard" />
-      <h3 className="pl-10 py-10">Coming Soon</h3>
+      <PageTitle pageTitle="Dispatch Board" />
+      <Load />
     </ContextProvider>
   );
 };
 
-export default DashboardHome;
+export default DispatchPage;
