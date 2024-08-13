@@ -17,12 +17,38 @@ import { CustomerData } from '@/types/customerTypes';
 
 // columns for the table
 const columns = [
-  { field: 'name', headerName: 'Company Name' },
-  { field: 'address', headerName: 'Address' },
-  { field: 'city', headerName: 'City' },
-  { field: 'postCode', headerName: 'Postal/Zip' },
-  { field: 'state', headerName: 'State' },
-  { field: 'telephone', headerName: 'Telephone' },
+  { field: 'companyName', headerName: 'Company Name' },
+  { field: 'status', headerName: 'Status' },
+  { field: 'contactName', headerName: 'Contact Name' },
+  { field: 'secondaryContactName', headerName: 'Secondary Contact Name' },
+  { field: 'salesRepName', headerName: 'Sales Rep' },
+  { field: 'contactEmail', headerName: 'Contact Email' },
+  { field: 'contactTelephone', headerName: 'Contact Telephone' },
+  { field: 'contactTollFree', headerName: 'Toll Free' },
+  { field: 'contactFax', headerName: 'Contact Fax' },
+  { field: 'contactCountry', headerName: 'Contact Country' },
+  { field: 'contactAddress', headerName: 'Contact Address' },
+  { field: 'contactAddressField2', headerName: 'Contact Address 2' },
+  { field: 'contactAddressField3', headerName: 'Contact Address 3' },
+  { field: 'contactCity', headerName: 'Contact City' },
+  { field: 'contactState', headerName: 'Contact State' },
+  { field: 'contactPostCode', headerName: 'Contact Post Code/ Zip' },
+
+  { field: 'billingEmail', headerName: 'Billing Email' },
+  { field: 'billingTelephone', headerName: 'Billing Telephone' },
+  { field: 'billingCountry', headerName: 'Billing Country' },
+  { field: 'billingAddress', headerName: 'Billing Address' },
+  { field: 'billingAddressField2', headerName: 'Billing Address 2' },
+  { field: 'billingAddressField3', headerName: 'Billing Address 3' },
+  { field: 'billingCity', headerName: 'Billing City' },
+  { field: 'billingState', headerName: 'Billing State' },
+  { field: 'billingPostCode', headerName: 'Billing Post Code/ Zip' },
+
+  { field: 'currency', headerName: 'Currency' },
+  { field: 'paymentTerms', headerName: 'Payment Terms' },
+  { field: 'creditLimit', headerName: 'Credit Limit' },
+  { field: 'federalID', headerName: 'Federal ID' },
+  { field: 'factor', headerName: 'Factoring Company' },
 ];
 
 const CustomerTable = (): JSX.Element => {

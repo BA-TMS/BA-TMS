@@ -21,7 +21,7 @@ interface CustomerState {
 export const fetchCustomers = createAsyncThunk<CustomerData[]>(
   'customers/fetchCustomers',
   async () => {
-    const data = await getCustomers(); // get
+    const data = await getCustomers();
     console.log('fetchCustomers', data);
     return data.map((customer: CustomerData) => ({
       ...customer,
