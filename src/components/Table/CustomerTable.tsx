@@ -13,22 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
 import { fetchCustomers } from '@/store/slices/customerSlice';
 import { getCustomer } from '@/lib/dbActions';
-
-// Define customer type
-type CustomerData = {
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
-  name: string;
-  address: string;
-  addressAddOn: string | null;
-  city: string;
-  state: string;
-  postCountry: string;
-  postCode: string;
-  telCountry: string;
-  telephone: string;
-};
+import { CustomerData } from '@/types/customerTypes';
 
 // columns for the table
 const columns = [

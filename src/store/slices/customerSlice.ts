@@ -4,21 +4,7 @@ import {
   addCustomer,
   updateCustomer as apiUpdateCustomer,
 } from '@/lib/dbActions';
-
-interface CustomerData {
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
-  name: string;
-  address: string;
-  addressAddOn: string | null;
-  city: string;
-  state: string;
-  postCountry: string;
-  postCode: string;
-  telCountry: string;
-  telephone: string;
-}
+import { CustomerData } from '@/types/customerTypes';
 
 interface UpdatedCustomerPayload {
   id: string;
