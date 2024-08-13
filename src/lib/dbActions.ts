@@ -37,7 +37,11 @@ export async function getConsignees() {
 }
 
 export async function getCustomers() {
-  const customers = await prisma.customer.findMany();
+  // const customers = await prisma.customer.findMany();
+  const relations = {
+    factor: { select: { name: true } }
+  };
+  const customers = await getter(prisma.customer, relations);
   return customers;
 }
 
@@ -46,7 +50,7 @@ export async function getDrivers() {
   return drivers;
 }
 
-export async function getFactor() {
+export async function getFactors() {
   const factor = await prisma.factor.findMany();
   return factor;
 }
@@ -173,22 +177,29 @@ export async function addConsignee({ consignee }: { consignee: any }) {
   });
 }
 
+// export async function addCustomer({ customer }: { customer: any }) {
+//   const resp = await prisma.customer.create({
+//     data: {
+//       name: customer['Customer Name'],
+//       address: customer['Address'],
+//       addressAddOn: customer['Address Line 2'] || null, // Optional field
+//       city: customer['City'],
+//       state: customer['State'],
+//       postCountry: customer['Country'],
+//       postCode: customer['Zip'],
+//       telCountry: customer['Country Code'],
+//       telephone: customer['Phone Number'],
+//       // email: customer['Email'] // do we need email for customer?
+//       // notes: customer['Notes'] || null, // optional field, notes not in db table yet
+//     },
+//   });
+// }
+
 export async function addCustomer({ customer }: { customer: any }) {
   const resp = await prisma.customer.create({
-    data: {
-      name: customer['Customer Name'],
-      address: customer['Address'],
-      addressAddOn: customer['Address Line 2'] || null, // Optional field
-      city: customer['City'],
-      state: customer['State'],
-      postCountry: customer['Country'],
-      postCode: customer['Zip'],
-      telCountry: customer['Country Code'],
-      telephone: customer['Phone Number'],
-      // email: customer['Email'] // do we need email for customer?
-      // notes: customer['Notes'] || null, // optional field, notes not in db table yet
-    },
+    data: customer
   });
+  return resp;
 }
 
 export async function addDriver({ driver }: { driver: any }) {
