@@ -90,16 +90,41 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
     formState: { errors, isSubmitting, isSubmitSuccessful }, // boolean values representing form state
   } = useForm<Customer>({
     defaultValues: {
-      'Customer Name': '',
+      Status: '',
+      'Company Name': '',
+      'Contact Name': '',
+      'Secondary Contact Name': '',
+      'Sales Rep': '',
+      'Contact Email': '',
+      Telephone: '',
+      'Toll Free': '',
+      Fax: '',
+
       Address: '',
       'Address Line 2': '',
+      'Address Line 3': '',
       City: '',
       State: '',
       Zip: '',
       Country: '',
-      'Country Code': '',
-      'Phone Number': '',
-      // Email: '',
+
+      'Billing Address': '',
+      'Billing Address Line 2': '',
+      'Billing Address Line 3': '',
+      'Billing City': '',
+      'Billing State': '',
+      'Billing Zip': '',
+      'Billing Country': '',
+      'Billing Email': '',
+      'Billing Telephone': '',
+
+      // advanced options
+      Currency: '',
+      'Payment Terms': '',
+      'Credit Limit': undefined, // this might be angry
+      'Federal ID': '',
+      'Factoring Company': '',
+      // 'Factoring Company ID': '', // do we need this?
       Notes: '',
     },
     resolver: yupResolver(customerSchema),
@@ -135,7 +160,7 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
   };
 
   useEffect(() => {
-    // if data is not a synthetic event
+    // if this is a form update (not type synthetic event)
     if (isUpdate) {
       // populate form with data from context
       setValue('Customer Name', data['name']);
@@ -155,16 +180,41 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
   useEffect(() => {
     if (isSubmitSuccessful) {
       reset({
-        'Customer Name': '',
+        Status: '',
+        'Company Name': '',
+        'Contact Name': '',
+        'Secondary Contact Name': '',
+        'Sales Rep': '',
+        'Contact Email': '',
+        Telephone: '',
+        'Toll Free': '',
+        Fax: '',
+
         Address: '',
         'Address Line 2': '',
+        'Address Line 3': '',
         City: '',
         State: '',
         Zip: '',
         Country: '',
-        'Country Code': '',
-        'Phone Number': '',
-        // Email: '',
+
+        'Billing Address': '',
+        'Billing Address Line 2': '',
+        'Billing Address Line 3': '',
+        'Billing City': '',
+        'Billing State': '',
+        'Billing Zip': '',
+        'Billing Country': '',
+        'Billing Email': '',
+        'Billing Telephone': '',
+
+        // advanced options
+        Currency: '',
+        'Payment Terms': '',
+        'Credit Limit': undefined, // this might be angry
+        'Federal ID': '',
+        'Factoring Company': '',
+        // 'Factoring Company ID': '', // do we need this?
         Notes: '',
       });
     }
