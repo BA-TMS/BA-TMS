@@ -21,23 +21,26 @@ export function TabsComponent({ children }) {
   );
 
   // dynamically define tabs and content
-  const tabs = children.map((child: JSX.Element) => (
-    <button
-      className="subtitle2 text-grey-600 dark:text-grey-200 hover:text-grey-800 dark:hover:text-primary cursor-pointer py-2 border-b-2 border-transparent hover:border-b-2 hover:border-grey-800 dark:hover:border-primary"
-      onClick={(e) => {
-        e.preventDefault();
-        handleActiveTab(child.props.label);
-      }}
-      //   className={
-      //     child.props.label === activeTab
-      //       ? ['tabs__tab', 'tabs__tab-active'].join(' ')
-      //       : 'tabs__tab'
-      //   }
-      key={child.props.label}
-    >
-      {child.props.tabName}
-    </button>
-  ));
+  const tabs = children.map((child: JSX.Element) => {
+    const isActive = child.props.label === activeTab;
+
+    return (
+      <button
+        key={child.props.label}
+        className={`subtitle2 text-grey-600 dark:text-grey-200 cursor-pointer py-2 border-b-2 ${
+          isActive
+            ? 'text-grey-800  border-primary'
+            : 'border-transparent hover:text-grey-800 hover:border-grey-800 dark:hover:border-grey-200'
+        }`}
+        onClick={(e) => {
+          e.preventDefault();
+          handleActiveTab(child.props.label);
+        }}
+      >
+        {child.props.tabName}
+      </button>
+    );
+  });
 
   // iterate children again and only hold child with same label as active tab
   const tabContent = children.filter(
@@ -46,7 +49,7 @@ export function TabsComponent({ children }) {
 
   return (
     <>
-      <div className="px-6 h-12 bg-grey-200 dark:bg-grey-700 flex items-center justify-start content-between gap-10 overflow-hidden">
+      <div className="px-6 h-12 bg-grey-200 dark:bg-grey-900 flex items-center justify-start content-between gap-10 overflow-hidden border-b border-grey-300 dark:border-grey-700">
         {tabs}
       </div>
       <div>{tabContent}</div>
