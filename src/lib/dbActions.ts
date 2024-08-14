@@ -151,6 +151,7 @@ export async function addCarrier({ carrier }: { carrier: any }) {
       // notes: carrier['Notes'] || null, // optional field, notes not in table yet
     },
   });
+  return resp;
 }
 
 export async function addConsignee({ consignee }: { consignee: any }) {
