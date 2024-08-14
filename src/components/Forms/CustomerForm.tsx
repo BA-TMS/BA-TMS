@@ -21,22 +21,54 @@ interface CustomerFormProps {
 }
 
 const customerSchema = yup.object({
-  'Customer Name': yup.string().required('Customer Name is required'),
+  Status: yup.string(),
+  'Company Name': yup.string().required('Must enter Company Name'),
+  'Contact Name': yup.string().required('Must enter Contact Name'),
+  'Secondary Contact Name': yup.string().nullable(),
+  'Sales Rep': yup.string().nullable(),
+  'Contact Email': yup
+    .string()
+    .email('Must use a valid email')
+    .required('Contact email required'),
+  Telephone: yup.string().required('Must enter Contact Telephone'),
+  'Toll Free': yup.string().nullable(),
+  Fax: yup.string().nullable(),
+
   Address: yup.string().required('Address is required'),
   'Address Line 2': yup.string().nullable(),
+  'Address Line 3': yup.string().nullable(),
   City: yup.string().required('City is required '),
   State: yup.string().required('State is required '),
   Zip: yup
     .string()
     .matches(/^\d{5}$/, 'Zip must be 5 digits')
     .required('Zip Code is required '),
-  Country: yup.string().required('Country is required'), // is this necessary or are we US based?
-  'Country Code': yup.string().nullable(),
-  'Phone Number': yup.string().required('Phone number required'),
-  // Email: yup // do we need email for customers?
-  //   .string()
-  //   .email('Must use a valid email')
-  //   .required('Contact email required'),
+  Country: yup.string().required('Must enter Country'),
+
+  'Billing Address': yup.string().required('Billing address required'),
+  'Billing Address Line 2': yup.string().nullable(),
+  'Billing Address Line 3': yup.string().nullable(),
+  'Billing City': yup.string().required('Billing city is required '),
+  'Billing State': yup.string().required('Billing state is required '),
+  'Billing Zip': yup
+    .string()
+    .matches(/^\d{5}$/, 'Zip must be 5 digits')
+    .required('Zip Code is required '),
+  'Billing Country': yup.string().required('Must enter Billing Country'),
+  'Billing Email': yup
+    .string()
+    .email('Must use a valid email')
+    .required('Billing email required'),
+  'Billing Telephone': yup.string().required('Must enter Billing Telephone'),
+
+  // advanced options
+  Currency: yup.string(),
+  'Payment Terms': yup.string().required('Must enter Payment Terms'),
+  'Credit Limit': yup.number().nullable(),
+  'Federal ID': yup.string().required('Must enter Federal ID'),
+  'Factoring Company': yup.string().nullable(),
+  // 'Factoring Company ID': yup.string().nullable(), // do we need this?
+
   Notes: yup.string().max(250, 'Must be under 250 characters'),
 });
 
@@ -74,6 +106,7 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
   });
 
   const onSubmit = async (customer: CustomerData) => {
+    console.log('customer', customer);
     // not customer: Customer
     if (data !== null && !data['id']) {
       try {
@@ -102,7 +135,6 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
   };
 
   useEffect(() => {
-    console.log('context data', data);
     // if data is not a synthetic event
     if (isUpdate) {
       // populate form with data from context
@@ -139,9 +171,9 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
   }, [isSubmitSuccessful, reset]);
 
   return (
-    <>
+    <div>
       <TabsComponent>
-        <Tab label={'recommended'} tabName={'Recommended'}>
+        <Tab label={'customer_details'} tabName={'Customer Details'}>
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col justify-between"
@@ -213,11 +245,11 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
             </div>
           </form>
         </Tab>
-        <Tab label={'subscribed'} tabName={'Subscribed'}>
-          <p>You no subscribed to any channel</p>
+        <Tab label={'advanced_customer'} tabName={'Advanced'}>
+          <p>Advanced options</p>
         </Tab>
       </TabsComponent>
-    </>
+    </div>
   );
 };
 
