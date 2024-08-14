@@ -1,16 +1,16 @@
-import { useState, useCallback } from 'react';
-
-// interface TabsProps {
-//   children: JSX.Element[];
-// }
+import { useState, useCallback, ReactElement } from 'react';
 
 interface TabProps {
+  children: ReactElement;
   label: string;
   tabName: string;
-  children: JSX.Element;
 }
 
-export function TabsComponent({ children }) {
+export function TabsComponent({
+  children,
+}: {
+  children: React.ReactElement[];
+}) {
   const initialTab = children[0].props.label;
   const [activeTab, setActiveTab] = useState(initialTab);
 
@@ -57,6 +57,6 @@ export function TabsComponent({ children }) {
   );
 }
 
-export function Tab({ label, tabName, children }: TabProps) {
+export function Tab({ children }: TabProps) {
   return <>{children}</>;
 }
