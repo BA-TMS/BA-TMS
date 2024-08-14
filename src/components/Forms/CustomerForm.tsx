@@ -12,6 +12,8 @@ import Button from '../UI_Elements/buttons/Button';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store/store';
 import { createCustomer, updateCustomer } from '@/store/slices/customerSlice';
+import { CustomerData } from '@/types/customerTypes';
+import { TabsComponent, Tab } from '../UI_Elements/Form/Tabs';
 
 interface CustomerFormProps {
   modalOpen?: boolean;
@@ -71,7 +73,8 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
     resolver: yupResolver(customerSchema),
   });
 
-  const onSubmit = async (customer: Customer) => {
+  const onSubmit = async (customer: CustomerData) => {
+    // not customer: Customer
     if (data !== null && !data['id']) {
       try {
         await dispatch(createCustomer(customer)).unwrap();
@@ -136,64 +139,85 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
   }, [isSubmitSuccessful, reset]);
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col justify-between"
-    >
-      <p className="px-4.5 mt-3.5 mb-5 body2 text-grey-800 dark:text-white">
-        Set the details
-      </p>
-      <div className="px-4.5">
-        <TextInput control={control} name="Customer Name" required={true} />
-        <TextInput control={control} name="Address" required={true} />
-        <TextInput control={control} name="Address Line 2" />
-
-        <div className=" flex flex-col gap-6 xl:flex-row">
-          <div className="w-full xl:w-1/2">
-            <TextInput control={control} name="City" required={true} />
-            <SelectInput
-              control={control}
-              name="State"
-              options={usStates}
-              required={true}
-            />
-            <TextInput control={control} name="Country Code" required={false} />
-          </div>
-          <div className="w-full xl:w-1/2">
-            <TextInput control={control} name="Zip" required={true} />
-            <TextInput control={control} name="Country" required={true} />
-            <TextInput control={control} name="Phone Number" required={true} />
-          </div>
-        </div>
-
-        {/* <TextInput control={control} name="Email" required={true} /> */}
-        <TextInput control={control} name="Notes" isTextArea={true} />
-        <div className="min-h-5">
-          {errors.root && (
-            <p className="caption mb-1 text-error-dark">
-              {errors.root.message}
+    <>
+      <TabsComponent>
+        <Tab label={'recommended'} tabName={'Recommended'}>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col justify-between"
+          >
+            <p className="px-4.5 mt-3.5 mb-5 body2 text-grey-800 dark:text-white">
+              Set the details
             </p>
-          )}
-        </div>
-      </div>
-      <div className="py-3.5 px-4.5 border-t border-grey-300 dark:border-grey-700 flex justify-end gap-2.5">
-        <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Submitting' : isUpdate ? 'Update' : 'Add'}
-        </Button>
-        <Button
-          type="button"
-          disabled={isSubmitting}
-          onClick={() => {
-            reset();
-            toggleOpen();
-          }}
-          variant="outline"
-          intent="default"
-        >
-          Cancel
-        </Button>
-      </div>
-    </form>
+            <div className="px-4.5">
+              <TextInput
+                control={control}
+                name="Customer Name"
+                required={true}
+              />
+              <TextInput control={control} name="Address" required={true} />
+              <TextInput control={control} name="Address Line 2" />
+
+              <div className=" flex flex-col gap-6 xl:flex-row">
+                <div className="w-full xl:w-1/2">
+                  <TextInput control={control} name="City" required={true} />
+                  <SelectInput
+                    control={control}
+                    name="State"
+                    options={usStates}
+                    required={true}
+                  />
+                  <TextInput
+                    control={control}
+                    name="Country Code"
+                    required={false}
+                  />
+                </div>
+                <div className="w-full xl:w-1/2">
+                  <TextInput control={control} name="Zip" required={true} />
+                  <TextInput control={control} name="Country" required={true} />
+                  <TextInput
+                    control={control}
+                    name="Phone Number"
+                    required={true}
+                  />
+                </div>
+              </div>
+
+              {/* <TextInput control={control} name="Email" required={true} /> */}
+              <TextInput control={control} name="Notes" isTextArea={true} />
+              <div className="min-h-5">
+                {errors.root && (
+                  <p className="caption mb-1 text-error-dark">
+                    {errors.root.message}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="py-3.5 px-4.5 border-t border-grey-300 dark:border-grey-700 flex justify-end gap-2.5">
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? 'Submitting' : isUpdate ? 'Update' : 'Add'}
+              </Button>
+              <Button
+                type="button"
+                disabled={isSubmitting}
+                onClick={() => {
+                  reset();
+                  toggleOpen();
+                }}
+                variant="outline"
+                intent="default"
+              >
+                Cancel
+              </Button>
+            </div>
+          </form>
+        </Tab>
+        <Tab label={'subscribed'} tabName={'Subscribed'}>
+          <p>You no subscribed to any channel</p>
+        </Tab>
+      </TabsComponent>
+    </>
   );
 };
 
