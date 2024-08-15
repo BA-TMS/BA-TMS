@@ -14,11 +14,7 @@ import Button from '../UI_Elements/buttons/Button';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store/store';
 import { createCustomer, updateCustomer } from '@/store/slices/customerSlice';
-import {
-  CustomerData,
-  customerFieldMap,
-  CustomerDataKeys,
-} from '@/types/customerTypes';
+import { CustomerData, customerFieldMap } from '@/types/customerTypes';
 import { TabsComponent, Tab } from '../UI_Elements/Form/Tabs';
 import { getFactors } from '@/lib/dbActions';
 
@@ -140,7 +136,7 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
     resolver: yupResolver(customerSchema),
   });
 
-  const mapCustomerData = (customer: CustomerData) => {
+  const mapCustomerData = (customer: Customer) => {
     const mappedData: Record<string, unknown> = {};
 
     Object.keys(customer).forEach((key) => {
@@ -148,9 +144,9 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
       const dbField = customerFieldMap[key as keyof typeof customerFieldMap];
 
       if (dbField) {
-        mappedData[dbField] = customer[key as keyof CustomerData];
+        mappedData[dbField] = customer[key as keyof Customer];
       } else {
-        mappedData[key] = customer[key as keyof CustomerData];
+        mappedData[key] = customer[key as keyof Customer];
       }
     });
 
@@ -158,7 +154,7 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
     return mappedData as CustomerData;
   };
 
-  const onSubmit = async (customer: CustomerData) => {
+  const onSubmit = async (customer: Customer) => {
     const mappedCustomer = mapCustomerData(customer);
 
     if (data !== null && !data['id']) {
