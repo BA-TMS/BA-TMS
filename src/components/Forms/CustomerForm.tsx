@@ -7,13 +7,16 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import TextInput from '../UI_Elements/Form/TextInput';
 import SelectInput from '../UI_Elements/Form/SelectInput';
+import DynamicSelect from '../UI_Elements/Form/DynamicSelect';
 import { usStates } from '@/components/Forms/data/states';
+import { customerStatus, currency, paymentTerms } from './data/details';
 import Button from '../UI_Elements/buttons/Button';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store/store';
 import { createCustomer, updateCustomer } from '@/store/slices/customerSlice';
 import { CustomerData } from '@/types/customerTypes';
 import { TabsComponent, Tab } from '../UI_Elements/Form/Tabs';
+import { getFactors } from '@/lib/dbActions';
 
 interface CustomerFormProps {
   modalOpen?: boolean;
@@ -132,7 +135,7 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
 
   const onSubmit = async (customer: CustomerData) => {
     console.log('customer', customer);
-    // not customer: Customer
+
     if (data !== null && !data['id']) {
       try {
         await dispatch(createCustomer(customer)).unwrap();
@@ -232,42 +235,101 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
               Set the details
             </p>
             <div className="px-4.5">
+              <SelectInput
+                control={control}
+                name="Status"
+                options={customerStatus}
+              />
               <TextInput
                 control={control}
-                name="Customer Name"
+                name="Company Name"
                 required={true}
               />
+
+              <TextInput
+                control={control}
+                name="Contact Name"
+                required={true}
+              />
+
+              <TextInput control={control} name="Secondary Contact Name" />
+
+              <TextInput
+                control={control}
+                name="Contact Email"
+                required={true}
+              />
+              <TextInput control={control} name="Telephone" required={true} />
+              <TextInput control={control} name="Toll Free" />
+              <TextInput control={control} name="Fax" />
+
               <TextInput control={control} name="Address" required={true} />
               <TextInput control={control} name="Address Line 2" />
+              <TextInput control={control} name="Address Line 3" />
+              <TextInput control={control} name="City" required={true} />
+              <SelectInput
+                control={control}
+                name="State"
+                options={usStates}
+                required={true}
+              />
+              <TextInput control={control} name="Zip" required={true} />
+              <TextInput control={control} name="Country" required={true} />
 
-              <div className=" flex flex-col gap-6 xl:flex-row">
-                <div className="w-full xl:w-1/2">
-                  <TextInput control={control} name="City" required={true} />
-                  <SelectInput
-                    control={control}
-                    name="State"
-                    options={usStates}
-                    required={true}
-                  />
-                  <TextInput
-                    control={control}
-                    name="Country Code"
-                    required={false}
-                  />
-                </div>
-                <div className="w-full xl:w-1/2">
-                  <TextInput control={control} name="Zip" required={true} />
-                  <TextInput control={control} name="Country" required={true} />
-                  <TextInput
-                    control={control}
-                    name="Phone Number"
-                    required={true}
-                  />
-                </div>
-              </div>
+              {/* Billing Address */}
+              <TextInput
+                control={control}
+                name="Billing Address"
+                required={true}
+              />
+              <TextInput control={control} name="Billing Address Line 2" />
+              <TextInput control={control} name="Billing Address Line 3" />
+              <TextInput
+                control={control}
+                name="Billing City"
+                required={true}
+              />
+              <SelectInput
+                control={control}
+                name="Billing State"
+                options={usStates}
+                required={true}
+              />
+              <TextInput control={control} name="Billing Zip" required={true} />
+              <TextInput
+                control={control}
+                name="Billing Country"
+                required={true}
+              />
+              <TextInput
+                control={control}
+                name="Billing Email"
+                required={true}
+              />
+              <TextInput
+                control={control}
+                name="Billing Telephone"
+                required={true}
+              />
 
-              {/* <TextInput control={control} name="Email" required={true} /> */}
-              <TextInput control={control} name="Notes" isTextArea={true} />
+              <TextInput control={control} name="Sales Rep" />
+              <SelectInput
+                control={control}
+                name="Currency"
+                options={currency}
+              />
+              <SelectInput
+                control={control}
+                name="Payment Terms"
+                options={paymentTerms}
+              />
+              <TextInput control={control} name="Credit Limit" />
+              <TextInput control={control} name="Federal ID" required={true} />
+              <DynamicSelect
+                control={control}
+                name="Factoring Company"
+                dbaction={getFactors}
+              />
               <div className="min-h-5">
                 {errors.root && (
                   <p className="caption mb-1 text-error-dark">
