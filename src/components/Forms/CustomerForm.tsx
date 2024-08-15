@@ -14,7 +14,7 @@ import Button from '../UI_Elements/buttons/Button';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store/store';
 import { createCustomer, updateCustomer } from '@/store/slices/customerSlice';
-import { CustomerData } from '@/types/customerTypes';
+import { CustomerData, customerFieldMap } from '@/types/customerTypes';
 import { TabsComponent, Tab } from '../UI_Elements/Form/Tabs';
 import { getFactors } from '@/lib/dbActions';
 
@@ -24,7 +24,7 @@ interface CustomerFormProps {
 }
 
 const customerSchema = yup.object({
-  Status: yup.string(),
+  Status: yup.string().required('Must enter Customer Status'),
   'Company Name': yup.string().required('Must enter Company Name'),
   'Contact Name': yup.string().required('Must enter Contact Name'),
   'Secondary Contact Name': yup.string().nullable(),
@@ -67,12 +67,15 @@ const customerSchema = yup.object({
   // advanced options
   Currency: yup.string(),
   'Payment Terms': yup.string().required('Must enter Payment Terms'),
-  'Credit Limit': yup.number().nullable(),
+  'Credit Limit': yup
+    .number()
+    .nullable()
+    .typeError('Credit Limit be numeric value'),
   'Federal ID': yup.string().required('Must enter Federal ID'),
   'Factoring Company': yup.string().nullable(),
   // 'Factoring Company ID': yup.string().nullable(), // do we need this?
 
-  Notes: yup.string().max(250, 'Must be under 250 characters'),
+  // Notes: yup.string().max(250, 'Must be under 250 characters'),
 });
 
 type Customer = yup.InferType<typeof customerSchema>;
@@ -128,36 +131,49 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
       'Federal ID': '',
       'Factoring Company': '',
       // 'Factoring Company ID': '', // do we need this?
-      Notes: '',
+      // Notes: '',
     },
     resolver: yupResolver(customerSchema),
   });
 
+  const mapCustomerData = (customer: CustomerData) => {
+    const mappedData = {};
+
+    Object.keys(customer).forEach((key) => {
+      const dbField = customerFieldMap[key];
+      if (dbField) {
+        mappedData[dbField] = customer[key];
+      } else {
+        mappedData[key] = customer[key];
+      }
+    });
+
+    console.log('mapped data', mappedData);
+    return mappedData;
+  };
+
   const onSubmit = async (customer: CustomerData) => {
-    console.log('customer', customer);
+    const mappedCustomer = mapCustomerData(customer);
 
     if (data !== null && !data['id']) {
       try {
-        await dispatch(createCustomer(customer)).unwrap();
+        await dispatch(createCustomer(mappedCustomer)).unwrap();
         reset();
         toggleOpen();
       } catch (error) {
-        console.error('Error creating load:', error);
+        console.error('Error creating customer:', error);
       }
     } else {
-      // code looks fine but id is undefined?
-      {
-        try {
-          await dispatch(
-            updateCustomer({ id: data['id'], updatedCustomer: customer })
-          ).unwrap();
+      try {
+        await dispatch(
+          updateCustomer({ id: data['id'], updatedCustomer: mappedCustomer })
+        ).unwrap();
 
-          reset();
-          toggleOpen();
-        } catch (error) {
-          console.error('Error updating customer:', error);
-          toggleOpen();
-        }
+        reset();
+        toggleOpen();
+      } catch (error) {
+        console.error('Error updating customer:', error);
+        toggleOpen();
       }
     }
   };
@@ -166,16 +182,9 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
     // if this is a form update (not type synthetic event)
     if (isUpdate) {
       // populate form with data from context
-      setValue('Customer Name', data['name']);
-      setValue('Address', data['address']);
-      setValue('Address Line 2', data['addressAddOn']);
-      setValue('City', data['city']);
-      setValue('State', data['state']);
-      setValue('Zip', data['postCode']);
-      setValue('Country', data['postCountry']);
-      setValue('Country Code', data['telCountry']);
-      setValue('Phone Number', data['telephone']);
-      // notes + new values
+      Object.keys(customerFieldMap).forEach((formField) => {
+        setValue(formField, data[customerFieldMap[formField]]);
+      });
     }
   }, [data, setValue, isUpdate]);
 
@@ -218,7 +227,7 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
         'Federal ID': '',
         'Factoring Company': '',
         // 'Factoring Company ID': '', // do we need this?
-        Notes: '',
+        // Notes: '',
       });
     }
   }, [isSubmitSuccessful, reset]);
@@ -239,6 +248,7 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
                 control={control}
                 name="Status"
                 options={customerStatus}
+                required={true}
               />
               <TextInput
                 control={control}
@@ -322,6 +332,7 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
                 control={control}
                 name="Payment Terms"
                 options={paymentTerms}
+                required={true}
               />
               <TextInput control={control} name="Credit Limit" />
               <TextInput control={control} name="Federal ID" required={true} />

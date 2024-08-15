@@ -72,5 +72,5 @@ export const customerFieldMap = {
   'Federal ID': 'federalID',
   'Factoring Company': 'factor',
   'Factoring Company ID': 'factorID',
-  Notes: 'notes',
+  // Notes: 'notes', // don't map it yet not in db
 };

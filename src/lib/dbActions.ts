@@ -1,7 +1,6 @@
 'use server';
 
 import { PrismaClient } from '@prisma/client';
-import { ConsigneeFormDataState } from '@/types/formTypes';
 
 const prisma = new PrismaClient();
 
@@ -205,9 +204,16 @@ export async function addConsignee({ consignee }: { consignee: any }) {
 // }
 
 export async function addCustomer({ customer }: { customer: any }) {
+  // make it happy about factor
+  const transformedCustomer = {
+    ...customer,
+    factor: customer.factor ? { connect: { id: customer.factor } } : undefined,
+  };
+
   const resp = await prisma.customer.create({
-    data: customer,
+    data: transformedCustomer,
   });
+
   return resp;
 }
 
