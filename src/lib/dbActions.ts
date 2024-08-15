@@ -262,7 +262,7 @@ export async function addLoad({ load }: { load: any }) {
       shipDate: load['Ship Date'],
       deliveryDate: load['Received Date'],
     },
-    include: LOAD_RELATIONS
+    include: LOAD_RELATIONS,
   });
   return resp;
 }
@@ -369,28 +369,7 @@ export async function updateCustomer(
   id: string,
   { formData }: { formData: any }
 ) {
-  // Map to convert formData keys to database keys
-  const mapCustomerData = (customer: any) => {
-    if (!customer) {
-      throw new Error('Customer data is undefined or null');
-    }
-
-    return {
-      name: customer['Customer Name'],
-      address: customer['Address'],
-      addressAddOn: customer['Address Line 2'],
-      city: customer['City'],
-      state: customer['State'],
-      postCode: customer['Zip'],
-      postCountry: customer['Country'],
-      telCountry: customer['Country Code'],
-      telephone: customer['Phone Number'],
-      // will need to update mappings as needed
-    };
-  };
-
-  const mappedData = mapCustomerData(formData);
-  const resp = await updater(prisma.customer, id, mappedData);
+  const resp = await updater(prisma.customer, id, formData);
   return resp;
 }
 
