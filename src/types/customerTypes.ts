@@ -34,3 +34,43 @@ export type CustomerData = {
   factor: string | null;
   factorID: string | null;
 };
+
+// form field names vs db names for mapping values
+export const customerFieldMap = {
+  Status: 'status',
+  'Company Name': 'companyName',
+  'Contact Name': 'contactName',
+  'Secondary Contact Name': 'secondaryContactName',
+  'Contact Email': 'contactEmail',
+  Telephone: 'contactTelephone',
+  'Toll Free': 'contactTollFree',
+  Fax: 'contactFax',
+
+  Address: 'contactAddress',
+  'Address Line 2': 'contactAddressField2',
+  'Address Line 3': 'contactAddressField3',
+  City: 'contactCity',
+  State: 'contactState',
+  Zip: 'contactPostCode',
+  Country: 'contactCountry',
+
+  'Billing Address': 'billingAddress',
+  'Billing Address Line 2': 'billingAddressField2',
+  'Billing Address Line 3': 'billingAddressField3',
+  'Billing City': 'billingCity',
+  'Billing State': 'billingState',
+  'Billing Zip': 'billingPostCode',
+  'Billing Country': 'billingCountry',
+  'Billing Email': 'billingEmail',
+  'Billing Telephone': 'billingTelephone',
+
+  // advanced options
+  'Sales Rep': 'salesRepName',
+  Currency: 'currency',
+  'Payment Terms': 'paymentTerms',
+  'Credit Limit': 'creditLimit',
+  'Federal ID': 'federalID',
+  'Factoring Company': 'factor',
+  'Factoring Company ID': 'factorID',
+  Notes: 'notes',
+};
