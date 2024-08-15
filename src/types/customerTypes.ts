@@ -35,8 +35,10 @@ export type CustomerData = {
   factorID: string | null;
 };
 
+export type CustomerDataKeys = keyof CustomerData;
+
 // form field names vs db names for mapping values
-export const customerFieldMap = {
+export const customerFieldMap: Record<string, keyof CustomerData> = {
   Status: 'status',
   'Company Name': 'companyName',
   'Contact Name': 'contactName',

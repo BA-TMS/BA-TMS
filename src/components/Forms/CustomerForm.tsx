@@ -14,7 +14,11 @@ import Button from '../UI_Elements/buttons/Button';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store/store';
 import { createCustomer, updateCustomer } from '@/store/slices/customerSlice';
-import { CustomerData, customerFieldMap } from '@/types/customerTypes';
+import {
+  CustomerData,
+  customerFieldMap,
+  CustomerDataKeys,
+} from '@/types/customerTypes';
 import { TabsComponent, Tab } from '../UI_Elements/Form/Tabs';
 import { getFactors } from '@/lib/dbActions';
 
@@ -137,19 +141,21 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
   });
 
   const mapCustomerData = (customer: CustomerData) => {
-    const mappedData = {};
+    const mappedData: Record<string, unknown> = {};
 
     Object.keys(customer).forEach((key) => {
-      const dbField = customerFieldMap[key];
+      // the field name in the db
+      const dbField = customerFieldMap[key as keyof typeof customerFieldMap];
+
       if (dbField) {
-        mappedData[dbField] = customer[key];
+        mappedData[dbField] = customer[key as keyof CustomerData];
       } else {
-        mappedData[key] = customer[key];
+        mappedData[key] = customer[key as keyof CustomerData];
       }
     });
 
     console.log('mapped data', mappedData);
-    return mappedData;
+    return mappedData as CustomerData;
   };
 
   const onSubmit = async (customer: CustomerData) => {
@@ -179,7 +185,6 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
   };
 
   useEffect(() => {
-    // if this is a form update (not type synthetic event)
     if (isUpdate) {
       // populate form with data from context
       Object.keys(customerFieldMap).forEach((formField) => {
