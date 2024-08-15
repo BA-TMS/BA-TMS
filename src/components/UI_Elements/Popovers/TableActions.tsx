@@ -56,25 +56,25 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({
   }, [popoversOpen, popovers]);
 
   return (
-    <div className="absolute text-grey-600 dark:text-grey-300">
-      <div className="relative top-[-10px] inline-block">
-        <button
-          ref={trigger}
-          onClick={() => setPopoversOpen(!popoversOpen)}
-          className="hover:text-primary"
-        >
-          {ElipsisVertical}
-        </button>
-        {/* Popover Start */}
-        <div
-          ref={popovers}
-          onFocus={() => setPopoversOpen(true)}
-          onBlur={() => setPopoversOpen(false)}
-          className={`absolute top-0 right-full z-20 w-40 px-4 rounded-lg border body2 text-grey-600 dark:text-grey-300 bg-white dark:bg-grey-900 border-grey-300 dark:border-grey-700 ${
-            popoversOpen === true ? 'block' : 'hidden'
-          }`}
-        >
-          <span className="absolute -right-1.5 top-2 -z-10 h-2 w-2 rotate-45 rounded-sm bg-white dark:bg-grey-900 border-r-2 border-t border-grey-300 dark:border-grey-700"></span>
+    <div className="relative inline-block">
+      <button
+        ref={trigger}
+        onClick={() => setPopoversOpen(!popoversOpen)}
+        className="hover:text-primary"
+      >
+        {ElipsisVertical}
+      </button>
+      {/* Popover Start */}
+      <div
+        ref={popovers}
+        onFocus={() => setPopoversOpen(true)}
+        onBlur={() => setPopoversOpen(false)}
+        className={`absolute top-0 right-full z-20 w-40 px-4 rounded-lg border body2 text-grey-600 dark:text-grey-300 bg-white dark:bg-grey-900 border-grey-300 dark:border-grey-700 ${
+          popoversOpen === true ? 'block' : 'hidden'
+        }`}
+      >
+        <span className="absolute -right-1.5 top-2 -z-10 h-2 w-2 rotate-45 rounded-sm bg-white dark:bg-grey-900 border-r-2 border-t border-grey-300 dark:border-grey-700"></span>
+
 
           <div className="flex flex-wrap">
             <Button
@@ -96,6 +96,7 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({
               Delete
             </Button>
           </div>
+
         </div>
       </div>
     </div>
