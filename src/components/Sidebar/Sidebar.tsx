@@ -35,7 +35,7 @@ const adminOptions = [
   { name: 'Drivers', href: '#' },
   { name: 'Trucks', href: '#' },
   { name: 'Trailers', href: '#' },
-  { name: 'External Carriers', href: '#' },
+  { name: 'External Carriers', href: '/dashboard/carrier' },
   { name: 'Customs Brokers', href: '#' },
   { name: 'Factoring Companies', href: '#' },
   { name: 'Users', href: '#' },
@@ -144,7 +144,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             <SidebarListItem
               icon={DispatchIcon}
               pathname={pathname}
-              path={'/temp'}
+              path={'/dispatch'}
               name={'Dispatch'}
             />
             <SidebarListItem

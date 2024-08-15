@@ -4,6 +4,7 @@ import {
   getLoads,
   addLoad as apiAddLoad,
   updateLoad as apiUpdateLoad,
+  deleteLoad as apiDeleteLoad,
 } from '@/lib/dbActions';
 
 interface Load {
@@ -36,34 +37,36 @@ interface LoadState {
   error: string | null;
 }
 
+// Format a load to show its human-facing info.
+const formatron = function (rawLoad: any) {
+  return {
+    ...rawLoad,
+    shipDate: rawLoad.shipDate ? rawLoad.shipDate.toDateString() : null,
+    deliveryDate: rawLoad.deliveryDate
+      ? rawLoad.deliveryDate.toDateString()
+      : null,
+    carrier: rawLoad.carrier.name,
+    driver: rawLoad.driver ? rawLoad.driver.name : null,
+    customer: rawLoad.customer.name,
+    shipper: rawLoad.shipper ? rawLoad.shipper.name : null,
+    consignee: rawLoad.consignee ? rawLoad.consignee.name : null,
+  };
+};
+
 // Define Async Thunks
 export const fetchLoads = createAsyncThunk<Load[]>(
   'loads/fetchLoads',
   async () => {
     const data = await getLoads();
-    return data.map((load: Load) => ({
-      ...load,
-      shipDate: load.shipDate ? load.shipDate.toDateString() : null,
-      deliveryDate: load.deliveryDate ? load.deliveryDate.toDateString() : null,
-      carrier: load.carrier.name,
-      driver: load.driver ? load.driver.name : null,
-      customer: load.customer.name,
-      shipper: load.shipper ? load.shipper.name : null,
-      consignee: load.consignee ? load.consignee.name : null,
-    }));
+    return data.map(currLoad => formatron(currLoad));
   }
 );
-
-// export const createLoad = createAsyncThunk('loads/createLoad', async (load) => {
-//   const newLoad = await apiAddLoad({ load });
-//   return newLoad;
-// });
 
 export const createLoad = createAsyncThunk<Load, Load>(
   'loads/createLoad',
   async (load) => {
     const newLoad = await apiAddLoad({ load });
-    return newLoad;
+    return formatron(newLoad);
   }
 );
 
@@ -72,6 +75,14 @@ export const updateLoad = createAsyncThunk<Load, UpdateLoadPayload>(
   async ({ id, updatedLoad }: UpdateLoadPayload) => {
     const load = await apiUpdateLoad(id, { formData: updatedLoad });
     return load;
+  }
+);
+
+export const deleteLoad = createAsyncThunk(
+  'loads/deleteLoad',
+  async (id: number) => {
+    const response = await apiDeleteLoad(id);
+    return response;
   }
 );
 
@@ -106,6 +117,9 @@ const loadSlice = createSlice({
         if (index !== -1) {
           state.items[index] = action.payload;
         }
+      })
+      .addCase(deleteLoad.fulfilled, (state, action) => {
+        state.items = state.items.filter((load) => load.id !== action.meta.arg); //property contains the id argument passed to the deleteLoad
       });
   },
 });

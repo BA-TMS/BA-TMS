@@ -1,11 +1,14 @@
 'use client';
 
 import { useState, useEffect, useContext } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { ModalContext } from '@/Context/modalContext';
-import { getCarriers } from '@/lib/dbActions';
 import CarrierForm from '../Forms/CarrierForm';
 import FormModal from '@/components/Modals/FormModal';
 import Table from '../UI_Elements/Table/Table';
+import Button from '../UI_Elements/buttons/Button';
+import { fetchCarriers } from '@/store/slices/carrierSlice';
+import { AppDispatch, RootState } from '@/store/store';
 
 type Carrier = {
   name: string;
@@ -39,48 +42,34 @@ const columns = [
 ];
 
 export default function Carriers() {
-  const [carriers, setCarriers] = useState<Carrier[]>([]);
-
+  const dispatch = useDispatch<AppDispatch>();
   const { toggleOpen } = useContext(ModalContext);
 
-  const handleClick = () => {
-    toggleOpen();
-  };
+  const {
+    items: carriers,
+    status,
+    error
+  } = useSelector((state: RootState) => state.carriers);
 
-  // data fetched and passed to Table
+  // const handleClick = () => {
+  //   toggleOpen();
+  // };
+
   useEffect(() => {
-    const fetchDrivers = async () => {
-      const data = await getCarriers();
-      setCarriers(data);
-    };
-
-    fetchDrivers();
-  }, []);
+    dispatch(fetchCarriers());
+  }, [dispatch]);
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8">
-      <button
-        onClick={handleClick}
-        className="float-right rounded-md bg-primary py-3 px-9 font-medium text-white hover:bg-opacity-80"
-      >
-        Add Carrier
-      </button>
-      <div className="sm:flex sm:items-center">
-        <div className="sm:flex-auto">
-          <h1 className="text-base leading-6 text-gray-900">
-            External Carriers
-          </h1>
-          <p className="mt-2 text-md text-gray-700">
-            A list of all External Carrier information.
-          </p>
+    <>
+      <div className='relative flex justify-end mb-6'>
+        <div className='absolute right-4 bottom-2'>
+          <Button onClick={toggleOpen}>Add Carrier</Button>
         </div>
-        <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-          <FormModal>
-            <CarrierForm />
-          </FormModal>
-        </div>
+        <FormModal>
+          <CarrierForm />
+        </FormModal>
       </div>
       <Table columns={columns} data={carriers}></Table>
-    </div>
+    </>
   );
 }

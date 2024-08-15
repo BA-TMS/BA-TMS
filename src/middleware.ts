@@ -13,6 +13,7 @@ import { createClient } from '@util/supabase/server';
 const protectedRoutes = [
   '/',
   '/dashboard',
+  '/dispatch',
   '/carrier',
   '/drayage',
   '/other-numbers',

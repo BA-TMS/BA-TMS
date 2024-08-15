@@ -14,15 +14,17 @@ interface TableProps<T> {
   columns: TableColumn[];
   data: T[];
   update: any; // function for updating table entry
+  deleter: (id: string) => void; // is a database action function
 }
 
 const Table = <T extends { [key: string]: unknown }>({
   columns,
   data,
   update,
+  deleter,
 }: TableProps<T>) => {
   const [currentPage, setCurrentPage] = useState(0);
-  const [postsPerPage, setPostsPerPage] = useState(5);
+  const [postsPerPage, setPostsPerPage] = useState(25);
 
   const indexOfLastPost = (currentPage + 1) * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -83,14 +85,34 @@ const Table = <T extends { [key: string]: unknown }>({
                     )}
                   </td>
                 ))}
+
                 <td className="p-4">
+
                   <TableActionsPopover
                     id={row['id'] as string}
                     update={update}
+                    deleter={deleter}
                   />
                 </td>
               </tr>
             ))}
+            {/* some empty rows to match the loading state if we have less than 5 entries in table */}
+            {currentData.length < 5 &&
+              Array.from({ length: 5 - currentData.length }).map((_, index) => (
+                <tr key={`empty-${index}`}>
+                  {columns.map((column, colIndex) => (
+                    <td key={colIndex} className="p-4">
+                      <p
+                        className={`${
+                          colIndex === 0 ? 'subtitle2' : 'body2'
+                        } text-grey-800 dark:text-white`}
+                      >
+                        &nbsp;
+                      </p>
+                    </td>
+                  ))}
+                </tr>
+              ))}
           </tbody>
 
           <tfoot className="h-14">

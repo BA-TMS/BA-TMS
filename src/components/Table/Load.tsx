@@ -5,6 +5,7 @@ import { ModalContext } from '@/Context/modalContext';
 import FormModal from '../Modals/FormModal';
 import LoadForm from '../Forms/LoadForm';
 import Table from '../UI_Elements/Table/Table';
+import TableSkeleton from '../UI_Elements/Table/TableSkeleton';
 import Button from '../UI_Elements/buttons/Button';
 import { CustomTabs, TabData } from '../UI_Elements/Table/TableHeaderTabs';
 import { TableSearch } from '../UI_Elements/Table/TableSearch';
@@ -15,6 +16,7 @@ import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import { fetchLoads } from '@/store/slices/loadSlice';
 import { AppDispatch, RootState } from '@/store/store';
 import { getLoad } from '@/lib/dbActions';
+import { deleteLoad } from '@/store/slices/loadSlice';
 
 dayjs.extend(customParseFormat);
 dayjs.extend(isSameOrBefore);
@@ -209,6 +211,15 @@ const Load = () => {
     toggleOpen(data);
   };
 
+  // delete a load
+  const loadDelete = async (id: string) => {
+    try {
+      await dispatch(deleteLoad(id)).unwrap();
+    } catch (error) {
+      console.error('Error deleting load:', error);
+    }
+  };
+
   return (
     <>
       <div className="relative flex justify-end mb-6">
@@ -228,7 +239,18 @@ const Load = () => {
         }}
         placeholder={'Search client or invoice number...'}
       />
-      <Table columns={columns} data={filteredLoads} update={updateLoad} />
+
+
+      {status === 'loading' ? (
+        <TableSkeleton columns={columns} />
+      ) : (
+        <Table
+        columns={columns}
+        data={filteredLoads}
+        update={updateLoad}
+        deleter={loadDelete}
+      />
+      )}
     </>
   );
 };
