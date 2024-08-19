@@ -8,7 +8,7 @@ import { CustomerData } from '@/types/customerTypes';
 
 interface UpdatedCustomerPayload {
   id: string;
-  updatedLoad: Partial<CustomerData>;
+  updatedCustomer: Partial<CustomerData>;
 }
 
 interface CustomerState {

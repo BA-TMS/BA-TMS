@@ -166,16 +166,18 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
         console.error('Error creating customer:', error);
       }
     } else {
-      try {
-        await dispatch(
-          updateCustomer({ id: data['id'], updatedCustomer: mappedCustomer })
-        ).unwrap();
+      if (data !== null) {
+        try {
+          await dispatch(
+            updateCustomer({ id: data['id'], updatedCustomer: mappedCustomer })
+          ).unwrap();
 
-        reset();
-        toggleOpen();
-      } catch (error) {
-        console.error('Error updating customer:', error);
-        toggleOpen();
+          reset();
+          toggleOpen();
+        } catch (error) {
+          console.error('Error updating customer:', error);
+          toggleOpen();
+        }
       }
     }
   };
@@ -184,7 +186,10 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
     if (isUpdate) {
       // populate form with data from context
       Object.keys(customerFieldMap).forEach((formField) => {
-        setValue(formField, data[customerFieldMap[formField]]);
+        setValue(
+          formField as keyof Customer,
+          data[customerFieldMap[formField]]
+        );
       });
     }
   }, [data, setValue, isUpdate]);
