@@ -157,6 +157,8 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
   const onSubmit = async (customer: Customer) => {
     const mappedCustomer = mapCustomerData(customer);
 
+    console.log('submit', mappedCustomer);
+
     if (data !== null && !data['id']) {
       try {
         await dispatch(createCustomer(mappedCustomer)).unwrap();

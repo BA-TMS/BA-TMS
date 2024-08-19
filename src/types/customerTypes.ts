@@ -31,7 +31,8 @@ export type CustomerData = {
   paymentTerms: string;
   creditLimit: number; // or null?
   federalID: string;
-  factor: string | null;
+  // factor: string | null;
+  factor: { name: string } | null;
   factorID: string | null;
 };
 

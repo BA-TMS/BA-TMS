@@ -17,31 +17,38 @@ interface CustomerState {
   error: string | null;
 }
 
+// customer format for UI
+const formatron = function (customer: CustomerData) {
+  return {
+    ...customer,
+    factor: customer.factor ? customer.factor.name : null,
+  };
+};
+
 // Define Async Thunks
 export const fetchCustomers = createAsyncThunk<CustomerData[]>(
   'customers/fetchCustomers',
   async () => {
     const data = await getCustomers();
 
-    return data.map((customer: CustomerData) => ({
-      ...customer,
-    }));
+    // return data.map((customer: CustomerData) => ({
+    //   ...customer,
+    //   factor: customer.factor?.name,
+    // }));
+    console.log('fetch customers', data);
+    return data.map((customer: CustomerData) => formatron(customer));
   }
 );
 
 export const createCustomer = createAsyncThunk<CustomerData, CustomerData>(
   'customers/createCustomer',
-  async (customer: CustomerData, { rejectWithValue }) => {
+  async (customer: CustomerData) => {
     try {
       const response = await addCustomer({ customer });
-
-      if (!response) {
-        return rejectWithValue('Error creating customer');
-      }
-
+      console.log('new customer', response);
       return response; // is response of type CustomerData?
     } catch (error) {
-      return rejectWithValue('Error creating customer');
+      return console.log('Error creating customer');
     }
   }
 );
@@ -53,6 +60,7 @@ export const updateCustomer = createAsyncThunk<
   'customers/updateCustomer',
   async ({ id, updatedCustomer }: UpdatedCustomerPayload) => {
     const customer = await apiUpdateCustomer(id, { formData: updatedCustomer });
+    console.log('updated customer', customer);
     return customer;
   }
 );

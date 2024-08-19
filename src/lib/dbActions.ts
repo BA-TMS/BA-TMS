@@ -185,26 +185,7 @@ export async function addConsignee({ consignee }: { consignee: any }) {
   });
 }
 
-// export async function addCustomer({ customer }: { customer: any }) {
-//   const resp = await prisma.customer.create({
-//     data: {
-//       name: customer['Customer Name'],
-//       address: customer['Address'],
-//       addressAddOn: customer['Address Line 2'] || null, // Optional field
-//       city: customer['City'],
-//       state: customer['State'],
-//       postCountry: customer['Country'],
-//       postCode: customer['Zip'],
-//       telCountry: customer['Country Code'],
-//       telephone: customer['Phone Number'],
-//       // email: customer['Email'] // do we need email for customer?
-//       // notes: customer['Notes'] || null, // optional field, notes not in db table yet
-//     },
-//   });
-// }
-
 export async function addCustomer({ customer }: { customer: any }) {
-  // make it happy about factor
   const transformedCustomer = {
     ...customer,
     factor: customer.factor ? { connect: { id: customer.factor } } : undefined,

@@ -48,7 +48,10 @@ const columns = [
   { field: 'paymentTerms', headerName: 'Payment Terms' },
   { field: 'creditLimit', headerName: 'Credit Limit' },
   { field: 'federalID', headerName: 'Federal ID' },
-  { field: 'factor', headerName: 'Factoring Company' },
+  {
+    field: 'factor',
+    headerName: 'Factoring Company',
+  },
 ];
 
 const CustomerTable = (): JSX.Element => {
