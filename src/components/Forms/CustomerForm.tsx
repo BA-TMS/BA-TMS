@@ -1,10 +1,17 @@
 'use client';
 
-import React, { useEffect, useContext, Dispatch, SetStateAction } from 'react';
+import React, {
+  useEffect,
+  useContext,
+  Dispatch,
+  SetStateAction,
+  useState,
+} from 'react';
 import { ModalContext } from '@/Context/modalContext';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import CheckBox from '../UI_Elements/Form/CheckBox';
 import TextInput from '../UI_Elements/Form/TextInput';
 import SelectInput from '../UI_Elements/Form/SelectInput';
 import DynamicSelect from '../UI_Elements/Form/DynamicSelect';
@@ -83,13 +90,18 @@ type Customer = yup.InferType<typeof customerSchema>;
 const CustomerForm: React.FC<CustomerFormProps> = () => {
   const dispatch = useDispatch<AppDispatch>();
 
+  // triggering any re-renders based on form input
+  const [rerender, setRerender] = useState(false);
+
   const { toggleOpen, data } = useContext(ModalContext);
 
   const isUpdate = data !== null && data['id'];
 
   const {
-    setValue,
+    setValue, // set value of a form field
     handleSubmit,
+    getValues, // get values of a form field
+    resetField, //reset individual form field
     // setError, // async error handling
     reset, // for resetting form
     control, // based on schema
@@ -135,6 +147,43 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
     },
     resolver: yupResolver(customerSchema),
   });
+
+  function setBillingAddress() {
+    // get values of mailing address
+    const mailingAddress = getValues([
+      'Address',
+      'Address Line 2',
+      'Address Line 3',
+      'City',
+      'State',
+      'Zip',
+      'Country',
+    ]);
+    // if values of billing address are empty
+    if (getValues('Billing Address') === '') {
+      // set them
+      setValue('Billing Address', mailingAddress[0]);
+      setValue('Billing Address Line 2', mailingAddress[1]);
+      setValue('Billing Address Line 3', mailingAddress[2]);
+      setValue('Billing City', mailingAddress[3]);
+      setValue('Billing State', mailingAddress[4]);
+      setValue('Billing Zip', mailingAddress[5]);
+      setValue('Billing Country', mailingAddress[6]);
+    } else {
+      // if they are full, clear them when uncheck box
+      resetField('Billing Address');
+      resetField('Billing Address Line 2');
+      resetField('Billing Address Line 3');
+      resetField('Billing City');
+      resetField('Billing State');
+      resetField('Billing Zip');
+      resetField('Billing Country');
+      resetField('Billing Email');
+      resetField('Billing Telephone');
+    }
+    // need to rerender the component to show any updated values
+    setRerender(!rerender);
+  }
 
   const mapCustomerData = (customer: Customer) => {
     const mappedData: Record<string, unknown> = {};
@@ -295,6 +344,11 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
               <TextInput control={control} name="Country" required={true} />
 
               {/* Billing Address */}
+              <CheckBox
+                id={'billing_address'}
+                onChange={setBillingAddress}
+                label="Same as Mailing Address"
+              />
               <TextInput
                 control={control}
                 name="Billing Address"
