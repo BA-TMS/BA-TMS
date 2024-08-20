@@ -101,7 +101,7 @@ export default function Account() {
   }, []);
 
   // Use formData to handle form submission and validation with Yup
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await accountSchema.validate(formData, { abortEarly: false });
