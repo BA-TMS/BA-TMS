@@ -1,7 +1,7 @@
-import { useState, useCallback, ReactElement } from 'react';
+import { useState, useCallback } from 'react';
 
 interface TabProps {
-  children: ReactElement;
+  children: React.ReactNode;
   label: string;
   tabName: string;
 }

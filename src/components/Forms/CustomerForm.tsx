@@ -291,14 +291,14 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
 
   return (
     <div>
-      <TabsComponent>
-        <Tab label={'customer_details'} tabName={'Customer Details'}>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col justify-between"
-          >
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col justify-between"
+      >
+        <TabsComponent>
+          <Tab label={'customer_details'} tabName={'Customer Details'}>
             <p className="px-4.5 mt-3.5 mb-5 body2 text-grey-800 dark:text-white">
-              Set the details
+              Set customer details
             </p>
             <div className="px-4.5">
               <SelectInput
@@ -383,7 +383,13 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
                 name="Billing Telephone"
                 required={true}
               />
-
+            </div>
+          </Tab>
+          <Tab label={'advanced_customer'} tabName={'Advanced'}>
+            <p className="px-4.5 mt-3.5 mb-5 body2 text-grey-800 dark:text-white">
+              Set customer details
+            </p>
+            <div className="px-4.5">
               <TextInput control={control} name="Sales Rep" />
               <SelectInput
                 control={control}
@@ -403,37 +409,34 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
                 name="Factoring Company"
                 dbaction={getFactors}
               />
-              <div className="min-h-5">
-                {errors.root && (
-                  <p className="caption mb-1 text-error-dark">
-                    {errors.root.message}
-                  </p>
-                )}
-              </div>
             </div>
-            <div className="py-3.5 px-4.5 border-t border-grey-300 dark:border-grey-700 flex justify-end gap-2.5">
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? 'Submitting' : isUpdate ? 'Update' : 'Add'}
-              </Button>
-              <Button
-                type="button"
-                disabled={isSubmitting}
-                onClick={() => {
-                  reset();
-                  toggleOpen();
-                }}
-                variant="outline"
-                intent="default"
-              >
-                Cancel
-              </Button>
-            </div>
-          </form>
-        </Tab>
-        <Tab label={'advanced_customer'} tabName={'Advanced'}>
-          <p>Advanced options</p>
-        </Tab>
-      </TabsComponent>
+          </Tab>
+        </TabsComponent>
+        <div className="min-h-5">
+          {errors.root && (
+            <p className="caption mb-1 text-error-dark">
+              {errors.root.message}
+            </p>
+          )}
+        </div>
+        <div className="py-3.5 px-4.5 border-t border-grey-300 dark:border-grey-700 flex justify-end gap-2.5">
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Submitting' : isUpdate ? 'Update' : 'Add'}
+          </Button>
+          <Button
+            type="button"
+            disabled={isSubmitting}
+            onClick={() => {
+              reset();
+              toggleOpen();
+            }}
+            variant="outline"
+            intent="default"
+          >
+            Cancel
+          </Button>
+        </div>
+      </form>
     </div>
   );
 };
