@@ -52,6 +52,7 @@ export function TableSearch({
       <Dropdown
         label={dropdownLabel ? dropdownLabel : 'Field'}
         options={dropdownOptions}
+        sort={(value) => search(value)}
       />
 
       {dateSearch && (

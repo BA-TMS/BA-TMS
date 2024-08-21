@@ -72,6 +72,13 @@ const CustomerTable = (): JSX.Element => {
   function handleSearchFilter(customers: CustomerData[], value: string) {
     if (!value) return customers;
 
+    // handle sorting by specific value
+    if (value === 'Active' || value === 'Inactive') {
+      return customers.filter(
+        (customer) => customer.status === value.toUpperCase()
+      );
+    }
+
     return customers.filter((customer) =>
       Object.values(customer).some((field) =>
         field?.toString().toLowerCase().includes(value.toLowerCase())
