@@ -4,7 +4,7 @@ import { useContext, useState, useEffect } from 'react';
 import { ModalContext } from '@/Context/modalContext';
 import Button from '../UI_Elements/buttons/Button';
 import FormModal from '../Modals/FormModal';
-import CustomerForm from '../Forms/CustomerForm';
+import CustomerForm from '../Forms/Customer/CustomerForm';
 import Table from '../UI_Elements/Table/Table';
 import TableSkeleton from '../UI_Elements/Table/TableSkeleton';
 import { TableSearch } from '../UI_Elements/Table/TableSearch';
