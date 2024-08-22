@@ -214,7 +214,7 @@ const Load = () => {
   // delete a load
   const loadDelete = async (id: string) => {
     try {
-      await dispatch(deleteLoad(id)).unwrap();
+      await dispatch(deleteLoad(id as unknown as number)).unwrap();
     } catch (error) {
       console.error('Error deleting load:', error);
     }
