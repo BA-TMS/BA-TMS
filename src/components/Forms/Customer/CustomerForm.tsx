@@ -1,16 +1,8 @@
 'use client';
 
-import React, {
-  useEffect,
-  useContext,
-  Dispatch,
-  SetStateAction,
-  useState,
-} from 'react';
+import React, { useContext, Dispatch, SetStateAction, useState } from 'react';
 import { ModalContext } from '@/Context/modalContext';
-import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
 import Button from '../../UI_Elements/buttons/Button';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store/store';
@@ -20,17 +12,17 @@ import { TabsComponent, Tab } from '../../UI_Elements/Form/Tabs';
 import CustomerDetails from './CustomerDetails';
 import AdvancedCustomerDetails from './CustomerAdvanced';
 
-// this component holds state and layout for the customer form
+// this component holds layout for the customer form - which is made of two forms
 // it also submits the data to redux/ db
-
-// NEED TO HANDLE FORM SUBMIT
+// except we are pulling the data object from the context to submit
 
 interface CustomerFormProps {
   modalOpen?: boolean;
   setModalOpen?: Dispatch<SetStateAction<boolean>>;
 }
 
-const customerDetailsSchema = yup.object({
+// need this for mapping
+const customerSchema = yup.object({
   Status: yup.string().required('Must enter Customer Status'),
   'Company Name': yup.string().required('Must enter Company Name'),
   'Contact Name': yup.string().required('Must enter Contact Name'),
@@ -86,24 +78,16 @@ const customerDetailsSchema = yup.object({
   // Notes: yup.string().max(250, 'Must be under 250 characters'),
 });
 
-type Customer = yup.InferType<typeof customerDetailsSchema>;
+type Customer = yup.InferType<typeof customerSchema>;
 
 const CustomerForm: React.FC<CustomerFormProps> = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const dispatch = useDispatch<AppDispatch>();
 
-  // triggering any re-renders based on form input
-  const [rerender, setRerender] = useState(false);
-
   const { toggleOpen, data, formData } = useContext(ModalContext);
-  console.log('form data in customer form', formData);
 
   const isUpdate = data !== null && data['id'];
-
-  const {
-    handleSubmit,
-    register,
-    formState: { errors, isSubmitting, isSubmitSuccessful }, // boolean values representing form state
-  } = useForm({ defaultValues: formData });
 
   // will want to map before submitting to db
   const mapCustomerData = (customer: Customer) => {
@@ -127,6 +111,7 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
   // submit
   // make sure to clear the object in the context
   const onSubmit = async (customer: Customer) => {
+    setIsSubmitting(true);
     const mappedCustomer = mapCustomerData(customer);
 
     console.log('submit', mappedCustomer);
@@ -139,6 +124,7 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
       } catch (error) {
         console.error('Error creating customer:', error);
       }
+      setIsSubmitting(false);
     } else {
       if (data !== null) {
         try {
@@ -153,6 +139,7 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
           toggleOpen();
         }
       }
+      setIsSubmitting(false);
     }
   };
 
@@ -166,20 +153,22 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
           <AdvancedCustomerDetails />
         </Tab>
       </TabsComponent>
-      <div className="min-h-5">
-        {errors.root && (
-          <p className="caption mb-1 text-error-dark">{errors.root.message}</p>
-        )}
-      </div>
+
       <div className="py-3.5 px-4.5 border-t border-grey-300 dark:border-grey-700 flex justify-end gap-2.5">
-        <Button type="submit" disabled={isSubmitting}>
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          onClick={() => {
+            onSubmit(formData as Customer);
+            toggleOpen();
+          }}
+        >
           {isSubmitting ? 'Submitting' : isUpdate ? 'Update' : 'Add'}
         </Button>
         <Button
           type="button"
           disabled={isSubmitting}
           onClick={() => {
-            // reset();
             toggleOpen();
           }}
           variant="outline"
