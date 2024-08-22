@@ -1,12 +1,6 @@
 'use client';
 
-import React, {
-  useEffect,
-  useContext,
-  Dispatch,
-  SetStateAction,
-  useState,
-} from 'react';
+import React, { useEffect, useContext, useRef } from 'react';
 import { ModalContext } from '@/Context/modalContext';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -15,20 +9,8 @@ import TextInput from '../../UI_Elements/Form/TextInput';
 import SelectInput from '../../UI_Elements/Form/SelectInput';
 import DynamicSelect from '../../UI_Elements/Form/DynamicSelect';
 import { currency, paymentTerms } from '../data/details';
-import Button from '../../UI_Elements/buttons/Button';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '@/store/store';
-import { createCustomer, updateCustomer } from '@/store/slices/customerSlice';
 import { CustomerData, customerFieldMap } from '@/types/customerTypes';
 import { getFactors } from '@/lib/dbActions';
-
-// this component holds state and layout for the customer form
-
-interface AdvancedCustomerDetailsProps {
-  modalOpen?: boolean;
-  setModalOpen?: Dispatch<SetStateAction<boolean>>;
-  updateFormState?: any;
-}
 
 const customerSchema = yup.object({
   'Sales Rep': yup.string().nullable(),
@@ -45,27 +27,34 @@ const customerSchema = yup.object({
 
 type Customer = yup.InferType<typeof customerSchema>;
 
-const AdvancedCustomerDetails: React.FC<AdvancedCustomerDetailsProps> = ({
-  updateFormState,
-}) => {
-  const dispatch = useDispatch<AppDispatch>();
-
-  // handle form state to be submitted
-  const [formValues, setFormValues] = useState<Partial<CustomerData>>({});
-  //   console.log('state form values', formValues);
-
-  // pass this as a prop
-  const saveFormValues = (customer: Partial<CustomerData>) => {
-    console.log('saving values', customer);
-    setFormValues({ ...formValues, ...customer });
-  };
-
-  // triggering any re-renders based on form input
-  const [rerender, setRerender] = useState(false);
-
-  const { toggleOpen, data } = useContext(ModalContext);
+const AdvancedCustomerDetails: React.FC = () => {
+  const { toggleOpen, data, formData, saveFormValues } =
+    useContext(ModalContext);
 
   const isUpdate = data !== null && data['id'];
+
+  // is formData from the context?
+  const getFields = Object.keys(formData).length > 0;
+
+  // we are submitting the form data to the context on click off of the form component
+  const componentRef = useRef<HTMLDivElement | null>(null);
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      componentRef.current &&
+      !componentRef.current.contains(event.target as Node)
+    ) {
+      console.log(!componentRef.current.contains(event.target as Node));
+      handleSubmit(onSubmit)();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const {
     setValue, // set value of a form field
@@ -85,11 +74,11 @@ const AdvancedCustomerDetails: React.FC<AdvancedCustomerDetailsProps> = ({
       'Federal ID': '',
       'Factoring Company': '',
       // 'Factoring Company ID': '', // do we need this?
-      // Notes: '',
     },
     resolver: yupResolver(customerSchema),
   });
 
+  // is this being used here?
   const mapCustomerData = (customer: Customer) => {
     const mappedData: Record<string, unknown> = {};
 
@@ -108,36 +97,13 @@ const AdvancedCustomerDetails: React.FC<AdvancedCustomerDetailsProps> = ({
     return mappedData as CustomerData;
   };
 
+  // submit the values to the context
   const onSubmit = async (customer: Customer) => {
-    const mappedCustomer = mapCustomerData(customer);
-
-    console.log('submit', mappedCustomer);
-
-    if (data !== null && !data['id']) {
-      try {
-        await dispatch(createCustomer(mappedCustomer)).unwrap();
-        reset();
-        toggleOpen();
-      } catch (error) {
-        console.error('Error creating customer:', error);
-      }
-    } else {
-      if (data !== null) {
-        try {
-          await dispatch(
-            updateCustomer({ id: data['id'], updatedCustomer: mappedCustomer })
-          ).unwrap();
-
-          reset();
-          toggleOpen();
-        } catch (error) {
-          console.error('Error updating customer:', error);
-          toggleOpen();
-        }
-      }
-    }
+    console.log('submitting customer', customer);
+    saveFormValues(customer);
   };
 
+  // fix update
   useEffect(() => {
     if (isUpdate) {
       // populate form with data from context
@@ -150,7 +116,18 @@ const AdvancedCustomerDetails: React.FC<AdvancedCustomerDetailsProps> = ({
     }
   }, [data, setValue, isUpdate]);
 
+  // keep fields populated when switching tabs
+  useEffect(() => {
+    if (formData) {
+      // populate form with data from context
+      Object.keys(formData).forEach((formField) => {
+        setValue(formField as keyof Customer, formData[formField]);
+      });
+    }
+  }, []);
+
   // reset form if submit successful
+  // may or may not be necessary?
   useEffect(() => {
     if (isSubmitSuccessful) {
       reset({
@@ -161,15 +138,14 @@ const AdvancedCustomerDetails: React.FC<AdvancedCustomerDetailsProps> = ({
         'Federal ID': '',
         'Factoring Company': '',
         // 'Factoring Company ID': '', // do we need this?
-        // Notes: '',
       });
     }
   }, [isSubmitSuccessful, reset]);
 
   return (
-    <div>
+    <div ref={componentRef}>
       <form
-        onSubmit={handleSubmit(updateFormState)}
+        onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col justify-between"
       >
         <p className="px-4.5 mt-3.5 mb-5 body2 text-grey-800 dark:text-white">
@@ -199,11 +175,6 @@ const AdvancedCustomerDetails: React.FC<AdvancedCustomerDetailsProps> = ({
               {errors.root.message}
             </p>
           )}
-        </div>
-        <div className="py-3.5 px-4.5 border-t border-grey-300 dark:border-grey-700 flex justify-end gap-2.5">
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Submitting' : isUpdate ? 'Update' : 'Add'}
-          </Button>
         </div>
       </form>
     </div>

@@ -69,7 +69,6 @@ const CustomerDetails: React.FC = () => {
 
   // is formData from the context
   const getFields = Object.keys(formData).length > 0;
-  console.log('getFields', formData);
 
   // we are submitting the form data to the context on click off of the form component
   const componentRef = useRef<HTMLDivElement | null>(null);
@@ -169,6 +168,7 @@ const CustomerDetails: React.FC = () => {
     setRerender(!rerender);
   }
 
+  // is this being used here?
   const mapCustomerData = (customer: Customer) => {
     const mappedData: Record<string, unknown> = {};
 
@@ -193,6 +193,7 @@ const CustomerDetails: React.FC = () => {
     saveFormValues(customer);
   };
 
+  // fix update
   useEffect(() => {
     if (isUpdate) {
       // populate form with data from context
@@ -216,39 +217,40 @@ const CustomerDetails: React.FC = () => {
   }, []);
 
   // reset form if submit successful
-  //   useEffect(() => {
-  //     if (isSubmitSuccessful) {
-  //       reset({
-  //         Status: '',
-  //         'Company Name': '',
-  //         'Contact Name': '',
-  //         'Secondary Contact Name': '',
+  // this may or may not be necessary in the final round
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset({
+        Status: '',
+        'Company Name': '',
+        'Contact Name': '',
+        'Secondary Contact Name': '',
 
-  //         'Contact Email': '',
-  //         Telephone: '',
-  //         'Toll Free': '',
-  //         Fax: '',
+        'Contact Email': '',
+        Telephone: '',
+        'Toll Free': '',
+        Fax: '',
 
-  //         Address: '',
-  //         'Address Line 2': '',
-  //         'Address Line 3': '',
-  //         City: '',
-  //         State: '',
-  //         Zip: '',
-  //         Country: '',
+        Address: '',
+        'Address Line 2': '',
+        'Address Line 3': '',
+        City: '',
+        State: '',
+        Zip: '',
+        Country: '',
 
-  //         'Billing Address': '',
-  //         'Billing Address Line 2': '',
-  //         'Billing Address Line 3': '',
-  //         'Billing City': '',
-  //         'Billing State': '',
-  //         'Billing Zip': '',
-  //         'Billing Country': '',
-  //         'Billing Email': '',
-  //         'Billing Telephone': '',
-  //       });
-  //     }
-  //   }, [isSubmitSuccessful, reset]);
+        'Billing Address': '',
+        'Billing Address Line 2': '',
+        'Billing Address Line 3': '',
+        'Billing City': '',
+        'Billing State': '',
+        'Billing Zip': '',
+        'Billing Country': '',
+        'Billing Email': '',
+        'Billing Telephone': '',
+      });
+    }
+  }, [isSubmitSuccessful, reset]);
 
   return (
     <div ref={componentRef}>
@@ -323,11 +325,6 @@ const CustomerDetails: React.FC = () => {
             </p>
           )}
         </div>
-        {/* <div className="py-3.5 px-4.5 border-t border-grey-300 dark:border-grey-700 flex justify-end gap-2.5">
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Submitting' : isUpdate ? 'Update' : 'Save'}
-          </Button>
-        </div> */}
       </form>
     </div>
   );
