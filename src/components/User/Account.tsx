@@ -80,7 +80,7 @@ export default function Account() {
     setFormData((prev) => ({ ...prev, state: option }));
   };
 
-  const handleInputChange = (field, value) => {
+  const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => {
       const updatedFormData = { ...prev, [field]: value };
       // Save updated form data to local storage
