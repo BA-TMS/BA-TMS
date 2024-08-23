@@ -75,28 +75,25 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({
       >
         <span className="absolute -right-1.5 top-2 -z-10 h-2 w-2 rotate-45 rounded-sm bg-white dark:bg-grey-900 border-r-2 border-t border-grey-300 dark:border-grey-700"></span>
 
-
-          <div className="flex flex-wrap">
-            <Button
-              onClick={() => {
-                update(id); // call whichever function is passed to component
-              }}
-              className="flex w-full gap-2 border-b border-grey-200 dark:border-grey-700 py-3 hover:text-primary"
-            >
-              <span>{EditIcon}</span>
-              Edit
-            </Button>
-          </div>
-          <div className="flex flex-wrap">
-            <Button
-              onClick={handleDelete}
-              className="flex w-full gap-2 border-b border-grey-200 dark:border-grey-700 py-3 hover:text-primary"
-            >
-              <span>{DeleteIcon}</span>
-              Delete
-            </Button>
-          </div>
-
+        <div className="flex flex-wrap">
+          <Button
+            onClick={() => {
+              update(id); // call whichever function is passed to component
+            }}
+            className="flex w-full gap-2 border-b border-grey-200 dark:border-grey-700 py-3 hover:text-primary"
+          >
+            <span>{EditIcon}</span>
+            Edit
+          </Button>
+        </div>
+        <div className="flex flex-wrap">
+          <Button
+            onClick={handleDelete}
+            className="flex w-full gap-2 border-b border-grey-200 dark:border-grey-700 py-3 hover:text-primary"
+          >
+            <span>{DeleteIcon}</span>
+            Delete
+          </Button>
         </div>
       </div>
     </div>
