@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { createContext, useState } from 'react';
 
 // this is a context to avoid prop drilling through pages/ modals/ forms
@@ -37,11 +38,13 @@ export const ContextProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [formData, setFormData] = useState<FormObject<any>>({});
 
   // EDITING NEW FORM DATA
-  const saveFormValues = (values: FormObject<any>) => {
-    console.log('saving values in context', values);
-    setFormData({ ...formData, ...values });
-    console.log('the new form', formData);
-    // have to clear eventually
+  // function takes in values as an object, and optional reset parameter which defaults to false
+  const saveFormValues = (values: FormObject<any>, reset: boolean = false) => {
+    if (reset) {
+      setFormData(values); // empty object in context
+    } else {
+      setFormData((prevData) => ({ ...prevData, ...values })); // update object in context
+    }
   };
 
   // how we open/ close said modal
