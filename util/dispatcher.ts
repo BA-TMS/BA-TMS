@@ -2,8 +2,8 @@ const { execSync } = require('child_process');
 require('dotenv').config();
 
 const CONTAINER_NAME = process.env.DB_DOCKER_CONTAINER_NAME;
-const CONTAINER_PORT=5432
-const HOST_PORT=process.env.DB_DOCKER_HOST_PORT
+const CONTAINER_PORT=5432;
+const HOST_PORT=process.env.DB_DOCKER_HOST_PORT;
 
 function execWrap(command: string, verbose = false) {
   // Wrapper to handle errors and format responses.
@@ -12,7 +12,7 @@ function execWrap(command: string, verbose = false) {
   } catch(error: any) {
     console.log(`Execution failed when trying to run ${command}`);
     if (verbose) {
-      console.log('\nError trace:')
+      console.log('\nError trace:');
       console.error(error.stack);
     }
     process.exit();
@@ -52,7 +52,7 @@ function dbSetup(verbose: boolean) {
 function startOrCreateContainer(verbose: boolean) {
   // Create a new Docker container and invoke the DB setup.
   if (containerQuery()) {
-    if (verbose) console.log('Found existing container; restarting. . .')
+    if (verbose) console.log('Found existing container; restarting. . .');
     const restartResp = execWrap(`docker restart ${CONTAINER_NAME}`);
     if (verbose) console.log(`${restartResp.toString().trim()} restarted`);
   } else {
@@ -66,13 +66,13 @@ function startOrCreateContainer(verbose: boolean) {
 
 function deleteContainer(verbose: boolean) {
   if (containerQuery()) {
-    if (verbose) console.log('Found existing container; stopping & deleting. . .')
+    if (verbose) console.log('Found existing container; stopping & deleting. . .');
     const stopResp = execWrap(`docker container stop ${CONTAINER_NAME}`);
     if (verbose) console.log(`${stopResp.toString().trim()} stopped`);
     const rmResp = execWrap(`docker container rm ${CONTAINER_NAME}`);
     if (verbose) console.log(`${rmResp.toString().trim()} removed`);
   } else {
-    if (verbose) console.log("Can't find existing container, thus not deleting anything")
+    if (verbose) console.log('Can\'t find existing container, thus not deleting anything');
   }
 }
 

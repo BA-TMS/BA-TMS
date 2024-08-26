@@ -30,7 +30,7 @@ const schema = yup.object({
 
 type AccountPreferences = yup.InferType<typeof schema>;
 
-export default () => {
+const AccountForm = () => {
   const {
     handleSubmit,
     setError,
@@ -175,3 +175,5 @@ export default () => {
     </div>
   );
 };
+
+export default AccountForm;

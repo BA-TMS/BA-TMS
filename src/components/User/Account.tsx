@@ -80,7 +80,7 @@ export default function Account() {
     setFormData((prev) => ({ ...prev, state: option }));
   };
 
-  const handleInputChange = (field, value) => {
+  const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => {
       const updatedFormData = { ...prev, [field]: value };
       // Save updated form data to local storage
@@ -101,7 +101,7 @@ export default function Account() {
   }, []);
 
   // Use formData to handle form submission and validation with Yup
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await accountSchema.validate(formData, { abortEarly: false });

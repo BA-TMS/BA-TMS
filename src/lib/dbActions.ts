@@ -51,7 +51,7 @@ export async function getFactor() {
   return factor;
 }
 
-export async function getLoad(id) {
+export async function getLoad(id: string) {
   const load = await prisma.load.findUnique({
     where: {
       id: id,
