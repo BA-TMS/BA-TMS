@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useContext, useRef } from 'react';
+import React, { useEffect, useContext, useRef, useCallback } from 'react';
 import { ModalContext } from '@/Context/modalContext';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -9,7 +9,7 @@ import TextInput from '../../UI_Elements/Form/TextInput';
 import SelectInput from '../../UI_Elements/Form/SelectInput';
 import DynamicSelect from '../../UI_Elements/Form/DynamicSelect';
 import { currency, paymentTerms } from '../data/details';
-import { CustomerData, customerFieldMap } from '@/types/customerTypes';
+import { customerFieldMap } from '@/types/customerTypes';
 import { getFactors } from '@/lib/dbActions';
 
 const customerSchema = yup.object({
@@ -28,43 +28,21 @@ const customerSchema = yup.object({
 type Customer = yup.InferType<typeof customerSchema>;
 
 const AdvancedCustomerDetails: React.FC = () => {
-  const { toggleOpen, data, formData, saveFormValues } =
-    useContext(ModalContext);
+  const { data, formData, saveFormValues } = useContext(ModalContext);
 
   const isUpdate = data !== null && data['id'];
-
-  // is formData from the context?
-  const getFields = Object.keys(formData).length > 0;
 
   // we are submitting the form data to the context on click off of the form component
   const componentRef = useRef<HTMLDivElement | null>(null);
 
-  const handleClickOutside = (event: MouseEvent) => {
-    if (
-      componentRef.current &&
-      !componentRef.current.contains(event.target as Node)
-    ) {
-      console.log(!componentRef.current.contains(event.target as Node));
-      handleSubmit(onSubmit)();
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
   const {
     setValue, // set value of a form field
     handleSubmit,
-    getValues, // get values of a form field
-    resetField, //reset individual form field
+    // getValues, // get values of a form field
+    // resetField, //reset individual form field
     // setError, // async error handling
-    reset, // for resetting form
     control, // based on schema
-    formState: { errors, isSubmitting, isSubmitSuccessful }, // boolean values representing form state
+    formState: { errors }, // boolean values representing form state
   } = useForm<Customer>({
     defaultValues: {
       'Sales Rep': '',
@@ -78,31 +56,13 @@ const AdvancedCustomerDetails: React.FC = () => {
     resolver: yupResolver(customerSchema),
   });
 
-  // is this being used here?
-  const mapCustomerData = (customer: Customer) => {
-    const mappedData: Record<string, unknown> = {};
-
-    Object.keys(customer).forEach((key) => {
-      // the field name in the db
-      const dbField = customerFieldMap[key as keyof typeof customerFieldMap];
-
-      if (dbField) {
-        mappedData[dbField] = customer[key as keyof Customer];
-      } else {
-        mappedData[key] = customer[key as keyof Customer];
-      }
-    });
-
-    console.log('mapped data', mappedData);
-    return mappedData as CustomerData;
-  };
-
   // submit the values to the context
-  const onSubmit = async (customer: Customer) => {
-    console.log('submitting customer', customer);
-    saveFormValues(customer);
-  };
-
+  const onSubmit = useCallback(
+    async (customer: Customer) => {
+      saveFormValues(customer);
+    },
+    [saveFormValues]
+  );
   // fix update
   useEffect(() => {
     if (isUpdate) {
@@ -124,23 +84,32 @@ const AdvancedCustomerDetails: React.FC = () => {
         setValue(formField as keyof Customer, formData[formField]);
       });
     }
-  }, []);
+  }, [formData, setValue]);
 
-  // reset form if submit successful
-  // may or may not be necessary?
-  //   useEffect(() => {
-  //     if (isSubmitSuccessful) {
-  //       reset({
-  //         'Sales Rep': '',
-  //         Currency: '',
-  //         'Payment Terms': '',
-  //         'Credit Limit': undefined, // this might be angry
-  //         'Federal ID': '',
-  //         'Factoring Company': '',
-  //         // 'Factoring Company ID': '', // do we need this?
-  //       });
-  //     }
-  //   }, [isSubmitSuccessful, reset]);
+  // clicking outside this element will submit form to the context
+  // unless we're clicking a cancel button
+  const handleClickOutside = useCallback(
+    (event: MouseEvent) => {
+      if ((event.target as HTMLElement).id === 'cancel') {
+        console.log('cancel button'); // let it do the cancel button event?
+      } else if (
+        componentRef.current &&
+        !componentRef.current.contains(event.target as Node)
+      ) {
+        // validate and submit
+        handleSubmit(onSubmit)();
+      }
+    },
+
+    [handleSubmit, onSubmit]
+  );
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [handleClickOutside]);
 
   return (
     <div ref={componentRef}>
