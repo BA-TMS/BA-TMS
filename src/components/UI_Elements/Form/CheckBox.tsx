@@ -1,11 +1,24 @@
+import { useState } from 'react';
+
 interface CheckBoxProps {
   onChange: () => void;
   label: string;
   id: string;
   disabled?: boolean;
+  checked?: boolean;
 }
 
-const CheckBox = ({ onChange, label, id, disabled }: CheckBoxProps) => {
+const CheckBox = ({
+  onChange,
+  label,
+  id,
+  disabled,
+  checked,
+}: CheckBoxProps) => {
+  const [isChecked, setIsChecked] = useState<boolean>(
+    checked ? checked : false
+  );
+
   return (
     <div className="flex items-center gap-2 mb-1.5 ml-3 relative">
       <input
@@ -14,8 +27,12 @@ const CheckBox = ({ onChange, label, id, disabled }: CheckBoxProps) => {
          disabled:bg-grey-500"
         type="checkbox"
         id={id}
-        onChange={onChange}
+        onChange={() => {
+          onChange();
+          setIsChecked(!isChecked);
+        }}
         disabled={disabled}
+        checked={isChecked}
       />
       <label
         htmlFor={id}

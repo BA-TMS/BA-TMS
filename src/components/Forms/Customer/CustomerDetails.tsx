@@ -67,6 +67,8 @@ type Customer = yup.InferType<typeof customerSchema>;
 const CustomerDetails: React.FC = () => {
   const { data, formData, saveFormValues } = useContext(ModalContext);
 
+  console.log('is there form data', formData);
+
   // triggering any re-renders based on form input
   const [rerender, setRerender] = useState(false);
 
@@ -81,10 +83,8 @@ const CustomerDetails: React.FC = () => {
     handleSubmit,
     getValues, // get values of a form field
     resetField, //reset individual form field
-    // setError, // async error handling
-    // reset, // for resetting form
     control, // based on schema
-    formState: { errors }, // boolean values representing form state
+    formState: { errors },
   } = useForm<Customer>({
     defaultValues: {
       Status: '',
@@ -256,7 +256,7 @@ const CustomerDetails: React.FC = () => {
             id={'billing_address'}
             onChange={setBillingAddress}
             label="Same as Mailing Address"
-            // TODO - ADD CHECK
+            checked={formData['Billing Address'] ? true : false} //idk
           />
           <TextInput control={control} name="Billing Address" required={true} />
           <TextInput control={control} name="Billing Address Line 2" />
