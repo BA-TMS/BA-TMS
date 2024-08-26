@@ -20,7 +20,6 @@ interface CustomerFormProps {
   setModalOpen?: Dispatch<SetStateAction<boolean>>;
 }
 
-// need this for mapping
 const customerSchema = yup.object({
   Status: yup.string().required('Must enter Customer Status'),
   'Company Name': yup.string().required('Must enter Company Name'),
@@ -178,12 +177,12 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
           onClick={() => {
             onSubmit(formData as Customer);
             saveFormValues({}, true); // not sure how to fix type error?
-            // toggleOpen();
           }}
         >
           {isSubmitting ? 'Submitting' : isUpdate ? 'Update' : 'Add'}
         </Button>
         <Button
+          id="cancel"
           type="button"
           disabled={isSubmitting}
           onClick={() => {

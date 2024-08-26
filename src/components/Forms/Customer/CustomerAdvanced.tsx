@@ -128,19 +128,19 @@ const AdvancedCustomerDetails: React.FC = () => {
 
   // reset form if submit successful
   // may or may not be necessary?
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset({
-        'Sales Rep': '',
-        Currency: '',
-        'Payment Terms': '',
-        'Credit Limit': undefined, // this might be angry
-        'Federal ID': '',
-        'Factoring Company': '',
-        // 'Factoring Company ID': '', // do we need this?
-      });
-    }
-  }, [isSubmitSuccessful, reset]);
+  //   useEffect(() => {
+  //     if (isSubmitSuccessful) {
+  //       reset({
+  //         'Sales Rep': '',
+  //         Currency: '',
+  //         'Payment Terms': '',
+  //         'Credit Limit': undefined, // this might be angry
+  //         'Federal ID': '',
+  //         'Factoring Company': '',
+  //         // 'Factoring Company ID': '', // do we need this?
+  //       });
+  //     }
+  //   }, [isSubmitSuccessful, reset]);
 
   return (
     <div ref={componentRef}>

@@ -1,6 +1,12 @@
 'use client';
 
-import React, { useEffect, useContext, useState, useRef } from 'react';
+import React, {
+  useEffect,
+  useContext,
+  useState,
+  useRef,
+  useCallback,
+} from 'react';
 import { ModalContext } from '@/Context/modalContext';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -10,7 +16,7 @@ import TextInput from '../../UI_Elements/Form/TextInput';
 import SelectInput from '../../UI_Elements/Form/SelectInput';
 import { usStates } from '@/components/Forms/data/states';
 import { customerStatus } from '../data/details';
-import { CustomerData, customerFieldMap } from '@/types/customerTypes';
+import { customerFieldMap } from '@/types/customerTypes';
 
 const customerSchema = yup.object({
   Status: yup.string().required('Must enter Customer Status'),
@@ -59,36 +65,16 @@ const customerSchema = yup.object({
 type Customer = yup.InferType<typeof customerSchema>;
 
 const CustomerDetails: React.FC = () => {
-  const { toggleOpen, data, formData, saveFormValues } =
-    useContext(ModalContext);
+  const { data, formData, saveFormValues } = useContext(ModalContext);
 
   // triggering any re-renders based on form input
   const [rerender, setRerender] = useState(false);
 
   const isUpdate = data !== null && data['id'];
 
-  // is formData from the context
-  const getFields = Object.keys(formData).length > 0;
-
   // we are submitting the form data to the context on click off of the form component
+  // each click on a tab should submit
   const componentRef = useRef<HTMLDivElement | null>(null);
-
-  const handleClickOutside = (event: MouseEvent) => {
-    if (
-      componentRef.current &&
-      !componentRef.current.contains(event.target as Node)
-    ) {
-      console.log(!componentRef.current.contains(event.target as Node));
-      handleSubmit(onSubmit)();
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
 
   const {
     setValue, // set value of a form field
@@ -96,9 +82,9 @@ const CustomerDetails: React.FC = () => {
     getValues, // get values of a form field
     resetField, //reset individual form field
     // setError, // async error handling
-    reset, // for resetting form
+    // reset, // for resetting form
     control, // based on schema
-    formState: { errors, isSubmitting, isSubmitSuccessful }, // boolean values representing form state
+    formState: { errors }, // boolean values representing form state
   } = useForm<Customer>({
     defaultValues: {
       Status: '',
@@ -168,32 +154,16 @@ const CustomerDetails: React.FC = () => {
     setRerender(!rerender);
   }
 
-  // is this being used here?
-  const mapCustomerData = (customer: Customer) => {
-    const mappedData: Record<string, unknown> = {};
-
-    Object.keys(customer).forEach((key) => {
-      // the field name in the db
-      const dbField = customerFieldMap[key as keyof typeof customerFieldMap];
-
-      if (dbField) {
-        mappedData[dbField] = customer[key as keyof Customer];
-      } else {
-        mappedData[key] = customer[key as keyof Customer];
-      }
-    });
-
-    console.log('mapped data', mappedData);
-    return mappedData as CustomerData;
-  };
-
   // submit the values to the context
-  const onSubmit = async (customer: Customer) => {
-    console.log('submitting customer', customer);
-    saveFormValues(customer);
-  };
+  const onSubmit = useCallback(
+    async (customer: Customer) => {
+      saveFormValues(customer);
+    },
+    [saveFormValues]
+  );
 
-  // fix update
+  // TODO: FIX UPDATE LOGIC
+  // send the update to the context instead
   useEffect(() => {
     if (isUpdate) {
       // populate form with data from context
@@ -214,43 +184,32 @@ const CustomerDetails: React.FC = () => {
         setValue(formField as keyof Customer, formData[formField]);
       });
     }
-  }, []);
+  }, [formData, setValue]);
 
-  // reset form if submit successful
-  // this may or may not be necessary in the final round
+  // clicking outside this element will submit form to the context
+  // unless we're clicking a cancel button
+  const handleClickOutside = useCallback(
+    (event: MouseEvent) => {
+      if ((event.target as HTMLElement).id === 'cancel') {
+        console.log('cancel button'); // let it do the cancel button event?
+      } else if (
+        componentRef.current &&
+        !componentRef.current.contains(event.target as Node)
+      ) {
+        // validate and submit
+        handleSubmit(onSubmit)();
+      }
+    },
+
+    [handleSubmit, onSubmit]
+  );
+
   useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset({
-        Status: '',
-        'Company Name': '',
-        'Contact Name': '',
-        'Secondary Contact Name': '',
-
-        'Contact Email': '',
-        Telephone: '',
-        'Toll Free': '',
-        Fax: '',
-
-        Address: '',
-        'Address Line 2': '',
-        'Address Line 3': '',
-        City: '',
-        State: '',
-        Zip: '',
-        Country: '',
-
-        'Billing Address': '',
-        'Billing Address Line 2': '',
-        'Billing Address Line 3': '',
-        'Billing City': '',
-        'Billing State': '',
-        'Billing Zip': '',
-        'Billing Country': '',
-        'Billing Email': '',
-        'Billing Telephone': '',
-      });
-    }
-  }, [isSubmitSuccessful, reset]);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [handleClickOutside]);
 
   return (
     <div ref={componentRef}>
@@ -297,6 +256,7 @@ const CustomerDetails: React.FC = () => {
             id={'billing_address'}
             onChange={setBillingAddress}
             label="Same as Mailing Address"
+            // TODO - ADD CHECK
           />
           <TextInput control={control} name="Billing Address" required={true} />
           <TextInput control={control} name="Billing Address Line 2" />
