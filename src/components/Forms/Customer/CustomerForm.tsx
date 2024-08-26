@@ -13,8 +13,7 @@ import CustomerDetails from './CustomerDetails';
 import AdvancedCustomerDetails from './CustomerAdvanced';
 
 // this component holds layout for the customer form - which is made of two forms
-// it also submits the data to redux/ db
-// except we are pulling the data object from the context to submit
+// it also submits the data to redux/ db after pulling from the context
 
 interface CustomerFormProps {
   modalOpen?: boolean;
@@ -85,7 +84,8 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const { toggleOpen, data, formData } = useContext(ModalContext);
+  const { toggleOpen, data, formData, saveFormValues } =
+    useContext(ModalContext);
 
   const isUpdate = data !== null && data['id'];
 
@@ -112,6 +112,10 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
   // make sure to clear the object in the context
   const onSubmit = async (customer: Customer) => {
     setIsSubmitting(true);
+
+    // check if we have all data
+    // don't want to submit without it
+
     const mappedCustomer = mapCustomerData(customer);
 
     console.log('submit', mappedCustomer);
@@ -160,6 +164,7 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
           disabled={isSubmitting}
           onClick={() => {
             onSubmit(formData as Customer);
+            saveFormValues({}, true); // not sure how to fix type error?
             toggleOpen();
           }}
         >
@@ -169,6 +174,7 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
           type="button"
           disabled={isSubmitting}
           onClick={() => {
+            saveFormValues({}, true); // not sure how to fix type error?
             toggleOpen();
           }}
           variant="outline"
