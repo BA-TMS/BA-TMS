@@ -81,6 +81,7 @@ type Customer = yup.InferType<typeof customerSchema>;
 
 const CustomerForm: React.FC<CustomerFormProps> = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -108,7 +109,6 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
   };
 
   // submit
-  // make sure to clear the object in the context
   const onSubmit = async (customer: Customer) => {
     setIsSubmitting(true);
 
@@ -140,7 +140,6 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
                 })
               ).unwrap();
 
-              // reset();
               toggleOpen();
             } catch (error) {
               console.error('Error updating customer:', error);
@@ -148,9 +147,14 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
             }
           }
           setIsSubmitting(false);
+          toggleOpen();
         }
       })
-      .catch((error) => console.error(error)); // make this nicer for UX
+      .catch((error) => {
+        console.error(error);
+        setError('Could not add customer- please fill out all required fields');
+        setIsSubmitting(false);
+      });
   };
 
   return (
@@ -165,13 +169,16 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
       </TabsComponent>
 
       <div className="py-3.5 px-4.5 border-t border-grey-300 dark:border-grey-700 flex justify-end gap-2.5">
+        <div className="px-4.5 min-h-5 self-center">
+          {error && <p className="caption mb-1 text-error-dark">{error}</p>}
+        </div>
         <Button
           type="submit"
           disabled={isSubmitting}
           onClick={() => {
             onSubmit(formData as Customer);
             saveFormValues({}, true); // not sure how to fix type error?
-            toggleOpen();
+            // toggleOpen();
           }}
         >
           {isSubmitting ? 'Submitting' : isUpdate ? 'Update' : 'Add'}
