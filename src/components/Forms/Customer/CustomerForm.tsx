@@ -104,7 +104,6 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
       }
     });
 
-    console.log('mapped data', mappedData);
     return mappedData as CustomerData;
   };
 
@@ -113,38 +112,45 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
   const onSubmit = async (customer: Customer) => {
     setIsSubmitting(true);
 
-    // check if we have all data
-    // don't want to submit without it
+    // make sure we have all required fields by validating schema
+    customerSchema
+      .validate(customer)
+      .then(async (valid) => {
+        console.log(valid);
+        const mappedCustomer = mapCustomerData(customer);
 
-    const mappedCustomer = mapCustomerData(customer);
+        console.log('submit', mappedCustomer);
 
-    console.log('submit', mappedCustomer);
+        if (data !== null && !data['id']) {
+          try {
+            await dispatch(createCustomer(mappedCustomer)).unwrap();
+            // reset();
+            toggleOpen();
+          } catch (error) {
+            console.error('Error creating customer:', error);
+          }
+          setIsSubmitting(false);
+        } else {
+          if (data !== null) {
+            try {
+              await dispatch(
+                updateCustomer({
+                  id: data['id'],
+                  updatedCustomer: mappedCustomer,
+                })
+              ).unwrap();
 
-    if (data !== null && !data['id']) {
-      try {
-        await dispatch(createCustomer(mappedCustomer)).unwrap();
-        // reset();
-        toggleOpen();
-      } catch (error) {
-        console.error('Error creating customer:', error);
-      }
-      setIsSubmitting(false);
-    } else {
-      if (data !== null) {
-        try {
-          await dispatch(
-            updateCustomer({ id: data['id'], updatedCustomer: mappedCustomer })
-          ).unwrap();
-
-          // reset();
-          toggleOpen();
-        } catch (error) {
-          console.error('Error updating customer:', error);
-          toggleOpen();
+              // reset();
+              toggleOpen();
+            } catch (error) {
+              console.error('Error updating customer:', error);
+              toggleOpen();
+            }
+          }
+          setIsSubmitting(false);
         }
-      }
-      setIsSubmitting(false);
-    }
+      })
+      .catch((error) => console.error(error)); // make this nicer for UX
   };
 
   return (
