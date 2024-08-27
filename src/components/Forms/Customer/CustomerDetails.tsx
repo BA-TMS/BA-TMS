@@ -65,15 +65,17 @@ const customerSchema = yup.object({
 type Customer = yup.InferType<typeof customerSchema>;
 
 const CustomerDetails: React.FC = () => {
-  const { data, formData, saveFormValues } = useContext(ModalContext);
+  const { formData, saveFormValues } = useContext(ModalContext);
+
+  console.log('CUSTOMER DETAILS', formData);
 
   // triggering any re-renders based on form input
   const [rerender, setRerender] = useState(false);
 
-  const isUpdate = data !== null && data['id'];
+  const isUpdate = formData !== null && formData['id'];
 
   // we are submitting the form data to the context on click off of the form component
-  // each click on a tab should submit
+  // each click on a tab or outside of the component should submit
   const componentRef = useRef<HTMLDivElement | null>(null);
 
   const {
@@ -160,19 +162,18 @@ const CustomerDetails: React.FC = () => {
     [saveFormValues]
   );
 
-  // TODO: FIX UPDATE LOGIC
-  // send the update to the context instead
+  // if there's an update, we have to use the map to get the correct field values
   useEffect(() => {
     if (isUpdate) {
       // populate form with data from context
       Object.keys(customerFieldMap).forEach((formField) => {
         setValue(
           formField as keyof Customer,
-          data[customerFieldMap[formField]]
+          formData[customerFieldMap[formField]]
         );
       });
     }
-  }, [data, setValue, isUpdate]);
+  }, [formData, setValue, isUpdate]);
 
   // keep fields populated when switching tabs
   useEffect(() => {
@@ -254,7 +255,9 @@ const CustomerDetails: React.FC = () => {
             id={'billing_address'}
             onChange={setBillingAddress}
             label="Same as Mailing Address"
-            checked={formData['Billing Address'] ? true : false} //idk
+            checked={
+              formData['Billing Address'] === formData['Address'] ? true : false
+            }
           />
           <TextInput control={control} name="Billing Address" required={true} />
           <TextInput control={control} name="Billing Address Line 2" />

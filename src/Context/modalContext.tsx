@@ -31,7 +31,7 @@ export const ModalContext = createContext<ModalContextType>({
 export const ContextProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  // get rid of this one eventually
+  // get rid of this one eventually (refactor customer page before removing)
   const [data, setData] = useState<any>(null);
 
   // NEW FORM DATA
@@ -48,7 +48,7 @@ export const ContextProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   };
 
   // how we open/ close said modal
-  // optional data if we are dealing with form updates
+  // optional data if we are dealing with form updates- this can be removed later (see line #34)
   function toggleOpen(data = null) {
     if (data !== null) {
       setData(data);
