@@ -131,7 +131,6 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
         } else {
           // if updating existing
           if (isUpdate) {
-            console.log('UPDATE FORM DATA', formData);
             try {
               await dispatch(
                 updateCustomer({

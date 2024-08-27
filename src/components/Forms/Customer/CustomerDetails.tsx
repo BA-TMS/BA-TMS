@@ -67,8 +67,6 @@ type Customer = yup.InferType<typeof customerSchema>;
 const CustomerDetails: React.FC = () => {
   const { formData, saveFormValues } = useContext(ModalContext);
 
-  console.log('FORM DATA', formData);
-
   // triggering any re-renders based on form input
   const [rerender, setRerender] = useState(false);
 
@@ -220,27 +218,52 @@ const CustomerDetails: React.FC = () => {
           Set customer details
         </p>
         <div className="px-4.5">
-          <SelectInput
-            control={control}
-            name="Status"
-            options={customerStatus}
-            required={true}
-          />
-          <TextInput control={control} name="Company Name" required={true} />
+          <div className="flex flex-col gap-5 xl:flex-row">
+            <div className="flex flex-col w-full xl:w-1/2">
+              <SelectInput
+                control={control}
+                name="Status"
+                options={customerStatus}
+                required={true}
+              />
 
-          <TextInput control={control} name="Contact Name" required={true} />
+              <TextInput
+                control={control}
+                name="Contact Name"
+                required={true}
+              />
 
-          <TextInput control={control} name="Secondary Contact Name" />
+              <TextInput control={control} name="Telephone" required={true} />
 
-          <TextInput control={control} name="Contact Email" required={true} />
-          <TextInput control={control} name="Telephone" required={true} />
-          <TextInput control={control} name="Toll Free" />
-          <TextInput control={control} name="Fax" />
+              <TextInput control={control} name="Toll Free" />
+            </div>
+            <div className="flex flex-col w-full xl:w-1/2">
+              <TextInput
+                control={control}
+                name="Company Name"
+                required={true}
+              />
+
+              <TextInput control={control} name="Secondary Contact Name" />
+
+              <TextInput
+                control={control}
+                name="Contact Email"
+                required={true}
+              />
+
+              <TextInput control={control} name="Fax" />
+            </div>
+          </div>
 
           <TextInput control={control} name="Address" required={true} />
+
           <TextInput control={control} name="Address Line 2" />
+
           <TextInput control={control} name="Address Line 3" />
+
           <TextInput control={control} name="City" required={true} />
+
           <SelectInput
             control={control}
             name="State"
@@ -248,6 +271,7 @@ const CustomerDetails: React.FC = () => {
             required={true}
           />
           <TextInput control={control} name="Zip" required={true} />
+
           <TextInput control={control} name="Country" required={true} />
 
           {/* Billing Address */}
@@ -273,12 +297,23 @@ const CustomerDetails: React.FC = () => {
           />
           <TextInput control={control} name="Billing Zip" required={true} />
           <TextInput control={control} name="Billing Country" required={true} />
-          <TextInput control={control} name="Billing Email" required={true} />
-          <TextInput
-            control={control}
-            name="Billing Telephone"
-            required={true}
-          />
+
+          <div className="flex flex-col gap-5 xl:flex-row">
+            <div className="flex flex-col w-full xl:w-1/2">
+              <TextInput
+                control={control}
+                name="Billing Telephone"
+                required={true}
+              />
+            </div>
+            <div className="flex flex-col w-full xl:w-1/2">
+              <TextInput
+                control={control}
+                name="Billing Email"
+                required={true}
+              />
+            </div>
+          </div>
         </div>
 
         <div className="min-h-5">

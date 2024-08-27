@@ -121,21 +121,35 @@ const AdvancedCustomerDetails: React.FC = () => {
           Set customer details
         </p>
         <div className="px-4.5">
-          <TextInput control={control} name="Sales Rep" />
-          <SelectInput control={control} name="Currency" options={currency} />
-          <SelectInput
-            control={control}
-            name="Payment Terms"
-            options={paymentTerms}
-            required={true}
-          />
-          <TextInput control={control} name="Credit Limit" />
-          <TextInput control={control} name="Federal ID" required={true} />
-          <DynamicSelect
-            control={control}
-            name="Factoring Company"
-            dbaction={getFactors}
-          />
+          <div className="flex flex-col gap-5 xl:flex-row">
+            <div className="flex flex-col w-full xl:w-1/2">
+              <TextInput control={control} name="Sales Rep" />
+
+              <SelectInput
+                control={control}
+                name="Currency"
+                options={currency}
+              />
+
+              <SelectInput
+                control={control}
+                name="Payment Terms"
+                options={paymentTerms}
+                required={true}
+              />
+            </div>
+            <div className="flex flex-col w-full xl:w-1/2">
+              <TextInput control={control} name="Federal ID" required={true} />
+
+              <TextInput control={control} name="Credit Limit" />
+
+              <DynamicSelect
+                control={control}
+                name="Factoring Company"
+                dbaction={getFactors}
+              />
+            </div>
+          </div>
         </div>
 
         <div className="min-h-5">
