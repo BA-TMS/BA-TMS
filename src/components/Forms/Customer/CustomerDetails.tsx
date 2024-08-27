@@ -67,6 +67,8 @@ type Customer = yup.InferType<typeof customerSchema>;
 const CustomerDetails: React.FC = () => {
   const { formData, saveFormValues } = useContext(ModalContext);
 
+  console.log('FORM DATA', formData);
+
   // triggering any re-renders based on form input
   const [rerender, setRerender] = useState(false);
 
@@ -254,7 +256,9 @@ const CustomerDetails: React.FC = () => {
             onChange={setBillingAddress}
             label="Same as Mailing Address"
             checked={
-              formData['Billing Address'] === formData['Address'] ? true : false
+              isUpdate
+                ? formData['billingAddress'] === formData['contactAddress']
+                : false
             }
           />
           <TextInput control={control} name="Billing Address" required={true} />
