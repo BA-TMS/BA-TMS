@@ -28,9 +28,9 @@ const customerSchema = yup.object({
 type Customer = yup.InferType<typeof customerSchema>;
 
 const AdvancedCustomerDetails: React.FC = () => {
-  const { data, formData, saveFormValues } = useContext(ModalContext);
+  const { formData, saveFormValues } = useContext(ModalContext);
 
-  const isUpdate = data !== null && data['id'];
+  const isUpdate = formData !== null && formData['id'];
 
   // we are submitting the form data to the context on click off of the form component
   const componentRef = useRef<HTMLDivElement | null>(null);
@@ -70,11 +70,11 @@ const AdvancedCustomerDetails: React.FC = () => {
       Object.keys(customerFieldMap).forEach((formField) => {
         setValue(
           formField as keyof Customer,
-          data[customerFieldMap[formField]]
+          formData[customerFieldMap[formField]]
         );
       });
     }
-  }, [data, setValue, isUpdate]);
+  }, [formData, setValue, isUpdate]);
 
   // keep fields populated when switching tabs
   useEffect(() => {

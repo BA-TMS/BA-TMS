@@ -84,10 +84,9 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const { toggleOpen, data, formData, saveFormValues } =
-    useContext(ModalContext);
+  const { toggleOpen, formData, saveFormValues } = useContext(ModalContext);
 
-  const isUpdate = data !== null && data['id'];
+  const isUpdate = formData !== null && formData['id'];
 
   // will want to map before submitting to db
   const mapCustomerData = (customer: Customer) => {
@@ -120,21 +119,23 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
 
         console.log('submit', mappedCustomer);
 
-        if (data !== null && !data['id']) {
+        if (!isUpdate) {
+          // adding new customer
           try {
             await dispatch(createCustomer(mappedCustomer)).unwrap();
-            // reset();
             toggleOpen();
           } catch (error) {
             console.error('Error creating customer:', error);
           }
           setIsSubmitting(false);
         } else {
-          if (data !== null) {
+          // if updating existing
+          if (isUpdate) {
+            console.log('UPDATE FORM DATA', formData);
             try {
               await dispatch(
                 updateCustomer({
-                  id: data['id'],
+                  id: formData['id'],
                   updatedCustomer: mappedCustomer,
                 })
               ).unwrap();

@@ -66,7 +66,7 @@ const CustomerTable = (): JSX.Element => {
     // error, // are we going to handle errors?
   } = useSelector((state: RootState) => state.customers);
 
-  const { toggleOpen } = useContext(ModalContext);
+  const { toggleOpen, saveFormValues } = useContext(ModalContext);
 
   // search
   function handleSearchFilter(customers: CustomerData[], value: string) {
@@ -89,7 +89,11 @@ const CustomerTable = (): JSX.Element => {
   // update customer
   const updateCustomer = async (id: string) => {
     const data = await getCustomer(id);
-    toggleOpen(data);
+    // toggleOpen(data);
+    if (data !== null) {
+      saveFormValues(data);
+      toggleOpen();
+    }
   };
 
   // Fetch customers from db

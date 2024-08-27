@@ -67,8 +67,6 @@ type Customer = yup.InferType<typeof customerSchema>;
 const CustomerDetails: React.FC = () => {
   const { formData, saveFormValues } = useContext(ModalContext);
 
-  console.log('CUSTOMER DETAILS', formData);
-
   // triggering any re-renders based on form input
   const [rerender, setRerender] = useState(false);
 
