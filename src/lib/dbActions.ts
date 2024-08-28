@@ -195,6 +195,7 @@ export async function addCustomer({ customer }: { customer: any }) {
     data: transformedCustomer,
   });
 
+  console.log('added customer', resp);
   return resp;
 }
 

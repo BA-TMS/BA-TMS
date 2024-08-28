@@ -59,28 +59,19 @@ const AdvancedCustomerDetails: React.FC = () => {
   // submit the values to the context
   const onSubmit = useCallback(
     async (customer: Customer) => {
+      console.log('SUBMITTING', customer);
       saveFormValues(customer);
     },
     [saveFormValues]
   );
-  // fix update
-  useEffect(() => {
-    if (isUpdate) {
-      // populate form with data from context
-      Object.keys(customerFieldMap).forEach((formField) => {
-        setValue(
-          formField as keyof Customer,
-          formData[customerFieldMap[formField]]
-        );
-      });
-    }
-  }, [formData, setValue, isUpdate]);
 
   // keep fields populated when switching tabs
+  // populate fields if it's an update
   useEffect(() => {
     if (formData) {
       // populate form with data from context
       Object.keys(formData).forEach((formField) => {
+        console.log('formField', formField);
         setValue(formField as keyof Customer, formData[formField]);
       });
     }

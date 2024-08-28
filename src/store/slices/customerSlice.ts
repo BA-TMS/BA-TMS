@@ -19,6 +19,7 @@ interface CustomerState {
 
 // customer format for UI
 const formatron = function (customer: CustomerData) {
+  console.log('FORMATRON', customer.factor);
   return {
     ...customer,
     factor: customer.factor ? customer.factor.name : null,

@@ -33,7 +33,7 @@ export type CustomerData = {
   federalID: string;
   // factor: string | null;
   factor: { name: string } | null;
-  factorID: string | null;
+  factorId: string | null;
 };
 
 export type CustomerDataKeys = keyof CustomerData;
@@ -74,6 +74,6 @@ export const customerFieldMap: Record<string, keyof CustomerData> = {
   'Credit Limit': 'creditLimit',
   'Federal ID': 'federalID',
   'Factoring Company': 'factor',
-  'Factoring Company ID': 'factorID',
+  'Factoring Company ID': 'factorId',
   // Notes: 'notes', // don't map it yet not in db
 };
