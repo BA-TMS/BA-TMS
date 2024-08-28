@@ -30,8 +30,6 @@ type Customer = yup.InferType<typeof customerSchema>;
 const AdvancedCustomerDetails: React.FC = () => {
   const { formData, saveFormValues } = useContext(ModalContext);
 
-  const isUpdate = formData !== null && formData['id'];
-
   // we are submitting the form data to the context on click off of the form component
   const componentRef = useRef<HTMLDivElement | null>(null);
 
@@ -48,10 +46,9 @@ const AdvancedCustomerDetails: React.FC = () => {
       'Sales Rep': '',
       Currency: '',
       'Payment Terms': '',
-      'Credit Limit': undefined, // this might be angry
+      'Credit Limit': undefined,
       'Federal ID': '',
       'Factoring Company': '',
-      // 'Factoring Company ID': '', // do we need this?
     },
     resolver: yupResolver(customerSchema),
   });
@@ -59,7 +56,6 @@ const AdvancedCustomerDetails: React.FC = () => {
   // submit the values to the context
   const onSubmit = useCallback(
     async (customer: Customer) => {
-      console.log('SUBMITTING', customer);
       saveFormValues(customer);
     },
     [saveFormValues]
@@ -71,7 +67,6 @@ const AdvancedCustomerDetails: React.FC = () => {
     if (formData) {
       // populate form with data from context
       Object.keys(formData).forEach((formField) => {
-        console.log('formField', formField);
         setValue(formField as keyof Customer, formData[formField]);
       });
     }

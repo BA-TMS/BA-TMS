@@ -37,8 +37,6 @@ export const ContextProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   // NEW FORM DATA
   const [formData, setFormData] = useState<FormObject<any>>({});
 
-  console.log('FORM DATA', formData);
-
   // EDITING NEW FORM DATA
   // function takes in values as an object, and optional reset parameter which defaults to false
   const saveFormValues = (values: FormObject<any>, reset: boolean = false) => {

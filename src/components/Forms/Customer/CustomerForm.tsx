@@ -71,7 +71,6 @@ const customerSchema = yup.object({
     .typeError('Credit Limit be numeric value'),
   'Federal ID': yup.string().required('Must enter Federal ID'),
   'Factoring Company': yup.string().nullable(),
-  // 'Factoring Company ID': yup.string().nullable(), // do we need this?
 
   // Notes: yup.string().max(250, 'Must be under 250 characters'),
 });
@@ -114,10 +113,7 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
     customerSchema
       .validate(customer)
       .then(async (valid) => {
-        console.log(valid);
         const mappedCustomer = mapCustomerData(customer);
-
-        console.log('submit', mappedCustomer);
 
         if (!isUpdate) {
           // adding new customer

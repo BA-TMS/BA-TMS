@@ -73,7 +73,7 @@ export const customerFieldMap: Record<string, keyof CustomerData> = {
   'Payment Terms': 'paymentTerms',
   'Credit Limit': 'creditLimit',
   'Federal ID': 'federalID',
-  'Factoring Company': 'factor',
-  'Factoring Company ID': 'factorId',
+  'Factoring Company': 'factorId',
+  // 'Factoring Company ID': 'factorId', // not sure how these fields play with factor relations
   // Notes: 'notes', // don't map it yet not in db
 };

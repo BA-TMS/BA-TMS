@@ -19,7 +19,6 @@ interface CustomerState {
 
 // customer format for UI
 const formatron = function (customer: CustomerData) {
-  console.log('FORMATRON', customer.factor);
   return {
     ...customer,
     factor: customer.factor ? customer.factor.name : null,
@@ -32,11 +31,6 @@ export const fetchCustomers = createAsyncThunk<CustomerData[]>(
   async () => {
     const data = await getCustomers();
 
-    // return data.map((customer: CustomerData) => ({
-    //   ...customer,
-    //   factor: customer.factor?.name,
-    // }));
-    console.log('fetch customers', data);
     return data.map((customer: CustomerData) => formatron(customer));
   }
 );
@@ -46,8 +40,10 @@ export const createCustomer = createAsyncThunk<CustomerData, CustomerData>(
   async (customer: CustomerData) => {
     try {
       const response = await addCustomer({ customer });
+
       console.log('new customer', response);
-      return response; // is response of type CustomerData?
+
+      return response;
     } catch (error) {
       return console.log('Error creating customer');
     }
@@ -62,7 +58,7 @@ export const updateCustomer = createAsyncThunk<
   async ({ id, updatedCustomer }: UpdatedCustomerPayload) => {
     const customer = await apiUpdateCustomer(id, { formData: updatedCustomer });
     console.log('updated customer', customer);
-    return customer;
+    return formatron(customer);
   }
 );
 
