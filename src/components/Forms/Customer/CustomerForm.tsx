@@ -87,38 +87,19 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
 
   const isUpdate = formData !== null && formData['id'];
 
-  // will want to map before submitting to db
-  const mapCustomerData = (customer: Customer) => {
-    const mappedData: Record<string, unknown> = {};
-
-    Object.keys(customer).forEach((key) => {
-      // the field name in the db
-      const dbField = customerFieldMap[key as keyof typeof customerFieldMap];
-
-      if (dbField) {
-        mappedData[dbField] = customer[key as keyof Customer];
-      } else {
-        mappedData[key] = customer[key as keyof Customer];
-      }
-    });
-
-    return mappedData as CustomerData;
-  };
-
   // submit
-  const onSubmit = async (customer: Customer) => {
+  const onSubmit = async (customer: CustomerData) => {
+    console.log('SUBMITTING', customer);
     setIsSubmitting(true);
 
     // make sure we have all required fields by validating schema
     customerSchema
       .validate(customer)
       .then(async (valid) => {
-        const mappedCustomer = mapCustomerData(customer);
-
         if (!isUpdate) {
           // adding new customer
           try {
-            await dispatch(createCustomer(mappedCustomer)).unwrap();
+            await dispatch(createCustomer(customer)).unwrap();
             toggleOpen();
           } catch (error) {
             console.error('Error creating customer:', error);
@@ -131,7 +112,7 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
               await dispatch(
                 updateCustomer({
                   id: formData['id'],
-                  updatedCustomer: mappedCustomer,
+                  updatedCustomer: customer,
                 })
               ).unwrap();
 
@@ -171,7 +152,7 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
           type="submit"
           disabled={isSubmitting}
           onClick={() => {
-            onSubmit(formData as Customer);
+            onSubmit(formData as CustomerData);
             saveFormValues({}, true); // not sure how to fix type error?
           }}
         >

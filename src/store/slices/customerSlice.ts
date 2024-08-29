@@ -43,7 +43,7 @@ export const createCustomer = createAsyncThunk<CustomerData, CustomerData>(
 
       console.log('new customer', response);
 
-      return response;
+      return formatron(response);
     } catch (error) {
       return console.log('Error creating customer');
     }
