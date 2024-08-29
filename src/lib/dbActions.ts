@@ -12,6 +12,10 @@ const LOAD_RELATIONS = {
   consignee: { select: { name: true } },
 };
 
+const CUSTOMER_RELATIONS = {
+  factor: { select: { name: true } },
+};
+
 /** Get existing table data */
 async function getter(table: any, relations: any) {
   const resp = await table.findMany({
@@ -186,15 +190,45 @@ export async function addConsignee({ consignee }: { consignee: any }) {
 }
 
 export async function addCustomer({ customer }: { customer: any }) {
-  const transformedCustomer = {
-    ...customer,
-    factor: customer.factor ? { connect: { id: customer.factor } } : undefined,
-  };
-
   const resp = await prisma.customer.create({
-    data: transformedCustomer,
-  });
+    data: {
+      status: customer['Status'],
+      companyName: customer['Company Name'],
+      contactName: customer['Contact Name'],
+      secondaryContactName: customer['Secondary Contact Name'],
+      contactEmail: customer['Contact Email'],
+      contactTelephone: customer['Telephone'],
+      contactTollFree: customer['Toll Free'],
+      contactFax: customer['Fax'],
 
+      contactAddress: customer['Address'],
+      contactAddressField2: customer['Address Line 2'],
+      contactAddressField3: customer['Address Line 3'],
+      contactCity: customer['City'],
+      contactState: customer['State'],
+      contactPostCode: customer['Zip'],
+      contactCountry: customer['Country'],
+
+      billingAddress: customer['Billing Address'],
+      billingAddressField2: customer['Billing Address Line 2'],
+      billingAddressField3: customer['Billing Address Line 3'],
+      billingCity: customer['Billing City'],
+      billingState: customer['Billing State'],
+      billingPostCode: customer['Billing Zip'],
+      billingCountry: customer['Billing Country'],
+      billingEmail: customer['Billing Email'],
+      billingTelephone: customer['Billing Telephone'],
+
+      // advanced options
+      salesRepName: customer['Sales Rep'],
+      currency: customer['Currency'],
+      paymentTerms: customer['Payment Terms'],
+      creditLimit: customer['Credit Limit'],
+      federalID: customer['Federal ID'],
+      factorId: customer['Factoring Company'],
+    },
+    include: CUSTOMER_RELATIONS, // gives us factor: {name: ___}
+  });
   console.log('added customer', resp);
   return resp;
 }
