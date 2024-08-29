@@ -385,7 +385,53 @@ export async function updateCustomer(
   id: string,
   { formData }: { formData: any }
 ) {
-  const resp = await updater(prisma.customer, id, formData);
+  // map to convert formData keys to database keys
+  const mapData = (customer: any) => {
+    if (!customer) {
+      throw new Error('Customer data is undefined or null');
+    }
+
+    return {
+      status: customer['Status'],
+      companyName: customer['Company Name'],
+      contactName: customer['Contact Name'],
+      secondaryContactName: customer['Secondary Contact Name'],
+      contactEmail: customer['Contact Email'],
+      contactTelephone: customer['Telephone'],
+      contactTollFree: customer['Toll Free'],
+      contactFax: customer['Fax'],
+
+      contactAddress: customer['Address'],
+      contactAddressField2: customer['Address Line 2'],
+      contactAddressField3: customer['Address Line 3'],
+      contactCity: customer['City'],
+      contactState: customer['State'],
+      contactPostCode: customer['Zip'],
+      contactCountry: customer['Country'],
+
+      billingAddress: customer['Billing Address'],
+      billingAddressField2: customer['Billing Address Line 2'],
+      billingAddressField3: customer['Billing Address Line 3'],
+      billingCity: customer['Billing City'],
+      billingState: customer['Billing State'],
+      billingPostCode: customer['Billing Zip'],
+      billingCountry: customer['Billing Country'],
+      billingEmail: customer['Billing Email'],
+      billingTelephone: customer['Billing Telephone'],
+
+      // advanced options
+      salesRepName: customer['Sales Rep'],
+      currency: customer['Currency'],
+      paymentTerms: customer['Payment Terms'],
+      creditLimit: customer['Credit Limit'],
+      federalID: customer['Federal ID'],
+      factorId: customer['Factoring Company'],
+    };
+  };
+
+  const mappedData = mapData(formData);
+  const resp = await updater(prisma.customer, id, mappedData);
+  console.log('UPDATED CUSTOMER', resp);
   return resp;
 }
 
