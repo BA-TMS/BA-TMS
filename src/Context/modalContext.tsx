@@ -39,6 +39,7 @@ export const ContextProvider: React.FC<ThemeProviderProps> = ({ children }) => {
 
   // EDITING NEW FORM DATA
   // function takes in values as an object, and optional reset parameter which defaults to false
+  // allowing us to reset the formData to an empty object
   const saveFormValues = (values: FormObject<any>, reset: boolean = false) => {
     if (reset) {
       setFormData(values); // empty object in context

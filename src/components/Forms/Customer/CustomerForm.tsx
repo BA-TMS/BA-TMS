@@ -7,12 +7,14 @@ import Button from '../../UI_Elements/buttons/Button';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store/store';
 import { createCustomer, updateCustomer } from '@/store/slices/customerSlice';
-import { CustomerData, customerFieldMap } from '@/types/customerTypes';
+import { CustomerData } from '@/types/customerTypes';
 import { TabsComponent, Tab } from '../../UI_Elements/Form/Tabs';
 import CustomerDetails from './CustomerDetails';
 import AdvancedCustomerDetails from './CustomerAdvanced';
 
-// this component holds layout for the customer form - which is made of two forms
+// this component holds layout for the customer form - which is made of two forms:
+// CustomerDetials.tsx & CustomerAdvanced.tsx
+// these forms submit data to the variable fieldData in modalContext.tsx
 // it also submits the data to redux/ db after pulling from the context
 
 interface CustomerFormProps {
@@ -75,8 +77,6 @@ const customerSchema = yup.object({
   // Notes: yup.string().max(250, 'Must be under 250 characters'),
 });
 
-type Customer = yup.InferType<typeof customerSchema>;
-
 const CustomerForm: React.FC<CustomerFormProps> = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -89,13 +89,12 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
 
   // submit
   const onSubmit = async (customer: CustomerData) => {
-    console.log('SUBMITTING', customer);
     setIsSubmitting(true);
 
     // make sure we have all required fields by validating schema
     customerSchema
       .validate(customer)
-      .then(async (valid) => {
+      .then(async () => {
         if (!isUpdate) {
           // adding new customer
           try {

@@ -41,11 +41,8 @@ export const createCustomer = createAsyncThunk<CustomerData, CustomerData>(
     try {
       const response = await addCustomer({ customer });
 
-      console.log('new customer', response);
-
       return formatron(response);
     } catch (error) {
-      console.log('Error creating customer');
       return rejectWithValue('Failed to create customer');
     }
   }
@@ -58,7 +55,7 @@ export const updateCustomer = createAsyncThunk<
   'customers/updateCustomer',
   async ({ id, updatedCustomer }: UpdatedCustomerPayload) => {
     const customer = await apiUpdateCustomer(id, { formData: updatedCustomer });
-    console.log('updated customer', customer);
+
     return formatron(customer);
   }
 );

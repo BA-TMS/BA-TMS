@@ -9,7 +9,6 @@ import TextInput from '../../UI_Elements/Form/TextInput';
 import SelectInput from '../../UI_Elements/Form/SelectInput';
 import DynamicSelect from '../../UI_Elements/Form/DynamicSelect';
 import { currency, paymentTerms } from '../data/details';
-import { customerFieldMap } from '@/types/customerTypes';
 import { getFactors } from '@/lib/dbActions';
 
 const customerSchema = yup.object({
