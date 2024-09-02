@@ -229,7 +229,6 @@ export async function addCustomer({ customer }: { customer: any }) {
     },
     include: CUSTOMER_RELATIONS, // gives us factor: {name: ___}
   });
-  console.log('added customer', resp);
   return resp;
 }
 
@@ -429,9 +428,16 @@ export async function updateCustomer(
     };
   };
 
-  const mappedData = mapData(formData);
-  const resp = await updater(prisma.customer, id, mappedData);
-  console.log('UPDATED CUSTOMER', resp);
+  const mappedCustomer = mapData(formData);
+
+  const resp = await prisma.customer.update({
+    where: { id },
+    data: {
+      ...mappedCustomer,
+    },
+    include: CUSTOMER_RELATIONS, // gives us factor: {name: ___}
+  });
+
   return resp;
 }
 
