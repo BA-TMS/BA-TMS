@@ -22,7 +22,7 @@ const formatron = function (customer: CustomerData) {
   return {
     ...customer,
     factor: customer.factor ? customer.factor.name : null,
-  };
+  } as CustomerData;
 };
 
 // Define Async Thunks
@@ -37,7 +37,7 @@ export const fetchCustomers = createAsyncThunk<CustomerData[]>(
 
 export const createCustomer = createAsyncThunk<CustomerData, CustomerData>(
   'customers/createCustomer',
-  async (customer: CustomerData) => {
+  async (customer, { rejectWithValue }) => {
     try {
       const response = await addCustomer({ customer });
 
@@ -45,7 +45,8 @@ export const createCustomer = createAsyncThunk<CustomerData, CustomerData>(
 
       return formatron(response);
     } catch (error) {
-      return console.log('Error creating customer');
+      console.log('Error creating customer');
+      return rejectWithValue('Failed to create customer');
     }
   }
 );

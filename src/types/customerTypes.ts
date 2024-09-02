@@ -1,3 +1,5 @@
+import { Decimal } from '@prisma/client/runtime/library';
+
 export type CustomerData = {
   id: string;
   createdAt: Date;
@@ -29,7 +31,7 @@ export type CustomerData = {
   billingPostCode: string;
   currency: string;
   paymentTerms: string;
-  creditLimit: number; // or null?
+  creditLimit: number | Decimal; // or null?
   federalID: string;
   // factor: string | null;
   factor: { name: string } | null;
