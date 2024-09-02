@@ -90,6 +90,7 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
   // submit
   const onSubmit = async (customer: CustomerData) => {
     setIsSubmitting(true);
+    setError(''); // clear old validation errors
 
     // make sure we have all required fields by validating schema
     customerSchema
@@ -101,7 +102,7 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
             await dispatch(createCustomer(customer)).unwrap();
             toggleOpen();
           } catch (error) {
-            console.error('Error creating customer:', error);
+            setError(`Error creating customer: ${error}`);
           }
           setIsSubmitting(false);
         } else {
@@ -117,12 +118,10 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
 
               toggleOpen();
             } catch (error) {
-              console.error('Error updating customer:', error);
-              toggleOpen();
+              setError(`Error updating customer: ${error}`);
             }
           }
           setIsSubmitting(false);
-          toggleOpen();
         }
       })
       .catch((error) => {

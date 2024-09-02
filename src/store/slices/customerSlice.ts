@@ -53,10 +53,19 @@ export const updateCustomer = createAsyncThunk<
   UpdatedCustomerPayload
 >(
   'customers/updateCustomer',
-  async ({ id, updatedCustomer }: UpdatedCustomerPayload) => {
-    const customer = await apiUpdateCustomer(id, { formData: updatedCustomer });
+  async (
+    { id, updatedCustomer }: UpdatedCustomerPayload,
+    { rejectWithValue }
+  ) => {
+    try {
+      const customer = await apiUpdateCustomer(id, {
+        formData: updatedCustomer,
+      });
 
-    return formatron(customer);
+      return formatron(customer);
+    } catch (error) {
+      return rejectWithValue('Failed to update customer');
+    }
   }
 );
 
