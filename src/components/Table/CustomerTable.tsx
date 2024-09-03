@@ -72,6 +72,8 @@ const CustomerTable = (): JSX.Element => {
   function handleSearchFilter(customers: CustomerData[], value: string) {
     if (!value) return customers;
 
+    if (value === 'All') return customers;
+
     // handle sorting by specific value
     if (value === 'Active' || value === 'Inactive') {
       return customers.filter(
@@ -122,7 +124,7 @@ const CustomerTable = (): JSX.Element => {
       <TableSearch
         placeholder={'Search...'}
         dropdownLabel="Status"
-        dropdownOptions={['Active', 'Inactive']}
+        dropdownOptions={['Active', 'Inactive', 'All']}
         search={setSearchValue}
       />
 
