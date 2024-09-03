@@ -152,6 +152,7 @@ export const LoadForm = () => {
             <DynamicSelect
               control={control}
               name="Customer"
+              nameKey="companyName"
               required={true}
               dbaction={getCustomers}
             />

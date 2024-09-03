@@ -7,11 +7,13 @@ import { UseControllerProps, useController } from 'react-hook-form';
 // pass this component a database action as a prop
 // options are mapped to create dropdown <option> elements
 // T represents shape of the data fetched
+// may need to refactor this to make nameKey mandatory as new schema changes happen
 
 interface SelectInputProps<T> extends UseControllerProps {
   dbaction: () => Promise<T[]>;
   control?: any; // this is from external library
   required?: boolean;
+  nameKey?: string; // in case the data returned from dbaction does not have a "name" key but instead the "name" is something else, like "companyName"
 }
 
 const DynamicSelect = <T extends { id: string; name: string }>({
@@ -19,6 +21,7 @@ const DynamicSelect = <T extends { id: string; name: string }>({
   control,
   required,
   name,
+  nameKey,
 }: SelectInputProps<T>) => {
   const { field, fieldState } = useController({
     control,
@@ -66,7 +69,7 @@ const DynamicSelect = <T extends { id: string; name: string }>({
           ) : (
             options.map((option) => (
               <option key={option.id} value={option.id}>
-                {option.name}
+                {option.name ? option.name : option[nameKey]}
               </option>
             ))
           )}
