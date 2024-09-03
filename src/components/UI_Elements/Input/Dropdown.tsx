@@ -9,6 +9,7 @@ interface DropdownProps {
 
 export default function Dropdown({ label, options, sort }: DropdownProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [displayLabel, setDisplayLabel] = useState(label);
   const [isOpen, setOpen] = useState(false);
 
   const handleDropDown = () => {
@@ -56,7 +57,7 @@ export default function Dropdown({ label, options, sort }: DropdownProps) {
         aria-expanded={isOpen}
         aria-controls="dropdown-menu"
       >
-        {label}
+        {displayLabel}
         <svg
           className={`w-2.5 h-2.5 ml-auto ${isOpen ? 'rotate-180' : ''}`}
           width="15"
@@ -79,7 +80,7 @@ export default function Dropdown({ label, options, sort }: DropdownProps) {
           isOpen ? 'block' : 'hidden'
         }`}
         role="menu"
-        aria-labelledby={label}
+        aria-labelledby={displayLabel}
       >
         <ul className="w-full min-w-40" aria-labelledby="dropdownDefaultButton">
           {options.map((option: string, index: number) => (
@@ -93,6 +94,7 @@ export default function Dropdown({ label, options, sort }: DropdownProps) {
                 className=""
                 onClick={() => {
                   sort(option);
+                  setDisplayLabel(option);
                   handleDropDown();
                 }}
               >
