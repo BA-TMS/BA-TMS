@@ -47,7 +47,7 @@ const formatron = function (rawLoad: any) {
       : null,
     carrier: rawLoad.carrier.name,
     driver: rawLoad.driver ? rawLoad.driver.name : null,
-    customer: rawLoad.customer.name,
+    customer: rawLoad.customer ? rawLoad.customer.companyName : null,
     shipper: rawLoad.shipper ? rawLoad.shipper.name : null,
     consignee: rawLoad.consignee ? rawLoad.consignee.name : null,
   };
@@ -58,7 +58,7 @@ export const fetchLoads = createAsyncThunk<Load[]>(
   'loads/fetchLoads',
   async () => {
     const data = await getLoads();
-    return data.map(currLoad => formatron(currLoad));
+    return data.map((currLoad) => formatron(currLoad));
   }
 );
 

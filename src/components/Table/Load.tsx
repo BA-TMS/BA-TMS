@@ -43,8 +43,16 @@ type Load = {
   consignee: string | null;
 };
 
+interface StatusColors {
+  ON_ROUTE: 'warning';
+  COVERED: 'warning';
+  OPEN: 'primary';
+  REFUSED: 'secondary';
+  PENDING: 'error';
+}
+
 // Define status colors
-const statusColors = {
+const statusColors: StatusColors = {
   ON_ROUTE: 'warning',
   COVERED: 'warning',
   OPEN: 'primary',
@@ -54,7 +62,10 @@ const statusColors = {
 
 // Function to get color by status
 const getColorByStatus = (status: string) => {
-  return statusColors[status] || 'text-grey-600 dark:text-white';
+  return (
+    statusColors[status as keyof StatusColors] ||
+    'text-grey-600 dark:text-white'
+  );
 };
 
 // Define columns for the table

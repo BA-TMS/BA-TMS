@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 const LOAD_RELATIONS = {
   carrier: { select: { name: true } },
   driver: { select: { name: true } },
-  customer: { select: { name: true } },
+  customer: { select: { companyName: true } },
   shipper: { select: { name: true } },
   consignee: { select: { name: true } },
 };
@@ -78,6 +78,7 @@ export async function getLoad(id: string) {
 
 export async function getLoads() {
   const loads = await getter(prisma.load, LOAD_RELATIONS);
+  console.log('GOTTEN LOADS', loads);
   return loads;
 }
 
