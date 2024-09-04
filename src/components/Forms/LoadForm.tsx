@@ -21,6 +21,7 @@ import SelectInput from '../UI_Elements/Form/SelectInput';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store/store';
 import { createLoad, updateLoad } from '@/store/slices/loadSlice';
+import { LoadData } from '@/types/loadTypes';
 
 const status = [
   { 'On Route': 'ON_ROUTE' },
@@ -32,6 +33,8 @@ const status = [
   { '(Un)Loading': 'LOADING_UNLOADING' },
   // { 'In Yard': 'IN_YARD' },
 ];
+
+// this component handles form validation and submission with react-hook-form and yup
 
 const loadSchema = yup.object({
   Owner: yup.string().required('Enter owner for this load'),
@@ -69,30 +72,35 @@ export const LoadForm = () => {
     resolver: yupResolver(loadSchema),
   });
 
-  const { toggleOpen, data } = useContext(ModalContext);
+  const { toggleOpen, formData, saveFormValues } = useContext(ModalContext);
 
+  const isUpdate = formData !== null && formData['id'];
+
+  // populate with existing data when updating
   useEffect(() => {
-    console.log('context data', data);
-    // if data is not a synthetic event
-    if (data !== null && data['id']) {
+    console.log('LOADFORM DATA', formData);
+
+    if (isUpdate) {
       // populate form with data from context
-      setValue('Owner', data['ownerId']);
-      setValue('Status', data['status']);
-      setValue('Load Number', data['loadNum']);
-      setValue('Pay Order Number', data['payOrderNum']);
-      setValue('Customer', data['customerId']);
-      setValue('Driver', data['driverId']);
-      setValue('Carrier', data['carrierId']);
-      setValue('Shipper', data['originId']);
-      setValue('Consignee', data['destId']);
-      setValue('Ship Date', data['shipDate']);
-      setValue('Received Date', data['deliveryDate']);
+      // could refactor this
+      setValue('Owner', formData['ownerId']);
+      setValue('Status', formData['status']);
+      setValue('Load Number', formData['loadNum']);
+      setValue('Pay Order Number', formData['payOrderNum']);
+      setValue('Customer', formData['customerId']);
+      setValue('Driver', formData['driverId']);
+      setValue('Carrier', formData['carrierId']);
+      setValue('Shipper', formData['originId']);
+      setValue('Consignee', formData['destId']);
+      setValue('Ship Date', formData['shipDate']);
+      setValue('Received Date', formData['deliveryDate']);
     }
-  }, [data, setValue]);
+  }, [formData, setValue, isUpdate]);
 
   // Form submission handler
+  // fix type mismatch
   const onSubmit = async (load: Load) => {
-    if (data !== null && !data['id']) {
+    if (!isUpdate) {
       // if data does not have id property, we are creating a new load
       try {
         await dispatch(createLoad(load)).unwrap();
@@ -104,7 +112,7 @@ export const LoadForm = () => {
     } else {
       try {
         await dispatch(
-          updateLoad({ id: data['id'], updatedLoad: load })
+          updateLoad({ id: formData['id'], updatedLoad: load })
         ).unwrap();
 
         reset();
@@ -208,13 +216,15 @@ export const LoadForm = () => {
       </div>
       <div className="py-3.5 px-4.5 border-t border-grey-300 dark:border-grey-700 flex justify-end gap-2.5">
         <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Submitting' : 'Add'}
+          {isSubmitting ? 'Submitting' : isUpdate ? 'Update' : 'Add'}
         </Button>
 
         <Button
           type="button"
           disabled={isSubmitting}
           onClick={() => {
+            if (isUpdate) saveFormValues({}, true); // should not be TS error!
+            // make sure this works
             reset();
             toggleOpen();
           }}
