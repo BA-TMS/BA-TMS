@@ -6,40 +6,21 @@ import {
   updateLoad as apiUpdateLoad,
   deleteLoad as apiDeleteLoad,
 } from '@/lib/dbActions';
-
-interface Load {
-  id: string | undefined;
-  ownerId: string;
-  loadNum: string;
-  payOrderNum: string;
-  shipDate: Date | null;
-  deliveryDate: Date | null;
-  carrierId: string;
-  driverId: string | null;
-  customerId: string;
-  originId: string | null;
-  destId: string | null;
-  status: string;
-  carrier: { name: string };
-  driver: { name: string } | null;
-  customer: { companyName: string } | null;
-  shipper: { name: string } | null;
-  consignee: { name: string } | null;
-}
+import { LoadData } from '@/types/loadTypes';
 
 interface UpdateLoadPayload {
   id: string;
-  updatedLoad: Partial<Load>;
+  updatedLoad: Partial<LoadData>;
 }
 
 interface LoadState {
-  items: Load[];
+  items: LoadData[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
 }
 
 // Format a load to show its human-facing info.
-const formatron = function (rawLoad: Load) {
+const formatron = function (rawLoad: LoadData) {
   return {
     ...rawLoad,
     shipDate: rawLoad.shipDate ? rawLoad.shipDate.toDateString() : null,
@@ -53,19 +34,19 @@ const formatron = function (rawLoad: Load) {
     customer: rawLoad.customer ? rawLoad.customer.companyName : null,
     shipper: rawLoad.shipper ? rawLoad.shipper.name : null,
     consignee: rawLoad.consignee ? rawLoad.consignee.name : null,
-  } as unknown as Load; // it does not like date to string conversion when returning formatron;
+  } as unknown as LoadData; // it does not like date to string conversion when returning formatron;
 };
 
 // Define Async Thunks
-export const fetchLoads = createAsyncThunk<Load[]>(
+export const fetchLoads = createAsyncThunk<LoadData[]>(
   'loads/fetchLoads',
   async () => {
     const data = await getLoads();
-    return data.map((currLoad: Load) => formatron(currLoad));
+    return data.map((currLoad: LoadData) => formatron(currLoad));
   }
 );
 
-export const createLoad = createAsyncThunk<Load, Load>(
+export const createLoad = createAsyncThunk<LoadData, LoadData>(
   'loads/createLoad',
   async (load, { rejectWithValue }) => {
     try {
@@ -78,7 +59,7 @@ export const createLoad = createAsyncThunk<Load, Load>(
   }
 );
 
-export const updateLoad = createAsyncThunk<Load, UpdateLoadPayload>(
+export const updateLoad = createAsyncThunk<LoadData, UpdateLoadPayload>(
   'loads/updateLoad',
   async ({ id, updatedLoad }: UpdateLoadPayload, { rejectWithValue }) => {
     try {
@@ -112,25 +93,34 @@ const loadSlice = createSlice({
       .addCase(fetchLoads.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(fetchLoads.fulfilled, (state, action: PayloadAction<Load[]>) => {
-        state.status = 'succeeded';
-        state.items = action.payload;
-      })
+      .addCase(
+        fetchLoads.fulfilled,
+        (state, action: PayloadAction<LoadData[]>) => {
+          state.status = 'succeeded';
+          state.items = action.payload;
+        }
+      )
       .addCase(fetchLoads.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message || 'Failed to fetch loads';
       })
-      .addCase(createLoad.fulfilled, (state, action: PayloadAction<Load>) => {
-        state.items.push(action.payload);
-      })
-      .addCase(updateLoad.fulfilled, (state, action: PayloadAction<Load>) => {
-        const index = state.items.findIndex(
-          (load) => load.id === action.payload.id
-        );
-        if (index !== -1) {
-          state.items[index] = action.payload;
+      .addCase(
+        createLoad.fulfilled,
+        (state, action: PayloadAction<LoadData>) => {
+          state.items.push(action.payload);
         }
-      })
+      )
+      .addCase(
+        updateLoad.fulfilled,
+        (state, action: PayloadAction<LoadData>) => {
+          const index = state.items.findIndex(
+            (load) => load.id === action.payload.id
+          );
+          if (index !== -1) {
+            state.items[index] = action.payload;
+          }
+        }
+      )
       .addCase(deleteLoad.fulfilled, (state, action) => {
         state.items = state.items.filter(
           (load) => load.id !== action.meta.arg.toString()
