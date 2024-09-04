@@ -483,8 +483,16 @@ export async function updateLoad(id: string, { formData }: { formData: any }) {
     };
   };
 
-  const mappedData = mapLoadData(formData);
-  const resp = await updater(prisma.load, id, mappedData);
+  const mappedLoad = mapLoadData(formData);
+
+  const resp = await prisma.load.update({
+    where: { id },
+    data: {
+      ...mappedLoad,
+    },
+    include: LOAD_RELATIONS,
+  });
+
   return resp;
 }
 

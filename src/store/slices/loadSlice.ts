@@ -74,7 +74,7 @@ export const updateLoad = createAsyncThunk<Load, UpdateLoadPayload>(
   'loads/updateLoad',
   async ({ id, updatedLoad }: UpdateLoadPayload) => {
     const load = await apiUpdateLoad(id, { formData: updatedLoad });
-    return load;
+    return formatron(load);
   }
 );
 
