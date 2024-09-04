@@ -8,20 +8,21 @@ import {
 } from '@/lib/dbActions';
 
 interface Load {
-  id: string;
+  id: string | undefined;
   ownerId: string;
   loadNum: string;
+  payOrderNum: string;
+  shipDate: Date | null;
+  deliveryDate: Date | null;
   carrierId: string;
   driverId: string | null;
   customerId: string;
   originId: string | null;
   destId: string | null;
   status: string;
-  shipDate: Date | null;
-  deliveryDate: Date | null;
   carrier: { name: string };
   driver: { name: string } | null;
-  customer: { name: string };
+  customer: { companyName: string } | null;
   shipper: { name: string } | null;
   consignee: { name: string } | null;
 }
@@ -38,19 +39,21 @@ interface LoadState {
 }
 
 // Format a load to show its human-facing info.
-const formatron = function (rawLoad: any) {
+const formatron = function (rawLoad: Load) {
   return {
     ...rawLoad,
     shipDate: rawLoad.shipDate ? rawLoad.shipDate.toDateString() : null,
+
     deliveryDate: rawLoad.deliveryDate
       ? rawLoad.deliveryDate.toDateString()
       : null,
+
     carrier: rawLoad.carrier.name,
     driver: rawLoad.driver ? rawLoad.driver.name : null,
     customer: rawLoad.customer ? rawLoad.customer.companyName : null,
     shipper: rawLoad.shipper ? rawLoad.shipper.name : null,
     consignee: rawLoad.consignee ? rawLoad.consignee.name : null,
-  };
+  } as unknown as Load; // it does not like date to string conversion when returning formatron;
 };
 
 // Define Async Thunks
@@ -58,26 +61,36 @@ export const fetchLoads = createAsyncThunk<Load[]>(
   'loads/fetchLoads',
   async () => {
     const data = await getLoads();
-    return data.map((currLoad) => formatron(currLoad));
+    return data.map((currLoad: Load) => formatron(currLoad));
   }
 );
 
 export const createLoad = createAsyncThunk<Load, Load>(
   'loads/createLoad',
-  async (load) => {
-    const newLoad = await apiAddLoad({ load });
-    return formatron(newLoad);
+  async (load, { rejectWithValue }) => {
+    try {
+      const newLoad = await apiAddLoad({ load });
+
+      return formatron(newLoad);
+    } catch (error) {
+      return rejectWithValue('Failed to create new Load');
+    }
   }
 );
 
 export const updateLoad = createAsyncThunk<Load, UpdateLoadPayload>(
   'loads/updateLoad',
-  async ({ id, updatedLoad }: UpdateLoadPayload) => {
-    const load = await apiUpdateLoad(id, { formData: updatedLoad });
-    return formatron(load);
+  async ({ id, updatedLoad }: UpdateLoadPayload, { rejectWithValue }) => {
+    try {
+      const load = await apiUpdateLoad(id, { formData: updatedLoad });
+      return formatron(load);
+    } catch (error) {
+      return rejectWithValue('Failed to update Load');
+    }
   }
 );
 
+// may need to handle errors here too
 export const deleteLoad = createAsyncThunk(
   'loads/deleteLoad',
   async (id: number) => {
@@ -119,7 +132,9 @@ const loadSlice = createSlice({
         }
       })
       .addCase(deleteLoad.fulfilled, (state, action) => {
-        state.items = state.items.filter((load) => load.id !== action.meta.arg); //property contains the id argument passed to the deleteLoad
+        state.items = state.items.filter(
+          (load) => load.id !== action.meta.arg.toString()
+        ); //property contains the id argument passed to the deleteLoad - id is sometimes a number, sometimes a string?
       });
   },
 });
