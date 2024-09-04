@@ -17,31 +17,11 @@ import { fetchLoads } from '@/store/slices/loadSlice';
 import { AppDispatch, RootState } from '@/store/store';
 import { getLoad } from '@/lib/dbActions';
 import { deleteLoad } from '@/store/slices/loadSlice';
+import { LoadData } from '@/types/loadTypes';
 
 dayjs.extend(customParseFormat);
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
-
-// Define Load type
-type Load = {
-  id: string;
-  ownerId: string;
-  loadNum: string;
-  payOrderNum: string;
-  shipDate: string;
-  deliveryDate: string;
-  carrierId: string;
-  driverId: string | null;
-  customerId: string;
-  originId: string | null;
-  destId: string | null;
-  status: string;
-  carrier: string;
-  driver: string | null;
-  customer: string;
-  shipper: string | null;
-  consignee: string | null;
-};
 
 interface StatusColors {
   ON_ROUTE: 'warning';
@@ -108,15 +88,15 @@ const tabsData: TabData[] = [
 
 const Load = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { toggleOpen } = useContext(ModalContext);
+  const { toggleOpen, saveFormValues } = useContext(ModalContext);
 
   const {
     items: loads,
     status,
-    error,
+    // error, // are we going to handle errors?
   } = useSelector((state: RootState) => state.loads);
 
-  const [filteredLoads, setFilteredLoads] = useState<Load[]>([]);
+  const [filteredLoads, setFilteredLoads] = useState<LoadData[]>([]);
   const [searchByDateRangeStart, setSearchByDateRangeStart] =
     useState<dayjs.Dayjs | null>(null);
   const [searchByDateRangeEnd, setSearchByDateRangeEnd] =
@@ -150,7 +130,7 @@ const Load = () => {
 
   // Function to filter by date range
   function searchByDateRangeFilter(
-    incLoads: Load[],
+    incLoads: LoadData[],
     startDate: dayjs.Dayjs | null,
     endDate: dayjs.Dayjs | null
   ) {
@@ -170,7 +150,7 @@ const Load = () => {
   }
 
   // Function to handle search filter
-  function handleSearchFilter(incLoads: Load[], value: string) {
+  function handleSearchFilter(incLoads: LoadData[], value: string) {
     if (!value) return incLoads;
 
     return incLoads.filter((load) =>
@@ -181,7 +161,7 @@ const Load = () => {
   }
 
   // Function to filter by status
-  function searchByStatusFilter(incLoads: Load[], value: string) {
+  function searchByStatusFilter(incLoads: LoadData[], value: string) {
     if (value === 'All') return incLoads;
 
     const statusMapping: { [key: string]: string } = {
@@ -216,10 +196,12 @@ const Load = () => {
 
   // function to update load
   const updateLoad = async (id: string) => {
-    // fetch entry
     const data = await getLoad(id);
-    // open modal with this data
-    toggleOpen(data);
+    // save fetched data to formData in ModalContext
+    if (data !== null) {
+      saveFormValues(data);
+      toggleOpen();
+    }
   };
 
   // delete a load
