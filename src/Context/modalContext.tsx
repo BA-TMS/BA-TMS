@@ -6,7 +6,6 @@ import React, { createContext, useState } from 'react';
 
 interface ModalContextType {
   isOpen: boolean;
-  data: any; // Replace with appropriate type
   toggleOpen: (param?: any) => void;
   formData: FormObject<any>;
   saveFormValues: (values: FormObject<any>, reset?: boolean) => void;
@@ -22,7 +21,6 @@ type FormObject<T = any> = {
 
 export const ModalContext = createContext<ModalContextType>({
   isOpen: false,
-  data: null,
   toggleOpen: () => {},
   formData: {},
   saveFormValues: () => {},
@@ -30,9 +28,6 @@ export const ModalContext = createContext<ModalContextType>({
 
 export const ContextProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
-  // get rid of this one eventually (refactor customer page before removing)
-  const [data, setData] = useState<any>(null);
 
   // NEW FORM DATA
   const [formData, setFormData] = useState<FormObject<any>>({});
@@ -50,16 +45,13 @@ export const ContextProvider: React.FC<ThemeProviderProps> = ({ children }) => {
 
   // how we open/ close said modal
   // optional data if we are dealing with form updates- this can be removed later (see line #34)
-  function toggleOpen(data = null) {
-    if (data !== null) {
-      setData(data);
-    }
+  function toggleOpen() {
     setIsOpen(!isOpen);
   }
 
   return (
     <ModalContext.Provider
-      value={{ isOpen, toggleOpen, data, formData, saveFormValues }}
+      value={{ isOpen, toggleOpen, formData, saveFormValues }}
     >
       {children}
     </ModalContext.Provider>
