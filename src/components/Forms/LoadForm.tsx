@@ -78,11 +78,9 @@ export const LoadForm = () => {
 
   // populate with existing data when updating
   useEffect(() => {
-    console.log('LOADFORM DATA', formData);
-
     if (isUpdate) {
       // populate form with data from context
-      // could refactor this
+      // could refactor this eventually
       setValue('Owner', formData['ownerId']);
       setValue('Status', formData['status']);
       setValue('Load Number', formData['loadNum']);
@@ -98,10 +96,8 @@ export const LoadForm = () => {
   }, [formData, setValue, isUpdate]);
 
   // Form submission handler
-  // fix type mismatch
-  const onSubmit = async (load: Load) => {
+  const onSubmit = async (load: LoadData) => {
     if (!isUpdate) {
-      // if data does not have id property, we are creating a new load
       try {
         await dispatch(createLoad(load)).unwrap();
         reset();
@@ -116,6 +112,7 @@ export const LoadForm = () => {
         ).unwrap();
 
         reset();
+        saveFormValues({}, true); // clear context- TS error from default param
         toggleOpen();
       } catch (error) {
         console.error('Error updating load:', error);
@@ -131,7 +128,7 @@ export const LoadForm = () => {
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(onSubmit)} // TS error here with react-hook-form but works
       className="flex flex-col justify-between"
     >
       <p className="px-4.5 mt-3.5 mb-5 body2 text-grey-800 dark:text-white">
@@ -224,7 +221,6 @@ export const LoadForm = () => {
           disabled={isSubmitting}
           onClick={() => {
             if (isUpdate) saveFormValues({}, true); // should not be TS error!
-            // make sure this works
             reset();
             toggleOpen();
           }}
