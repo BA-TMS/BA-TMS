@@ -1,5 +1,5 @@
 export interface LoadData {
-  id: string;
+  id?: string;
   ownerId: string;
   loadNum: string;
   payOrderNum: string;
@@ -17,3 +17,27 @@ export interface LoadData {
   shipper: { name: string } | null;
   consignee: { name: string } | null;
 }
+
+export type LoadStatus =
+  | 'ON_ROUTE'
+  | 'OPEN'
+  | 'REFUSED'
+  | 'COVERED'
+  | 'PENDING'
+  | 'DISPATCHED'
+  | 'LOADING_UNLOADING'
+  | 'IN_YARD';
+
+export type LoadFormData = {
+  Owner: string;
+  Status?: LoadStatus;
+  'Load Number': string;
+  'Pay Order Number': string;
+  Customer: string;
+  Driver?: string | null;
+  Carrier: string;
+  Shipper?: string | null;
+  Consignee?: string | null;
+  'Ship Date'?: Date | string | undefined;
+  'Received Date'?: Date | string | undefined;
+};
