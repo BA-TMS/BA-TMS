@@ -21,7 +21,7 @@ import SelectInput from '../UI_Elements/Form/SelectInput';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store/store';
 import { createLoad, updateLoad } from '@/store/slices/loadSlice';
-import { LoadData, loadFieldMap } from '@/types/loadTypes';
+import { LoadData, loadFieldMap, LoadFormData } from '@/types/loadTypes';
 
 const status = [
   { 'On Route': 'ON_ROUTE' },
@@ -87,13 +87,13 @@ export const LoadForm = () => {
 
   // Form submission handler
   // react-hook-form submission handler (line 128) expects a type of Load as determined by yup schema
-  // casting type in the dispatch actions because dispatch actions expect an arg type of LoadData
-  // this data becomes LoadData type at other points in the process so this should be safe
+  // casting type in the dispatch actions because dispatch actions expects different types
+  // this data becomes different type at other points in the process so this should be safe
 
   const onSubmit = async (load: Load) => {
     if (!isUpdate) {
       try {
-        await dispatch(createLoad(load as unknown as LoadData)).unwrap();
+        await dispatch(createLoad(load as unknown as LoadFormData)).unwrap();
         reset();
         toggleOpen();
       } catch (error) {

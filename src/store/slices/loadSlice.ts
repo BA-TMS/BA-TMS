@@ -6,7 +6,7 @@ import {
   updateLoad as apiUpdateLoad,
   deleteLoad as apiDeleteLoad,
 } from '@/lib/dbActions';
-import { LoadData } from '@/types/loadTypes';
+import { LoadData, LoadFormData } from '@/types/loadTypes';
 
 interface UpdateLoadPayload {
   id: string;
@@ -46,7 +46,7 @@ export const fetchLoads = createAsyncThunk<LoadData[]>(
   }
 );
 
-export const createLoad = createAsyncThunk<LoadData, LoadData>(
+export const createLoad = createAsyncThunk<LoadData, LoadFormData>(
   'loads/createLoad',
   async (load, { rejectWithValue }) => {
     try {

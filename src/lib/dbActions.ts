@@ -2,6 +2,7 @@
 
 import { PrismaClient } from '@prisma/client';
 import { CustomerFormData } from '@/types/customerTypes';
+import { LoadFormData } from '@/types/loadTypes';
 
 const prisma = new PrismaClient();
 
@@ -271,7 +272,7 @@ export async function addFactoringCo({ factor }: { factor: any }) {
   });
 }
 
-export async function addLoad({ load }: { load: any }) {
+export async function addLoad({ load }: { load: LoadFormData }) {
   const resp = await prisma.load.create({
     data: {
       ownerId: load['Owner'],
@@ -461,9 +462,12 @@ export async function updateDriver(
   const resp = updater(prisma.driver, id, formData);
 }
 
-export async function updateLoad(id: string, { formData }: { formData: any }) {
+export async function updateLoad(
+  id: string,
+  { formData }: { formData: LoadFormData }
+) {
   // map to convert formData keys to database keys
-  const mapLoadData = (load: any) => {
+  const mapLoadData = (load: LoadFormData) => {
     if (!load) {
       throw new Error('Load data is undefined or null');
     }
