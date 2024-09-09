@@ -21,7 +21,7 @@ import SelectInput from '../UI_Elements/Form/SelectInput';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store/store';
 import { createLoad, updateLoad } from '@/store/slices/loadSlice';
-import { loadFieldMap, LoadFormData } from '@/types/loadTypes';
+import { LoadFormData } from '@/types/loadTypes';
 
 const status = [
   { 'On Route': 'ON_ROUTE' },
@@ -79,14 +79,24 @@ export const LoadForm = () => {
   // populate with existing data when updating
   useEffect(() => {
     if (isUpdate) {
-      Object.entries(loadFieldMap).forEach(([field, dataKey]) => {
-        setValue(field as keyof Load, formData[dataKey]);
-      });
+      // populate form with data from context
+      console.log('FORMDATA', formData);
+      setValue('Owner', formData['ownerId']);
+      setValue('Status', formData['status']);
+      setValue('Load Number', formData['loadNum']);
+      setValue('Pay Order Number', formData['payOrderNum']);
+      setValue('Customer', formData['customerId']);
+      setValue('Driver', formData['driverId']);
+      setValue('Carrier', formData['carrierId']);
+      setValue('Shipper', formData['originId']);
+      setValue('Consignee', formData['destId']);
+      setValue('Ship Date', formData['shipDate']);
+      setValue('Received Date', formData['deliveryDate']);
     }
   }, [formData, setValue, isUpdate]);
 
   // Form submission handler
-  // react-hook-form submission handler (line 128) expects a type of Load as determined by yup schema
+  // react-hook-form submission handler (line 138) expects a type of Load as determined by yup schema
   // casting type in the dispatch actions because dispatch actions expects different types
   // this data becomes different type at other points in the process so this should be safe
 
