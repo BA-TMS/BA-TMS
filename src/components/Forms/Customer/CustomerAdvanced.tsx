@@ -76,7 +76,7 @@ const AdvancedCustomerDetails: React.FC = () => {
   const handleClickOutside = useCallback(
     (event: MouseEvent) => {
       if ((event.target as HTMLElement).id === 'cancel') {
-        console.log('cancel button'); // let it do the cancel button event?
+        return;
       } else if (
         componentRef.current &&
         !componentRef.current.contains(event.target as Node)

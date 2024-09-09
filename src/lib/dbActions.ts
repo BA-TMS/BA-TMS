@@ -78,7 +78,6 @@ export async function getLoad(id: string) {
 
 export async function getLoads() {
   const loads = await getter(prisma.load, LOAD_RELATIONS);
-  console.log('GOTTEN LOADS', loads);
   return loads;
 }
 
@@ -191,7 +190,6 @@ export async function addConsignee({ consignee }: { consignee: any }) {
 }
 
 export async function addCustomer({ customer }: { customer: any }) {
-  console.log('CREATED CUSTOMER', customer);
   const resp = await prisma.customer.create({
     data: {
       status: customer['Status'],
