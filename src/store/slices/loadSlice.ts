@@ -10,7 +10,7 @@ import { LoadData, LoadFormData } from '@/types/loadTypes';
 
 interface UpdateLoadPayload {
   id: string;
-  updatedLoad: Partial<LoadData>;
+  updatedLoad: Partial<LoadFormData>;
 }
 
 interface LoadState {

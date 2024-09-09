@@ -1,3 +1,13 @@
+export type LoadStatus =
+  | 'ON_ROUTE'
+  | 'OPEN'
+  | 'REFUSED'
+  | 'COVERED'
+  | 'PENDING'
+  | 'DISPATCHED'
+  | 'LOADING_UNLOADING'
+  | 'IN_YARD';
+
 export interface LoadData {
   id?: string;
   ownerId: string;
@@ -10,7 +20,7 @@ export interface LoadData {
   customerId: string;
   originId: string | null;
   destId: string | null;
-  status: string;
+  status: LoadStatus;
   carrier: { name: string };
   driver: { name: string } | null;
   customer: { companyName: string } | null;
@@ -18,17 +28,7 @@ export interface LoadData {
   consignee: { name: string } | null;
 }
 
-export type LoadStatus =
-  | 'ON_ROUTE'
-  | 'OPEN'
-  | 'REFUSED'
-  | 'COVERED'
-  | 'PENDING'
-  | 'DISPATCHED'
-  | 'LOADING_UNLOADING'
-  | 'IN_YARD';
-
-export type LoadFormData = {
+export interface LoadFormData {
   Owner: string;
   Status?: LoadStatus;
   'Load Number': string;
@@ -40,4 +40,19 @@ export type LoadFormData = {
   Consignee?: string | null;
   'Ship Date'?: Date | string | undefined;
   'Received Date'?: Date | string | undefined;
+}
+
+// map load types
+export const loadFieldMap: Record<string, keyof LoadData> = {
+  Owner: 'ownerId',
+  Status: 'status',
+  'Load Number': 'loadNum',
+  'Pay Order Number': 'payOrderNum',
+  Customer: 'customerId',
+  Driver: 'driverId',
+  Carrier: 'carrierId',
+  Shipper: 'shipper', // id?
+  Consignee: 'consignee', // id?
+  'Ship Date': 'shipDate',
+  'Received Date': 'deliveryDate',
 };

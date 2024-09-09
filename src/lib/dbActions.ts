@@ -464,10 +464,10 @@ export async function updateDriver(
 
 export async function updateLoad(
   id: string,
-  { formData }: { formData: LoadFormData }
+  { formData }: { formData: Partial<LoadFormData> }
 ) {
   // map to convert formData keys to database keys
-  const mapLoadData = (load: LoadFormData) => {
+  const mapLoadData = (load: Partial<LoadFormData>) => {
     if (!load) {
       throw new Error('Load data is undefined or null');
     }

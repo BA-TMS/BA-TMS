@@ -21,7 +21,7 @@ import SelectInput from '../UI_Elements/Form/SelectInput';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store/store';
 import { createLoad, updateLoad } from '@/store/slices/loadSlice';
-import { LoadData, loadFieldMap, LoadFormData } from '@/types/loadTypes';
+import { loadFieldMap, LoadFormData } from '@/types/loadTypes';
 
 const status = [
   { 'On Route': 'ON_ROUTE' },
@@ -104,7 +104,7 @@ export const LoadForm = () => {
         await dispatch(
           updateLoad({
             id: formData['id'],
-            updatedLoad: load as unknown as LoadData,
+            updatedLoad: load as unknown as LoadFormData,
           })
         ).unwrap();
 
