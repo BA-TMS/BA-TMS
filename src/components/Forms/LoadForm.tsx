@@ -21,7 +21,7 @@ import SelectInput from '../UI_Elements/Form/SelectInput';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store/store';
 import { createLoad, updateLoad } from '@/store/slices/loadSlice';
-import { LoadData } from '@/types/loadTypes';
+import { LoadData, loadFieldMap } from '@/types/loadTypes';
 
 const status = [
   { 'On Route': 'ON_ROUTE' },
@@ -79,27 +79,21 @@ export const LoadForm = () => {
   // populate with existing data when updating
   useEffect(() => {
     if (isUpdate) {
-      // populate form with data from context
-      // could refactor this eventually
-      setValue('Owner', formData['ownerId']);
-      setValue('Status', formData['status']);
-      setValue('Load Number', formData['loadNum']);
-      setValue('Pay Order Number', formData['payOrderNum']);
-      setValue('Customer', formData['customerId']);
-      setValue('Driver', formData['driverId']);
-      setValue('Carrier', formData['carrierId']);
-      setValue('Shipper', formData['originId']);
-      setValue('Consignee', formData['destId']);
-      setValue('Ship Date', formData['shipDate']);
-      setValue('Received Date', formData['deliveryDate']);
+      Object.entries(loadFieldMap).forEach(([field, dataKey]) => {
+        setValue(field as keyof Load, formData[dataKey]);
+      });
     }
   }, [formData, setValue, isUpdate]);
 
   // Form submission handler
-  const onSubmit = async (load: LoadData) => {
+  // react-hook-form submission handler (line 128) expects a type of Load as determined by yup schema
+  // casting type in the dispatch actions because dispatch actions expect an arg type of LoadData
+  // this data becomes LoadData type at other points in the process so this should be safe
+
+  const onSubmit = async (load: Load) => {
     if (!isUpdate) {
       try {
-        await dispatch(createLoad(load)).unwrap();
+        await dispatch(createLoad(load as unknown as LoadData)).unwrap();
         reset();
         toggleOpen();
       } catch (error) {
@@ -108,11 +102,14 @@ export const LoadForm = () => {
     } else {
       try {
         await dispatch(
-          updateLoad({ id: formData['id'], updatedLoad: load })
+          updateLoad({
+            id: formData['id'],
+            updatedLoad: load as unknown as LoadData,
+          })
         ).unwrap();
 
         reset();
-        saveFormValues({}, true); // clear context- TS error from default param
+        saveFormValues({}, true); // TS error from default param
         toggleOpen();
       } catch (error) {
         console.error('Error updating load:', error);
@@ -128,7 +125,7 @@ export const LoadForm = () => {
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)} // TS error here with react-hook-form but works
+      onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col justify-between"
     >
       <p className="px-4.5 mt-3.5 mb-5 body2 text-grey-800 dark:text-white">
@@ -220,7 +217,7 @@ export const LoadForm = () => {
           type="button"
           disabled={isSubmitting}
           onClick={() => {
-            if (isUpdate) saveFormValues({}, true); // should not be TS error!
+            if (isUpdate) saveFormValues({}, true); // TS error from default param
             reset();
             toggleOpen();
           }}
