@@ -1,6 +1,7 @@
 'use server';
 
 import { PrismaClient } from '@prisma/client';
+import { CustomerFormData } from '@/types/customerTypes';
 
 const prisma = new PrismaClient();
 
@@ -189,7 +190,11 @@ export async function addConsignee({ consignee }: { consignee: any }) {
   });
 }
 
-export async function addCustomer({ customer }: { customer: any }) {
+export async function addCustomer({
+  customer,
+}: {
+  customer: CustomerFormData;
+}) {
   const resp = await prisma.customer.create({
     data: {
       status: customer['Status'],
@@ -386,10 +391,10 @@ export async function updateConsignee(
 
 export async function updateCustomer(
   id: string,
-  { formData }: { formData: any }
+  { formData }: { formData: CustomerFormData }
 ) {
   // map to convert formData keys to database keys
-  const mapData = (customer: any) => {
+  const mapData = (customer: CustomerFormData) => {
     if (!customer) {
       throw new Error('Customer data is undefined or null');
     }

@@ -38,9 +38,47 @@ export type CustomerData = {
   factorId: string | null;
 };
 
+// keys correspond to form input names
+export interface CustomerFormData {
+  Status: 'ACTIVE' | 'INACTIVE';
+  'Company Name': string;
+  'Contact Name': string;
+  'Secondary Contact Name': string | null;
+
+  'Contact Email': string;
+  Telephone: string;
+  'Toll Free': string | null;
+  Fax: string | null;
+
+  Address: string;
+  'Address Line 2': string | null;
+  'Address Line 3': string | null;
+  City: string;
+  State: string;
+  Zip: string;
+  Country: string;
+
+  'Billing Address': string;
+  'Billing Address Line 2': string | null;
+  'Billing Address Line 3': string | null;
+  'Billing City': string;
+  'Billing State': string;
+  'Billing Zip': string;
+  'Billing Country': string;
+  'Billing Email': string;
+  'Billing Telephone': string;
+
+  'Sales Rep': string | null;
+  Currency: string;
+  'Payment Terms': string;
+  'Credit Limit': string | number | Decimal | undefined;
+  'Federal ID': string;
+  'Factoring Company': string | null;
+}
+
 export type CustomerDataKeys = keyof CustomerData;
 
-// form field names vs db names for mapping values
+// form field names vs db names for mapping values if needed
 export const customerFieldMap: Record<string, keyof CustomerData> = {
   Status: 'status',
   'Company Name': 'companyName',
