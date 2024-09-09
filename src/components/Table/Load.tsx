@@ -40,6 +40,17 @@ const statusColors: StatusColors = {
   PENDING: 'error',
 };
 
+// display status
+const displayStatus: { [key: string]: string } = {
+  ON_ROUTE: 'On Route',
+  OPEN: 'Open',
+  REFUSED: 'Refused',
+  COVERED: 'Covered',
+  PENDING: 'Pending',
+  DISPATCHED: 'Dispatched',
+  LOADING_UNLOADING: '(Un)Loading',
+};
+
 // Function to get color by status
 const getColorByStatus = (status: string) => {
   return (
@@ -56,6 +67,7 @@ const columns = [
   { field: 'shipDate', headerName: 'Date Shipped' },
   { field: 'deliveryDate', headerName: 'Date Delivered' },
   { field: 'carrier', headerName: 'Carrier' },
+  { field: 'driver', headerName: 'Driver' },
   { field: 'shipper', headerName: 'Shipper' },
   { field: 'consignee', headerName: 'Consignee' },
   {
@@ -63,11 +75,12 @@ const columns = [
     headerName: 'Status',
     cellRenderer: (status: string) => {
       const textColor = getColorByStatus(status);
+      const showStatus = displayStatus[status];
       return (
         <span
           className={`inline-block px-2 py-1 rounded-md text-text-xsm font-public font-bold text-${textColor}-dark bg-${textColor} bg-opacity-16`}
         >
-          {status}
+          {showStatus}
         </span>
       );
     },
