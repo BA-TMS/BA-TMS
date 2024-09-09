@@ -191,6 +191,7 @@ export async function addConsignee({ consignee }: { consignee: any }) {
 }
 
 export async function addCustomer({ customer }: { customer: any }) {
+  console.log('CREATED CUSTOMER', customer);
   const resp = await prisma.customer.create({
     data: {
       status: customer['Status'],
@@ -226,7 +227,11 @@ export async function addCustomer({ customer }: { customer: any }) {
       paymentTerms: customer['Payment Terms'],
       creditLimit: customer['Credit Limit'],
       federalID: customer['Federal ID'],
-      factorId: customer['Factoring Company'],
+      // empty string will throw an error as the fields must be null
+      factorId:
+        customer['Factoring Company'] !== ''
+          ? customer['Factoring Company']
+          : null,
     },
     include: CUSTOMER_RELATIONS, // gives us factor: {name: ___}
   });
@@ -425,7 +430,11 @@ export async function updateCustomer(
       paymentTerms: customer['Payment Terms'],
       creditLimit: customer['Credit Limit'],
       federalID: customer['Federal ID'],
-      factorId: customer['Factoring Company'],
+      // empty string will throw an error as the fields must be null
+      factorId:
+        customer['Factoring Company'] !== ''
+          ? customer['Factoring Company']
+          : null,
     };
   };
 
