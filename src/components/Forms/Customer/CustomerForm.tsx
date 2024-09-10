@@ -151,7 +151,7 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
           disabled={isSubmitting}
           onClick={() => {
             onSubmit(formData as CustomerData);
-            saveFormValues({}, true); // not sure how to fix type error?
+            saveFormValues({}, true);
           }}
         >
           {isSubmitting ? 'Submitting' : isUpdate ? 'Update' : 'Add'}
@@ -161,7 +161,7 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
           type="button"
           disabled={isSubmitting}
           onClick={() => {
-            saveFormValues({}, true); // not sure how to fix type error?
+            saveFormValues({}, true);
             toggleOpen();
           }}
           variant="outline"
