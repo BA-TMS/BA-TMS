@@ -324,7 +324,7 @@ const CustomerDetails: React.FC = () => {
             id={'billing_address'}
             onChange={setBillingAddress}
             label="Same as Mailing Address"
-            checked={same}
+            checked={isUpdate ? same : false}
           />
           <TextInput control={control} name="Billing Address" required={true} />
           <TextInput control={control} name="Billing Address Line 2" />
