@@ -68,9 +68,37 @@ const CustomerDetails: React.FC = () => {
   const { formData, saveFormValues } = useContext(ModalContext);
 
   // triggering any re-renders based on form input
-  const [rerender, setRerender] = useState(false);
+  const [rerender, setRerender] = useState<boolean>(false);
 
   const isUpdate = formData !== null && formData['id'];
+  let same: boolean = false;
+
+  // see if billing and contact match if this is an update
+  if (isUpdate) {
+    const contactAddress: { [key: string]: unknown } = {
+      address: formData.contactAddress,
+      addressField2: formData.contactAddressField2,
+      addressField3: formData.contactAddressField3,
+      city: formData.contactCity,
+      state: formData.contactState,
+      postCode: formData.contactPostCode,
+      country: formData.contactCountry,
+    };
+
+    const billingAddress: { [key: string]: unknown } = {
+      address: formData.billingAddress,
+      addressField2: formData.billingAddressField2,
+      addressField3: formData.billingAddressField3,
+      city: formData.billingCity,
+      state: formData.billingState,
+      postCode: formData.billingPostCode,
+      country: formData.billingCountry,
+    };
+
+    const keys = Object.keys(contactAddress);
+
+    same = keys.every((key) => contactAddress[key] === billingAddress[key]);
+  }
 
   // we are submitting the form data to the context on click off of the form component
   // each click on a tab or outside of the component should submit
@@ -115,8 +143,17 @@ const CustomerDetails: React.FC = () => {
     resolver: yupResolver(customerSchema),
   });
 
+  // see if all address fields match
+  function matchAddress(address: unknown[], billingAddress: unknown[]) {
+    if (address.length !== billingAddress.length) return false;
+
+    const match = address.every((element, index) => {
+      return element === billingAddress[index];
+    });
+    return match;
+  }
+
   function setBillingAddress() {
-    // get values of mailing address
     const mailingAddress = getValues([
       'Address',
       'Address Line 2',
@@ -126,8 +163,18 @@ const CustomerDetails: React.FC = () => {
       'Zip',
       'Country',
     ]);
-    // if values of billing address are empty
-    if (getValues('Billing Address') === '') {
+
+    const billingAddress = getValues([
+      'Billing Address',
+      'Billing Address Line 2',
+      'Billing Address Line 3',
+      'Billing City',
+      'Billing State',
+      'Billing Zip',
+      'Billing Country',
+    ]);
+    // if values of addresses are not the same
+    if (!matchAddress(mailingAddress, billingAddress)) {
       // set them
       setValue('Billing Address', mailingAddress[0]);
       setValue('Billing Address Line 2', mailingAddress[1]);
@@ -137,7 +184,7 @@ const CustomerDetails: React.FC = () => {
       setValue('Billing Zip', mailingAddress[5]);
       setValue('Billing Country', mailingAddress[6]);
     } else {
-      // if they are full, clear them when uncheck box
+      // clear them when uncheck box
       resetField('Billing Address');
       resetField('Billing Address Line 2');
       resetField('Billing Address Line 3');
@@ -145,8 +192,6 @@ const CustomerDetails: React.FC = () => {
       resetField('Billing State');
       resetField('Billing Zip');
       resetField('Billing Country');
-      resetField('Billing Email');
-      resetField('Billing Telephone');
     }
     // need to rerender the component to show any updated values
     setRerender(!rerender);
@@ -279,11 +324,7 @@ const CustomerDetails: React.FC = () => {
             id={'billing_address'}
             onChange={setBillingAddress}
             label="Same as Mailing Address"
-            checked={
-              isUpdate
-                ? formData['billingAddress'] === formData['contactAddress']
-                : false
-            }
+            checked={same}
           />
           <TextInput control={control} name="Billing Address" required={true} />
           <TextInput control={control} name="Billing Address Line 2" />
