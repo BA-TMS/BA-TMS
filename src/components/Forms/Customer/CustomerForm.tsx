@@ -1,6 +1,12 @@
 'use client';
 
-import React, { useContext, Dispatch, SetStateAction, useState } from 'react';
+import React, {
+  useContext,
+  Dispatch,
+  SetStateAction,
+  useState,
+  useEffect,
+} from 'react';
 import { ModalContext } from '@/Context/modalContext';
 import * as yup from 'yup';
 import Button from '../../UI_Elements/buttons/Button';
@@ -85,7 +91,13 @@ const CustomerForm: React.FC<CustomerFormProps> = () => {
 
   const { toggleOpen, formData, saveFormValues } = useContext(ModalContext);
 
-  const isUpdate = formData !== null && formData['id'];
+  const [isUpdate, setIsUpdate] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (formData !== null && formData['id']) {
+      setIsUpdate(true);
+    }
+  }, [formData]);
 
   // submit
   const onSubmit = async (customer: CustomerData) => {
