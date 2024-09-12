@@ -10,19 +10,14 @@ interface TableColumn {
   cellRenderer?: (value: any) => React.ReactNode;
 }
 
-interface TableProps<T> {
+interface TableProps {
   columns: TableColumn[];
-  data: T[];
+  data: Record<string, any>[]; // any shape of object
   update: any; // function for updating table entry
   deleter?: (id: string) => void; // optional database action function
 }
 
-const Table = <T extends { [key: string]: unknown }>({
-  columns,
-  data,
-  update,
-  deleter,
-}: TableProps<T>) => {
+const Table = ({ columns, data, update, deleter }: TableProps) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [postsPerPage, setPostsPerPage] = useState(25);
 
@@ -87,7 +82,6 @@ const Table = <T extends { [key: string]: unknown }>({
                 ))}
 
                 <td className="p-4">
-
                   <TableActionsPopover
                     id={row['id'] as string}
                     update={update}
