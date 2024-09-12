@@ -29,7 +29,7 @@ const userOptions = [
 ];
 
 const adminOptions = [
-  { name: 'Customers', href: '#' },
+  { name: 'Customers', href: '/customers' },
   { name: 'Shippers', href: '#' },
   { name: 'Consignees', href: '#' },
   { name: 'Drivers', href: '#' },

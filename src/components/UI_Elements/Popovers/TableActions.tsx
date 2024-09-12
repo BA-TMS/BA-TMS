@@ -5,7 +5,7 @@ import { EditIcon, ElipsisVertical, DeleteIcon } from '@/assets/SVGs';
 type TableActionsProps = {
   id: string;
   update: (param: string) => void;
-  deleter: (id: string) => void; // delete function
+  deleter?: (id: string) => void; // optional delete function
 };
 
 // pass this component an id from the table it is used in
@@ -86,15 +86,17 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({
             Edit
           </Button>
         </div>
-        <div className="flex flex-wrap">
-          <Button
-            onClick={handleDelete}
-            className="flex w-full gap-2 border-b border-grey-200 dark:border-grey-700 py-3 hover:text-primary"
-          >
-            <span>{DeleteIcon}</span>
-            Delete
-          </Button>
-        </div>
+        {deleter && (
+          <div className="flex flex-wrap">
+            <Button
+              onClick={handleDelete}
+              className="flex w-full gap-2 border-b border-grey-200 dark:border-grey-700 py-3 hover:text-primary"
+            >
+              <span>{DeleteIcon}</span>
+              Delete
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

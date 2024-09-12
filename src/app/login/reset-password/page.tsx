@@ -5,8 +5,6 @@ import { useForm } from 'react-hook-form';
 import Button from '@/components/UI_Elements/buttons/Button';
 import { resetPassword } from '../actions';
 import Link from 'next/link';
-import Image from 'next/image';
-import Temp_Logo from '../../../assets/Temp_Logo.png';
 
 const passwordSchema = yup.object().shape({
   password: yup.string().required(),
@@ -58,7 +56,6 @@ export default function ResetPassword({
       <div className="flex justify-center items-center h-screen">
         <div className="border rounded-lg border-grey-300 p-10 w-full max-w-sm text-center">
           <header className="flex flex-col justify-between items-center mb-3">
-            <Image src={Temp_Logo} alt="A2ZTMS Logo" priority />
             <h1 className="text-title-md dark:text-black mt-6">
               Email Link Has Expired
             </h1>
@@ -80,7 +77,6 @@ export default function ResetPassword({
     <div className="flex justify-center items-center h-screen">
       <div className="border rounded-lg border-grey-300 p-10 w-full max-w-sm">
         <header className="flex flex-col justify-between items-center mb-3">
-          <Image src={Temp_Logo} alt="A2ZTMS Logo" priority />
           <h1 className="text-title-md dark:text-black mt-6">
             Reset Your Password
           </h1>
@@ -140,7 +136,7 @@ export default function ResetPassword({
             className="text-primary hover:text-primary-dark justify-center font-public font-bold w-auto h-auto disabled:text-grey-500 disabled:pointer-events-none text-button-lg my-2 text-center"
             href={'/'}
           >
-            Back to A2ZTMS
+            Back to TMS
           </Link>
           {errors.root && (
             <p className="font-public font-normal text-text-sm text-danger text-center mt-2">

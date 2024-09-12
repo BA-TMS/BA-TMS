@@ -17,34 +17,22 @@ import { fetchLoads } from '@/store/slices/loadSlice';
 import { AppDispatch, RootState } from '@/store/store';
 import { getLoad } from '@/lib/dbActions';
 import { deleteLoad } from '@/store/slices/loadSlice';
+import { LoadData } from '@/types/loadTypes';
 
 dayjs.extend(customParseFormat);
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 
-// Define Load type
-type Load = {
-  id: string;
-  ownerId: string;
-  loadNum: string;
-  payOrderNum: string;
-  shipDate: string;
-  deliveryDate: string;
-  carrierId: string;
-  driverId: string | null;
-  customerId: string;
-  originId: string | null;
-  destId: string | null;
-  status: string;
-  carrier: string;
-  driver: string | null;
-  customer: string;
-  shipper: string | null;
-  consignee: string | null;
-};
+interface StatusColors {
+  ON_ROUTE: 'warning';
+  COVERED: 'warning';
+  OPEN: 'primary';
+  REFUSED: 'secondary';
+  PENDING: 'error';
+}
 
 // Define status colors
-const statusColors = {
+const statusColors: StatusColors = {
   ON_ROUTE: 'warning',
   COVERED: 'warning',
   OPEN: 'primary',
@@ -52,9 +40,23 @@ const statusColors = {
   PENDING: 'error',
 };
 
+// display status
+const displayStatus: { [key: string]: string } = {
+  ON_ROUTE: 'On Route',
+  OPEN: 'Open',
+  REFUSED: 'Refused',
+  COVERED: 'Covered',
+  PENDING: 'Pending',
+  DISPATCHED: 'Dispatched',
+  LOADING_UNLOADING: '(Un)Loading',
+};
+
 // Function to get color by status
 const getColorByStatus = (status: string) => {
-  return statusColors[status] || 'text-grey-600 dark:text-white';
+  return (
+    statusColors[status as keyof StatusColors] ||
+    'text-grey-600 dark:text-white'
+  );
 };
 
 // Define columns for the table
@@ -65,6 +67,7 @@ const columns = [
   { field: 'shipDate', headerName: 'Date Shipped' },
   { field: 'deliveryDate', headerName: 'Date Delivered' },
   { field: 'carrier', headerName: 'Carrier' },
+  { field: 'driver', headerName: 'Driver' },
   { field: 'shipper', headerName: 'Shipper' },
   { field: 'consignee', headerName: 'Consignee' },
   {
@@ -72,11 +75,12 @@ const columns = [
     headerName: 'Status',
     cellRenderer: (status: string) => {
       const textColor = getColorByStatus(status);
+      const showStatus = displayStatus[status];
       return (
         <span
           className={`inline-block px-2 py-1 rounded-md text-text-xsm font-public font-bold text-${textColor}-dark bg-${textColor} bg-opacity-16`}
         >
-          {status}
+          {showStatus}
         </span>
       );
     },
@@ -97,15 +101,15 @@ const tabsData: TabData[] = [
 
 const Load = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { toggleOpen } = useContext(ModalContext);
+  const { toggleOpen, saveFormValues } = useContext(ModalContext);
 
   const {
     items: loads,
     status,
-    error,
+    // error, // are we going to handle errors?
   } = useSelector((state: RootState) => state.loads);
 
-  const [filteredLoads, setFilteredLoads] = useState<Load[]>([]);
+  const [filteredLoads, setFilteredLoads] = useState<LoadData[]>([]);
   const [searchByDateRangeStart, setSearchByDateRangeStart] =
     useState<dayjs.Dayjs | null>(null);
   const [searchByDateRangeEnd, setSearchByDateRangeEnd] =
@@ -139,7 +143,7 @@ const Load = () => {
 
   // Function to filter by date range
   function searchByDateRangeFilter(
-    incLoads: Load[],
+    incLoads: LoadData[],
     startDate: dayjs.Dayjs | null,
     endDate: dayjs.Dayjs | null
   ) {
@@ -159,7 +163,7 @@ const Load = () => {
   }
 
   // Function to handle search filter
-  function handleSearchFilter(incLoads: Load[], value: string) {
+  function handleSearchFilter(incLoads: LoadData[], value: string) {
     if (!value) return incLoads;
 
     return incLoads.filter((load) =>
@@ -170,7 +174,7 @@ const Load = () => {
   }
 
   // Function to filter by status
-  function searchByStatusFilter(incLoads: Load[], value: string) {
+  function searchByStatusFilter(incLoads: LoadData[], value: string) {
     if (value === 'All') return incLoads;
 
     const statusMapping: { [key: string]: string } = {
@@ -205,10 +209,12 @@ const Load = () => {
 
   // function to update load
   const updateLoad = async (id: string) => {
-    // fetch entry
     const data = await getLoad(id);
-    // open modal with this data
-    toggleOpen(data);
+    // save fetched data to formData in ModalContext
+    if (data !== null) {
+      saveFormValues(data);
+      toggleOpen();
+    }
   };
 
   // delete a load
@@ -226,12 +232,13 @@ const Load = () => {
         <div className="absolute right-4 bottom-2">
           <Button onClick={toggleOpen}>Add Load</Button>
         </div>
-        <FormModal>
+        <FormModal formTitle="New Load">
           <LoadForm />
         </FormModal>
       </div>
       <CustomTabs tabs={tabsData} sort={setStatusValue} count={getCount} />
       <TableSearch
+        dropdownOptions={['Option 1', 'Option 2', 'Option 3']}
         search={setHandleSearchValue}
         dateSearch={(startDate, endDate) => {
           setSearchByDateRangeStart(startDate);
@@ -240,16 +247,15 @@ const Load = () => {
         placeholder={'Search client or invoice number...'}
       />
 
-
       {status === 'loading' ? (
         <TableSkeleton columns={columns} />
       ) : (
         <Table
-        columns={columns}
-        data={filteredLoads}
-        update={updateLoad}
-        deleter={loadDelete}
-      />
+          columns={columns}
+          data={filteredLoads}
+          update={updateLoad}
+          deleter={loadDelete}
+        />
       )}
     </>
   );

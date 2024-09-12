@@ -4,14 +4,12 @@ import { useState, useEffect, useRef } from 'react';
 interface DropdownProps {
   label: string;
   options: string[];
+  sort: (arg: string) => void; // function to sort table
 }
 
-// THIS COMPONENT IS NOT FUNCTIONAL
-// what is the intention of this dropdown?
-// what do we want the options passed in to represent + desired action?
-
-export default function Dropdown({ label, options }: DropdownProps) {
+export default function Dropdown({ label, options, sort }: DropdownProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [displayLabel, setDisplayLabel] = useState(label);
   const [isOpen, setOpen] = useState(false);
 
   const handleDropDown = () => {
@@ -59,7 +57,7 @@ export default function Dropdown({ label, options }: DropdownProps) {
         aria-expanded={isOpen}
         aria-controls="dropdown-menu"
       >
-        {label}
+        {displayLabel}
         <svg
           className={`w-2.5 h-2.5 ml-auto ${isOpen ? 'rotate-180' : ''}`}
           width="15"
@@ -82,7 +80,7 @@ export default function Dropdown({ label, options }: DropdownProps) {
           isOpen ? 'block' : 'hidden'
         }`}
         role="menu"
-        aria-labelledby={label}
+        aria-labelledby={displayLabel}
       >
         <ul className="w-full min-w-40" aria-labelledby="dropdownDefaultButton">
           {options.map((option: string, index: number) => (
@@ -91,7 +89,15 @@ export default function Dropdown({ label, options }: DropdownProps) {
               value={option}
               className="px-4 py-2 hover:bg-grey-300 dark:hover:bg-grey-700"
             >
-              <a href="#" className="">
+              <a
+                href="#"
+                className=""
+                onClick={() => {
+                  sort(option);
+                  setDisplayLabel(option);
+                  handleDropDown();
+                }}
+              >
                 {option}
               </a>
             </li>

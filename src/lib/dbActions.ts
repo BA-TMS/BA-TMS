@@ -1,16 +1,21 @@
 'use server';
 
 import { PrismaClient } from '@prisma/client';
-import { ConsigneeFormDataState } from '@/types/formTypes';
+import { CustomerFormData } from '@/types/customerTypes';
+import { LoadFormData } from '@/types/loadTypes';
 
 const prisma = new PrismaClient();
 
 const LOAD_RELATIONS = {
   carrier: { select: { name: true } },
   driver: { select: { name: true } },
-  customer: { select: { name: true } },
+  customer: { select: { companyName: true } },
   shipper: { select: { name: true } },
   consignee: { select: { name: true } },
+};
+
+const CUSTOMER_RELATIONS = {
+  factor: { select: { name: true } },
 };
 
 /** Get existing table data */
@@ -36,8 +41,21 @@ export async function getConsignees() {
   return consignees;
 }
 
+export async function getCustomer(id) {
+  const customer = await prisma.customer.findUnique({
+    where: {
+      id: id,
+    },
+  });
+  return customer;
+}
+
 export async function getCustomers() {
-  const customers = await prisma.customer.findMany();
+  // const customers = await prisma.customer.findMany();
+  const relations = {
+    factor: { select: { name: true } },
+  };
+  const customers = await getter(prisma.customer, relations);
   return customers;
 }
 
@@ -46,7 +64,7 @@ export async function getDrivers() {
   return drivers;
 }
 
-export async function getFactor() {
+export async function getFactors() {
   const factor = await prisma.factor.findMany();
   return factor;
 }
@@ -173,22 +191,55 @@ export async function addConsignee({ consignee }: { consignee: any }) {
   });
 }
 
-export async function addCustomer({ customer }: { customer: any }) {
+export async function addCustomer({
+  customer,
+}: {
+  customer: CustomerFormData;
+}) {
   const resp = await prisma.customer.create({
     data: {
-      name: customer['Customer Name'],
-      address: customer['Address'],
-      addressAddOn: customer['Address Line 2'] || null, // Optional field
-      city: customer['City'],
-      state: customer['State'],
-      postCountry: customer['Country'],
-      postCode: customer['Zip'],
-      telCountry: customer['Country Code'],
-      telephone: customer['Phone Number'],
-      // email: customer['Email'] // do we need email for customer?
-      // notes: customer['Notes'] || null, // optional field, notes not in db table yet
+      status: customer['Status'],
+      companyName: customer['Company Name'],
+      contactName: customer['Contact Name'],
+      secondaryContactName: customer['Secondary Contact Name'],
+      contactEmail: customer['Contact Email'],
+      contactTelephone: customer['Telephone'],
+      contactTollFree: customer['Toll Free'],
+      contactFax: customer['Fax'],
+
+      contactAddress: customer['Address'],
+      contactAddressField2: customer['Address Line 2'],
+      contactAddressField3: customer['Address Line 3'],
+      contactCity: customer['City'],
+      contactState: customer['State'],
+      contactPostCode: customer['Zip'],
+      contactCountry: customer['Country'],
+
+      billingAddress: customer['Billing Address'],
+      billingAddressField2: customer['Billing Address Line 2'],
+      billingAddressField3: customer['Billing Address Line 3'],
+      billingCity: customer['Billing City'],
+      billingState: customer['Billing State'],
+      billingPostCode: customer['Billing Zip'],
+      billingCountry: customer['Billing Country'],
+      billingEmail: customer['Billing Email'],
+      billingTelephone: customer['Billing Telephone'],
+
+      // advanced options
+      salesRepName: customer['Sales Rep'],
+      currency: customer['Currency'],
+      paymentTerms: customer['Payment Terms'],
+      creditLimit: customer['Credit Limit'],
+      federalID: customer['Federal ID'],
+      // empty string will throw an error as the fields must be null
+      factorId:
+        customer['Factoring Company'] !== ''
+          ? customer['Factoring Company']
+          : null,
     },
+    include: CUSTOMER_RELATIONS, // gives us factor: {name: ___}
   });
+  return resp;
 }
 
 export async function addDriver({ driver }: { driver: any }) {
@@ -221,7 +272,7 @@ export async function addFactoringCo({ factor }: { factor: any }) {
   });
 }
 
-export async function addLoad({ load }: { load: any }) {
+export async function addLoad({ load }: { load: LoadFormData }) {
   const resp = await prisma.load.create({
     data: {
       ownerId: load['Owner'],
@@ -236,7 +287,7 @@ export async function addLoad({ load }: { load: any }) {
       shipDate: load['Ship Date'],
       deliveryDate: load['Received Date'],
     },
-    include: LOAD_RELATIONS
+    include: LOAD_RELATIONS,
   });
   return resp;
 }
@@ -340,10 +391,68 @@ export async function updateConsignee(
 }
 
 export async function updateCustomer(
-  id: number,
-  { formData }: { formData: any }
+  id: string,
+  { formData }: { formData: CustomerFormData }
 ) {
-  const resp = updater(prisma.customer, id, formData);
+  // map to convert formData keys to database keys
+  const mapData = (customer: CustomerFormData) => {
+    if (!customer) {
+      throw new Error('Customer data is undefined or null');
+    }
+
+    return {
+      status: customer['Status'],
+      companyName: customer['Company Name'],
+      contactName: customer['Contact Name'],
+      secondaryContactName: customer['Secondary Contact Name'],
+      contactEmail: customer['Contact Email'],
+      contactTelephone: customer['Telephone'],
+      contactTollFree: customer['Toll Free'],
+      contactFax: customer['Fax'],
+
+      contactAddress: customer['Address'],
+      contactAddressField2: customer['Address Line 2'],
+      contactAddressField3: customer['Address Line 3'],
+      contactCity: customer['City'],
+      contactState: customer['State'],
+      contactPostCode: customer['Zip'],
+      contactCountry: customer['Country'],
+
+      billingAddress: customer['Billing Address'],
+      billingAddressField2: customer['Billing Address Line 2'],
+      billingAddressField3: customer['Billing Address Line 3'],
+      billingCity: customer['Billing City'],
+      billingState: customer['Billing State'],
+      billingPostCode: customer['Billing Zip'],
+      billingCountry: customer['Billing Country'],
+      billingEmail: customer['Billing Email'],
+      billingTelephone: customer['Billing Telephone'],
+
+      // advanced options
+      salesRepName: customer['Sales Rep'],
+      currency: customer['Currency'],
+      paymentTerms: customer['Payment Terms'],
+      creditLimit: customer['Credit Limit'],
+      federalID: customer['Federal ID'],
+      // empty string will throw an error as the fields must be null
+      factorId:
+        customer['Factoring Company'] !== ''
+          ? customer['Factoring Company']
+          : null,
+    };
+  };
+
+  const mappedCustomer = mapData(formData);
+
+  const resp = await prisma.customer.update({
+    where: { id },
+    data: {
+      ...mappedCustomer,
+    },
+    include: CUSTOMER_RELATIONS, // gives us factor: {name: ___}
+  });
+
+  return resp;
 }
 
 export async function updateDriver(
@@ -353,9 +462,12 @@ export async function updateDriver(
   const resp = updater(prisma.driver, id, formData);
 }
 
-export async function updateLoad(id: string, { formData }: { formData: any }) {
+export async function updateLoad(
+  id: string,
+  { formData }: { formData: Partial<LoadFormData> }
+) {
   // map to convert formData keys to database keys
-  const mapLoadData = (load: any) => {
+  const mapLoadData = (load: Partial<LoadFormData>) => {
     if (!load) {
       throw new Error('Load data is undefined or null');
     }
@@ -365,18 +477,26 @@ export async function updateLoad(id: string, { formData }: { formData: any }) {
       loadNum: load['Load Number'],
       payOrderNum: load['Pay Order Number'],
       carrierId: load['Carrier'],
-      driverId: load['Driver'],
+      driverId: load['Driver'] ? load['Driver'] : null,
       customerId: load['Customer'],
-      originId: load['Shipper'],
-      destId: load['Consignee'],
+      originId: load['Shipper'] ? load['Shipper'] : null,
+      destId: load['Consignee'] ? load['Consignee'] : null,
       status: load['Status'],
       shipDate: load['Ship Date'],
       deliveryDate: load['Received Date'],
     };
   };
 
-  const mappedData = mapLoadData(formData);
-  const resp = await updater(prisma.load, id, mappedData);
+  const mappedLoad = mapLoadData(formData);
+
+  const resp = await prisma.load.update({
+    where: { id },
+    data: {
+      ...mappedLoad,
+    },
+    include: LOAD_RELATIONS,
+  });
+
   return resp;
 }
 

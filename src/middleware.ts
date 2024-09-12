@@ -15,6 +15,7 @@ const protectedRoutes = [
   '/dashboard',
   '/dispatch',
   '/carrier',
+  '/customers',
   '/drayage',
   '/other-numbers',
   '/preferences',

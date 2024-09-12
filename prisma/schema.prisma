@@ -121,19 +121,52 @@ model Driver {
 }
 
 model Customer {
-  id            String    @id @default(uuid())
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  name          String    @unique
-  address       String
-  addressAddOn  String?
-  city          String
-  state         String
-  postCountry   String
-  postCode      String
-  telCountry    String    @default("1")
-  telephone     String
-  loads         Load[]
+  id                      String          @id @default(uuid())
+  createdAt               DateTime        @default(now())
+  updatedAt               DateTime        @updatedAt
+  status                  CustomerStatus  @default(ACTIVE)
+  
+  companyName             String          @unique
+  
+  contactName             String
+  secondaryContactName    String?
+  salesRepName            String?
+  contactEmail            String
+  contactTelephone        String
+  contactTollFree         String?
+  contactFax              String?
+  contactCountry          String
+  
+  contactAddress          String
+  contactAddressField2    String?
+  contactAddressField3    String?
+  contactCity             String
+  contactState            String
+  contactPostCode         String
+
+  billingEmail            String
+  billingTelephone        String
+  billingCountry          String
+  billingAddress          String
+  billingAddressField2    String?
+  billingAddressField3    String?
+  billingCity             String
+  billingState            String
+  billingPostCode         String
+
+  currency                String          @default("USD")
+  paymentTerms            String
+  creditLimit             Decimal         @default(5000)
+  federalID               String
+  factor                  Factor?         @relation(fields: [factorId], references: [id])
+  factorId                String?
+
+  loads                   Load[]
+}
+
+enum CustomerStatus {
+  ACTIVE
+  INACTIVE
 }
 
 model Shipper {
@@ -202,6 +235,7 @@ model Factor {
   telCountry    String    @default("1")
   telephone     String    @unique
   carriers      Carrier[]
+  customers     Customer[]
 }
 
 model Insurer {

@@ -56,7 +56,7 @@ async function main() {
 
   for (const currCustomer of customers) {
     const resp = await prisma.customer.upsert({
-      where: { name: currCustomer.name },
+      where: { companyName: currCustomer.companyName },
       update: {},
       create: currCustomer,
     });
@@ -256,22 +256,44 @@ const drivers = [
 
 const customers = [
   {
-    name: 'Customer1',
-    address: '26 Grand St',
-    city: 'Oxford',
-    state: 'MS',
-    postCountry: 'USA',
-    postCode: '38655',
-    telephone: '4445556666',
+    companyName: 'Customer1',
+    contactName: 'John Customer1',
+    contactEmail: 'jc1@customer1.com',
+    contactTelephone: '1112223333',
+    contactCountry: 'USA',
+    contactAddress: '26 Grand St',
+    contactCity: 'Oxford',
+    contactState: 'MS',
+    contactPostCode: '38655',
+    billingEmail: 'jc1@customer1.com',
+    billingTelephone: '1112223333',
+    billingCountry: 'USA',
+    billingAddress: '26 Grand St',
+    billingCity: 'Oxford',
+    billingState: 'MS',
+    billingPostCode: '38655',
+    paymentTerms: 'Prompt',
+    federalID: '55-9386763'
   },
   {
-    name: 'Customer2',
-    address: '54 Woodland St',
-    city: 'Nashua',
-    state: 'NH',
-    postCountry: 'USA',
-    postCode: '03060',
-    telephone: '7778889999',
+    companyName: 'Customer2',
+    contactName: 'John Customer2',
+    contactEmail: 'jc2@customer2.com',
+    contactTelephone: '7778889999',
+    contactCountry: 'USA',
+    contactAddress: '54 Woodland St',
+    contactCity: 'Nashua',
+    contactState: 'NH',
+    contactPostCode: '03060',
+    billingEmail: 'jc2@customer2.com',
+    billingTelephone: '7778889999',
+    billingCountry: 'USA',
+    billingAddress: '54 Woodland St',
+    billingCity: 'Nashua',
+    billingState: 'NH',
+    billingPostCode: '03060',
+    paymentTerms: 'Prompt',
+    federalID: '21-4094358'
   },
 ];
 
