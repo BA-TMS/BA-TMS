@@ -2,7 +2,9 @@
 
 import { useRouter } from 'next/navigation';
 
-export default function TestPageModal() {
+// this is an intercepting route that builds a modal
+
+export default function AddCustomerModal() {
   const router = useRouter();
   return (
     <div className="fixed z-999999 top-0 left-0 flex h-full min-h-screen w-full items-start justify-center bg-black/90 px-4 py-5">
