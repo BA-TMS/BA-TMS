@@ -14,6 +14,7 @@ import { AppDispatch, RootState } from '@/store/store';
 import { fetchCustomers } from '@/store/slices/customerSlice';
 import { getCustomer } from '@/lib/dbActions';
 import { CustomerData } from '@/types/customerTypes';
+import Link from 'next/link';
 
 // columns for the table
 const columns = [
@@ -114,7 +115,9 @@ const CustomerTable = (): JSX.Element => {
     <>
       <div className="relative flex justify-end mb-6">
         <div className="absolute right-4 bottom-2">
-          <Button onClick={toggleOpen}>Add Customer</Button>
+          <Link href="/customers/add-customer">
+            <Button>Add Customer</Button>
+          </Link>
         </div>
         <FormModal formTitle="Add Customer">
           <CustomerForm />
