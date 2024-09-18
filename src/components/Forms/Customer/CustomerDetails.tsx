@@ -259,10 +259,10 @@ const CustomerDetails: React.FC = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col justify-between"
       >
-        <p className="px-4.5 mt-3.5 mb-5 body2 text-grey-800 dark:text-white">
+        <p className="mt-3.5 mb-5 body2 text-grey-800 dark:text-white">
           Set customer details
         </p>
-        <div className="px-4.5">
+        <div className="">
           <div className="flex flex-col gap-5 xl:flex-row">
             <div className="flex flex-col w-full xl:w-1/2">
               <SelectInput
