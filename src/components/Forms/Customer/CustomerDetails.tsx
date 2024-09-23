@@ -1,12 +1,6 @@
 'use client';
 
-import React, {
-  useEffect,
-  useContext,
-  useState,
-  useRef,
-  useCallback,
-} from 'react';
+import React, { useEffect, useContext, useState, useCallback } from 'react';
 import { ModalContext } from '@/Context/modalContext';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -17,6 +11,10 @@ import SelectInput from '../../UI_Elements/Form/SelectInput';
 import { usStates } from '@/components/Forms/data/states';
 import { customerStatus } from '../data/details';
 import { customerFieldMap } from '@/types/customerTypes';
+import Button from '@/components/UI_Elements/buttons/Button';
+import { useRouter } from 'next/navigation';
+
+// this component uses yup and react-hook-form to submit form values to a context
 
 const customerSchema = yup.object({
   Status: yup.string().required('Must enter Customer Status'),
@@ -65,11 +63,14 @@ const customerSchema = yup.object({
 type Customer = yup.InferType<typeof customerSchema>;
 
 const CustomerDetails: React.FC = () => {
+  const router = useRouter();
+
   const { formData, saveFormValues } = useContext(ModalContext);
 
   // triggering any re-renders based on form input
   const [rerender, setRerender] = useState<boolean>(false);
 
+  // update will be it's own thing eventually
   const isUpdate = formData !== null && formData['id'];
   let same: boolean = false;
 
@@ -100,17 +101,14 @@ const CustomerDetails: React.FC = () => {
     same = keys.every((key) => contactAddress[key] === billingAddress[key]);
   }
 
-  // we are submitting the form data to the context on click off of the form component
-  // each click on a tab or outside of the component should submit
-  const componentRef = useRef<HTMLDivElement | null>(null);
-
   const {
     setValue, // set value of a form field
     handleSubmit,
+    reset,
     getValues, // get values of a form field
     resetField, //reset individual form field
     control, // based on schema
-    formState: { errors },
+    formState: { errors, isSubmitSuccessful },
   } = useForm<Customer>({
     defaultValues: {
       Status: '',
@@ -200,12 +198,15 @@ const CustomerDetails: React.FC = () => {
   // submit the values to the context
   const onSubmit = useCallback(
     async (customer: Customer) => {
-      saveFormValues(customer);
+      saveFormValues(customer); // save to context
+      console.log(customer);
+      router.push('/customers/add-customer/advanced'); // next step
     },
-    [saveFormValues]
+    [saveFormValues, router]
   );
 
   // if there's an update, we have to use the map to get the correct field values
+  // get rid of this, we will be moving this
   useEffect(() => {
     if (isUpdate) {
       // populate form with data from context
@@ -218,7 +219,8 @@ const CustomerDetails: React.FC = () => {
     }
   }, [formData, setValue, isUpdate]);
 
-  // keep fields populated when switching tabs
+  // keep fields populated when switching tabs or going back
+  // MAY NEED TO REFACTOR?
   useEffect(() => {
     if (formData) {
       // populate form with data from context
@@ -228,33 +230,43 @@ const CustomerDetails: React.FC = () => {
     }
   }, [formData, setValue]);
 
-  // clicking outside this element will submit form to the context
-  // unless we're clicking a cancel button
-  const handleClickOutside = useCallback(
-    (event: MouseEvent) => {
-      if ((event.target as HTMLElement).id === 'cancel') {
-        return;
-      } else if (
-        componentRef.current &&
-        !componentRef.current.contains(event.target as Node)
-      ) {
-        // validate and submit
-        handleSubmit(onSubmit)();
-      }
-    },
-
-    [handleSubmit, onSubmit]
-  );
-
+  // clear values if successful
+  // but what if we don't? DO WE NEED TO?
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [handleClickOutside]);
+    if (isSubmitSuccessful) {
+      reset({
+        Status: '',
+        'Company Name': '',
+        'Contact Name': '',
+        'Secondary Contact Name': '',
+        'Contact Email': '',
+        Telephone: '',
+        'Toll Free': '',
+        Fax: '',
+
+        Address: '',
+        'Address Line 2': '',
+        'Address Line 3': '',
+        City: '',
+        State: '',
+        Zip: '',
+        Country: '',
+
+        'Billing Address': '',
+        'Billing Address Line 2': '',
+        'Billing Address Line 3': '',
+        'Billing City': '',
+        'Billing State': '',
+        'Billing Zip': '',
+        'Billing Country': '',
+        'Billing Email': '',
+        'Billing Telephone': '',
+      });
+    }
+  }, [isSubmitSuccessful, reset]);
 
   return (
-    <div ref={componentRef}>
+    <div>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col justify-between"
@@ -363,6 +375,23 @@ const CustomerDetails: React.FC = () => {
               {errors.root.message}
             </p>
           )}
+        </div>
+        <div className="py-3.5 gap-2 border-t border-grey-300 dark:border-grey-700 flex justify-end sticky bottom-0 bg-white dark:bg-grey-900 z-10">
+          <Button
+            variant="outline"
+            intent="default"
+            onClick={() => {
+              const cancel = confirm('Cancel this entry?');
+              if (cancel) {
+                // also clear values ?
+                // check this as we add the other steps
+                router.back();
+              } else return;
+            }}
+          >
+            Cancel
+          </Button>
+          <Button type="submit">Next</Button>
         </div>
       </form>
     </div>
