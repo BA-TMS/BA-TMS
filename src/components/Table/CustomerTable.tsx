@@ -115,7 +115,7 @@ const CustomerTable = (): JSX.Element => {
     <>
       <div className="relative flex justify-end mb-6">
         <div className="absolute right-4 bottom-2">
-          <Link href="/customers/add-customer">
+          <Link href="/customers/add-customer/details">
             <Button>Add Customer</Button>
           </Link>
         </div>

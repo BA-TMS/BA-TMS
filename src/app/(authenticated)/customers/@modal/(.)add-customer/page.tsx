@@ -1,16 +1,8 @@
-'use client';
+import { redirect } from 'next/navigation';
 
-// import { useRouter } from 'next/navigation';
-import Modal from '@ui/Modal/Modal';
-import CustomerDetails from '@/components/Forms/Customer/CustomerDetails';
-
-// this is an intercepting route that builds a modal
+// this is an intercepting route
+// we shouldn't see this page
 
 export default function AddCustomerModal() {
-  // const router = useRouter();
-  return (
-    <Modal title={'Add Customer'}>
-      <CustomerDetails />
-    </Modal>
-  );
+  return redirect('/customers/add-customer/details');
 }
