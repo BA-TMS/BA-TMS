@@ -3,8 +3,6 @@
 import { useContext, useState, useEffect } from 'react';
 import { ModalContext } from '@/Context/modalContext';
 import Button from '../UI_Elements/buttons/Button';
-import FormModal from '../Modals/FormModal';
-import CustomerForm from '../Forms/Customer/CustomerForm';
 import Table from '../UI_Elements/Table/Table';
 import TableSkeleton from '../UI_Elements/Table/TableSkeleton';
 import { TableSearch } from '../UI_Elements/Table/TableSearch';
@@ -92,7 +90,6 @@ const CustomerTable = (): JSX.Element => {
   // update customer
   const updateCustomer = async (id: string) => {
     const data = await getCustomer(id);
-    // toggleOpen(data);
     if (data !== null) {
       saveFormValues(data);
       toggleOpen();
@@ -119,9 +116,6 @@ const CustomerTable = (): JSX.Element => {
             <Button>Add Customer</Button>
           </Link>
         </div>
-        <FormModal formTitle="Add Customer">
-          <CustomerForm />
-        </FormModal>
       </div>
       <TableHeaderBlank />
       <TableSearch
