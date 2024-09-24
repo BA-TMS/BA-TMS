@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useContext, useRef, useCallback } from 'react';
+import React, { useEffect, useContext, useCallback } from 'react';
 import { ModalContext } from '@/Context/modalContext';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -10,6 +10,10 @@ import SelectInput from '../../UI_Elements/Form/SelectInput';
 import DynamicSelect from '../../UI_Elements/Form/DynamicSelect';
 import { currency, paymentTerms } from '../data/details';
 import { getFactors } from '@/lib/dbActions';
+import Button from '@/components/UI_Elements/buttons/Button';
+import { useRouter } from 'next/navigation';
+
+// this component uses yup and react-hook-form to submit form values to a context
 
 const customerSchema = yup.object({
   'Sales Rep': yup.string().nullable(),
@@ -27,19 +31,17 @@ const customerSchema = yup.object({
 type Customer = yup.InferType<typeof customerSchema>;
 
 const AdvancedCustomerDetails: React.FC = () => {
-  const { formData, saveFormValues } = useContext(ModalContext);
+  const router = useRouter();
 
-  // we are submitting the form data to the context on click off of the form component
-  const componentRef = useRef<HTMLDivElement | null>(null);
+  const { formData, saveFormValues } = useContext(ModalContext);
+  console.log('is there form data happening?', formData);
 
   const {
     setValue, // set value of a form field
     handleSubmit,
-    // getValues, // get values of a form field
-    // resetField, //reset individual form field
-    // setError, // async error handling
-    control, // based on schema
-    formState: { errors }, // boolean values representing form state
+    reset,
+    control,
+    formState: { errors, isSubmitSuccessful },
   } = useForm<Customer>({
     defaultValues: {
       'Sales Rep': '',
@@ -56,8 +58,9 @@ const AdvancedCustomerDetails: React.FC = () => {
   const onSubmit = useCallback(
     async (customer: Customer) => {
       saveFormValues(customer);
+      router.push('/customers/add-customer/review'); // next step
     },
-    [saveFormValues]
+    [saveFormValues, router]
   );
 
   // keep fields populated when switching tabs
@@ -71,41 +74,31 @@ const AdvancedCustomerDetails: React.FC = () => {
     }
   }, [formData, setValue]);
 
-  // clicking outside this element will submit form to the context
-  // unless we're clicking a cancel button
-  const handleClickOutside = useCallback(
-    (event: MouseEvent) => {
-      if ((event.target as HTMLElement).id === 'cancel') {
-        return;
-      } else if (
-        componentRef.current &&
-        !componentRef.current.contains(event.target as Node)
-      ) {
-        // validate and submit
-        handleSubmit(onSubmit)();
-      }
-    },
-
-    [handleSubmit, onSubmit]
-  );
-
+  // clear values if successful
+  // but what if we don't? DO WE NEED TO?
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [handleClickOutside]);
+    if (isSubmitSuccessful) {
+      reset({
+        'Sales Rep': '',
+        Currency: '',
+        'Payment Terms': '',
+        'Credit Limit': undefined,
+        'Federal ID': '',
+        'Factoring Company': '',
+      });
+    }
+  }, [isSubmitSuccessful, reset]);
 
   return (
-    <div ref={componentRef}>
+    <div className="flex flex-col h-full">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col justify-between"
+        className="flex flex-col justify-between flex-grow"
       >
         <p className="px-4.5 mt-3.5 mb-5 body2 text-grey-800 dark:text-white">
           Set customer details
         </p>
-        <div className="px-4.5">
+        <div className="px-4.5 flex-grow">
           <div className="flex flex-col gap-5 xl:flex-row">
             <div className="flex flex-col w-full xl:w-1/2">
               <TextInput control={control} name="Sales Rep" />
@@ -143,6 +136,24 @@ const AdvancedCustomerDetails: React.FC = () => {
               {errors.root.message}
             </p>
           )}
+        </div>
+        <div className="py-3.5 gap-2 border-t border-grey-300 dark:border-grey-700 flex justify-end bottom-0 bg-white dark:bg-grey-900 z-10">
+          <Button
+            variant="outline"
+            intent="default"
+            onClick={() => {
+              // const cancel = confirm('Cancel this entry?');
+              // if (cancel) {
+              //   // also clear values ?
+              //   // check this as we add the other steps
+              //   router.back(); // this does not work??
+              // } else return;
+              router.back(); // it can't be router.back
+            }}
+          >
+            Back
+          </Button>
+          <Button type="submit">Next</Button>
         </div>
       </form>
     </div>
