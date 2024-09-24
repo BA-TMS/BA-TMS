@@ -34,7 +34,6 @@ const AdvancedCustomerDetails: React.FC = () => {
   const router = useRouter();
 
   const { formData, saveFormValues } = useContext(ModalContext);
-  console.log('is there form data happening?', formData);
 
   const {
     setValue, // set value of a form field
