@@ -1,5 +1,7 @@
 'use client';
 
+import { ContextProvider } from '@/Context/modalContext';
+
 // slots are passed as props to the shared parent layout
 // slots render parallel alongside children prop
 
@@ -11,9 +13,9 @@ export default function CustomerTemplage({
   modal: React.ReactNode;
 }) {
   return (
-    <>
+    <ContextProvider>
       {children}
       {modal}
-    </>
+    </ContextProvider>
   );
 }
