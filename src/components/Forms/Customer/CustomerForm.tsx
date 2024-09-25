@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store/store';
 import { createCustomer, updateCustomer } from '@/store/slices/customerSlice';
 import { CustomerData, customerFieldMap } from '@/types/customerTypes';
+import { useRouter } from 'next/navigation';
 
 // this component submits form data from the context to database using redux
 // TODO: the design could be improved
@@ -60,6 +61,8 @@ const customerSchema = yup.object({
 });
 
 const CustomerForm = () => {
+  const router = useRouter();
+
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -148,6 +151,7 @@ const CustomerForm = () => {
             onClick={() => {
               onSubmit(formData as CustomerData);
               saveFormValues({}, true); // Reset form data after submission
+              router.push('/customers');
             }}
           >
             {isSubmitting ? 'Submitting...' : isUpdate ? 'Update' : 'Add'}

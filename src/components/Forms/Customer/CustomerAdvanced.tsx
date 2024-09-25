@@ -138,16 +138,18 @@ const AdvancedCustomerDetails: React.FC = () => {
         </div>
         <div className="py-3.5 gap-2 border-t border-grey-300 dark:border-grey-700 flex justify-end bottom-0 bg-white dark:bg-grey-900 z-10">
           <Button
+            type="button"
             variant="outline"
             intent="default"
             onClick={() => {
-              // const cancel = confirm('Cancel this entry?');
-              // if (cancel) {
-              //   // also clear values ?
-              //   // check this as we add the other steps
-              //   router.back(); // this does not work??
-              // } else return;
-              router.back(); // it can't be router.back
+              const cancel = confirm('Cancel this entry?');
+              if (cancel) {
+                // also clear values ?
+                saveFormValues({}, true); // Reset form data
+                // check this as we add the other steps
+
+                router.push('/customers');
+              } else return;
             }}
           >
             Back
