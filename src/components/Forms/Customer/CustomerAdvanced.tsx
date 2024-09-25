@@ -41,7 +41,7 @@ const AdvancedCustomerDetails: React.FC = () => {
   const { formData, saveFormValues } = useContext(ModalContext);
 
   const {
-    setValue, // set value of a form field
+    setValue,
     handleSubmit,
     reset,
     control,

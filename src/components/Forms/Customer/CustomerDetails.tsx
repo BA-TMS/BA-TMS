@@ -72,10 +72,9 @@ const CustomerDetails: React.FC = () => {
 
   const { formData, saveFormValues } = useContext(ModalContext);
 
-  // triggering any re-renders based on form input
+  // triggering any re-renders based on address input
   const [rerender, setRerender] = useState<boolean>(false);
 
-  // update will be it's own thing eventually
   const isUpdate = formData !== null && formData['id'];
   let same: boolean = false;
 
@@ -196,7 +195,6 @@ const CustomerDetails: React.FC = () => {
       resetField('Billing Zip');
       resetField('Billing Country');
     }
-    // need to rerender the component to show any updated values
     setRerender(!rerender);
   }
 
@@ -212,7 +210,6 @@ const CustomerDetails: React.FC = () => {
   // if there's an update, we have to use the map to get the correct field values
   useEffect(() => {
     if (isUpdate) {
-      // populate form with data from context
       Object.keys(customerFieldMap).forEach((formField) => {
         setValue(
           formField as keyof Customer,
