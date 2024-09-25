@@ -1,12 +1,12 @@
 'use client';
 
 import FullPageFormContainer from '@/components/UI_Elements/Form/FullPageContainer';
-import AdvancedCustomerDetails from '@/components/Forms/Customer/CustomerAdvanced';
+import CustomerForm from '@/components/Forms/Customer/CustomerForm';
 
-export default function UpdateCustomerAdvanced() {
+export default function UpdateCustomerReview() {
   return (
     <FullPageFormContainer title="Update Customer">
-      <AdvancedCustomerDetails />
+      <CustomerForm />
     </FullPageFormContainer>
   );
 }

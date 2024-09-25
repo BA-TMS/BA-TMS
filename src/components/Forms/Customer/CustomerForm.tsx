@@ -9,7 +9,7 @@ import { CustomerData, customerFieldMap } from '@/types/customerTypes';
 import { useRouter } from 'next/navigation';
 
 // this component submits form data from the context to database using redux
-// TODO: the design + error handling could be improved
+// TODO: the design, validation, + error handling could be improved
 
 // Define the validation schema for customer data
 const customerSchema = yup.object({
@@ -69,7 +69,6 @@ const CustomerForm = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { formData, saveFormValues } = useContext(ModalContext);
-  console.log('customer form data', formData);
 
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
 
@@ -159,6 +158,7 @@ const CustomerForm = () => {
               type="button"
               variant="outline"
               intent="success"
+              disabled={isSubmitting}
               onClick={() => {
                 router.back();
               }}
