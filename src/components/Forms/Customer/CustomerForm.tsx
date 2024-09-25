@@ -9,7 +9,7 @@ import { CustomerData, customerFieldMap } from '@/types/customerTypes';
 import { useRouter } from 'next/navigation';
 
 // this component submits form data from the context to database using redux
-// TODO: the design could be improved
+// TODO: the design + error handling could be improved
 
 // Define the validation schema for customer data
 const customerSchema = yup.object({
@@ -69,6 +69,7 @@ const CustomerForm = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { formData, saveFormValues } = useContext(ModalContext);
+  console.log('customer form data', formData);
 
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
 
@@ -113,21 +114,24 @@ const CustomerForm = () => {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="px-4.5 flex-grow">
+      <div className="flex-grow">
         <p className="my-3.5 body2 text-grey-800 dark:text-white">
           Confirm Customer Details
         </p>
 
         <div className="flex flex-wrap flex-col gap-1">
           {Object.entries(customerFieldMap).map(([fieldLabel, fieldKey]) => (
-            <p className="body2 text-grey-800 dark:text-white inline-block">
+            <p
+              key={fieldKey}
+              className="body2 text-grey-800 dark:text-white inline-block"
+            >
               <b>{fieldLabel}: </b>
-              {formData[fieldKey] || ''}
+              {formData[fieldLabel] || ''}
             </p>
           ))}
         </div>
 
-        <div className="py-3.5 gap-2 border-t border-grey-300 dark:border-grey-700 flex justify-end sticky bottom-0 bg-white dark:bg-grey-900 z-10">
+        <div className="py-3.5 gap-2 border-t border-grey-300 dark:border-grey-700 flex justify-between sticky bottom-0 bg-white dark:bg-grey-900 z-10">
           {error && (
             <div className="min-h-5 mr-2 self-center">
               <p className="caption mb-1 text-error-dark">{error}</p>
@@ -138,24 +142,41 @@ const CustomerForm = () => {
             type="button"
             disabled={isSubmitting}
             onClick={() => {
-              saveFormValues({}, true); // Reset form data
+              const cancel = confirm('Cancel this entry?');
+              if (cancel) {
+                saveFormValues({}, true); // clears context values
+                router.push('/customers');
+              } else return;
             }}
             variant="outline"
             intent="default"
           >
             Cancel
           </Button>
-          <Button
-            type="submit"
-            disabled={isSubmitting}
-            onClick={() => {
-              onSubmit(formData as CustomerData);
-              saveFormValues({}, true); // Reset form data after submission
-              router.push('/customers');
-            }}
-          >
-            {isSubmitting ? 'Submitting...' : isUpdate ? 'Update' : 'Add'}
-          </Button>
+
+          <div className="flex justify-end gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              intent="success"
+              onClick={() => {
+                router.back();
+              }}
+            >
+              Back
+            </Button>
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              onClick={() => {
+                onSubmit(formData as CustomerData);
+                saveFormValues({}, true); // Reset form data after submission
+                router.push('/customers');
+              }}
+            >
+              {isSubmitting ? 'Submitting...' : isUpdate ? 'Update' : 'Add'}
+            </Button>
+          </div>
         </div>
       </div>
     </div>

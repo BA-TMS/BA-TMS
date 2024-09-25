@@ -376,7 +376,7 @@ const CustomerDetails: React.FC = () => {
             </p>
           )}
         </div>
-        <div className="py-3.5 gap-2 border-t border-grey-300 dark:border-grey-700 flex justify-end sticky bottom-0 bg-white dark:bg-grey-900 z-10">
+        <div className="py-3.5 gap-2 border-t border-grey-300 dark:border-grey-700 flex justify-between sticky bottom-0 bg-white dark:bg-grey-900 z-10">
           <Button
             type="button"
             variant="outline"
@@ -384,9 +384,7 @@ const CustomerDetails: React.FC = () => {
             onClick={() => {
               const cancel = confirm('Cancel this entry?');
               if (cancel) {
-                // also clear values ?
-                saveFormValues({}, true); // Reset form data
-                // check this as we add the other steps
+                saveFormValues({}, true); // clears context values
                 router.push('/customers');
               } else return;
             }}

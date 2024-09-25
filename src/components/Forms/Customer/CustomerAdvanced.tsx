@@ -94,10 +94,10 @@ const AdvancedCustomerDetails: React.FC = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col justify-between flex-grow"
       >
-        <p className="px-4.5 mt-3.5 mb-5 body2 text-grey-800 dark:text-white">
+        <p className="mt-3.5 mb-5 body2 text-grey-800 dark:text-white">
           Set customer details
         </p>
-        <div className="px-4.5 flex-grow">
+        <div className="flex-grow">
           <div className="flex flex-col gap-5 xl:flex-row">
             <div className="flex flex-col w-full xl:w-1/2">
               <TextInput control={control} name="Sales Rep" />
@@ -136,7 +136,7 @@ const AdvancedCustomerDetails: React.FC = () => {
             </p>
           )}
         </div>
-        <div className="py-3.5 gap-2 border-t border-grey-300 dark:border-grey-700 flex justify-end bottom-0 bg-white dark:bg-grey-900 z-10">
+        <div className="py-3.5 gap-2 border-t border-grey-300 dark:border-grey-700 flex justify-between bottom-0 bg-white dark:bg-grey-900 z-10">
           <Button
             type="button"
             variant="outline"
@@ -144,17 +144,26 @@ const AdvancedCustomerDetails: React.FC = () => {
             onClick={() => {
               const cancel = confirm('Cancel this entry?');
               if (cancel) {
-                // also clear values ?
-                saveFormValues({}, true); // Reset form data
-                // check this as we add the other steps
-
+                saveFormValues({}, true); // clears context values
                 router.push('/customers');
               } else return;
             }}
           >
-            Back
+            Cancel
           </Button>
-          <Button type="submit">Next</Button>
+          <div className="flex justify-end gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              intent="success"
+              onClick={() => {
+                router.back();
+              }}
+            >
+              Back
+            </Button>
+            <Button type="submit">Next</Button>
+          </div>
         </div>
       </form>
     </div>
