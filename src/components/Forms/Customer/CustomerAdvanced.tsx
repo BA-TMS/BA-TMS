@@ -11,7 +11,7 @@ import DynamicSelect from '../../UI_Elements/Form/DynamicSelect';
 import { currency, paymentTerms } from '../data/details';
 import { getFactors } from '@/lib/dbActions';
 import Button from '@/components/UI_Elements/buttons/Button';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 
 // this component uses yup and react-hook-form to submit form values to a context
 
@@ -33,6 +33,11 @@ type Customer = yup.InferType<typeof customerSchema>;
 const AdvancedCustomerDetails: React.FC = () => {
   const router = useRouter();
 
+  const pathname = usePathname();
+  const segment = pathname.includes('add-customer')
+    ? 'add-customer'
+    : 'update-customer';
+
   const { formData, saveFormValues } = useContext(ModalContext);
 
   const {
@@ -40,7 +45,7 @@ const AdvancedCustomerDetails: React.FC = () => {
     handleSubmit,
     reset,
     control,
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<Customer>({
     defaultValues: {
       'Sales Rep': '',
@@ -57,7 +62,7 @@ const AdvancedCustomerDetails: React.FC = () => {
   const onSubmit = useCallback(
     async (customer: Customer) => {
       saveFormValues(customer);
-      router.push('/customers/add-customer/review'); // next step
+      router.push(`/customers/${segment}/review`); // next step
     },
     [saveFormValues, router]
   );
@@ -74,7 +79,6 @@ const AdvancedCustomerDetails: React.FC = () => {
   }, [formData, setValue]);
 
   // clear values if successful
-  // but what if we don't? DO WE NEED TO?
   useEffect(() => {
     if (isSubmitSuccessful) {
       reset({
@@ -141,6 +145,7 @@ const AdvancedCustomerDetails: React.FC = () => {
             type="button"
             variant="outline"
             intent="default"
+            disabled={isSubmitting}
             onClick={() => {
               const cancel = confirm('Cancel this entry?');
               if (cancel) {
@@ -156,13 +161,16 @@ const AdvancedCustomerDetails: React.FC = () => {
               type="button"
               variant="outline"
               intent="success"
+              disabled={isSubmitting}
               onClick={() => {
                 router.back();
               }}
             >
               Back
             </Button>
-            <Button type="submit">Next</Button>
+            <Button type="submit" disabled={isSubmitting}>
+              Next
+            </Button>
           </div>
         </div>
       </form>
