@@ -13,6 +13,7 @@ import { fetchCustomers } from '@/store/slices/customerSlice';
 import { getCustomer } from '@/lib/dbActions';
 import { CustomerData } from '@/types/customerTypes';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 // columns for the table
 const columns = [
@@ -59,13 +60,15 @@ const CustomerTable = (): JSX.Element => {
 
   const dispatch = useDispatch<AppDispatch>();
 
+  const router = useRouter();
+
   const {
     items: customers,
     status,
     // error, // are we going to handle errors?
   } = useSelector((state: RootState) => state.customers);
 
-  const { toggleOpen, saveFormValues } = useContext(ModalContext);
+  const { saveFormValues } = useContext(ModalContext);
 
   // search
   function handleSearchFilter(customers: CustomerData[], value: string) {
@@ -88,11 +91,13 @@ const CustomerTable = (): JSX.Element => {
   }
 
   // update customer
+  // clicking this will send data to the context
+  // open update route and populate form with values
   const updateCustomer = async (id: string) => {
     const data = await getCustomer(id);
     if (data !== null) {
       saveFormValues(data);
-      toggleOpen();
+      router.push('/customers/update-customer/details');
     }
   };
 

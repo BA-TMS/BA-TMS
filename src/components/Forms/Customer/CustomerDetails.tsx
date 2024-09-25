@@ -12,7 +12,7 @@ import { usStates } from '@/components/Forms/data/states';
 import { customerStatus } from '../data/details';
 import { customerFieldMap } from '@/types/customerTypes';
 import Button from '@/components/UI_Elements/buttons/Button';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 
 // this component uses yup and react-hook-form to submit form values to a context
 
@@ -65,6 +65,11 @@ type Customer = yup.InferType<typeof customerSchema>;
 const CustomerDetails: React.FC = () => {
   const router = useRouter();
 
+  const pathname = usePathname();
+  const segment = pathname.includes('add-customer')
+    ? 'add-customer'
+    : 'update-customer';
+
   const { formData, saveFormValues } = useContext(ModalContext);
 
   // triggering any re-renders based on form input
@@ -108,7 +113,7 @@ const CustomerDetails: React.FC = () => {
     getValues, // get values of a form field
     resetField, //reset individual form field
     control, // based on schema
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<Customer>({
     defaultValues: {
       Status: '',
@@ -198,15 +203,13 @@ const CustomerDetails: React.FC = () => {
   // submit the values to the context
   const onSubmit = useCallback(
     async (customer: Customer) => {
-      saveFormValues(customer); // save to context
-      console.log(customer);
-      router.push('/customers/add-customer/advanced'); // next step
+      saveFormValues(customer);
+      router.push(`/customers/${segment}/advanced`); // next step either add-customer or update-customer
     },
     [saveFormValues, router]
   );
 
   // if there's an update, we have to use the map to get the correct field values
-  // get rid of this, we will be moving this
   useEffect(() => {
     if (isUpdate) {
       // populate form with data from context
@@ -220,10 +223,8 @@ const CustomerDetails: React.FC = () => {
   }, [formData, setValue, isUpdate]);
 
   // keep fields populated when switching tabs or going back
-  // MAY NEED TO REFACTOR?
   useEffect(() => {
     if (formData) {
-      // populate form with data from context
       Object.keys(formData).forEach((formField) => {
         setValue(formField as keyof Customer, formData[formField]);
       });
@@ -231,7 +232,6 @@ const CustomerDetails: React.FC = () => {
   }, [formData, setValue]);
 
   // clear values if successful
-  // but what if we don't? DO WE NEED TO?
   useEffect(() => {
     if (isSubmitSuccessful) {
       reset({
@@ -381,6 +381,7 @@ const CustomerDetails: React.FC = () => {
             type="button"
             variant="outline"
             intent="default"
+            disabled={isSubmitting}
             onClick={() => {
               const cancel = confirm('Cancel this entry?');
               if (cancel) {
@@ -391,7 +392,9 @@ const CustomerDetails: React.FC = () => {
           >
             Cancel
           </Button>
-          <Button type="submit">Next</Button>
+          <Button type="submit" disabled={isSubmitting}>
+            Next
+          </Button>
         </div>
       </form>
     </div>
