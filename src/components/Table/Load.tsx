@@ -24,31 +24,41 @@ dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 
 interface StatusColors {
-  ON_ROUTE: 'warning';
+  OPEN: 'error';
   COVERED: 'warning';
-  OPEN: 'primary';
-  REFUSED: 'secondary';
-  PENDING: 'error';
+  DISPATCHED: 'secondary';
+  LOADING: 'default';
+  ON_ROUTE: 'warning';
+  UNLOADING: 'default';
+  DELIVERED: 'primary';
+  NEEDS_REVIEW: 'error';
+  CLAIM: 'warning';
 }
 
 // Define status colors
 const statusColors: StatusColors = {
-  ON_ROUTE: 'warning',
+  OPEN: 'error',
   COVERED: 'warning',
-  OPEN: 'primary',
-  REFUSED: 'secondary',
-  PENDING: 'error',
+  DISPATCHED: 'secondary',
+  LOADING: 'default',
+  ON_ROUTE: 'warning',
+  UNLOADING: 'default',
+  DELIVERED: 'primary',
+  NEEDS_REVIEW: 'error',
+  CLAIM: 'warning',
 };
 
 // display status
 const displayStatus: { [key: string]: string } = {
-  ON_ROUTE: 'On Route',
   OPEN: 'Open',
-  REFUSED: 'Refused',
   COVERED: 'Covered',
-  PENDING: 'Pending',
   DISPATCHED: 'Dispatched',
-  LOADING_UNLOADING: '(Un)Loading',
+  LOADING: 'Loading',
+  ON_ROUTE: 'On Route',
+  UNLOADING: 'Unloading',
+  DELIVERED: 'Delivered',
+  NEEDS_REVIEW: 'Needs Review',
+  CLAIM: 'Claim',
 };
 
 // Function to get color by status
@@ -89,14 +99,16 @@ const columns = [
 
 // Define tabs data
 const tabsData: TabData[] = [
-  { color: 'info', value: 'All' },
-  { color: 'warning', value: 'On Route' },
-  { color: 'primary', value: 'Open' },
-  { color: 'secondary', value: 'Refused' },
+  { color: 'primary', value: 'All' },
+  { color: 'error', value: 'Open' },
   { color: 'warning', value: 'Covered' },
-  { color: 'error', value: 'Pending' },
-  { color: 'default', value: 'Dispatched' },
-  { color: 'default', value: '(Un)Loading' },
+  { color: 'secondary', value: 'Dispatched' },
+  { color: 'default', value: 'Loading' },
+  { color: 'warning', value: 'On Route' },
+  { color: 'default', value: 'Unloading' },
+  { color: 'primary', value: 'Delivered' },
+  { color: 'error', value: 'Needs Review' },
+  { color: 'warning', value: 'Claim' },
 ];
 
 const Load = () => {
@@ -178,13 +190,15 @@ const Load = () => {
     if (value === 'All') return incLoads;
 
     const statusMapping: { [key: string]: string } = {
-      'On Route': 'ON_ROUTE',
       Open: 'OPEN',
-      Refused: 'REFUSED',
       Covered: 'COVERED',
-      Pending: 'PENDING',
       Dispatched: 'DISPATCHED',
-      '(Un)Loading': 'LOADING_UNLOADING',
+      Loading: 'LOADING',
+      'On Route': 'ON_ROUTE',
+      Unloading: 'UNLOADING',
+      Delivered: 'DELIVERED',
+      'Needs Review': 'NEEDS_REVIEW',
+      Claim: 'CLAIM',
     };
 
     return incLoads.filter((load) => load.status === statusMapping[value]);
@@ -195,13 +209,15 @@ const Load = () => {
     if (value === 'All') return loads.length;
 
     const statusMapping: { [key: string]: string } = {
-      'On Route': 'ON_ROUTE',
       Open: 'OPEN',
-      Refused: 'REFUSED',
       Covered: 'COVERED',
-      Pending: 'PENDING',
       Dispatched: 'DISPATCHED',
-      '(Un)Loading': 'LOADING_UNLOADING',
+      Loading: 'LOADING',
+      'On Route': 'ON_ROUTE',
+      Unloading: 'UNLOADING',
+      Delivered: 'DELIVERED',
+      'Needs Review': 'NEEDS_REVIEW',
+      Claim: 'CLAIM',
     };
 
     return loads.filter((load) => load.status === statusMapping[value]).length;
