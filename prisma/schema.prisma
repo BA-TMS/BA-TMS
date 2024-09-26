@@ -59,8 +59,8 @@ model Load {
   payOrderNum   String        
   shipDate      DateTime      @default(now())
   deliveryDate  DateTime?
-  carrier       Carrier       @relation(fields: [carrierId], references: [id])
-  carrierId     String
+  carrier       Carrier?       @relation(fields: [carrierId], references: [id])
+  carrierId     String?
   driver        Driver?       @relation(fields: [driverId], references: [id])
   driverId      String?          // If blank, display only carrier info
   customer      Customer      @relation(fields: [customerId], references: [id])
@@ -75,14 +75,15 @@ model Load {
 }
 
 enum LoadStatus {
-  PENDING
   OPEN
-  REFUSED
   COVERED
   DISPATCHED
+  LOADING
   ON_ROUTE
-  LOADING_UNLOADING
-  IN_YARD
+  UNLOADING
+  DELIVERED
+  NEEDS_REVIEW
+  CLAIM
 }
 
 model Carrier {
