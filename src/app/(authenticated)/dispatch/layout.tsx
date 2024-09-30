@@ -5,7 +5,7 @@ import { ContextProvider } from '@/Context/modalContext';
 // slots are passed as props to the shared parent layout
 // slots render parallel alongside children prop
 
-export default function CustomerTemplage({
+export default function LoadTemplage({
   children,
   modal,
 }: {
