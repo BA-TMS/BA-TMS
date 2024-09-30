@@ -1,4 +1,3 @@
-// components/Load.tsx
 import { useContext, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ModalContext } from '@/Context/modalContext';
@@ -18,6 +17,7 @@ import { AppDispatch, RootState } from '@/store/store';
 import { getLoad } from '@/lib/dbActions';
 import { deleteLoad } from '@/store/slices/loadSlice';
 import { LoadData } from '@/types/loadTypes';
+import Link from 'next/link';
 
 dayjs.extend(customParseFormat);
 dayjs.extend(isSameOrBefore);
@@ -113,7 +113,8 @@ const tabsData: TabData[] = [
 
 const Load = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { toggleOpen, saveFormValues } = useContext(ModalContext);
+
+  const { saveFormValues } = useContext(ModalContext);
 
   const {
     items: loads,
@@ -229,7 +230,7 @@ const Load = () => {
     // save fetched data to formData in ModalContext
     if (data !== null) {
       saveFormValues(data);
-      toggleOpen();
+      // toggleOpen();
     }
   };
 
@@ -246,7 +247,9 @@ const Load = () => {
     <>
       <div className="relative flex justify-end mb-6">
         <div className="absolute right-4 bottom-2">
-          <Button onClick={toggleOpen}>Add Load</Button>
+          <Link href="/dispatch/add-load/details">
+            <Button>Add Load</Button>
+          </Link>
         </div>
         <FormModal formTitle="New Load">
           <LoadForm />

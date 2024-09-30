@@ -29,7 +29,7 @@ const formatron = function (rawLoad: LoadData) {
       ? rawLoad.deliveryDate.toDateString()
       : null,
 
-    carrier: rawLoad.carrier.name,
+    carrier: rawLoad.carrier ? rawLoad.carrier.name : null,
     driver: rawLoad.driver ? rawLoad.driver.name : null,
     customer: rawLoad.customer ? rawLoad.customer.companyName : null,
     shipper: rawLoad.shipper ? rawLoad.shipper.name : null,
