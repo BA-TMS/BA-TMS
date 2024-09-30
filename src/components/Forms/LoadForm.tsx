@@ -86,8 +86,6 @@ export const LoadForm = () => {
   // populate with existing data when updating
   useEffect(() => {
     if (isUpdate) {
-      // populate form with data from context
-      console.log('FORMDATA', formData);
       setValue('Owner', formData['ownerId']);
       setValue('Status', formData['status']);
       setValue('Load Number', formData['loadNum']);
@@ -103,7 +101,7 @@ export const LoadForm = () => {
   }, [formData, setValue, isUpdate]);
 
   // Form submission handler
-  // react-hook-form submission handler (line 138) expects a type of Load as determined by yup schema
+  // react-hook-form submission handler expects a type of Load as determined by yup schema
   // casting type in the dispatch actions because dispatch actions expects different types
   // this data becomes different type at other points in the process so this should be safe
 
@@ -123,7 +121,6 @@ export const LoadForm = () => {
           })
         ).unwrap();
 
-        // reset(); // do we need
         saveFormValues({}, true); // clear context
       } catch (error) {
         console.error('Error updating load:', error);
