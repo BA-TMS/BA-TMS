@@ -3,8 +3,6 @@
 import { useContext, useState, useEffect } from 'react';
 import { ModalContext } from '@/Context/modalContext';
 import Button from '../UI_Elements/buttons/Button';
-import FormModal from '../Modals/FormModal';
-import CustomerForm from '../Forms/Customer/CustomerForm';
 import Table from '../UI_Elements/Table/Table';
 import TableSkeleton from '../UI_Elements/Table/TableSkeleton';
 import { TableSearch } from '../UI_Elements/Table/TableSearch';
@@ -14,6 +12,8 @@ import { AppDispatch, RootState } from '@/store/store';
 import { fetchCustomers } from '@/store/slices/customerSlice';
 import { getCustomer } from '@/lib/dbActions';
 import { CustomerData } from '@/types/customerTypes';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 // columns for the table
 const columns = [
@@ -60,13 +60,15 @@ const CustomerTable = (): JSX.Element => {
 
   const dispatch = useDispatch<AppDispatch>();
 
+  const router = useRouter();
+
   const {
     items: customers,
     status,
     // error, // are we going to handle errors?
   } = useSelector((state: RootState) => state.customers);
 
-  const { toggleOpen, saveFormValues } = useContext(ModalContext);
+  const { saveFormValues } = useContext(ModalContext);
 
   // search
   function handleSearchFilter(customers: CustomerData[], value: string) {
@@ -89,12 +91,13 @@ const CustomerTable = (): JSX.Element => {
   }
 
   // update customer
+  // clicking this will send data to the context
+  // open update route and populate form with values
   const updateCustomer = async (id: string) => {
     const data = await getCustomer(id);
-    // toggleOpen(data);
     if (data !== null) {
       saveFormValues(data);
-      toggleOpen();
+      router.push('/customers/update-customer/details');
     }
   };
 
@@ -114,11 +117,10 @@ const CustomerTable = (): JSX.Element => {
     <>
       <div className="relative flex justify-end mb-6">
         <div className="absolute right-4 bottom-2">
-          <Button onClick={toggleOpen}>Add Customer</Button>
+          <Link href="/customers/add-customer/details">
+            <Button>Add Customer</Button>
+          </Link>
         </div>
-        <FormModal formTitle="Add Customer">
-          <CustomerForm />
-        </FormModal>
       </div>
       <TableHeaderBlank />
       <TableSearch
