@@ -1,8 +1,8 @@
+'use client';
+
 import { useContext, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ModalContext } from '@/Context/modalContext';
-import FormModal from '../Modals/FormModal';
-import LoadForm from '../Forms/LoadForm';
 import Table from '../UI_Elements/Table/Table';
 import TableSkeleton from '../UI_Elements/Table/TableSkeleton';
 import Button from '../UI_Elements/buttons/Button';
@@ -18,6 +18,7 @@ import { getLoad } from '@/lib/dbActions';
 import { deleteLoad } from '@/store/slices/loadSlice';
 import { LoadData } from '@/types/loadTypes';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 dayjs.extend(customParseFormat);
 dayjs.extend(isSameOrBefore);
@@ -115,6 +116,8 @@ const Load = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { saveFormValues } = useContext(ModalContext);
+
+  const router = useRouter();
 
   const {
     items: loads,
@@ -224,13 +227,12 @@ const Load = () => {
     return loads.filter((load) => load.status === statusMapping[value]).length;
   };
 
-  // function to update load
+  // open update-load and populate form with values
   const updateLoad = async (id: string) => {
     const data = await getLoad(id);
-    // save fetched data to formData in ModalContext
     if (data !== null) {
       saveFormValues(data);
-      // toggleOpen();
+      router.push('/dispatch/update-load/details');
     }
   };
 
@@ -251,9 +253,6 @@ const Load = () => {
             <Button>Add Load</Button>
           </Link>
         </div>
-        <FormModal formTitle="New Load">
-          <LoadForm />
-        </FormModal>
       </div>
       <CustomTabs tabs={tabsData} sort={setStatusValue} count={getCount} />
       <TableSearch
