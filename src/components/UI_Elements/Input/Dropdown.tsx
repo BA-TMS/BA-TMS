@@ -1,13 +1,18 @@
 'use client';
+
 import { useState, useEffect, useRef } from 'react';
 
 interface DropdownProps {
   label: string;
   options: string[];
-  sort: (arg: string) => void; // function to sort table
+  searchField: (arg: string) => void; // function to sort table
 }
 
-export default function Dropdown({ label, options, sort }: DropdownProps) {
+export default function Dropdown({
+  label,
+  options,
+  searchField,
+}: DropdownProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [displayLabel, setDisplayLabel] = useState(label);
   const [isOpen, setOpen] = useState(false);
@@ -93,7 +98,7 @@ export default function Dropdown({ label, options, sort }: DropdownProps) {
                 href="#"
                 className=""
                 onClick={() => {
-                  sort(option);
+                  searchField(option); // update the search field value
                   setDisplayLabel(option);
                   handleDropDown();
                 }}

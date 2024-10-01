@@ -16,7 +16,7 @@ import { fetchLoads } from '@/store/slices/loadSlice';
 import { AppDispatch, RootState } from '@/store/store';
 import { getLoad } from '@/lib/dbActions';
 import { deleteLoad } from '@/store/slices/loadSlice';
-import { LoadData } from '@/types/loadTypes';
+import { LoadData, loadFieldMap } from '@/types/loadTypes';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -71,7 +71,14 @@ const getColorByStatus = (status: string) => {
 };
 
 // Define columns for the table
-const columns = [
+
+type LoadColumn = {
+  field: string;
+  headerName: string;
+  cellRenderer?: (value: any) => JSX.Element;
+};
+
+const columns: LoadColumn[] = [
   { field: 'loadNum', headerName: 'Load Number' },
   { field: 'payOrderNum', headerName: 'PO Number' },
   { field: 'customer', headerName: 'Customer' },
@@ -96,6 +103,20 @@ const columns = [
       );
     },
   },
+];
+
+// Options for seach dropdown - can only be values from header name
+// this will need to be updated as we add more to load details
+const dropdownOptions: string[] = [
+  'All',
+  'Load Number',
+  'Customer',
+  'Date Shipped',
+  'Date Delivered',
+  'Carrier',
+  'Driver',
+  'Shipper',
+  'Consignee',
 ];
 
 // Define tabs data
@@ -126,11 +147,20 @@ const Load = () => {
   } = useSelector((state: RootState) => state.loads);
 
   const [filteredLoads, setFilteredLoads] = useState<LoadData[]>([]);
+
   const [searchByDateRangeStart, setSearchByDateRangeStart] =
     useState<dayjs.Dayjs | null>(null);
+
   const [searchByDateRangeEnd, setSearchByDateRangeEnd] =
     useState<dayjs.Dayjs | null>(null);
-  const [handleSearchValue, setHandleSearchValue] = useState<string>('');
+
+  // value to search for
+  const [searchValue, setSearchValue] = useState<string>('');
+
+  // specific field to search if any
+  const [searchField, setSearchField] = useState<string>('All');
+
+  // status of load
   const [statusValue, setStatusValue] = useState<string>('All');
 
   // Fetch loads from the API
@@ -146,15 +176,16 @@ const Load = () => {
       searchByDateRangeStart,
       searchByDateRangeEnd
     );
-    updatedLoads = handleSearchFilter(updatedLoads, handleSearchValue);
+    updatedLoads = handleSearch(updatedLoads, searchValue, searchField); // narrow down focus with searchField
     updatedLoads = searchByStatusFilter(updatedLoads, statusValue);
     setFilteredLoads(updatedLoads);
   }, [
     loads,
     searchByDateRangeStart,
     searchByDateRangeEnd,
-    handleSearchValue,
+    searchValue,
     statusValue,
+    searchField,
   ]);
 
   // Function to filter by date range
@@ -178,16 +209,49 @@ const Load = () => {
     });
   }
 
+  // update specific field to search
+  // passing this to TableSearch
+  function updateField(field: string) {
+    console.log('arg field', field);
+    setSearchField(field);
+    console.log('now searching field', searchField);
+  }
+
   // Function to handle search filter
-  function handleSearchFilter(incLoads: LoadData[], value: string) {
+  function handleSearch(incLoads: LoadData[], value: string, field: string) {
+    console.log('in handle search filter', field);
+
     if (!value) return incLoads;
 
-    return incLoads.filter((load) =>
-      Object.values(load).some((field) =>
-        field?.toString().toLowerCase().includes(value.toLowerCase())
-      )
-    );
+    // map the user-friendly field name to the actual data field name
+    const fieldKey = loadFieldMap[field];
+    console.log('this dataField', fieldKey);
+
+    if (field === 'All') {
+      // Search across all fields
+      return incLoads.filter((load) =>
+        Object.values(load).some((field) => {
+          console.log(field);
+
+          return field?.toString().toLowerCase().includes(value.toLowerCase());
+        })
+      );
+    } else {
+      // search specific field - map it to get correct key name
+
+      return incLoads.filter((load) => {
+        console.log(load);
+        console.log('key', load[fieldKey]);
+        return load[fieldKey]
+          ?.toString()
+          .toLowerCase()
+          .includes(value.toLowerCase());
+      });
+    }
   }
+
+  // need a function to set the search field via the dropdown
+  // refactor dropdown
 
   // Function to filter by status
   function searchByStatusFilter(incLoads: LoadData[], value: string) {
@@ -256,8 +320,9 @@ const Load = () => {
       </div>
       <CustomTabs tabs={tabsData} sort={setStatusValue} count={getCount} />
       <TableSearch
-        dropdownOptions={['Option 1', 'Option 2', 'Option 3']}
-        search={setHandleSearchValue}
+        dropdownOptions={dropdownOptions}
+        updateField={updateField}
+        search={setSearchValue} // set the value to search for
         dateSearch={(startDate, endDate) => {
           setSearchByDateRangeStart(startDate);
           setSearchByDateRangeEnd(endDate);
