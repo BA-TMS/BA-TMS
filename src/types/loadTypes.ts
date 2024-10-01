@@ -42,17 +42,17 @@ export interface LoadFormData {
   'Received Date'?: Date | string | undefined;
 }
 
-// map load types
+// map load types when needed
 export const loadFieldMap: Record<string, keyof LoadData> = {
   Owner: 'ownerId',
   Status: 'status',
   'Load Number': 'loadNum',
   'Pay Order Number': 'payOrderNum',
-  Customer: 'customerId',
-  Driver: 'driverId',
-  Carrier: 'carrierId',
-  Shipper: 'shipper', // id?
-  Consignee: 'consignee', // id?
-  'Ship Date': 'shipDate',
-  'Received Date': 'deliveryDate',
+  Customer: 'customer',
+  Driver: 'driver',
+  Carrier: 'carrier',
+  Shipper: 'shipper',
+  Consignee: 'consignee',
+  'Date Shipped': 'shipDate',
+  'Date Delivered': 'deliveryDate',
 };
