@@ -55,7 +55,8 @@ const columns = [
 ];
 
 const CustomerTable = (): JSX.Element => {
-  const [searchValue, setSearchValue] = useState<string>(''); // search
+  const [searchValue, setSearchValue] = useState<string>(''); // search value
+  const [searchField, setSearchField] = useState<string>('All'); // specific field if any
   const [filteredValue, setFilteredValue] = useState<CustomerData[]>([]);
 
   const dispatch = useDispatch<AppDispatch>();
@@ -71,23 +72,48 @@ const CustomerTable = (): JSX.Element => {
   const { saveFormValues } = useContext(ModalContext);
 
   // search
-  function handleSearchFilter(customers: CustomerData[], value: string) {
-    if (!value) return customers;
+  function handleSearch(
+    customers: CustomerData[],
+    value: string,
+    status: string
+  ) {
+    // status to uppercase
+    const customerStatus = status?.toUpperCase();
 
-    if (value === 'All') return customers;
-
-    // handle sorting by specific value
-    if (value === 'Active' || value === 'Inactive') {
-      return customers.filter(
-        (customer) => customer.status === value.toUpperCase()
+    // Filter by status (if it's "Active" or "Inactive")
+    let filteredCustomers = customers;
+    if (customerStatus === 'ACTIVE' || customerStatus === 'INACTIVE') {
+      filteredCustomers = customers.filter(
+        (customer) => customer.status === customerStatus
       );
     }
 
-    return customers.filter((customer) =>
-      Object.values(customer).some((field) =>
-        field?.toString().toLowerCase().includes(value.toLowerCase())
+    // If no search value, return the filtered list by status
+    if (!value) {
+      return filteredCustomers;
+    }
+
+    // search across all fields with the given value
+    if (status === 'All') {
+      return filteredCustomers.filter((customer) =>
+        Object.values(customer).some((customerField) =>
+          customerField?.toString().toLowerCase().includes(value.toLowerCase())
+        )
+      );
+    }
+
+    // If status is specific (like "Active"), apply search value filtering
+    return filteredCustomers.filter((customer) =>
+      Object.values(customer).some((customerField) =>
+        customerField?.toString().toLowerCase().includes(value.toLowerCase())
       )
     );
+  }
+
+  // update specific field to search
+  // passing this to TableSearch
+  function updateField(field: string) {
+    setSearchField(field);
   }
 
   // update customer
@@ -109,9 +135,9 @@ const CustomerTable = (): JSX.Element => {
   // Update filtered customers when customer or searchValue changes
   useEffect(() => {
     let updatedCustomers = [...customers];
-    updatedCustomers = handleSearchFilter(updatedCustomers, searchValue);
+    updatedCustomers = handleSearch(updatedCustomers, searchValue, searchField);
     setFilteredValue(updatedCustomers);
-  }, [customers, searchValue]);
+  }, [customers, searchValue, searchField]);
 
   return (
     <>
@@ -128,6 +154,7 @@ const CustomerTable = (): JSX.Element => {
         dropdownLabel="Status"
         dropdownOptions={['Active', 'Inactive', 'All']}
         search={setSearchValue}
+        updateField={updateField}
       />
 
       {status === 'loading' ? (
