@@ -1,12 +1,13 @@
 export type LoadStatus =
-  | 'ON_ROUTE'
   | 'OPEN'
-  | 'REFUSED'
   | 'COVERED'
-  | 'PENDING'
   | 'DISPATCHED'
-  | 'LOADING_UNLOADING'
-  | 'IN_YARD';
+  | 'LOADING'
+  | 'ON_ROUTE'
+  | 'UNLOADING'
+  | 'DELIVERED'
+  | 'NEEDS_REVIEW'
+  | 'CLAIM';
 
 export interface LoadData {
   id?: string;
