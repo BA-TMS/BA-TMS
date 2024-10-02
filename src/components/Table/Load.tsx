@@ -75,7 +75,7 @@ const getColorByStatus = (status: string) => {
 type LoadColumn = {
   field: string;
   headerName: string;
-  cellRenderer?: (value: any) => JSX.Element;
+  cellRenderer?: (value: string) => JSX.Element;
 };
 
 const columns: LoadColumn[] = [
@@ -132,6 +132,13 @@ const tabsData: TabData[] = [
   { color: 'error', value: 'Needs Review' },
   { color: 'warning', value: 'Claim' },
 ];
+
+// pass this to table
+function rowClass(row: Record<string, string>) {
+  return row.status === 'NEEDS_REVIEW'
+    ? '!text-bold bg-error-dark bg-opacity-16'
+    : '';
+}
 
 const Load = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -212,27 +219,20 @@ const Load = () => {
   // update specific field to search
   // passing this to TableSearch
   function updateField(field: string) {
-    console.log('arg field', field);
     setSearchField(field);
-    console.log('now searching field', searchField);
   }
 
   // Function to handle search filter
   function handleSearch(incLoads: LoadData[], value: string, field: string) {
-    console.log('in handle search filter', field);
-
     if (!value) return incLoads;
 
     // map the user-friendly field name to the actual data field name
     const fieldKey = loadFieldMap[field];
-    console.log('this dataField', fieldKey);
 
     if (field === 'All') {
       // Search across all fields
       return incLoads.filter((load) =>
         Object.values(load).some((field) => {
-          console.log(field);
-
           return field?.toString().toLowerCase().includes(value.toLowerCase());
         })
       );
@@ -240,8 +240,6 @@ const Load = () => {
       // search specific field - map it to get correct key name
 
       return incLoads.filter((load) => {
-        console.log(load);
-        console.log('key', load[fieldKey]);
         return load[fieldKey]
           ?.toString()
           .toLowerCase()
@@ -249,9 +247,6 @@ const Load = () => {
       });
     }
   }
-
-  // need a function to set the search field via the dropdown
-  // refactor dropdown
 
   // Function to filter by status
   function searchByStatusFilter(incLoads: LoadData[], value: string) {
@@ -338,6 +333,7 @@ const Load = () => {
           data={filteredLoads}
           update={updateLoad}
           deleter={loadDelete}
+          extraRowClass={rowClass}
         />
       )}
     </>
