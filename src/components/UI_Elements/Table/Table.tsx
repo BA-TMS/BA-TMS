@@ -11,13 +11,20 @@ interface TableColumn {
 }
 
 interface TableProps {
-  columns: TableColumn[];
+  columns: TableColumn[]; // title of column to be displayed
   data: Record<string, any>[]; // any shape of object
   update: any; // function for updating table entry
   deleter?: (id: string) => void; // optional database action function
+  extraRowClass?: any; // add extra classes to style row if needed
 }
 
-const Table = ({ columns, data, update, deleter }: TableProps) => {
+const Table = ({
+  columns,
+  data,
+  update,
+  deleter,
+  extraRowClass,
+}: TableProps) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [postsPerPage, setPostsPerPage] = useState(25);
 
@@ -62,7 +69,10 @@ const Table = ({ columns, data, update, deleter }: TableProps) => {
           </thead>
           <tbody className="border-b border-grey-300 dark:border-grey-700">
             {currentData.map((row, dataIndex) => (
-              <tr key={dataIndex}>
+              <tr
+                key={dataIndex}
+                className={extraRowClass ? extraRowClass(row) : ''}
+              >
                 {columns.map((column, index) => (
                   <td key={index} className="p-4">
                     {column.cellRenderer ? (
