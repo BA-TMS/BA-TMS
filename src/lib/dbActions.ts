@@ -4,6 +4,7 @@ import { PrismaClient } from '@prisma/client';
 import { CustomerFormData } from '@/types/customerTypes';
 import { LoadFormData } from '@/types/loadTypes';
 
+// regular prisma client
 const prisma = new PrismaClient();
 
 const LOAD_RELATIONS = {
@@ -273,6 +274,13 @@ export async function addFactoringCo({ factor }: { factor: any }) {
 }
 
 export async function addLoad({ load }: { load: LoadFormData }) {
+  // do not change to dispatched without a carrier
+  if (load['Status'] === 'DISPATCHED' && !load['Carrier']) {
+    throw new Error(
+      'Cannot create a load with status "DISPATCHED" without a carrier.'
+    );
+  }
+
   const resp = await prisma.load.create({
     data: {
       ownerId: load['Owner'],
@@ -466,6 +474,12 @@ export async function updateLoad(
   id: string,
   { formData }: { formData: Partial<LoadFormData> }
 ) {
+  // do not change to dispatched without a carrier
+  if (formData['Status'] === 'DISPATCHED' && !formData['Carrier']) {
+    throw new Error(
+      'Cannot update a load with status "DISPATCHED" without a carrier.'
+    );
+  }
   // map to convert formData keys to database keys
   const mapLoadData = (load: Partial<LoadFormData>) => {
     if (!load) {
