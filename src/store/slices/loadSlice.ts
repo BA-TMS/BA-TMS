@@ -64,6 +64,7 @@ export const updateLoad = createAsyncThunk<LoadData, UpdateLoadPayload>(
   async ({ id, updatedLoad }: UpdateLoadPayload, { rejectWithValue }) => {
     try {
       const load = await apiUpdateLoad(id, { formData: updatedLoad });
+
       return formatron(load);
     } catch (error) {
       let message = 'Failed to Update Load';
@@ -89,7 +90,11 @@ const loadSlice = createSlice({
     status: 'idle',
     error: null,
   },
-  reducers: {},
+  reducers: {
+    setError: (state, action) => {
+      state.error = action.payload; // update the error state
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchLoads.pending, (state) => {
@@ -115,6 +120,8 @@ const loadSlice = createSlice({
       .addCase(
         updateLoad.fulfilled,
         (state, action: PayloadAction<LoadData>) => {
+          state.status = 'succeeded';
+          state.error = null;
           const index = state.items.findIndex(
             (load) => load.id === action.payload.id
           );
@@ -126,7 +133,7 @@ const loadSlice = createSlice({
       .addCase(updateLoad.rejected, (state, action) => {
         const message = action.payload;
         state.status = 'failed';
-        state.error = message as string; // type coercion
+        state.error = message as string;
       })
       .addCase(deleteLoad.fulfilled, (state, action) => {
         state.items = state.items.filter(
@@ -136,4 +143,5 @@ const loadSlice = createSlice({
   },
 });
 
+export const { setError } = loadSlice.actions;
 export default loadSlice.reducer;
