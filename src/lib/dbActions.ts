@@ -477,7 +477,7 @@ export async function updateLoad(
   // do not change to dispatched without a carrier
   if (formData['Status'] === 'DISPATCHED' && !formData['Carrier']) {
     throw new Error(
-      'Cannot update a load with status "DISPATCHED" without a carrier.'
+      'Cannot update a load status to "Dispatched" without a carrier.'
     );
   }
   // map to convert formData keys to database keys
