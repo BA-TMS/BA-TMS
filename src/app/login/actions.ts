@@ -25,7 +25,7 @@ export async function login(formData: FormData) {
       '/login/confirm?message=Could not authenticate user, please confirm your email.'
     );
   } else if (error === null) {
-    redirect('/');
+    redirect('/dispatch');
   } else {
     redirect('/login?message=Invalid Login Credentials');
   }
@@ -157,7 +157,7 @@ export const resetPassword = async (code: string, password: string) => {
 };
 
 const addListener = (client: SupabaseClient) => {
-  client.auth.onAuthStateChange((event, session) => {
+  client.auth.onAuthStateChange((event) => {
     if (event === 'INITIAL_SESSION') {
       console.log("Ayy, I'm initial-sessionin' heah!");
     }
