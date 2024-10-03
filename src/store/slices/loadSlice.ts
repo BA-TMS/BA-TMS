@@ -66,7 +66,9 @@ export const updateLoad = createAsyncThunk<LoadData, UpdateLoadPayload>(
       const load = await apiUpdateLoad(id, { formData: updatedLoad });
       return formatron(load);
     } catch (error) {
-      return rejectWithValue('Failed to update Load');
+      let message = 'Failed to Update Load';
+      if (error instanceof Error) message = error.message;
+      return rejectWithValue(message); // what is returned if there is an error - comes from error in db action
     }
   }
 );
@@ -121,6 +123,11 @@ const loadSlice = createSlice({
           }
         }
       )
+      .addCase(updateLoad.rejected, (state, action) => {
+        const message = action.payload;
+        state.status = 'failed';
+        state.error = message as string; // type coercion
+      })
       .addCase(deleteLoad.fulfilled, (state, action) => {
         state.items = state.items.filter(
           (load) => load.id !== action.meta.arg.toString()

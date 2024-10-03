@@ -18,11 +18,11 @@ import {
 import DateSelect from '../UI_Elements/Form/DateSelect';
 import Button from '../UI_Elements/buttons/Button';
 import SelectInput from '../UI_Elements/Form/SelectInput';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '@/store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/store/store';
 import { createLoad, updateLoad } from '@/store/slices/loadSlice';
 import { LoadFormData } from '@/types/loadTypes';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 // this component handles form validation and submission with react-hook-form and yup
 
@@ -57,10 +57,10 @@ type Load = yup.InferType<typeof loadSchema>;
 export const LoadForm = () => {
   const router = useRouter();
 
-  const pathname = usePathname();
-  const segment = pathname.includes('add-load') ? 'add-load' : 'update-load';
-
   const dispatch = useDispatch<AppDispatch>();
+
+  // use extra reducers for error handling
+  const errorState = useSelector((state: RootState) => state.loads.error);
 
   const { formData, saveFormValues } = useContext(ModalContext);
 
@@ -69,7 +69,6 @@ export const LoadForm = () => {
   const {
     setValue,
     handleSubmit,
-    // setError,
     reset,
     control,
     formState: { errors, isSubmitting, isSubmitSuccessful },
@@ -120,13 +119,13 @@ export const LoadForm = () => {
             updatedLoad: load as unknown as LoadFormData,
           })
         ).unwrap();
-
+        // check status before clearning and navigating?
         saveFormValues({}, true); // clear context
+        router.push('/dispatch');
       } catch (error) {
-        console.error('Error updating load:', error);
+        console.error('Error updating load:', error); // error returned from the slice
       }
     }
-    router.push('/dispatch');
   };
 
   useEffect(() => {
@@ -236,6 +235,12 @@ export const LoadForm = () => {
         >
           Cancel
         </Button>
+
+        {errorState && ( // errors coming from redux toolkit
+          <div className="min-h-5 mr-2 self-center">
+            <p className="caption mb-1 text-error-dark">{errorState}</p>
+          </div>
+        )}
 
         <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? 'Submitting' : isUpdate ? 'Update' : 'Add'}
