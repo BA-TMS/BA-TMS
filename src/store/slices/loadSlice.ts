@@ -54,7 +54,9 @@ export const createLoad = createAsyncThunk<LoadData, LoadFormData>(
 
       return formatron(newLoad);
     } catch (error) {
-      return rejectWithValue('Failed to create new Load');
+      let message = 'Failed to Create Load';
+      if (error instanceof Error) message = error.message;
+      return rejectWithValue(message); // what is returned if there is an error - comes from error in db action
     }
   }
 );
@@ -114,9 +116,16 @@ const loadSlice = createSlice({
       .addCase(
         createLoad.fulfilled,
         (state, action: PayloadAction<LoadData>) => {
+          state.status = 'succeeded';
+          state.error = null;
           state.items.push(action.payload);
         }
       )
+      .addCase(createLoad.rejected, (state, action) => {
+        const message = action.payload;
+        state.status = 'failed';
+        state.error = message as string;
+      })
       .addCase(
         updateLoad.fulfilled,
         (state, action: PayloadAction<LoadData>) => {

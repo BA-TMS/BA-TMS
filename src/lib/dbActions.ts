@@ -277,7 +277,7 @@ export async function addLoad({ load }: { load: LoadFormData }) {
   // do not change to dispatched without a carrier
   if (load['Status'] === 'DISPATCHED' && !load['Carrier']) {
     throw new Error(
-      'Cannot create a load with status "DISPATCHED" without a carrier.'
+      'Cannot create a load with status of "Dispatched" without a carrier.'
     );
   }
 

@@ -113,6 +113,8 @@ export const LoadForm = () => {
     if (!isUpdate) {
       try {
         await dispatch(createLoad(load as unknown as LoadFormData)).unwrap();
+        reset(); // update form to default values
+        router.push('/dispatch');
       } catch (error) {
         console.error('Error creating load:', error);
       }
