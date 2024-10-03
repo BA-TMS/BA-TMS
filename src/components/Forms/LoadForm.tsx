@@ -20,7 +20,7 @@ import Button from '../UI_Elements/buttons/Button';
 import SelectInput from '../UI_Elements/Form/SelectInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
-import { createLoad, updateLoad } from '@/store/slices/loadSlice';
+import { createLoad, updateLoad, setError } from '@/store/slices/loadSlice';
 import { LoadFormData } from '@/types/loadTypes';
 import { useRouter } from 'next/navigation';
 
@@ -66,12 +66,17 @@ export const LoadForm = () => {
 
   const isUpdate = formData !== null && formData['id'];
 
+  // action to update the error state
+  const handleError = (error: string) => {
+    dispatch(setError(error));
+  };
+
   const {
     setValue,
     handleSubmit,
     reset,
     control,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors, isSubmitting },
   } = useForm<Load>({
     defaultValues: {
       'Load Number': '',
@@ -119,20 +124,14 @@ export const LoadForm = () => {
             updatedLoad: load as unknown as LoadFormData,
           })
         ).unwrap();
-        // check status before clearning and navigating?
         saveFormValues({}, true); // clear context
+        reset(); // update form to default values
         router.push('/dispatch');
       } catch (error) {
         console.error('Error updating load:', error); // error returned from the slice
       }
     }
   };
-
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset({});
-    }
-  }, [isSubmitSuccessful, reset]);
 
   return (
     <form
@@ -229,6 +228,7 @@ export const LoadForm = () => {
             const cancel = confirm('Cancel this entry?');
             if (cancel) {
               saveFormValues({}, true); // clears context values
+              handleError('');
               router.push('/dispatch');
             } else return;
           }}
