@@ -16,13 +16,13 @@ export interface LoadData {
   payOrderNum: string;
   shipDate: Date | null;
   deliveryDate: Date | null;
-  carrierId: string;
+  carrierId: string | null;
   driverId: string | null;
   customerId: string;
   originId: string | null;
   destId: string | null;
   status: LoadStatus;
-  carrier: { name: string };
+  carrier: { name: string } | null;
   driver: { name: string } | null;
   customer: { companyName: string } | null;
   shipper: { name: string } | null;
