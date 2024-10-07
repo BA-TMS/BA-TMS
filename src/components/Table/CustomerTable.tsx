@@ -165,7 +165,12 @@ const CustomerTable = (): JSX.Element => {
       {status === 'loading' ? (
         <TableSkeleton columns={columns} />
       ) : (
-        <Table columns={columns} data={filteredValue} update={updateCustomer} />
+        <Table
+          columns={columns}
+          data={filteredValue}
+          update={updateCustomer}
+          view={() => console.log('view from table')}
+        />
       )}
     </>
   );

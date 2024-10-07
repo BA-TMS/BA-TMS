@@ -13,6 +13,7 @@ interface TableColumn {
 interface TableProps {
   columns: TableColumn[]; // title of column to be displayed
   data: Record<string, any>[]; // any shape of object
+  view?: any; //optional for viewing information
   update: any; // function for updating table entry
   deleter?: (id: string) => void; // optional database action function
   extraRowClass?: any; // add extra classes to style row if needed
@@ -21,6 +22,7 @@ interface TableProps {
 const Table = ({
   columns,
   data,
+  view,
   update,
   deleter,
   extraRowClass,
@@ -94,6 +96,7 @@ const Table = ({
                 <td className="p-4">
                   <TableActionsPopover
                     id={row['id'] as string}
+                    view={view}
                     update={update}
                     deleter={deleter}
                   />

@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
 import Button from '@ui/buttons/Button';
-import { EditIcon, ElipsisVertical, DeleteIcon } from '@/assets/SVGs';
+import { EditIcon, ElipsisVertical, DeleteIcon, EyeIcon } from '@/assets/SVGs';
 
 type TableActionsProps = {
   id: string;
+  view?: (id: string) => void; // optional to display info
   update: (param: string) => void;
   deleter?: (id: string) => void; // optional delete function
 };
@@ -14,6 +15,7 @@ type TableActionsProps = {
 
 const TableActionsPopover: React.FC<TableActionsProps> = ({
   id,
+  view,
   update,
   deleter,
 }) => {
@@ -74,6 +76,18 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({
         }`}
       >
         <span className="absolute -right-1.5 top-2 -z-10 h-2 w-2 rotate-45 rounded-sm bg-white dark:bg-grey-900 border-r-2 border-t border-grey-300 dark:border-grey-700"></span>
+
+        {view && (
+          <div className="flex flex-wrap">
+            <Button
+              onClick={() => null}
+              className="flex w-full gap-2 border-b border-grey-200 dark:border-grey-700 py-3 hover:text-primary"
+            >
+              <span>{EyeIcon}</span>
+              View Details
+            </Button>
+          </div>
+        )}
 
         <div className="flex flex-wrap">
           <Button
