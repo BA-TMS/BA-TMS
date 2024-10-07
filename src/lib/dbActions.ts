@@ -490,7 +490,7 @@ export async function updateLoad(
       ownerId: load['Owner'],
       loadNum: load['Load Number'],
       payOrderNum: load['Pay Order Number'],
-      carrierId: load['Carrier'],
+      carrierId: load['Carrier'] ? load['Carrier'] : null,
       driverId: load['Driver'] ? load['Driver'] : null,
       customerId: load['Customer'],
       originId: load['Shipper'] ? load['Shipper'] : null,
