@@ -29,7 +29,7 @@ interface StatusColors {
   COVERED: 'warning';
   DISPATCHED: 'secondary';
   LOADING: 'default';
-  ON_ROUTE: 'warning';
+  ON_ROUTE: 'info';
   UNLOADING: 'default';
   DELIVERED: 'primary';
   NEEDS_REVIEW: 'error';
@@ -42,7 +42,7 @@ const statusColors: StatusColors = {
   COVERED: 'warning',
   DISPATCHED: 'secondary',
   LOADING: 'default',
-  ON_ROUTE: 'warning',
+  ON_ROUTE: 'info',
   UNLOADING: 'default',
   DELIVERED: 'primary',
   NEEDS_REVIEW: 'error',
@@ -126,7 +126,7 @@ const tabsData: TabData[] = [
   { color: 'warning', value: 'Covered' },
   { color: 'secondary', value: 'Dispatched' },
   { color: 'default', value: 'Loading' },
-  { color: 'warning', value: 'On Route' },
+  { color: 'info', value: 'On Route' },
   { color: 'default', value: 'Unloading' },
   { color: 'primary', value: 'Delivered' },
   { color: 'error', value: 'Needs Review' },
