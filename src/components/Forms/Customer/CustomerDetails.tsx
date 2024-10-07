@@ -112,7 +112,7 @@ const CustomerDetails: React.FC = () => {
     getValues, // get values of a form field
     resetField, //reset individual form field
     control, // based on schema
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors, isSubmitting },
   } = useForm<Customer>({
     defaultValues: {
       Status: '',
@@ -202,9 +202,10 @@ const CustomerDetails: React.FC = () => {
   const onSubmit = useCallback(
     async (customer: Customer) => {
       saveFormValues(customer);
+      reset(); // update form to default values
       router.push(`/customers/${segment}/advanced`); // next step either add-customer or update-customer
     },
-    [saveFormValues, router]
+    [saveFormValues, router, segment, reset]
   );
 
   // if there's an update, we have to use the map to get the correct field values
@@ -227,40 +228,6 @@ const CustomerDetails: React.FC = () => {
       });
     }
   }, [formData, setValue]);
-
-  // clear values if successful
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset({
-        Status: '',
-        'Company Name': '',
-        'Contact Name': '',
-        'Secondary Contact Name': '',
-        'Contact Email': '',
-        Telephone: '',
-        'Toll Free': '',
-        Fax: '',
-
-        Address: '',
-        'Address Line 2': '',
-        'Address Line 3': '',
-        City: '',
-        State: '',
-        Zip: '',
-        Country: '',
-
-        'Billing Address': '',
-        'Billing Address Line 2': '',
-        'Billing Address Line 3': '',
-        'Billing City': '',
-        'Billing State': '',
-        'Billing Zip': '',
-        'Billing Country': '',
-        'Billing Email': '',
-        'Billing Telephone': '',
-      });
-    }
-  }, [isSubmitSuccessful, reset]);
 
   return (
     <div>

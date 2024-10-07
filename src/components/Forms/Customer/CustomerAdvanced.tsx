@@ -45,7 +45,7 @@ const AdvancedCustomerDetails: React.FC = () => {
     handleSubmit,
     reset,
     control,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors, isSubmitting },
   } = useForm<Customer>({
     defaultValues: {
       'Sales Rep': '',
@@ -62,9 +62,10 @@ const AdvancedCustomerDetails: React.FC = () => {
   const onSubmit = useCallback(
     async (customer: Customer) => {
       saveFormValues(customer);
+      reset(); // update form to default values
       router.push(`/customers/${segment}/review`); // next step
     },
-    [saveFormValues, router]
+    [saveFormValues, router, segment, reset]
   );
 
   // keep fields populated when switching tabs
@@ -77,20 +78,6 @@ const AdvancedCustomerDetails: React.FC = () => {
       });
     }
   }, [formData, setValue]);
-
-  // clear values if successful
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset({
-        'Sales Rep': '',
-        Currency: '',
-        'Payment Terms': '',
-        'Credit Limit': undefined,
-        'Federal ID': '',
-        'Factoring Company': '',
-      });
-    }
-  }, [isSubmitSuccessful, reset]);
 
   return (
     <div className="flex flex-col h-full">
