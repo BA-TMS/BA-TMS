@@ -4,8 +4,8 @@ import DarkModeToggle from './DarkModeToggle';
 import DropdownNotification from './DropdownNotification';
 import DropdownUser from './DropdownUser';
 import Image from 'next/image';
-import { SearchIcon } from '@/assets/icons';
-import USFlag from '@/assets/flags/Flag_US.svg';
+import { SearchIcon } from '@/assets/icons/layout';
+import USFlag from '/public/assets/icons/flags/Flag_US.svg';
 
 type HeaderProps = {
   sidebarOpen: string | boolean | undefined;

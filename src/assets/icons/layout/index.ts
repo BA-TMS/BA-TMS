@@ -1,0 +1,14 @@
+export { default as DashboardIcon } from '../layout/DashboardIcon';
+export { default as DispatchIcon } from '../layout/DispatchIcon';
+export { default as AdminIcon } from '../layout/AdminIcon';
+export { default as IFTAIcon } from '../layout/IFTAIcon';
+export { default as SalesManagerIcon } from '../layout/SalesManagerIcon';
+export { default as AccountingIcon } from '../layout/AccountingIcon';
+export { default as ReportsIcon } from '../layout/ReportsIcon';
+export { default as AddOnsIcon } from '../layout/AddOnsIcon';
+export { default as HelpIcon } from '../layout/HelpIcon';
+export { default as TerminalCredIcon } from '../layout/TerminalCredIcon';
+export { default as UserIcon } from '../layout/UserIcon';
+export { default as NotificationIcon } from '../layout/NotificationIcon';
+export { default as SearchIcon } from '../layout/SearchIcon';
+export { default as LeftArrow } from '../layout/LeftArrow';

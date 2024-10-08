@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { LeftArrow } from '@/assets/SVGs';
 import ContentBlock from './UserContentBlock';
 import Button from '@ui/buttons/Button';
 import SidebarListItem from './SidebarListItem';
@@ -14,11 +13,12 @@ import {
   DispatchIcon,
   HelpIcon,
   IFTAIcon,
+  LeftArrow,
   ReportsIcon,
   SalesManagerIcon,
   TerminalCredIcon,
   UserIcon,
-} from '@/assets/icons';
+} from '@/assets/icons/layout';
 import { Logo } from '@/assets/logo';
 import { useContext } from 'react';
 import { UserContext } from '@/Context/userContextProvider';
