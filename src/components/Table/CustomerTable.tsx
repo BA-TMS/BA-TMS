@@ -169,7 +169,7 @@ const CustomerTable = (): JSX.Element => {
           columns={columns}
           data={filteredValue}
           update={updateCustomer}
-          view={() => console.log('view from table')}
+          view={'/customers/view/'}
         />
       )}
     </>

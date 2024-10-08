@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 import Button from '@ui/buttons/Button';
 import { EditIcon, ElipsisVertical, DeleteIcon, EyeIcon } from '@/assets/SVGs';
+import Link from 'next/link';
 
 type TableActionsProps = {
   id: string;
-  view?: (id: string) => void; // optional to display info
+  view?: string; // this is an href string
   update: (param: string) => void;
   deleter?: (id: string) => void; // optional delete function
 };
@@ -26,7 +27,7 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({
 
   function handleDelete() {
     if (window.confirm('Would you like to delete this load?')) {
-      deleter(id); // call function passed to component
+      if (deleter) deleter(id); // call function passed to component
       setPopoversOpen(!popoversOpen);
     }
   }
@@ -66,6 +67,7 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({
       >
         {ElipsisVertical}
       </button>
+
       {/* Popover Start */}
       <div
         ref={popovers}
@@ -79,13 +81,15 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({
 
         {view && (
           <div className="flex flex-wrap">
-            <Button
-              onClick={() => null}
-              className="flex w-full gap-2 border-b border-grey-200 dark:border-grey-700 py-3 hover:text-primary"
-            >
-              <span>{EyeIcon}</span>
-              View Details
-            </Button>
+            <Link href={view}>
+              <Button
+                onClick={() => console.log('clicked ', id)}
+                className="flex w-full gap-2 border-b border-grey-200 dark:border-grey-700 py-3 hover:text-primary"
+              >
+                <span>{EyeIcon}</span>
+                View Details
+              </Button>
+            </Link>
           </div>
         )}
 
