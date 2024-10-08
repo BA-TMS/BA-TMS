@@ -3,12 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import {
-  AddressBookIcon,
-  LogoutIcon,
-  SettingsIcon,
-  UserIcon,
-} from '@/assets/SVGs';
+import { LogoutIcon } from '@/assets/icons';
 import { createClient } from '@util/supabase/client';
 import { useRouter } from 'next/navigation';
 import User01 from '@/assets/User01.jpg'; // replace with user uploaded image
@@ -86,7 +81,6 @@ const DropdownUser = () => {
               href="/profile"
               className="flex items-center gap-3.5 body2 duration-300 ease-in-out hover:text-primary lg:text-base"
             >
-              {UserIcon}
               My Profile
             </Link>
           </li>
@@ -95,7 +89,6 @@ const DropdownUser = () => {
               href="#"
               className="flex items-center gap-3.5 body2 duration-300 ease-in-out hover:text-primary lg:text-base"
             >
-              {AddressBookIcon}
               My Contacts
             </Link>
           </li>
@@ -104,7 +97,6 @@ const DropdownUser = () => {
               href="/user/settings"
               className="flex items-center gap-3.5 body2 duration-300 ease-in-out hover:text-primary lg:text-base"
             >
-              {SettingsIcon}
               Account Settings
             </Link>
           </li>
