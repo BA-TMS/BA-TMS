@@ -1,6 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import Button from '@ui/buttons/Button';
-import { EditIcon, ElipsisVertical, DeleteIcon, EyeIcon } from '@/assets/SVGs';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Link from 'next/link';
 
 type TableActionsProps = {
@@ -65,7 +68,7 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({
         onClick={() => setPopoversOpen(!popoversOpen)}
         className="hover:text-primary"
       >
-        {ElipsisVertical}
+        <MoreVertIcon fontSize="small" />
       </button>
 
       {/* Popover Start */}
@@ -86,7 +89,7 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({
                 onClick={() => console.log('clicked ', id)}
                 className="flex w-full gap-2 border-b border-grey-200 dark:border-grey-700 py-3 hover:text-primary"
               >
-                <span>{EyeIcon}</span>
+                <VisibilityIcon fontSize="small" />
                 View Details
               </Button>
             </Link>
@@ -100,7 +103,7 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({
             }}
             className="flex w-full gap-2 border-b border-grey-200 dark:border-grey-700 py-3 hover:text-primary"
           >
-            <span>{EditIcon}</span>
+            <EditIcon fontSize="small" />
             Edit
           </Button>
         </div>
@@ -110,7 +113,7 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({
               onClick={handleDelete}
               className="flex w-full gap-2 border-b border-grey-200 dark:border-grey-700 py-3 hover:text-primary"
             >
-              <span>{DeleteIcon}</span>
+              <DeleteIcon fontSize="small" />
               Delete
             </Button>
           </div>
