@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { LeftArrow } from '@/assets/SVGs';
 import ContentBlock from './UserContentBlock';
 import Button from '@ui/buttons/Button';
 import SidebarListItem from './SidebarListItem';
@@ -14,6 +13,7 @@ import {
   DispatchIcon,
   HelpIcon,
   IFTAIcon,
+  LeftArrow,
   ReportsIcon,
   SalesManagerIcon,
   TerminalCredIcon,

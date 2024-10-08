@@ -11,3 +11,4 @@ export { default as TerminalCredIcon } from '../layout/TerminalCredIcon';
 export { default as UserIcon } from '../layout/UserIcon';
 export { default as NotificationIcon } from '../layout/NotificationIcon';
 export { default as SearchIcon } from '../layout/SearchIcon';
+export { default as LeftArrow } from '../layout/LeftArrow';
