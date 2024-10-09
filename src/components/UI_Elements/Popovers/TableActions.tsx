@@ -107,6 +107,7 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({
             Edit
           </Button>
         </div>
+
         {deleter && (
           <div className="flex flex-wrap">
             <Button
