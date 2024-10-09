@@ -2,8 +2,8 @@ import { Decimal } from '@prisma/client/runtime/library';
 
 export type CustomerData = {
   id: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date | string;
+  updatedAt: Date | string;
   status: string; // "ACTIVE" | "INACTIVE" ??
   companyName: string;
   contactName: string;
@@ -31,7 +31,7 @@ export type CustomerData = {
   billingPostCode: string;
   currency: string;
   paymentTerms: string;
-  creditLimit: number | Decimal; // or null?
+  creditLimit: number | Decimal | string;
   federalID: string;
   // factor: string | null;
   factor: { name: string } | null;

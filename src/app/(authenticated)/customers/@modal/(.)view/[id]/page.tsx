@@ -1,13 +1,15 @@
 'use client';
 
 import Modal from '@ui/Modal/Modal';
+import ViewCustomer from '@/components/Forms/Customer/ViewCustomer';
 
 // this is an intercepting route that builds a modal
 // it uses dynamic routing as we don't know what the id is
 
-export default function CustomerModal() {
+export default function ViewCustomerModal() {
   // get the customer information so we can see it
   // will have to fetch from the database/ pass info?
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const customer = {
     id: 'c8f660e0-4bdd-47b7-a400-d94fd7e13e87',
     createdAt: '2024-10-02T20:55:36.078Z',
@@ -47,7 +49,7 @@ export default function CustomerModal() {
 
   return (
     <Modal title={'View Customer'}>
-      <h1>Look at the customer details!</h1>
+      <ViewCustomer data={customer} />
     </Modal>
   );
 }
