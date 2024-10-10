@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { usePathname } from 'next/navigation';
 import Modal from '@ui/Modal/Modal';
 import ViewCustomer from '@/components/Forms/Customer/ViewCustomer';
+import ViewCustomerSkeleton from '@/components/Forms/Customer/ViewCustomerSkeleton';
 import { RootState } from '@/store/store';
 import { CustomerData } from '@/types/customerTypes';
 
@@ -24,13 +25,11 @@ export default function ViewCustomerModal() {
     )
   );
 
+  // const customer = undefined;
+
   return (
     <Modal title={'View Customer'}>
-      {customer ? (
-        <ViewCustomer data={customer} />
-      ) : (
-        <p className="caption my-1 text-error-dark">Something went wrong.</p> // change to skeleton
-      )}
+      {customer ? <ViewCustomer data={customer} /> : <ViewCustomerSkeleton />}
     </Modal>
   );
 }

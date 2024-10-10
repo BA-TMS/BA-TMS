@@ -4,14 +4,14 @@ import { useSelector } from 'react-redux';
 import { usePathname } from 'next/navigation';
 import FullPageFormContainer from '@/components/UI_Elements/Form/FullPageContainer';
 import ViewCustomer from '@/components/Forms/Customer/ViewCustomer';
+import ViewCustomerSkeleton from '@/components/Forms/Customer/ViewCustomerSkeleton';
 import { RootState } from '@/store/store';
 import { CustomerData } from '@/types/customerTypes';
 
-// this is an intercepting route that builds a modal
-// it uses dynamic routing as we don't know what the id is
+// page uses dynamic routing as we don't know what the id is
 // takes in the id to find the entry
 
-export default function ViewCustomerModal() {
+export default function ViewCustomerPage() {
   const pathname = usePathname();
 
   // slice the pathname to get the id
@@ -26,11 +26,7 @@ export default function ViewCustomerModal() {
 
   return (
     <FullPageFormContainer title={'View Customer'}>
-      {customer ? (
-        <ViewCustomer data={customer} />
-      ) : (
-        <p className="caption my-1 text-error-dark">Something went wrong.</p> // change to skeleton
-      )}
+      {customer ? <ViewCustomer data={customer} /> : <ViewCustomerSkeleton />}
     </FullPageFormContainer>
   );
 }
