@@ -2,6 +2,9 @@
 'use client';
 
 // this component displays information
+// do we even need it?
+
+// make it format an address
 
 // optional props
 interface DisplayProps {
@@ -11,11 +14,11 @@ interface DisplayProps {
 
 const DataDisplay = ({ title, text }: DisplayProps) => {
   return (
-    <div className="mt-2.5 mb-1 px-1.5 pb-1.5 flex justify-between items-center w-full border-b border-grey-300 dark:border-grey-700">
-      <p className="subtitle1 text-grey-800 dark:text-white bg-transparent">
+    <div className="relative mb-1.5">
+      <p className="subtitle2 px-2 text-grey-800 dark:text-white bg-transparent">
         {title}
       </p>
-      <p className="py-1 body1 text-grey-800 dark:text-white bg-transparent">
+      <p className="block indent-5 px-3 py-3.5 w-full h-12 body2 text-grey-800 bg-grey-300 rounded-[7px]">
         {text}
       </p>
     </div>
