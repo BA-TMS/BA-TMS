@@ -25,8 +25,6 @@ export default function ViewCustomerModal() {
     )
   );
 
-  // const customer = undefined;
-
   return (
     <Modal title={'View Customer'}>
       {customer ? <ViewCustomer data={customer} /> : <ViewCustomerSkeleton />}

@@ -5,14 +5,13 @@ import Button from '../../UI_Elements/buttons/Button';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store/store';
 import { createCustomer, updateCustomer } from '@/store/slices/customerSlice';
-import { CustomerData } from '@/types/customerTypes';
+import { CustomerData, CustomerFormData } from '@/types/customerTypes';
 import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 import AddressDisplay from '@/components/UI_Elements/Display/AddressDisplay';
 import { useRouter } from 'next/navigation';
-import { getFactor } from '@/lib/dbActions';
 
 // this component submits form data from the context to database using redux
-// TODO: the design, validation, + error handling could be improved
+// TODO: display factoring company name instead of id
 
 // Define the validation schema for customer data
 const customerSchema = yup.object({
@@ -90,7 +89,9 @@ const CustomerForm = () => {
       .then(async () => {
         if (!isUpdate) {
           try {
-            await dispatch(createCustomer(customer)).unwrap();
+            await dispatch(
+              createCustomer(customer as unknown as CustomerFormData)
+            ).unwrap();
           } catch (error) {
             setError(`Error creating customer: ${error}`);
           }
@@ -109,6 +110,7 @@ const CustomerForm = () => {
         setIsSubmitting(false);
       })
       .catch((error) => {
+        console.error(error); // do something with this?
         setError('Please fill out all required fields');
         setIsSubmitting(false);
       });
