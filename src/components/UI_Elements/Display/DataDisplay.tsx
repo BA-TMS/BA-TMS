@@ -10,7 +10,7 @@ interface DisplayProps {
 
 const DataDisplay = ({ title, text }: DisplayProps) => {
   return (
-    <div className="relative mb-1.5">
+    <div className="relative my-1.5">
       <p className="subtitle2 px-2 text-grey-800 dark:text-white bg-transparent">
         {title}
       </p>
