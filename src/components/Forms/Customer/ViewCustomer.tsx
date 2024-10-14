@@ -21,16 +21,15 @@ const ViewCustomer = ({ data }: ViewCustomerProps) => {
 
   return (
     <div className="px-4.5 py-4 flex flex-col">
+      <DataDisplay title="Customer Name" text={data['companyName']} />
+
       <div className="flex flex-col gap-5 xl:flex-row">
         <div className="flex flex-col self-center w-full">
           <DataDisplay title="Status" text={data['status']} />
-          <DataDisplay title="Customer Name" text={data['companyName']} />
           <DataDisplay title="Broker/ Rep" text={data['salesRepName']} />
           <DataDisplay title="Payment Terms" text={data['paymentTerms']} />
-          <DataDisplay
-            title="Current Credit Balance"
-            text={data['creditLimit']}
-          />
+          <DataDisplay title="Current Credit Balance" text={undefined} />
+          <DataDisplay title="Credit Limit" text={data['creditLimit']} />
           <DataDisplay title="Currency" text={data['currency']} />
           <DataDisplay title="Federal ID" text={data['federalID']} />
         </div>
