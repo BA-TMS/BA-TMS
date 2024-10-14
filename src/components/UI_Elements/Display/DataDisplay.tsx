@@ -2,11 +2,7 @@
 'use client';
 
 // this component displays information
-// do we even need it?
 
-// make it format an address
-
-// optional props
 interface DisplayProps {
   title: string;
   text: any;
