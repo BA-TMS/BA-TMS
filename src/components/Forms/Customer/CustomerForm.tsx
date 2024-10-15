@@ -9,9 +9,10 @@ import { CustomerData, CustomerFormData } from '@/types/customerTypes';
 import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 import AddressDisplay from '@/components/UI_Elements/Display/AddressDisplay';
 import { useRouter } from 'next/navigation';
+import { getFactor } from '@/lib/dbActions';
 
 // this component submits form data from the context to database using redux
-// TODO: display factoring company name instead of id
+// TODO: find better way to get factor name than a db call?
 
 // Define the validation schema for customer data
 const customerSchema = yup.object({
@@ -67,12 +68,25 @@ const CustomerForm = () => {
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [factor, setFactor] = useState<string | undefined>(''); // factor name
 
   const dispatch = useDispatch<AppDispatch>();
 
   const { formData, saveFormValues } = useContext(ModalContext);
 
+  const factorId = formData['Factoring Company'];
+
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
+
+  // fetch factor name when component mounts
+  useEffect(() => {
+    const fetchFactor = async () => {
+      const fetchedFactor = await getFactor(factorId);
+      setFactor(fetchedFactor?.name);
+    };
+
+    fetchFactor();
+  }, [factorId]);
 
   useEffect(() => {
     if (formData !== null && formData['id']) {
@@ -156,7 +170,8 @@ const CustomerForm = () => {
             <DataDisplay title="Fax" text={formData['Fax']} />
             <DataDisplay
               title="Factoring Company"
-              text={formData['Factoring Company']}
+              // text={formData['Factoring Company']}
+              text={factor}
             />
           </div>
         </div>

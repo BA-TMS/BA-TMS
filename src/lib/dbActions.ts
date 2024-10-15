@@ -65,6 +65,17 @@ export async function getDrivers() {
   return drivers;
 }
 
+export async function getFactor(id: string) {
+  const factor = await prisma.factor.findUnique({
+    where: {
+      id: id,
+    },
+  });
+
+  console.log(factor);
+  return factor;
+}
+
 export async function getFactors() {
   const factor = await prisma.factor.findMany();
   return factor;
