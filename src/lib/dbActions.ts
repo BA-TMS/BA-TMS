@@ -72,7 +72,6 @@ export async function getFactor(id: string) {
     },
   });
 
-  console.log(factor);
   return factor;
 }
 
