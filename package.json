@@ -7,9 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "docker": "npx ts-node util/dispatcher.ts docker",
-    "delete-docker-container": "npx ts-node util/dispatcher.ts delete-docker-container",
-    "dbsetup": "npx ts-node util/dispatcher.ts dbsetup",
+    "docker": "npx ts-node scripts/dispatcher.ts docker",
+    "delete-docker-container": "npx ts-node scripts/dispatcher.ts delete-docker-container",
+    "dbsetup": "npx ts-node scripts/dispatcher.ts dbsetup",
     "seed": "npx ts-node prisma/seed.ts",
     "reset": "rm -rf .next/ node_modules/ next-env.d.ts && yarn --frozen-lockfile && yarn delete-docker-container && yarn docker && yarn dev"
   },
