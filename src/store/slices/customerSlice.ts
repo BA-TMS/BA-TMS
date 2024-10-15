@@ -22,7 +22,9 @@ const formatron = function (customer: CustomerData) {
   return {
     ...customer,
     factor: customer.factor ? customer.factor.name : null,
-  } as CustomerData;
+    createdAt: customer.createdAt ? customer.createdAt.toISOString() : null,
+    updatedAt: customer.updatedAt ? customer.updatedAt.toISOString() : null,
+  } as unknown as CustomerData;
 };
 
 // Define Async Thunks
