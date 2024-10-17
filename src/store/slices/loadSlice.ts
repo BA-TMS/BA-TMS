@@ -29,7 +29,7 @@ const formatron = function (rawLoad: LoadData) {
       ? rawLoad.deliveryDate.toDateString()
       : null,
 
-    carrier: rawLoad.carrier.name,
+    carrier: rawLoad.carrier ? rawLoad.carrier.name : null,
     driver: rawLoad.driver ? rawLoad.driver.name : null,
     customer: rawLoad.customer ? rawLoad.customer.companyName : null,
     shipper: rawLoad.shipper ? rawLoad.shipper.name : null,
@@ -54,7 +54,9 @@ export const createLoad = createAsyncThunk<LoadData, LoadFormData>(
 
       return formatron(newLoad);
     } catch (error) {
-      return rejectWithValue('Failed to create new Load');
+      let message = 'Failed to Create Load';
+      if (error instanceof Error) message = error.message;
+      return rejectWithValue(message); // what is returned if there is an error - comes from error in db action
     }
   }
 );
@@ -64,9 +66,12 @@ export const updateLoad = createAsyncThunk<LoadData, UpdateLoadPayload>(
   async ({ id, updatedLoad }: UpdateLoadPayload, { rejectWithValue }) => {
     try {
       const load = await apiUpdateLoad(id, { formData: updatedLoad });
+
       return formatron(load);
     } catch (error) {
-      return rejectWithValue('Failed to update Load');
+      let message = 'Failed to Update Load';
+      if (error instanceof Error) message = error.message;
+      return rejectWithValue(message); // what is returned if there is an error - comes from error in db action
     }
   }
 );
@@ -87,7 +92,11 @@ const loadSlice = createSlice({
     status: 'idle',
     error: null,
   },
-  reducers: {},
+  reducers: {
+    setError: (state, action) => {
+      state.error = action.payload; // update the error state
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchLoads.pending, (state) => {
@@ -107,12 +116,21 @@ const loadSlice = createSlice({
       .addCase(
         createLoad.fulfilled,
         (state, action: PayloadAction<LoadData>) => {
+          state.status = 'succeeded';
+          state.error = null;
           state.items.push(action.payload);
         }
       )
+      .addCase(createLoad.rejected, (state, action) => {
+        const message = action.payload;
+        state.status = 'failed';
+        state.error = message as string;
+      })
       .addCase(
         updateLoad.fulfilled,
         (state, action: PayloadAction<LoadData>) => {
+          state.status = 'succeeded';
+          state.error = null;
           const index = state.items.findIndex(
             (load) => load.id === action.payload.id
           );
@@ -121,6 +139,11 @@ const loadSlice = createSlice({
           }
         }
       )
+      .addCase(updateLoad.rejected, (state, action) => {
+        const message = action.payload;
+        state.status = 'failed';
+        state.error = message as string;
+      })
       .addCase(deleteLoad.fulfilled, (state, action) => {
         state.items = state.items.filter(
           (load) => load.id !== action.meta.arg.toString()
@@ -129,4 +152,5 @@ const loadSlice = createSlice({
   },
 });
 
+export const { setError } = loadSlice.actions;
 export default loadSlice.reducer;

@@ -1,9 +1,8 @@
-// components/Load.tsx
+'use client';
+
 import { useContext, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ModalContext } from '@/Context/modalContext';
-import FormModal from '../Modals/FormModal';
-import LoadForm from '../Forms/LoadForm';
 import Table from '../UI_Elements/Table/Table';
 import TableSkeleton from '../UI_Elements/Table/TableSkeleton';
 import Button from '../UI_Elements/buttons/Button';
@@ -17,38 +16,50 @@ import { fetchLoads } from '@/store/slices/loadSlice';
 import { AppDispatch, RootState } from '@/store/store';
 import { getLoad } from '@/lib/dbActions';
 import { deleteLoad } from '@/store/slices/loadSlice';
-import { LoadData } from '@/types/loadTypes';
+import { LoadData, loadFieldMap } from '@/types/loadTypes';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 dayjs.extend(customParseFormat);
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 
 interface StatusColors {
-  ON_ROUTE: 'warning';
+  OPEN: 'error';
   COVERED: 'warning';
-  OPEN: 'primary';
-  REFUSED: 'secondary';
-  PENDING: 'error';
+  DISPATCHED: 'secondary';
+  LOADING: 'default';
+  ON_ROUTE: 'info';
+  UNLOADING: 'default';
+  DELIVERED: 'primary';
+  NEEDS_REVIEW: 'error';
+  CLAIM: 'warning';
 }
 
 // Define status colors
 const statusColors: StatusColors = {
-  ON_ROUTE: 'warning',
+  OPEN: 'error',
   COVERED: 'warning',
-  OPEN: 'primary',
-  REFUSED: 'secondary',
-  PENDING: 'error',
+  DISPATCHED: 'secondary',
+  LOADING: 'default',
+  ON_ROUTE: 'info',
+  UNLOADING: 'default',
+  DELIVERED: 'primary',
+  NEEDS_REVIEW: 'error',
+  CLAIM: 'warning',
 };
 
 // display status
 const displayStatus: { [key: string]: string } = {
-  ON_ROUTE: 'On Route',
   OPEN: 'Open',
-  REFUSED: 'Refused',
   COVERED: 'Covered',
-  PENDING: 'Pending',
   DISPATCHED: 'Dispatched',
-  LOADING_UNLOADING: '(Un)Loading',
+  LOADING: 'Loading',
+  ON_ROUTE: 'On Route',
+  UNLOADING: 'Unloading',
+  DELIVERED: 'Delivered',
+  NEEDS_REVIEW: 'Needs Review',
+  CLAIM: 'Claim',
 };
 
 // Function to get color by status
@@ -60,7 +71,14 @@ const getColorByStatus = (status: string) => {
 };
 
 // Define columns for the table
-const columns = [
+
+type LoadColumn = {
+  field: string;
+  headerName: string;
+  cellRenderer?: (value: string) => JSX.Element;
+};
+
+const columns: LoadColumn[] = [
   { field: 'loadNum', headerName: 'Load Number' },
   { field: 'payOrderNum', headerName: 'PO Number' },
   { field: 'customer', headerName: 'Customer' },
@@ -87,21 +105,47 @@ const columns = [
   },
 ];
 
+// Options for seach dropdown - can only be values from header name
+// this will need to be updated as we add more to load details
+const dropdownOptions: string[] = [
+  'All',
+  'Load Number',
+  'Customer',
+  'Date Shipped',
+  'Date Delivered',
+  'Carrier',
+  'Driver',
+  'Shipper',
+  'Consignee',
+];
+
 // Define tabs data
 const tabsData: TabData[] = [
-  { color: 'info', value: 'All' },
-  { color: 'warning', value: 'On Route' },
-  { color: 'primary', value: 'Open' },
-  { color: 'secondary', value: 'Refused' },
+  { color: 'primary', value: 'All' },
+  { color: 'error', value: 'Open' },
   { color: 'warning', value: 'Covered' },
-  { color: 'error', value: 'Pending' },
-  { color: 'default', value: 'Dispatched' },
-  { color: 'default', value: '(Un)Loading' },
+  { color: 'secondary', value: 'Dispatched' },
+  { color: 'default', value: 'Loading' },
+  { color: 'info', value: 'On Route' },
+  { color: 'default', value: 'Unloading' },
+  { color: 'primary', value: 'Delivered' },
+  { color: 'error', value: 'Needs Review' },
+  { color: 'warning', value: 'Claim' },
 ];
+
+// pass this to table
+function rowClass(row: Record<string, string>) {
+  return row.status === 'NEEDS_REVIEW'
+    ? '!text-bold bg-error-dark bg-opacity-16'
+    : '';
+}
 
 const Load = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { toggleOpen, saveFormValues } = useContext(ModalContext);
+
+  const { saveFormValues } = useContext(ModalContext);
+
+  const router = useRouter();
 
   const {
     items: loads,
@@ -110,11 +154,20 @@ const Load = () => {
   } = useSelector((state: RootState) => state.loads);
 
   const [filteredLoads, setFilteredLoads] = useState<LoadData[]>([]);
+
   const [searchByDateRangeStart, setSearchByDateRangeStart] =
     useState<dayjs.Dayjs | null>(null);
+
   const [searchByDateRangeEnd, setSearchByDateRangeEnd] =
     useState<dayjs.Dayjs | null>(null);
-  const [handleSearchValue, setHandleSearchValue] = useState<string>('');
+
+  // value to search for
+  const [searchValue, setSearchValue] = useState<string>('');
+
+  // specific field to search if any
+  const [searchField, setSearchField] = useState<string>('All');
+
+  // status of load
   const [statusValue, setStatusValue] = useState<string>('All');
 
   // Fetch loads from the API
@@ -130,15 +183,16 @@ const Load = () => {
       searchByDateRangeStart,
       searchByDateRangeEnd
     );
-    updatedLoads = handleSearchFilter(updatedLoads, handleSearchValue);
+    updatedLoads = handleSearch(updatedLoads, searchValue, searchField); // narrow down focus with searchField
     updatedLoads = searchByStatusFilter(updatedLoads, statusValue);
     setFilteredLoads(updatedLoads);
   }, [
     loads,
     searchByDateRangeStart,
     searchByDateRangeEnd,
-    handleSearchValue,
+    searchValue,
     statusValue,
+    searchField,
   ]);
 
   // Function to filter by date range
@@ -162,15 +216,36 @@ const Load = () => {
     });
   }
 
+  // update specific field to search
+  // passing this to TableSearch
+  function updateField(field: string) {
+    setSearchField(field);
+  }
+
   // Function to handle search filter
-  function handleSearchFilter(incLoads: LoadData[], value: string) {
+  function handleSearch(incLoads: LoadData[], value: string, field: string) {
     if (!value) return incLoads;
 
-    return incLoads.filter((load) =>
-      Object.values(load).some((field) =>
-        field?.toString().toLowerCase().includes(value.toLowerCase())
-      )
-    );
+    // map the user-friendly field name to the actual data field name
+    const fieldKey = loadFieldMap[field];
+
+    if (field === 'All') {
+      // Search across all fields
+      return incLoads.filter((load) =>
+        Object.values(load).some((field) => {
+          return field?.toString().toLowerCase().includes(value.toLowerCase());
+        })
+      );
+    } else {
+      // search specific field - map it to get correct key name
+
+      return incLoads.filter((load) => {
+        return load[fieldKey]
+          ?.toString()
+          .toLowerCase()
+          .includes(value.toLowerCase());
+      });
+    }
   }
 
   // Function to filter by status
@@ -178,13 +253,15 @@ const Load = () => {
     if (value === 'All') return incLoads;
 
     const statusMapping: { [key: string]: string } = {
-      'On Route': 'ON_ROUTE',
       Open: 'OPEN',
-      Refused: 'REFUSED',
       Covered: 'COVERED',
-      Pending: 'PENDING',
       Dispatched: 'DISPATCHED',
-      '(Un)Loading': 'LOADING_UNLOADING',
+      Loading: 'LOADING',
+      'On Route': 'ON_ROUTE',
+      Unloading: 'UNLOADING',
+      Delivered: 'DELIVERED',
+      'Needs Review': 'NEEDS_REVIEW',
+      Claim: 'CLAIM',
     };
 
     return incLoads.filter((load) => load.status === statusMapping[value]);
@@ -195,25 +272,26 @@ const Load = () => {
     if (value === 'All') return loads.length;
 
     const statusMapping: { [key: string]: string } = {
-      'On Route': 'ON_ROUTE',
       Open: 'OPEN',
-      Refused: 'REFUSED',
       Covered: 'COVERED',
-      Pending: 'PENDING',
       Dispatched: 'DISPATCHED',
-      '(Un)Loading': 'LOADING_UNLOADING',
+      Loading: 'LOADING',
+      'On Route': 'ON_ROUTE',
+      Unloading: 'UNLOADING',
+      Delivered: 'DELIVERED',
+      'Needs Review': 'NEEDS_REVIEW',
+      Claim: 'CLAIM',
     };
 
     return loads.filter((load) => load.status === statusMapping[value]).length;
   };
 
-  // function to update load
+  // open update-load and populate form with values
   const updateLoad = async (id: string) => {
     const data = await getLoad(id);
-    // save fetched data to formData in ModalContext
     if (data !== null) {
       saveFormValues(data);
-      toggleOpen();
+      router.push('/dispatch/update-load/details');
     }
   };
 
@@ -230,16 +308,16 @@ const Load = () => {
     <>
       <div className="relative flex justify-end mb-6">
         <div className="absolute right-4 bottom-2">
-          <Button onClick={toggleOpen}>Add Load</Button>
+          <Link href="/dispatch/add-load/details">
+            <Button>Add Load</Button>
+          </Link>
         </div>
-        <FormModal formTitle="New Load">
-          <LoadForm />
-        </FormModal>
       </div>
       <CustomTabs tabs={tabsData} sort={setStatusValue} count={getCount} />
       <TableSearch
-        dropdownOptions={['Option 1', 'Option 2', 'Option 3']}
-        search={setHandleSearchValue}
+        dropdownOptions={dropdownOptions}
+        updateField={updateField}
+        search={setSearchValue} // set the value to search for
         dateSearch={(startDate, endDate) => {
           setSearchByDateRangeStart(startDate);
           setSearchByDateRangeEnd(endDate);
@@ -255,6 +333,7 @@ const Load = () => {
           data={filteredLoads}
           update={updateLoad}
           deleter={loadDelete}
+          extraRowClass={rowClass}
         />
       )}
     </>

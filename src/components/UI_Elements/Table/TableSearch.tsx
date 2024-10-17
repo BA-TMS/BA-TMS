@@ -4,20 +4,18 @@ import Searchbar from '../Searchbar';
 import Dropdown from '../Input/Dropdown';
 import dayjs from 'dayjs';
 
-// pass this component a function to handle field search
-// and an optional function to handle date search
-// TODO: This element needs dropdowns handled, currently does not have functionality
+// pass this component props to handle searching in a table
 
 interface SearchProps {
   placeholder: string; // placeholder text for search bar
   dropdownLabel?: string; // optional label for dropdown component
   dropdownOptions: string[]; // options to pass to dropdown
   search: (arg: string) => void; // handles field search from parent component
+  updateField: (arg: string) => void; // update the field to narrow search focus
   dateSearch?: (
-    // optional function to handle search by date
     startDate: dayjs.Dayjs | null,
     endDate: dayjs.Dayjs | null
-  ) => void;
+  ) => void; // optional function to handle search by date
 }
 
 export function TableSearch({
@@ -26,6 +24,7 @@ export function TableSearch({
   dropdownOptions,
   search,
   dateSearch,
+  updateField,
 }: SearchProps) {
   const [startDate, setStartDate] = useState<dayjs.Dayjs | null>(null);
   const [endDate, setEndDate] = useState<dayjs.Dayjs | null>(null);
@@ -46,13 +45,13 @@ export function TableSearch({
         placeholder={placeholder}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
           const value = e.target.value;
-          search(value);
+          search(value); // update the search value
         }}
       />
       <Dropdown
         label={dropdownLabel ? dropdownLabel : 'Field'}
         options={dropdownOptions}
-        sort={(value) => search(value)}
+        searchField={updateField} // update the field to search
       />
 
       {dateSearch && (

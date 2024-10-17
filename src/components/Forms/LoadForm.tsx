@@ -18,23 +18,25 @@ import {
 import DateSelect from '../UI_Elements/Form/DateSelect';
 import Button from '../UI_Elements/buttons/Button';
 import SelectInput from '../UI_Elements/Form/SelectInput';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '@/store/store';
-import { createLoad, updateLoad } from '@/store/slices/loadSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/store/store';
+import { createLoad, updateLoad, setError } from '@/store/slices/loadSlice';
 import { LoadFormData } from '@/types/loadTypes';
-
-const status = [
-  { 'On Route': 'ON_ROUTE' },
-  { Open: 'OPEN' },
-  { Refused: 'REFUSED' },
-  { Covered: 'COVERED' },
-  { Pending: 'PENDING' },
-  { Dispatched: 'DISPATCHED' },
-  { '(Un)Loading': 'LOADING_UNLOADING' },
-  // { 'In Yard': 'IN_YARD' },
-];
+import { useRouter } from 'next/navigation';
 
 // this component handles form validation and submission with react-hook-form and yup
+
+const status = [
+  { Open: 'OPEN' },
+  { Covered: 'COVERED' },
+  { Dispatched: 'DISPATCHED' },
+  { Loading: 'LOADING' },
+  { 'On Route': 'ON_ROUTE' },
+  { Unloading: 'UNLOADING' },
+  { Delivered: 'DELIVERED' },
+  { 'Needs Review': 'NEEDS_REVIEW' },
+  { Claim: 'CLAIM' },
+];
 
 const loadSchema = yup.object({
   Owner: yup.string().required('Enter owner for this load'),
@@ -43,7 +45,7 @@ const loadSchema = yup.object({
   'Pay Order Number': yup.string().required('Enter PO number for your records'), // do we need a max number of characters?
   Customer: yup.string().required('Enter customer for load'),
   Driver: yup.string().nullable(),
-  Carrier: yup.string().required('Who will be carrying this load?'),
+  Carrier: yup.string().nullable(),
   Shipper: yup.string().nullable(),
   Consignee: yup.string().nullable(),
   'Ship Date': yup.date().nullable(),
@@ -53,15 +55,28 @@ const loadSchema = yup.object({
 type Load = yup.InferType<typeof loadSchema>;
 
 export const LoadForm = () => {
+  const router = useRouter();
+
   const dispatch = useDispatch<AppDispatch>();
+
+  // use extra reducers for error handling
+  const errorState = useSelector((state: RootState) => state.loads.error);
+
+  const { formData, saveFormValues } = useContext(ModalContext);
+
+  const isUpdate = formData !== null && formData['id'];
+
+  // action to update the error state
+  const handleError = (error: string) => {
+    dispatch(setError(error));
+  };
 
   const {
     setValue,
     handleSubmit,
-    // setError,
     reset,
     control,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors, isSubmitting },
   } = useForm<Load>({
     defaultValues: {
       'Load Number': '',
@@ -72,15 +87,9 @@ export const LoadForm = () => {
     resolver: yupResolver(loadSchema),
   });
 
-  const { toggleOpen, formData, saveFormValues } = useContext(ModalContext);
-
-  const isUpdate = formData !== null && formData['id'];
-
   // populate with existing data when updating
   useEffect(() => {
     if (isUpdate) {
-      // populate form with data from context
-      console.log('FORMDATA', formData);
       setValue('Owner', formData['ownerId']);
       setValue('Status', formData['status']);
       setValue('Load Number', formData['loadNum']);
@@ -96,7 +105,7 @@ export const LoadForm = () => {
   }, [formData, setValue, isUpdate]);
 
   // Form submission handler
-  // react-hook-form submission handler (line 138) expects a type of Load as determined by yup schema
+  // react-hook-form submission handler expects a type of Load as determined by yup schema
   // casting type in the dispatch actions because dispatch actions expects different types
   // this data becomes different type at other points in the process so this should be safe
 
@@ -104,8 +113,8 @@ export const LoadForm = () => {
     if (!isUpdate) {
       try {
         await dispatch(createLoad(load as unknown as LoadFormData)).unwrap();
-        reset();
-        toggleOpen();
+        reset(); // update form to default values
+        router.push('/dispatch');
       } catch (error) {
         console.error('Error creating load:', error);
       }
@@ -117,31 +126,24 @@ export const LoadForm = () => {
             updatedLoad: load as unknown as LoadFormData,
           })
         ).unwrap();
-
-        reset();
-        saveFormValues({}, true); // TS error from default param
-        toggleOpen();
+        saveFormValues({}, true); // clear context
+        reset(); // update form to default values
+        router.push('/dispatch');
       } catch (error) {
-        console.error('Error updating load:', error);
+        console.error('Error updating load:', error); // error returned from the slice
       }
     }
   };
-
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset({});
-    }
-  }, [isSubmitSuccessful, reset]);
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col justify-between"
     >
-      <p className="px-4.5 mt-3.5 mb-5 body2 text-grey-800 dark:text-white">
-        Set the details
+      <p className="mt-3.5 mb-5 body2 text-grey-800 dark:text-white">
+        Set load details
       </p>
-      <div className="px-4.5">
+      <div>
         <DynamicSelect
           control={control}
           name="Owner"
@@ -176,7 +178,7 @@ export const LoadForm = () => {
             <DynamicSelect
               control={control}
               name="Carrier"
-              required={true}
+              required={false}
               dbaction={getCarriers}
             />
 
@@ -218,23 +220,32 @@ export const LoadForm = () => {
           )}
         </div>
       </div>
-      <div className="py-3.5 px-4.5 border-t border-grey-300 dark:border-grey-700 flex justify-end gap-2.5">
-        <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Submitting' : isUpdate ? 'Update' : 'Add'}
-        </Button>
-
+      <div className="py-3.5 gap-2 border-t border-grey-300 dark:border-grey-700 flex justify-between sticky bottom-0 bg-white dark:bg-grey-900 z-10">
         <Button
           type="button"
-          disabled={isSubmitting}
-          onClick={() => {
-            if (isUpdate) saveFormValues({}, true); // TS error from default param
-            reset();
-            toggleOpen();
-          }}
           variant="outline"
           intent="default"
+          disabled={isSubmitting}
+          onClick={() => {
+            const cancel = confirm('Cancel this entry?');
+            if (cancel) {
+              saveFormValues({}, true); // clears context values
+              handleError('');
+              router.push('/dispatch');
+            } else return;
+          }}
         >
           Cancel
+        </Button>
+
+        {errorState && ( // errors coming from redux toolkit
+          <div className="min-h-5 mr-2 self-center">
+            <p className="caption mb-1 text-error-dark">{errorState}</p>
+          </div>
+        )}
+
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? 'Submitting' : isUpdate ? 'Update' : 'Add'}
         </Button>
       </div>
     </form>
