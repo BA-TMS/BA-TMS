@@ -40,7 +40,7 @@ export default function Carriers() {
     <>
       <div className="relative flex justify-end mb-6">
         <div className="absolute right-4 bottom-2">
-          <Link href="#">
+          <Link href="/carriers/add-carrier/details">
             <Button>Add Carrier</Button>
           </Link>
         </div>
