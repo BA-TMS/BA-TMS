@@ -2,11 +2,18 @@
 
 import { useContext, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { ModalContext } from '@/Context/modalContext';
 import Table from '../UI_Elements/Table/Table';
+import TableSkeleton from '../UI_Elements/Table/TableSkeleton';
+import { TableSearch } from '../UI_Elements/Table/TableSearch';
+import TableHeaderBlank from '../UI_Elements/Table/TableHeaderBlank';
 import Button from '../UI_Elements/buttons/Button';
 import { fetchCarriers } from '@/store/slices/carrierSlice';
+import { CarrierData } from '@/types/carrierTypes';
 import { AppDispatch, RootState } from '@/store/store';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { getCarrier } from '@/lib/dbActions';
 
 const columns = [
   { field: 'name', headerName: 'Name' },
@@ -23,14 +30,40 @@ const columns = [
   { field: 'taxId', headerName: 'Tax ID' },
 ];
 
+const dropdownOptions: string[] = ['All', 'Name'];
+
 export default function Carriers() {
+  const [searchValue, setSearchValue] = useState<string>(''); // search value
+  const [searchField, setSearchField] = useState<string>('All'); // specific field if any
+  const [filteredValue, setFilteredValue] = useState<CarrierData[]>([]);
+
   const dispatch = useDispatch<AppDispatch>();
+
+  const router = useRouter();
 
   const {
     items: carriers,
     status,
-    error,
+    // error,
   } = useSelector((state: RootState) => state.carriers);
+
+  const { saveFormValues } = useContext(ModalContext);
+
+  // update specific field to search
+  // passing this to TableSearch
+  function updateField(field: string) {
+    setSearchField(field);
+  }
+
+  // update carrier
+  // would it actually be easier to pull this info from redux?
+  const updateCarrier = async (id: string) => {
+    const data = await getCarrier(id);
+    if (data !== null) {
+      saveFormValues(data);
+      router.push('/carriers/update-carrier/details');
+    }
+  };
 
   useEffect(() => {
     dispatch(fetchCarriers());
@@ -45,7 +78,26 @@ export default function Carriers() {
           </Link>
         </div>
       </div>
-      <Table columns={columns} data={carriers}></Table>
+      <TableHeaderBlank />
+      <TableSearch
+        placeholder={'Search...'}
+        dropdownLabel="Sort By"
+        dropdownOptions={dropdownOptions}
+        search={setSearchValue}
+        updateField={updateField}
+      />
+
+      {status === 'loading' ? (
+        <TableSkeleton columns={columns} />
+      ) : (
+        <Table
+          columns={columns}
+          // data={filteredValue}
+          data={carriers}
+          update={updateCarrier}
+          view={'/customers/view/'}
+        />
+      )}
     </>
   );
 }
