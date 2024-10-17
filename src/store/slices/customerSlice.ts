@@ -4,7 +4,7 @@ import {
   addCustomer,
   updateCustomer as apiUpdateCustomer,
 } from '@/lib/dbActions';
-import { CustomerData } from '@/types/customerTypes';
+import { CustomerData, CustomerFormData } from '@/types/customerTypes';
 
 interface UpdatedCustomerPayload {
   id: string;
@@ -35,7 +35,7 @@ export const fetchCustomers = createAsyncThunk<CustomerData[]>(
   }
 );
 
-export const createCustomer = createAsyncThunk<CustomerData, CustomerData>(
+export const createCustomer = createAsyncThunk<CustomerData, CustomerFormData>(
   'customers/createCustomer',
   async (customer, { rejectWithValue }) => {
     try {
@@ -59,7 +59,7 @@ export const updateCustomer = createAsyncThunk<
   ) => {
     try {
       const customer = await apiUpdateCustomer(id, {
-        formData: updatedCustomer,
+        formData: updatedCustomer as CustomerFormData,
       });
 
       return formatron(customer);

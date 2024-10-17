@@ -5,11 +5,14 @@ import Button from '../../UI_Elements/buttons/Button';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store/store';
 import { createCustomer, updateCustomer } from '@/store/slices/customerSlice';
-import { CustomerData, customerFieldMap } from '@/types/customerTypes';
+import { CustomerData, CustomerFormData } from '@/types/customerTypes';
+import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
+import AddressDisplay from '@/components/UI_Elements/Display/AddressDisplay';
 import { useRouter } from 'next/navigation';
+import { getFactor } from '@/lib/dbActions';
 
 // this component submits form data from the context to database using redux
-// TODO: the design, validation, + error handling could be improved
+// TODO: find better way to get factor name than a db call?
 
 // Define the validation schema for customer data
 const customerSchema = yup.object({
@@ -65,12 +68,25 @@ const CustomerForm = () => {
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [factor, setFactor] = useState<string | undefined>(''); // factor name
 
   const dispatch = useDispatch<AppDispatch>();
 
   const { formData, saveFormValues } = useContext(ModalContext);
 
+  const factorId = formData['Factoring Company'];
+
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
+
+  // fetch factor name when component mounts
+  useEffect(() => {
+    const fetchFactor = async () => {
+      const fetchedFactor = await getFactor(factorId);
+      setFactor(fetchedFactor?.name);
+    };
+
+    fetchFactor();
+  }, [factorId]);
 
   useEffect(() => {
     if (formData !== null && formData['id']) {
@@ -87,7 +103,9 @@ const CustomerForm = () => {
       .then(async () => {
         if (!isUpdate) {
           try {
-            await dispatch(createCustomer(customer)).unwrap();
+            await dispatch(
+              createCustomer(customer as unknown as CustomerFormData)
+            ).unwrap();
           } catch (error) {
             setError(`Error creating customer: ${error}`);
           }
@@ -106,6 +124,7 @@ const CustomerForm = () => {
         setIsSubmitting(false);
       })
       .catch((error) => {
+        console.error(error); // do something with this?
         setError('Please fill out all required fields');
         setIsSubmitting(false);
       });
@@ -118,16 +137,85 @@ const CustomerForm = () => {
           Confirm Customer Details
         </p>
 
-        <div className="flex flex-wrap flex-col gap-1">
-          {Object.entries(customerFieldMap).map(([fieldLabel, fieldKey]) => (
-            <p
-              key={fieldKey}
-              className="body2 text-grey-800 dark:text-white inline-block"
-            >
-              <b>{fieldLabel}: </b>
-              {formData[fieldLabel] || ''}
-            </p>
-          ))}
+        <DataDisplay title="Customer Name" text={formData['Company Name']} />
+        <div className="flex flex-col gap-5 xl:flex-row">
+          <div className="flex flex-col self-center w-full">
+            <DataDisplay title="Status" text={formData['Status']} />
+            <DataDisplay title="Broker/ Rep" text={formData['Sales Rep']} />
+            <DataDisplay
+              title="Payment Terms"
+              text={formData['Payment Terms']}
+            />
+            <DataDisplay title="Current Credit Balance" text={undefined} />
+            <DataDisplay title="Credit Limit" text={formData['Credit Limit']} />
+            <DataDisplay title="Currency" text={formData['Currency']} />
+            <DataDisplay title="Federal ID" text={formData['Federal ID']} />
+          </div>
+
+          <div className="flex flex-col self-center w-full">
+            <DataDisplay title="Contact Name" text={formData['Contact Name']} />
+            <DataDisplay
+              title="Secondary Contact"
+              text={formData['Secondary Contact Name']}
+            />
+            <DataDisplay
+              title="Contact Email"
+              text={formData['Contact Email']}
+            />
+            <DataDisplay
+              title="Telephone"
+              text={formData['Contact Telephone']}
+            />
+            <DataDisplay title="Toll Free" text={formData['Toll Free']} />
+            <DataDisplay title="Fax" text={formData['Fax']} />
+            <DataDisplay
+              title="Factoring Company"
+              // text={formData['Factoring Company']}
+              text={factor}
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col self-center w-full">
+          <AddressDisplay
+            title={'Contact Address'}
+            addressLine1={formData['Address']}
+            addressLine2={formData['Address Line 2']}
+            addressLine3={formData['Address Line 3']}
+            city={formData['City']}
+            state={formData['State']}
+            zip={formData['Zip']}
+            country={formData['Country']}
+          />
+        </div>
+
+        <div className="flex flex-col self-center w-full">
+          <AddressDisplay
+            title={'Billing Address'}
+            addressLine1={formData['Billing Address']}
+            addressLine2={formData['Billing Address Line 2']}
+            addressLine3={formData['Billing Address Line 3']}
+            city={formData['Billing City']}
+            state={formData['Billing State']}
+            zip={formData['Billing Zip']}
+            country={formData['Billing Country']}
+          />
+        </div>
+
+        <div className="flex flex-col gap-5 xl:flex-row">
+          <div className="flex flex-col self-center w-full">
+            <DataDisplay
+              title="Billing Email"
+              text={formData['Billing Email']}
+            />
+          </div>
+
+          <div className="flex flex-col self-center w-full">
+            <DataDisplay
+              title="Billing Telephone"
+              text={formData['Billing Telephone']}
+            />
+          </div>
         </div>
 
         <div className="py-3.5 gap-2 border-t border-grey-300 dark:border-grey-700 flex justify-between sticky bottom-0 bg-white dark:bg-grey-900 z-10">

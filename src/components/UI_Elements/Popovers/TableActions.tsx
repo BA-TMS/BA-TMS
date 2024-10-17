@@ -1,9 +1,14 @@
 import { useState, useRef, useEffect } from 'react';
 import Button from '@ui/buttons/Button';
-import { EditIcon, ElipsisVertical, DeleteIcon } from '@/assets/SVGs';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Link from 'next/link';
 
 type TableActionsProps = {
   id: string;
+  view?: string; // this is an href string
   update: (param: string) => void;
   deleter?: (id: string) => void; // optional delete function
 };
@@ -14,6 +19,7 @@ type TableActionsProps = {
 
 const TableActionsPopover: React.FC<TableActionsProps> = ({
   id,
+  view,
   update,
   deleter,
 }) => {
@@ -24,7 +30,7 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({
 
   function handleDelete() {
     if (window.confirm('Would you like to delete this load?')) {
-      deleter(id); // call function passed to component
+      if (deleter) deleter(id); // call function passed to component
       setPopoversOpen(!popoversOpen);
     }
   }
@@ -62,8 +68,9 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({
         onClick={() => setPopoversOpen(!popoversOpen)}
         className="hover:text-primary"
       >
-        {ElipsisVertical}
+        <MoreVertIcon fontSize="small" />
       </button>
+
       {/* Popover Start */}
       <div
         ref={popovers}
@@ -75,6 +82,20 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({
       >
         <span className="absolute -right-1.5 top-2 -z-10 h-2 w-2 rotate-45 rounded-sm bg-white dark:bg-grey-900 border-r-2 border-t border-grey-300 dark:border-grey-700"></span>
 
+        {view && (
+          <div className="flex flex-wrap">
+            <Link href={view}>
+              <Button
+                onClick={() => console.log('clicked ', id)}
+                className="flex w-full gap-2 border-b border-grey-200 dark:border-grey-700 py-3 hover:text-primary"
+              >
+                <VisibilityIcon fontSize="small" />
+                View Details
+              </Button>
+            </Link>
+          </div>
+        )}
+
         <div className="flex flex-wrap">
           <Button
             onClick={() => {
@@ -82,17 +103,18 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({
             }}
             className="flex w-full gap-2 border-b border-grey-200 dark:border-grey-700 py-3 hover:text-primary"
           >
-            <span>{EditIcon}</span>
+            <EditIcon fontSize="small" />
             Edit
           </Button>
         </div>
+
         {deleter && (
           <div className="flex flex-wrap">
             <Button
               onClick={handleDelete}
               className="flex w-full gap-2 border-b border-grey-200 dark:border-grey-700 py-3 hover:text-primary"
             >
-              <span>{DeleteIcon}</span>
+              <DeleteIcon fontSize="small" />
               Delete
             </Button>
           </div>
