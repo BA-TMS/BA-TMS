@@ -49,8 +49,47 @@ export default function Carriers() {
 
   const { saveFormValues } = useContext(ModalContext);
 
+  // search
+  function handleSearch(
+    carriers: CarrierData[],
+    value: string,
+    status: string
+  ) {
+    // status to uppercase
+    // const customerStatus = status?.toUpperCase();
+
+    // // Filter by status (if it's "Active" or "Inactive")
+    const filteredCarriers = carriers;
+
+    // if (customerStatus === 'ACTIVE' || customerStatus === 'INACTIVE') {
+    //   filteredCustomers = customers.filter(
+    //     (customer) => customer.status === customerStatus
+    //   );
+    // }
+
+    // If no search value, return the filtered list by status
+    if (!value) {
+      return filteredCarriers;
+    }
+
+    // search across all fields with the given value
+    if (status === 'All') {
+      return filteredCarriers.filter((carrier) =>
+        Object.values(carrier).some((carrierField) =>
+          carrierField?.toString().toLowerCase().includes(value.toLowerCase())
+        )
+      );
+    }
+
+    // If status is specific (like "Active"), apply search value filtering
+    return filteredCarriers.filter((carrier) =>
+      Object.values(carrier).some((carrierField) =>
+        carrierField?.toString().toLowerCase().includes(value.toLowerCase())
+      )
+    );
+  }
+
   // update specific field to search
-  // passing this to TableSearch
   function updateField(field: string) {
     setSearchField(field);
   }
@@ -68,6 +107,13 @@ export default function Carriers() {
   useEffect(() => {
     dispatch(fetchCarriers());
   }, [dispatch]);
+
+  // Update filtered carriers when carrier or searchValue changes
+  useEffect(() => {
+    let updatedCarriers = [...carriers];
+    updatedCarriers = handleSearch(updatedCarriers, searchValue, searchField);
+    setFilteredValue(updatedCarriers);
+  }, [carriers, searchValue, searchField]);
 
   return (
     <>
@@ -92,8 +138,7 @@ export default function Carriers() {
       ) : (
         <Table
           columns={columns}
-          // data={filteredValue}
-          data={carriers}
+          data={filteredValue}
           update={updateCarrier}
           view={'/customers/view/'}
         />
