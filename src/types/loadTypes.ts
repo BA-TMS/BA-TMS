@@ -11,6 +11,8 @@ export type LoadStatus =
 
 export interface LoadData {
   id?: string;
+  createdAt: Date;
+  updatedAt: Date;
   ownerId: string;
   loadNum: string;
   payOrderNum: string;

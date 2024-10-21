@@ -34,6 +34,8 @@ const formatron = function (rawLoad: LoadData) {
     customer: rawLoad.customer ? rawLoad.customer.companyName : null,
     shipper: rawLoad.shipper ? rawLoad.shipper.name : null,
     consignee: rawLoad.consignee ? rawLoad.consignee.name : null,
+    createdAt: rawLoad.createdAt ? rawLoad.createdAt.toISOString() : null,
+    updatedAt: rawLoad.updatedAt ? rawLoad.updatedAt.toISOString() : null,
   } as unknown as LoadData; // it does not like date to string conversion when returning formatron;
 };
 
