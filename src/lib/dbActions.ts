@@ -32,6 +32,15 @@ export async function getBrokers() {
   return brokers;
 }
 
+export async function getCarrier(id: string) {
+  const carrier = await prisma.carrier.findUnique({
+    where: {
+      id: id,
+    },
+  });
+  return carrier;
+}
+
 export async function getCarriers() {
   const carriers = await prisma.carrier.findMany();
   return carriers;
@@ -42,7 +51,7 @@ export async function getConsignees() {
   return consignees;
 }
 
-export async function getCustomer(id) {
+export async function getCustomer(id: string) {
   const customer = await prisma.customer.findUnique({
     where: {
       id: id,

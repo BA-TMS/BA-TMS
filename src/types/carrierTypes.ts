@@ -1,4 +1,4 @@
-export type Carrier = {
+export type CarrierData = {
   name: string;
   address: string;
   addressAddOn: string | null;

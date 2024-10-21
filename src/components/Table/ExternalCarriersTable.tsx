@@ -30,8 +30,6 @@ const columns = [
   { field: 'taxId', headerName: 'Tax ID' },
 ];
 
-const dropdownOptions: string[] = ['All', 'Name'];
-
 export default function Carriers() {
   const [searchValue, setSearchValue] = useState<string>(''); // search value
   const [searchField, setSearchField] = useState<string>('All'); // specific field if any
@@ -56,16 +54,16 @@ export default function Carriers() {
     status: string
   ) {
     // status to uppercase
-    // const customerStatus = status?.toUpperCase();
+    const carrierStatus = status?.toUpperCase();
 
     // // Filter by status (if it's "Active" or "Inactive")
-    const filteredCarriers = carriers;
+    let filteredCarriers = carriers;
 
-    // if (customerStatus === 'ACTIVE' || customerStatus === 'INACTIVE') {
-    //   filteredCustomers = customers.filter(
-    //     (customer) => customer.status === customerStatus
-    //   );
-    // }
+    if (carrierStatus === 'ACTIVE' || carrierStatus === 'INACTIVE') {
+      filteredCarriers = carriers.filter(
+        (carrier) => carrier.status === carrierStatus
+      );
+    }
 
     // If no search value, return the filtered list by status
     if (!value) {
@@ -127,8 +125,8 @@ export default function Carriers() {
       <TableHeaderBlank />
       <TableSearch
         placeholder={'Search...'}
-        dropdownLabel="Sort By"
-        dropdownOptions={dropdownOptions}
+        dropdownLabel="Status"
+        dropdownOptions={['Active', 'Inactive', 'All']}
         search={setSearchValue}
         updateField={updateField}
       />
