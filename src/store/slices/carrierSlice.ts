@@ -1,11 +1,28 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { getCarriers, addCarrier } from '@/lib/dbActions';
+import { CarrierData } from '@/types/carrierTypes';
 
-export const fetchCarriers = createAsyncThunk(
-  'carriers/fetCarriers',
+interface CarrierState {
+  items: CarrierData[];
+  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  error: string | null;
+}
+
+const formatron = function (carrier: CarrierData) {
+  return {
+    ...carrier,
+    // factor: customer.factor ? customer.factor.name : null,
+    createdAt: carrier.createdAt ? carrier.createdAt.toISOString() : null,
+    updatedAt: carrier.updatedAt ? carrier.updatedAt.toISOString() : null,
+  } as unknown as CarrierData;
+};
+
+export const fetchCarriers = createAsyncThunk<CarrierData[]>(
+  'carriers/fetchCarriers',
   async () => {
     const data = await getCarriers();
-    return data;
+    console.log('SLICE CARRIERS', data);
+    return data.map((carrier: CarrierData) => formatron(carrier));
   }
 );
 
@@ -19,7 +36,7 @@ export const createCarrier = createAsyncThunk(
 
 const carrierSlice = createSlice({
   name: 'carriers',
-  initialState: {
+  initialState: <CarrierState>{
     items: [],
     status: 'idle',
     error: null,

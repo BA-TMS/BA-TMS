@@ -15,6 +15,10 @@ const LOAD_RELATIONS = {
   consignee: { select: { name: true } },
 };
 
+const CARRIER_RELATIONS = {
+  factor: { select: { name: true } },
+};
+
 const CUSTOMER_RELATIONS = {
   factor: { select: { name: true } },
 };
@@ -42,7 +46,10 @@ export async function getCarrier(id: string) {
 }
 
 export async function getCarriers() {
-  const carriers = await prisma.carrier.findMany();
+  const relations = {
+    factor: { select: { name: true } },
+  };
+  const carriers = await getter(prisma.carrier, relations);
   return carriers;
 }
 

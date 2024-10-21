@@ -15,19 +15,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { getCarrier } from '@/lib/dbActions';
 
+// what fields do we want in the table?
 const columns = [
-  { field: 'name', headerName: 'Name' },
-  { field: 'address', headerName: 'Address' },
-  { field: 'addressAddOn', headerName: 'Address Line 2' },
+  { field: 'carrierName', headerName: 'Carrier Name' },
+  { field: 'contactName', headerName: 'Contact Name' },
+  { field: 'contactTelephone', headerName: 'Telephone' },
   { field: 'city', headerName: 'City' },
   { field: 'state', headerName: 'State' },
-  { field: 'postCountry', headerName: 'Country' },
-  { field: 'postCode', headerName: 'Postal Code/ Zip' },
-  { field: 'telCountry', headerName: 'Country Code' },
-  { field: 'telephone', headerName: 'Phone Number' },
-  { field: 'dotId', headerName: 'DOT ID' },
-  { field: 'factorId', headerName: 'Factor ID' },
-  { field: 'taxId', headerName: 'Tax ID' },
 ];
 
 export default function Carriers() {
@@ -138,7 +132,7 @@ export default function Carriers() {
           columns={columns}
           data={filteredValue}
           update={updateCarrier}
-          view={'/customers/view/'}
+          view={'/carriers/view/'}
         />
       )}
     </>
