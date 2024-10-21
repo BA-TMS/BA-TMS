@@ -162,7 +162,7 @@ model CarrierInsurance {
 
   fmcsaInsCompany    String
   fmcsaInsPolicy     String
-  fmcsaInsExpiration DateTime
+  fmcsaInsExpiration DateTime?
   fmcsaType          String
   fmcsaCoverage      String
   fmcsaTelephone     String
