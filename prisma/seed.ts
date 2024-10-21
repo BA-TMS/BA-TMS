@@ -20,9 +20,9 @@ async function main() {
   }
 
   const a2zresp = await prisma.organization.upsert({
-    where: {name: a2zorg.name},
+    where: { name: a2zorg.name },
     update: {},
-    create: a2zorg
+    create: a2zorg,
   });
 
   for (const currUser of users) {
@@ -76,7 +76,7 @@ async function main() {
       where: { telephone: currConsignee.telephone },
       update: {},
       create: currConsignee,
-    })
+    });
   }
 
   for (const currLoad of loads) {
@@ -98,17 +98,17 @@ async function main() {
 
   for (const currFactor of factors) {
     const resp = await prisma.factor.upsert({
-      where: {telephone: currFactor.telephone},
+      where: { telephone: currFactor.telephone },
       update: {},
-      create: currFactor
-    })
+      create: currFactor,
+    });
   }
 
   for (const currInsurer of insurers) {
     const resp = await prisma.insurer.upsert({
       where: { telephone: currInsurer.telephone },
       update: {},
-      create: currInsurer
+      create: currInsurer,
     });
   }
 
@@ -116,31 +116,31 @@ async function main() {
     const resp = await prisma.broker.upsert({
       where: { telephone: currBroker.telephone },
       update: {},
-      create: currBroker
+      create: currBroker,
     });
   }
 
   for (const currBillee of billees) {
     const resp = await prisma.billee.upsert({
-      where: {telephone: currBillee.telephone},
+      where: { telephone: currBillee.telephone },
       update: {},
-      create: currBillee
-    })
+      create: currBillee,
+    });
   }
 
   for (const currTruck of trucks) {
     const resp = await prisma.truck.upsert({
       where: { licensePlate: currTruck.licensePlate },
       update: {},
-      create: currTruck
+      create: currTruck,
     });
   }
 
   for (const currTrailer of trailers) {
     const resp = await prisma.trailer.upsert({
-      where: {licensePlate: currTrailer.licensePlate},
+      where: { licensePlate: currTrailer.licensePlate },
       update: {},
-      create: currTrailer
+      create: currTrailer,
     });
   }
 
@@ -198,7 +198,7 @@ const a2zorg = {
   state: 'CA',
   postCountry: 'USA',
   postCode: '90712',
-  telephone: '7373300444'
+  telephone: '7373300444',
 };
 
 const users = [
@@ -216,24 +216,30 @@ const users = [
 
 const carriers = [
   {
-    name: 'Carrier1',
+    carrierName: 'Carrier1',
     address: '70 Wall St',
     city: 'Wethersfield',
     state: 'CT',
     postCountry: 'USA',
     postCode: '06109',
-    telephone: '9987654321',
+    contactTelephone: '9987654321',
+    paymentTerms: 'Net 30',
+    docketNumType: 'FF',
+    docketNumber: '12974',
     dotId: '42',
     taxId: '42',
   },
   {
-    name: 'Carrier2',
+    carrierName: 'Carrier2',
     address: '79 Mayflower St',
     city: 'Smyrna',
     state: 'GA',
     postCountry: 'USA',
     postCode: '30080',
-    telephone: '1112223333',
+    contactTelephone: '1112223333',
+    paymentTerms: 'Net 30',
+    docketNumType: 'FF',
+    docketNumber: '12454',
     dotId: '7',
     taxId: '7',
   },
@@ -273,7 +279,7 @@ const customers = [
     billingState: 'MS',
     billingPostCode: '38655',
     paymentTerms: 'Prompt',
-    federalID: '55-9386763'
+    federalID: '55-9386763',
   },
   {
     companyName: 'Customer2',
@@ -293,7 +299,7 @@ const customers = [
     billingState: 'NH',
     billingPostCode: '03060',
     paymentTerms: 'Prompt',
-    federalID: '21-4094358'
+    federalID: '21-4094358',
   },
 ];
 
@@ -347,7 +353,7 @@ const factors = [
     state: 'PA',
     postCountry: 'USA',
     postCode: '11111',
-    telephone: '4567891234'
+    telephone: '4567891234',
   },
   {
     name: 'Factor2',
@@ -356,9 +362,9 @@ const factors = [
     state: 'MA',
     postCountry: 'USA',
     postCode: '44444',
-    telephone: '7778889999'
-  }
-]
+    telephone: '7778889999',
+  },
+];
 
 const insurers = [
   {
@@ -368,7 +374,7 @@ const insurers = [
     state: 'VA',
     postCountry: 'USA',
     postCode: '11221',
-    telephone: '5469094411'
+    telephone: '5469094411',
   },
   {
     name: 'Snoopy Logo Corp',
@@ -377,9 +383,9 @@ const insurers = [
     state: 'CN',
     postCountry: 'USA',
     postCode: '22331',
-    telephone: '8609993333'
-  }
-]
+    telephone: '8609993333',
+  },
+];
 
 const brokers = [
   {
@@ -390,7 +396,7 @@ const brokers = [
     state: 'KA',
     postCountry: 'USA',
     postCode: '54321',
-    telephone: '9988776655'
+    telephone: '9988776655',
   },
   {
     name: 'Broker2',
@@ -400,9 +406,9 @@ const brokers = [
     state: 'NJ',
     postCountry: 'USA',
     postCode: '23456',
-    telephone: '1012023003'
-  }
-]
+    telephone: '1012023003',
+  },
+];
 
 const billees = [
   {
@@ -412,7 +418,7 @@ const billees = [
     state: 'CA',
     postCountry: 'USA',
     postCode: '88111',
-    telephone: '4589023490'
+    telephone: '4589023490',
   },
   {
     name: 'Billee D Williams',
@@ -421,9 +427,9 @@ const billees = [
     state: 'NJ',
     postCountry: 'USA',
     postCode: '11221',
-    telephone: '0987651234'
-  }
-]
+    telephone: '0987651234',
+  },
+];
 
 const loads = [
   {
@@ -469,24 +475,24 @@ const trucks = [
     licensePlate: '89RM99',
     plateExpiry: new Date(2027, 9, 4),
     inspectionExpiry: new Date(2027, 9, 4),
-    type: 'Also Big',    
-  }
-]
+    type: 'Also Big',
+  },
+];
 
 const trailers = [
   {
     licensePlate: 'EE66RR9900',
     plateExpiry: new Date(2027, 9, 4),
     inspectionExpiry: new Date(2027, 9, 4),
-    type: 'Container'
+    type: 'Container',
   },
   {
     licensePlate: '00MM11WW7896',
     plateExpiry: new Date(2027, 9, 4),
     inspectionExpiry: new Date(2027, 9, 4),
-    type: 'Flatbed'
-  }
-]
+    type: 'Flatbed',
+  },
+];
 
 main()
   .then(async () => {
