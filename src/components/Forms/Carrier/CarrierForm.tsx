@@ -14,6 +14,8 @@ import { ModalContext } from '@/Context/modalContext';
 import { createCarrier } from '@/store/slices/carrierSlice';
 import { useDispatch } from 'react-redux';
 
+// this component submits form data from the context to database using redux
+
 const carrierSchema = yup.object({
   'Carrier Name': yup.string().required('Carrier Name is required'),
   Address: yup.string().required('Address is required'),

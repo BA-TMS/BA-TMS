@@ -1,12 +1,12 @@
 'use client';
 
 import FullPageFormContainer from '@/components/UI_Elements/Form/FullPageContainer';
-import CarrierInsuranceForm from '@/components/Forms/Carrier/CarrierInsurance';
+import CarrierForm from '@/components/Forms/Carrier/CarrierForm';
 
-export default function AddCarrierInsurance() {
+export default function AddCarrierReview() {
   return (
     <FullPageFormContainer title="Add External Carrier">
-      <CarrierInsuranceForm />
+      <CarrierForm />
     </FullPageFormContainer>
   );
 }
