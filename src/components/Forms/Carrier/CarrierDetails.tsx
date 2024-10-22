@@ -10,6 +10,7 @@ import SelectInput from '../../UI_Elements/Form/SelectInput';
 import DynamicSelect from '@/components/UI_Elements/Form/DynamicSelect';
 import { getFactors } from '@/lib/dbActions';
 import { usStates } from '@/components/Forms/data/states';
+import { paymentTerms } from '../data/details';
 import { status } from '../data/details';
 import Button from '@/components/UI_Elements/buttons/Button';
 import { useRouter, usePathname } from 'next/navigation';
@@ -222,11 +223,11 @@ const CarrierDetails: React.FC = () => {
               <SelectInput
                 control={control}
                 name="Payment Terms"
-                options={status}
+                options={paymentTerms}
                 required={true}
               />
 
-              <TextInput control={control} name="Tax ID#" />
+              <TextInput control={control} name="DOT ID#" />
 
               <SelectInput
                 control={control}
@@ -239,7 +240,7 @@ const CarrierDetails: React.FC = () => {
             <div className="flex flex-col w-full xl:w-1/2">
               <TextInput control={control} name="URS #" />
 
-              <TextInput control={control} name="DOT ID#" />
+              <TextInput control={control} name="Tax ID#" />
 
               <TextInput
                 control={control}
@@ -275,7 +276,7 @@ const CarrierDetails: React.FC = () => {
               const cancel = confirm('Cancel this entry?');
               if (cancel) {
                 saveFormValues({}, true); // clears context values
-                router.push('/customers');
+                router.push('/carriers');
               } else return;
             }}
           >

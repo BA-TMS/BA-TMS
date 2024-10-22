@@ -273,9 +273,23 @@ const CarrierInsuranceForm: React.FC = () => {
           >
             Cancel
           </Button>
-          <Button type="submit" disabled={isSubmitting}>
-            Next
-          </Button>
+
+          <div className="flex justify-end gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              intent="success"
+              disabled={isSubmitting}
+              onClick={() => {
+                router.back();
+              }}
+            >
+              Back
+            </Button>
+            <Button type="submit" disabled={isSubmitting}>
+              Next
+            </Button>
+          </div>
         </div>
       </form>
     </div>
