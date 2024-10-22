@@ -95,3 +95,30 @@ export interface CarrierFormData {
 
   Notes: string | null;
 }
+
+export interface CarrierInsFormData {
+  'Liability Insurance Company': string | null;
+  'Liability Policy #': string | null;
+  'Liability Expiration Date': Date | null;
+  'Liability Telephone': string | null;
+  'Liability Contact': string | null;
+
+  'Auto Insurance Company': string | null;
+  'Auto Policy #': string | null;
+  'Auto Expiration Date': Date | null;
+  'Auto Telephone': string | null;
+  'Auto Contact': string | null;
+
+  'Cargo Company': string | null;
+  'Cargo Policy #': string | null;
+  'Cargo Expiration Date': Date | null;
+  'Cargo Telephone': string | null;
+  'Cargo Contact': string | null;
+  'Cargo WSIB #': string | null;
+
+  'FMCSA Insurance Company': string;
+  'FMCSA Policy #': string;
+  'FMCSA Expiration Date': Date | null;
+  'FMCSA Type': string;
+  'FMCSA Coverage $': string;
+}
