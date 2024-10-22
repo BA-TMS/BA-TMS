@@ -67,3 +67,31 @@ export interface CarrierInsuranceData {
   fmcsaCoverage: string;
   fmcsaTelephone: string;
 }
+
+export interface CarrierFormData {
+  Status: string;
+  'Carrier Name': string;
+  Address: string;
+  'Address Line 2': string | null;
+  'Address Line 3': string | null;
+  City: string;
+  State: string;
+  Zip: string;
+  Country: string;
+
+  'Contact Name': string;
+  'Contact Email': string;
+  Telephone: string;
+  'Toll Free': string | null;
+  Fax: string | null;
+
+  'Payment Terms': string;
+  'Tax ID#': string | null;
+  'Docket Number Type': string;
+  'Docket Number': string;
+  'URS #': string | null;
+  'DOT ID#': string;
+  'Factoring Company': string | null;
+
+  Notes: string | null;
+}
