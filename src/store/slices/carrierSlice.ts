@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { getCarriers, addCarrier } from '@/lib/dbActions';
-import { CarrierData } from '@/types/carrierTypes';
+import { CarrierData, CarrierFormData } from '@/types/carrierTypes';
 
 interface CarrierState {
   items: CarrierData[];
@@ -11,9 +11,19 @@ interface CarrierState {
 const formatron = function (carrier: CarrierData) {
   return {
     ...carrier,
-    // factor: customer.factor ? customer.factor.name : null,
-    createdAt: carrier.createdAt ? carrier.createdAt.toISOString() : null,
-    updatedAt: carrier.updatedAt ? carrier.updatedAt.toISOString() : null,
+    factor: carrier.factor ? carrier.factor.name : null,
+    createdAt:
+      carrier.createdAt instanceof Date
+        ? carrier.createdAt.toISOString()
+        : null,
+    updatedAt:
+      carrier.updatedAt instanceof Date
+        ? carrier.updatedAt.toISOString()
+        : null,
+
+    CarrierInsurance: carrier.CarrierInsurance
+      ? carrier.CarrierInsurance.id
+      : null, // ?? see what this looks like
   } as unknown as CarrierData;
 };
 
@@ -21,16 +31,21 @@ export const fetchCarriers = createAsyncThunk<CarrierData[]>(
   'carriers/fetchCarriers',
   async () => {
     const data = await getCarriers();
-    console.log('SLICE CARRIERS', data);
+
     return data.map((carrier: CarrierData) => formatron(carrier));
   }
 );
 
-export const createCarrier = createAsyncThunk(
+export const createCarrier = createAsyncThunk<CarrierData, CarrierFormData>(
   'carriers/createCarrier',
-  async (carrier: any) => {
-    const newCarrier = await addCarrier({ carrier });
-    return newCarrier;
+  async (carrier, { rejectWithValue }) => {
+    try {
+      const response = await addCarrier({ carrier });
+
+      return formatron(response);
+    } catch (error) {
+      return rejectWithValue('Failed to create carrier');
+    }
   }
 );
 

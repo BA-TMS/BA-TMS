@@ -49,7 +49,7 @@ const carrierInsuranceSchema = yup.object({
     .string()
     .matches(/^\d+$/, 'Must be a number')
     .required('FMCSA Coverage Amount Required'),
-  'FMCSA Telephone': yup.string().required('FMCSA Telephone required'),
+  'FMCSA Telephone': yup.string().nullable(),
 });
 
 type CarrierInsurance = yup.InferType<typeof carrierInsuranceSchema>;

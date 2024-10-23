@@ -165,6 +165,7 @@ model CarrierInsurance {
   fmcsaInsExpiration DateTime?
   fmcsaType          String
   fmcsaCoverage      String
+  fmcsaTelephone     String?
 }
 
 model Driver {

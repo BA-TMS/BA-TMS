@@ -29,7 +29,9 @@ export interface CarrierData {
   factor: { name: string } | null; // i think
   factorId: string | null;
 
-  notes: string;
+  CarrierInsurance?: CarrierInsuranceData; // i think?
+
+  notes: string | null;
 }
 
 export interface CarrierInsuranceData {
@@ -69,7 +71,7 @@ export interface CarrierInsuranceData {
 }
 
 export interface CarrierFormData {
-  Status: string;
+  Status: 'ACTIVE' | 'INACTIVE';
   'Carrier Name': string;
   Address: string;
   'Address Line 2': string | null;
@@ -94,9 +96,7 @@ export interface CarrierFormData {
   'Factoring Company': string | null;
 
   Notes: string | null;
-}
 
-export interface CarrierInsFormData {
   'Liability Insurance Company': string | null;
   'Liability Policy #': string | null;
   'Liability Expiration Date': Date | null;
@@ -121,4 +121,33 @@ export interface CarrierInsFormData {
   'FMCSA Expiration Date': Date | null;
   'FMCSA Type': string;
   'FMCSA Coverage $': string;
+  'FMCSA Telephone': string;
 }
+
+export const carrierDataMap: Record<string, keyof CarrierData> = {
+  Status: 'status',
+  'Carrier Name': 'carrierName',
+  Address: 'address',
+  'Address Line 2': 'addressField2',
+  'Address Line 3': 'addressField3',
+  City: 'city',
+  State: 'state',
+  Zip: 'postCode',
+  Country: 'postCountry',
+
+  'Contact Name': 'contactName',
+  'Contact Email': 'contactEmail',
+  Telephone: 'contactTelephone',
+  'Toll Free': 'contactTollFree',
+  Fax: 'contactFax',
+
+  'Payment Terms': 'paymentTerms',
+  'Tax ID#': 'taxId',
+  'Docket Number Type': 'docketNumType',
+  'Docket Number': 'docketNumber',
+  'URS #': 'ursNumber',
+  'DOT ID#': 'dotId',
+  'Factoring Company': 'factorId',
+
+  Notes: 'notes',
+};

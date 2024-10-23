@@ -1,8 +1,9 @@
 'use server';
 
-import { PrismaClient } from '@prisma/client';
+import { DocketNumber, PrismaClient } from '@prisma/client';
 import { CustomerFormData } from '@/types/customerTypes';
 import { LoadFormData } from '@/types/loadTypes';
+import { CarrierFormData } from '@/types/carrierTypes';
 
 // regular prisma client
 const prisma = new PrismaClient();
@@ -17,6 +18,7 @@ const LOAD_RELATIONS = {
 
 const CARRIER_RELATIONS = {
   factor: { select: { name: true } },
+  // CarrierInsurance: { select: { id: true } }, // maybe?
 };
 
 const CUSTOMER_RELATIONS = {
@@ -179,23 +181,70 @@ export async function addBroker({ broker }: { broker: any }) {
   });
 }
 
-export async function addCarrier({ carrier }: { carrier: any }) {
+export async function addCarrier({ carrier }: { carrier: CarrierFormData }) {
   const resp = await prisma.carrier.create({
     data: {
-      name: carrier['Carrier Name'],
+      status: carrier['Status'],
+
+      carrierName: carrier['Carrier Name'],
       address: carrier['Address'],
-      addressAddOn: carrier['Address Line 2'] || null, // Optional field
+      addressField2: carrier['Address Line 2'],
+      addressField3: carrier['Address Line 3'],
       city: carrier['City'],
       state: carrier['State'],
       postCountry: carrier['Country'],
       postCode: carrier['Zip'],
-      telCountry: carrier['Country Code'],
-      telephone: carrier['Phone Number'],
-      dotId: carrier['DOT ID'],
-      factorId: carrier['Factor ID'],
-      taxId: carrier['Tax ID'],
-      // notes: carrier['Notes'] || null, // optional field, notes not in table yet
+
+      contactName: carrier['Contact Name'],
+      contactEmail: carrier['Contact Email'],
+      contactTelephone: carrier['Telephone'],
+      contactTollFree: carrier['Toll Free'],
+      contactFax: carrier['Fax'],
+
+      paymentTerms: carrier['Payment Terms'],
+      taxId: carrier['Tax ID#'],
+      docketNumType: carrier['Docket Number Type'] as DocketNumber,
+      docketNumber: carrier['Docket Number'],
+      ursNumber: carrier['URS #'],
+      dotId: carrier['DOT ID#'],
+
+      factorId:
+        carrier['Factoring Company'] !== ''
+          ? carrier['Factoring Company']
+          : null,
+      notes: carrier['Notes'],
+
+      CarrierInsurance: {
+        create: {
+          liabilityCompany: carrier['Liability Insurance Company'],
+          liabilityPolicy: carrier['Liability Policy #'],
+          liabilityExpiration: carrier['Liability Expiration Date'],
+          liabilityTelephone: carrier['Liability Telephone'],
+          liabilityContact: carrier['Liability Contact'],
+
+          autoInsCompany: carrier['Auto Insurance Company'],
+          autoInsPolicy: carrier['Auto Policy #'],
+          autoInsExpiration: carrier['Auto Expiration Date'],
+          autoInsTelephone: carrier['Auto Telephone'],
+          autoInsContact: carrier['Auto Contact'],
+
+          cargoCompany: carrier['Cargo Company'],
+          cargoPolicy: carrier['Cargo Policy #'],
+          cargoExpiration: carrier['Cargo Expiration Date'],
+          cargoTelephone: carrier['Cargo Telephone'],
+          cargoContact: carrier['Cargo Contact'],
+          cargoWSIB: carrier['Cargo WSIB #'],
+
+          fmcsaInsCompany: carrier['FMCSA Insurance Company'],
+          fmcsaInsPolicy: carrier['FMCSA Policy #'],
+          fmcsaInsExpiration: carrier['FMCSA Expiration Date'],
+          fmcsaType: carrier['FMCSA Type'],
+          fmcsaCoverage: carrier['FMCSA Coverage $'],
+          fmcsaTelephone: carrier['FMCSA Telephone'],
+        },
+      },
     },
+    include: CARRIER_RELATIONS,
   });
   return resp;
 }
