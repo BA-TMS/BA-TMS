@@ -49,6 +49,7 @@ const carrierInsuranceSchema = yup.object({
     .string()
     .matches(/^\d+$/, 'Must be a number')
     .required('FMCSA Coverage Amount Required'),
+  'FMCSA Telephone': yup.string().required('FMCSA Telephone required'),
 });
 
 type CarrierInsurance = yup.InferType<typeof carrierInsuranceSchema>;
@@ -99,6 +100,7 @@ const CarrierInsuranceForm: React.FC = () => {
       'FMCSA Expiration Date': undefined,
       'FMCSA Type': '',
       'FMCSA Coverage $': '',
+      'FMCSA Telephone': '',
     },
     resolver: yupResolver(carrierInsuranceSchema),
   });
@@ -160,18 +162,21 @@ const CarrierInsuranceForm: React.FC = () => {
               required={true}
             />
           </div>
-        </div>
-
-        <div className="flex flex-col gap-4 md:flex-row">
           <div className="w-full md:w-1/3">
             <TextInput control={control} name="FMCSA Type" required={true} />
           </div>
+        </div>
+
+        <div className="flex flex-col gap-4 md:flex-row">
           <div className="w-full md:w-1/3">
             <TextInput
               control={control}
               name="FMCSA Coverage $"
               required={true}
             />
+          </div>
+          <div className="w-full md:w-1/3">
+            <TextInput control={control} name="FMCSA Telephone" />
           </div>
           <div className="w-full md:w-1/3">
             <DateSelect control={control} name="FMCSA Expiration Date" />

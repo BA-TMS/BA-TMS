@@ -9,14 +9,9 @@ import { AppDispatch } from '@/store/store';
 import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 import AddressDisplay from '@/components/UI_Elements/Display/AddressDisplay';
 import { useRouter } from 'next/navigation';
-import { CarrierData } from '@/types/carrierTypes';
+import { CarrierFormData } from '@/types/carrierTypes';
 
 // this component submits form data from the context to database using redux
-
-// simplify submission process- do we need to validate?
-
-// on submit- add carrier using redux, submit insurance data to db
-// i don't think insurance data needs to be stored in redux
 
 export const CarrierForm = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -30,9 +25,23 @@ export const CarrierForm = () => {
   const [error, setError] = useState<string | null>(null);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
 
-  const onSubmit = async (carrier: CarrierData) => {
+  const onSubmit = async (carrier: CarrierFormData) => {
     setIsSubmitting(true);
     setError(''); // clear previous errors
+
+    // let's start with the redux of it all
+
+    // if not an update
+    try {
+      await dispatch(createCarrier(carrier)).unwrap();
+    } catch (error) {
+      setError(`Error creating carrier: ${error}`);
+    }
+    // map data from context data into object for carrier insurance
+
+    // async redux
+
+    // async db for insurance - unless it needs to be available globally
   };
 
   // in the event of an update
@@ -288,7 +297,7 @@ export const CarrierForm = () => {
               const cancel = confirm('Cancel this entry?');
               if (cancel) {
                 saveFormValues({}, true); // clears context values
-                router.push('/customers');
+                router.push('/carriers');
               } else return;
             }}
             variant="outline"
@@ -314,7 +323,7 @@ export const CarrierForm = () => {
               disabled={isSubmitting}
               onClick={() => {
                 console.log('SUBMITTING');
-                // onSubmit(formData as CarrierData);
+                onSubmit(formData as CarrierFormData);
                 saveFormValues({}, true); // Reset form data after submission
                 router.push('/carriers');
               }}

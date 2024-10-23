@@ -34,10 +34,7 @@ const carrierDetailsSchema = yup.object({
   Country: yup.string().required('Must enter Country'),
 
   'Contact Name': yup.string().required('Must enter Contact Name'),
-  'Contact Email': yup
-    .string()
-    .email('Must use a valid email')
-    .required('Contact email required'),
+  'Contact Email': yup.string().nullable(),
   Telephone: yup.string().required('Must enter Contact Telephone'),
   'Toll Free': yup.string().nullable(),
   Fax: yup.string().nullable(),
@@ -227,7 +224,7 @@ const CarrierDetails: React.FC = () => {
                 required={true}
               />
 
-              <TextInput control={control} name="DOT ID#" />
+              <TextInput control={control} name="DOT ID#" required={true} />
 
               <SelectInput
                 control={control}
