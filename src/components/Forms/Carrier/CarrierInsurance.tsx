@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useContext, useState, useCallback } from 'react';
+import React, { useEffect, useContext, useCallback } from 'react';
 import { ModalContext } from '@/Context/modalContext';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -9,6 +9,7 @@ import TextInput from '../../UI_Elements/Form/TextInput';
 import DateSelect from '@/components/UI_Elements/Form/DateSelect';
 import Button from '@/components/UI_Elements/buttons/Button';
 import { useRouter, usePathname } from 'next/navigation';
+import { carrierDataMap } from '@/types/carrierTypes';
 
 // external carrier insurance
 // this component uses yup and react-hook-form to submit form values to a context
@@ -80,14 +81,14 @@ const CarrierInsuranceForm: React.FC = () => {
 
   const { formData, saveFormValues } = useContext(ModalContext);
 
-  //   const isUpdate = formData !== null && formData['id']; // Do we need this?
+  const isUpdate = formData !== null && formData['id'];
+
+  // if update, we will need to fetch carrier insurance from the database
 
   const {
     setValue, // set value of a form field
     handleSubmit,
     reset,
-    getValues, // get values of a form field
-    resetField, //reset individual form field
     control, // based on schema
     formState: { errors, isSubmitting },
   } = useForm<CarrierInsurance>({
@@ -132,16 +133,16 @@ const CarrierInsuranceForm: React.FC = () => {
   );
 
   // if there's an update, we have to use the map to get the correct field values
-  //   useEffect(() => {
-  //     if (isUpdate) {
-  //       Object.keys(customerFieldMap).forEach((formField) => {
-  //         setValue(
-  //           formField as keyof Customer,
-  //           formData[customerFieldMap[formField]]
-  //         );
-  //       });
-  //     }
-  //   }, [formData, setValue, isUpdate]);
+  useEffect(() => {
+    if (isUpdate) {
+      Object.keys(carrierDataMap).forEach((formField) => {
+        setValue(
+          formField as keyof CarrierInsurance,
+          formData[carrierDataMap[formField]]
+        );
+      });
+    }
+  }, [formData, setValue, isUpdate]);
 
   // keep fields populated when switching tabs or going back
   useEffect(() => {

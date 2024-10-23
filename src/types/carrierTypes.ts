@@ -124,7 +124,10 @@ export interface CarrierFormData {
   'FMCSA Telephone': string;
 }
 
-export const carrierDataMap: Record<string, keyof CarrierData> = {
+export const carrierDataMap: Record<
+  string,
+  keyof CarrierData | keyof CarrierInsuranceData
+> = {
   Status: 'status',
   'Carrier Name': 'carrierName',
   Address: 'address',
@@ -150,4 +153,30 @@ export const carrierDataMap: Record<string, keyof CarrierData> = {
   'Factoring Company': 'factorId',
 
   Notes: 'notes',
+
+  'Liability Insurance Company': 'liabilityCompany',
+  'Liability Policy #': 'liabilityPolicy',
+  'Liability Expiration Date': 'liabilityExpiration',
+  'Liability Telephone': 'liabilityTelephone',
+  'Liability Contact': 'liabilityContact',
+
+  'Auto Insurance Company': 'autoInsCompany',
+  'Auto Policy #': 'autoInsPolicy',
+  'Auto Expiration Date': 'autoInsExpiration',
+  'Auto Telephone': 'autoInsTelephone',
+  'Auto Contact': 'autoInsContact',
+
+  'Cargo Company': 'cargoCompany',
+  'Cargo Policy #': 'cargoPolicy',
+  'Cargo Expiration Date': 'cargoExpiration',
+  'Cargo Telephone': 'cargoTelephone',
+  'Cargo Contact': 'cargoContact',
+  'Cargo WSIB #': 'cargoWSIB',
+
+  'FMCSA Insurance Company': 'fmcsaInsCompany',
+  'FMCSA Policy #': 'fmcsaInsPolicy',
+  'FMCSA Expiration Date': 'fmcsaInsExpiration',
+  'FMCSA Type': 'fmcsaInsExpiration',
+  'FMCSA Coverage $': 'fmcsaCoverage',
+  'FMCSA Telephone': 'fmcsaTelephone',
 };
