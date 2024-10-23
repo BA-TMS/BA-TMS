@@ -17,13 +17,21 @@ const carrierInsuranceSchema = yup.object({
   'Liability Insurance Company': yup.string().nullable(),
   'Liability Policy #': yup.string().nullable(),
   'Liability Expiration Date': yup.date().nullable(),
-  'Liability Telephone': yup.string().nullable(),
+  'Liability Telephone': yup
+    .string()
+    .transform((value) => (value === '' ? null : value))
+    .matches(/^\d{9,10}$/, 'Must enter valid phone number')
+    .nullable(),
   'Liability Contact': yup.string().nullable(),
 
   'Auto Insurance Company': yup.string().nullable(),
   'Auto Policy #': yup.string().nullable(),
   'Auto Expiration Date': yup.date().nullable(),
-  'Auto Telephone': yup.string().nullable(),
+  'Auto Telephone': yup
+    .string()
+    .transform((value) => (value === '' ? null : value))
+    .matches(/^\d{9,10}$/, 'Must enter valid phone number')
+    .nullable(),
   'Auto Contact': yup.string().nullable(),
 
   'Cargo Company': yup.string().nullable(),
@@ -33,7 +41,11 @@ const carrierInsuranceSchema = yup.object({
     .nullable(),
   'Cargo Expiration Date': yup.date().nullable(),
   'Cargo Telephone': yup.string().nullable(),
-  'Cargo Contact': yup.string().nullable(),
+  'Cargo Contact': yup
+    .string()
+    .transform((value) => (value === '' ? null : value))
+    .matches(/^\d{9,10}$/, 'Must enter valid phone number')
+    .nullable(),
   'Cargo WSIB #': yup.string().nullable(),
 
   'FMCSA Insurance Company': yup
@@ -49,7 +61,11 @@ const carrierInsuranceSchema = yup.object({
     .string()
     .matches(/^\d+$/, 'Must be a number')
     .required('FMCSA Coverage Amount Required'),
-  'FMCSA Telephone': yup.string().nullable(),
+  'FMCSA Telephone': yup
+    .string()
+    .transform((value) => (value === '' ? null : value))
+    .matches(/^\d{9,10}$/, 'Must enter valid phone number')
+    .nullable(),
 });
 
 type CarrierInsurance = yup.InferType<typeof carrierInsuranceSchema>;

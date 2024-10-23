@@ -35,7 +35,10 @@ const carrierDetailsSchema = yup.object({
 
   'Contact Name': yup.string().required('Must enter Contact Name'),
   'Contact Email': yup.string().nullable(),
-  Telephone: yup.string().required('Must enter Contact Telephone'),
+  Telephone: yup
+    .string()
+    .matches(/^\d{9,10}$/, 'Must enter valid phone number')
+    .required('Must enter Contact Telephone'),
   'Toll Free': yup.string().nullable(),
   Fax: yup.string().nullable(),
 

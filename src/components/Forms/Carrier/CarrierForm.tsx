@@ -162,7 +162,11 @@ export const CarrierForm = () => {
           <div className="w-full md:w-1/3">
             <DataDisplay
               title="FMCSA Expiration Date"
-              text={formData['FMCSA Expiration Date']}
+              text={
+                formData['FMCSA Expiration Date']
+                  ? formData['FMCSA Expiration Date'].toDateString()
+                  : ''
+              }
             />
           </div>
         </div>
@@ -200,7 +204,11 @@ export const CarrierForm = () => {
           <div className="w-full md:w-1/3">
             <DataDisplay
               title="Liability Expiration Date"
-              text={formData['Liability Expiration Date']}
+              text={
+                formData['Liability Expiration Date']
+                  ? formData['Liability Expiration Date'].toDateString()
+                  : ''
+              }
             />
           </div>
         </div>
@@ -235,7 +243,11 @@ export const CarrierForm = () => {
           <div className="w-full md:w-1/3">
             <DataDisplay
               title="Auto Expiration Date"
-              text={formData['Auto Expiration Date']}
+              text={
+                formData['Auto Expiration Date']
+                  ? formData['Auto Expiration Date'].toDateString()
+                  : ''
+              }
             />
           </div>
         </div>
@@ -276,7 +288,11 @@ export const CarrierForm = () => {
           <div className="w-full md:w-1/3">
             <DataDisplay
               title="Cargo Expiration"
-              text={formData['Cargo Expiration Date']}
+              text={
+                formData['Cargo Expiration Date']
+                  ? formData['Cargo Expiration Date'].toDateString()
+                  : ''
+              }
             />
           </div>
         </div>
