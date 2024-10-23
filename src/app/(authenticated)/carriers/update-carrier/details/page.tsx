@@ -1,12 +1,12 @@
 'use client';
 
 import FullPageFormContainer from '@/components/UI_Elements/Form/FullPageContainer';
-import CarrierForm from '@/components/Forms/CarrierForm';
+import CarrierDetails from '@/components/Forms/Carrier/CarrierDetails';
 
-export default function UpdateLoadDetails() {
+export default function UpdateCarrierDetails() {
   return (
     <FullPageFormContainer title="Update External Carrier">
-      <CarrierForm />
+      <CarrierDetails />
     </FullPageFormContainer>
   );
 }
