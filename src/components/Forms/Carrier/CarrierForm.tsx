@@ -3,13 +3,13 @@
 import React, { useEffect, useState, useContext } from 'react';
 import Button from '../../UI_Elements/buttons/Button';
 import { ModalContext } from '@/Context/modalContext';
-import { createCarrier } from '@/store/slices/carrierSlice';
+import { createCarrier, updateCarrier } from '@/store/slices/carrierSlice';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store/store';
 import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 import AddressDisplay from '@/components/UI_Elements/Display/AddressDisplay';
 import { useRouter } from 'next/navigation';
-import { CarrierFormData } from '@/types/carrierTypes';
+import { CarrierData, CarrierFormData } from '@/types/carrierTypes';
 
 // this component submits form data from the context to database using redux
 
@@ -19,10 +19,12 @@ export const CarrierForm = () => {
   const router = useRouter();
 
   const { formData, saveFormValues } = useContext(ModalContext);
+  console.log('FORM FORM DATA', formData);
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
+  console.log('is update?', isUpdate);
 
   const onSubmit = async (carrier: CarrierFormData) => {
     setIsSubmitting(true);
@@ -30,11 +32,25 @@ export const CarrierForm = () => {
 
     console.log('submitting', carrier);
     // if not an update
-    try {
-      await dispatch(createCarrier(carrier)).unwrap();
-    } catch (error) {
-      setError(`Error creating carrier: ${error}`);
+    if (!isUpdate) {
+      try {
+        await dispatch(createCarrier(carrier)).unwrap();
+      } catch (error) {
+        setError(`Error creating carrier: ${error}`);
+      }
+    } else {
+      try {
+        await dispatch(
+          updateCarrier({
+            id: formData['id'],
+            updatedCarrier: carrier as Partial<CarrierData>, // check type
+          })
+        ).unwrap();
+      } catch (error) {
+        setError(`Error updating carrier: ${error}`);
+      }
     }
+    setIsSubmitting(false);
   };
 
   // in the event of an update

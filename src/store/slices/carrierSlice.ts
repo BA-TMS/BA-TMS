@@ -1,6 +1,15 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getCarriers, addCarrier } from '@/lib/dbActions';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import {
+  getCarriers,
+  addCarrier,
+  updateCarrier as apiUpdatecarrier,
+} from '@/lib/dbActions';
 import { CarrierData, CarrierFormData } from '@/types/carrierTypes';
+
+interface UpdatedCarrierPayload {
+  id: string;
+  updatedCarrier: Partial<CarrierData>;
+}
 
 interface CarrierState {
   items: CarrierData[];
@@ -49,6 +58,27 @@ export const createCarrier = createAsyncThunk<CarrierData, CarrierFormData>(
   }
 );
 
+export const updateCarrier = createAsyncThunk<
+  CarrierData,
+  UpdatedCarrierPayload
+>(
+  'carriers/updateCarrier',
+  async (
+    { id, updatedCarrier }: UpdatedCarrierPayload,
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await apiUpdatecarrier(id, {
+        carrier: updatedCarrier as CarrierFormData,
+      });
+
+      return formatron(response);
+    } catch (error) {
+      return rejectWithValue('Failed to update carrier');
+    }
+  }
+);
+
 const carrierSlice = createSlice({
   name: 'carriers',
   initialState: <CarrierState>{
@@ -68,11 +98,22 @@ const carrierSlice = createSlice({
       })
       .addCase(fetchCarriers.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message;
+        state.error = action.error.message || 'Failed to fetch carriers';
       })
       .addCase(createCarrier.fulfilled, (state, action) => {
         state.items.push(action.payload);
-      });
+      })
+      .addCase(
+        updateCarrier.fulfilled,
+        (state, action: PayloadAction<CarrierData>) => {
+          const index = state.items.findIndex(
+            (carrier) => carrier.id === action.payload.id
+          );
+          if (index !== -1) {
+            state.items[index] = action.payload;
+          }
+        }
+      );
   },
 });
 
