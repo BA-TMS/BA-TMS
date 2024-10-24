@@ -19,7 +19,6 @@ export const CarrierForm = () => {
   const router = useRouter();
 
   const { formData, saveFormValues } = useContext(ModalContext);
-  console.log('CARRIER FORM DATA', formData);
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -29,19 +28,13 @@ export const CarrierForm = () => {
     setIsSubmitting(true);
     setError(''); // clear previous errors
 
-    // let's start with the redux of it all
     console.log('submitting', carrier);
     // if not an update
-    // try {
-    //   await dispatch(createCarrier(carrier)).unwrap();
-    // } catch (error) {
-    //   setError(`Error creating carrier: ${error}`);
-    // }
-    // map data from context data into object for carrier insurance
-
-    // async redux
-
-    // async db for insurance - unless it needs to be available globally
+    try {
+      await dispatch(createCarrier(carrier)).unwrap();
+    } catch (error) {
+      setError(`Error creating carrier: ${error}`);
+    }
   };
 
   // in the event of an update
@@ -161,7 +154,13 @@ export const CarrierForm = () => {
           </div>
           <div className="w-full md:w-1/3">
             <DataDisplay
-              title="FMCSA Expiration Date"
+              title="FMCSA Telephone"
+              text={formData['FMCSA Telephone']}
+            />
+          </div>
+          <div className="w-full md:w-1/3">
+            <DataDisplay
+              title="FMCSA Expiration"
               text={
                 formData['FMCSA Expiration Date']
                   ? formData['FMCSA Expiration Date'].toDateString()
@@ -338,7 +337,6 @@ export const CarrierForm = () => {
               type="submit"
               disabled={isSubmitting}
               onClick={() => {
-                console.log('SUBMITTING');
                 onSubmit(formData as CarrierFormData);
                 saveFormValues({}, true); // Reset form data after submission
                 router.push('/carriers');

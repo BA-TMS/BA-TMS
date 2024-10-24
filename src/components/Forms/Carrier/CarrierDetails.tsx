@@ -67,7 +67,6 @@ const CarrierDetails: React.FC = () => {
     : 'update-carrier';
 
   const { formData, saveFormValues } = useContext(ModalContext);
-  console.log('CARRIER DETAILS DATA', formData);
 
   const isUpdate = formData !== null && formData['id'];
 
@@ -111,7 +110,6 @@ const CarrierDetails: React.FC = () => {
   // submit the values to the context
   const onSubmit = useCallback(
     (carrier: Carrier) => {
-      console.log('submitting carrier', carrier);
       saveFormValues(carrier);
       reset();
       router.push(`/carriers/${segment}/insurance`);

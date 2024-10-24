@@ -80,10 +80,8 @@ const CarrierInsuranceForm: React.FC = () => {
     : 'update-carrier';
 
   const { formData, saveFormValues } = useContext(ModalContext);
-  console.log('CARRIER INS DATA', formData);
 
   const isUpdate = formData.CarrierInsurance !== null;
-  console.log('CARRIER INS Update?', isUpdate);
 
   const {
     setValue, // set value of a form field
@@ -125,7 +123,6 @@ const CarrierInsuranceForm: React.FC = () => {
   // submit the values to the context
   const onSubmit = useCallback(
     (carrier: CarrierInsurance) => {
-      console.log('submitting carrier insurance', carrier);
       saveFormValues(carrier);
       reset();
       router.push(`/carriers/${segment}/review`);
@@ -134,15 +131,13 @@ const CarrierInsuranceForm: React.FC = () => {
   );
 
   // if there's an update, we have to use the map to get the correct field values
-  // in this case, we are using the CarrierInsurance object from formData
+  // at least the first time around
+  // because of CarrierInsurance object from formData (carrier relation from prisma)
   useEffect(() => {
     if (isUpdate && formData?.CarrierInsurance) {
       const carrierInsurance = formData.CarrierInsurance;
 
       Object.keys(carrierInsDataMap).forEach((formField) => {
-        console.log('FORM FIELD', formField);
-        console.log('corresponding map', carrierInsDataMap[formField]);
-
         if (carrierInsurance[carrierInsDataMap[formField]] !== undefined) {
           setValue(
             formField as keyof CarrierInsurance,
@@ -155,7 +150,7 @@ const CarrierInsuranceForm: React.FC = () => {
 
   // keep fields populated when going back
   useEffect(() => {
-    if (formData && !isUpdate) {
+    if (formData) {
       Object.keys(formData).forEach((formField) => {
         setValue(formField as keyof CarrierInsurance, formData[formField]);
       });
