@@ -212,10 +212,10 @@ export async function addCarrier({ carrier }: { carrier: CarrierFormData }) {
       contactFax: carrier['Fax'],
 
       paymentTerms: carrier['Payment Terms'],
-      taxId: carrier['Tax ID#'],
+      taxId: carrier['Tax ID#'] !== '' ? carrier['Tax ID#'] : null,
       docketNumType: carrier['Docket Number Type'] as DocketNumber,
       docketNumber: carrier['Docket Number'],
-      ursNumber: carrier['URS #'],
+      ursNumber: carrier['URS #'] !== '' ? carrier['URS #'] : null,
       dotId: carrier['DOT ID#'],
 
       factorId:
@@ -494,10 +494,10 @@ export async function updateCarrier(
       contactFax: carrier['Fax'],
 
       paymentTerms: carrier['Payment Terms'],
-      taxId: carrier['Tax ID#'],
+      taxId: carrier['Tax ID#'] !== '' ? carrier['Tax ID#'] : null,
       docketNumType: carrier['Docket Number Type'] as DocketNumber,
       docketNumber: carrier['Docket Number'],
-      ursNumber: carrier['URS #'],
+      ursNumber: carrier['URS #'] !== '' ? carrier['URS #'] : null,
       dotId: carrier['DOT ID#'],
 
       factorId:

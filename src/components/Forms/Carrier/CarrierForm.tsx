@@ -4,8 +4,8 @@ import React, { useEffect, useState, useContext } from 'react';
 import Button from '../../UI_Elements/buttons/Button';
 import { ModalContext } from '@/Context/modalContext';
 import { createCarrier, updateCarrier } from '@/store/slices/carrierSlice';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '@/store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/store/store';
 import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 import AddressDisplay from '@/components/UI_Elements/Display/AddressDisplay';
 import { useRouter } from 'next/navigation';
@@ -16,15 +16,15 @@ import { CarrierData, CarrierFormData } from '@/types/carrierTypes';
 export const CarrierForm = () => {
   const dispatch = useDispatch<AppDispatch>();
 
+  const errorState = useSelector((state: RootState) => state.loads.error);
+
   const router = useRouter();
 
   const { formData, saveFormValues } = useContext(ModalContext);
-  console.log('FORM FORM DATA', formData);
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
-  console.log('is update?', isUpdate);
 
   const onSubmit = async (carrier: CarrierFormData) => {
     setIsSubmitting(true);
@@ -318,6 +318,11 @@ export const CarrierForm = () => {
           {error && (
             <div className="min-h-5 mr-2 self-center">
               <p className="caption mb-1 text-error-dark">{error}</p>
+            </div>
+          )}
+          {errorState && ( // errors coming from redux toolkit
+            <div className="min-h-5 mr-2 self-center">
+              <p className="caption mb-1 text-error-dark">{errorState}</p>
             </div>
           )}
           <Button

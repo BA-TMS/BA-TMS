@@ -103,6 +103,11 @@ const carrierSlice = createSlice({
       .addCase(createCarrier.fulfilled, (state, action) => {
         state.items.push(action.payload);
       })
+      .addCase(createCarrier.rejected, (state, action) => {
+        const message = action.payload;
+        state.status = 'failed';
+        state.error = message as string;
+      })
       .addCase(
         updateCarrier.fulfilled,
         (state, action: PayloadAction<CarrierData>) => {
@@ -113,7 +118,12 @@ const carrierSlice = createSlice({
             state.items[index] = action.payload;
           }
         }
-      );
+      )
+      .addCase(updateCarrier.rejected, (state, action) => {
+        const message = action.payload;
+        state.status = 'failed';
+        state.error = message as string;
+      });
   },
 });
 
