@@ -81,9 +81,7 @@ const CarrierInsuranceForm: React.FC = () => {
 
   const { formData, saveFormValues } = useContext(ModalContext);
 
-  const isUpdate = formData !== null && formData['id'];
-
-  // if update, we will need to fetch carrier insurance from the database
+  const isUpdate = formData !== null && !!formData['id'];
 
   const {
     setValue, // set value of a form field
@@ -133,25 +131,30 @@ const CarrierInsuranceForm: React.FC = () => {
   );
 
   // if there's an update, we have to use the map to get the correct field values
+  // in this case, we are using the CarrierInsurance object from formData
   useEffect(() => {
     if (isUpdate) {
+      const carrierInsurance = formData.CarrierInsurance;
+
       Object.keys(carrierDataMap).forEach((formField) => {
+        console.log('form field', formField);
+        console.log('value?', carrierInsurance[carrierDataMap[formField]]);
         setValue(
           formField as keyof CarrierInsurance,
-          formData[carrierDataMap[formField]]
+          carrierInsurance[carrierDataMap[formField]]
         );
       });
     }
   }, [formData, setValue, isUpdate]);
 
-  // keep fields populated when switching tabs or going back
-  useEffect(() => {
-    if (formData) {
-      Object.keys(formData).forEach((formField) => {
-        setValue(formField as keyof CarrierInsurance, formData[formField]);
-      });
-    }
-  }, [formData, setValue]);
+  // keep fields populated when going back
+  // useEffect(() => {
+  //   if (formData) {
+  //     Object.keys(formData).forEach((formField) => {
+  //       setValue(formField as keyof CarrierInsurance, formData[formField]);
+  //     });
+  //   }
+  // }, [formData, setValue]);
 
   return (
     <div>

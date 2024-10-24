@@ -43,7 +43,9 @@ export async function getCarrier(id: string) {
     where: {
       id: id,
     },
+    include: { CarrierInsurance: true },
   });
+  console.log('CARRIER W INSURANCE', carrier);
   return carrier;
 }
 
@@ -53,6 +55,16 @@ export async function getCarriers() {
   };
   const carriers = await getter(prisma.carrier, relations);
   return carriers;
+}
+
+export async function getCarrierInsurance(id: string) {
+  const insurance = await prisma.carrierInsurance.findUnique({
+    where: {
+      carrierId: id,
+    },
+  });
+  console.log(insurance);
+  return insurance;
 }
 
 export async function getConsignees() {

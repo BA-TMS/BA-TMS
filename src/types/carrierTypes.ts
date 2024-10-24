@@ -176,7 +176,7 @@ export const carrierDataMap: Record<
   'FMCSA Insurance Company': 'fmcsaInsCompany',
   'FMCSA Policy #': 'fmcsaInsPolicy',
   'FMCSA Expiration Date': 'fmcsaInsExpiration',
-  'FMCSA Type': 'fmcsaInsExpiration',
+  'FMCSA Type': 'fmcsaType',
   'FMCSA Coverage $': 'fmcsaCoverage',
   'FMCSA Telephone': 'fmcsaTelephone',
 };
