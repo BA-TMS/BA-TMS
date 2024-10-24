@@ -124,10 +124,7 @@ export interface CarrierFormData {
   'FMCSA Telephone': string;
 }
 
-export const carrierDataMap: Record<
-  string,
-  keyof CarrierData | keyof CarrierInsuranceData
-> = {
+export const carrierDataMap: Record<string, keyof CarrierData> = {
   Status: 'status',
   'Carrier Name': 'carrierName',
   Address: 'address',
@@ -153,7 +150,9 @@ export const carrierDataMap: Record<
   'Factoring Company': 'factorId',
 
   Notes: 'notes',
+};
 
+export const carrierInsDataMap: Record<string, keyof CarrierInsuranceData> = {
   'Liability Insurance Company': 'liabilityCompany',
   'Liability Policy #': 'liabilityPolicy',
   'Liability Expiration Date': 'liabilityExpiration',

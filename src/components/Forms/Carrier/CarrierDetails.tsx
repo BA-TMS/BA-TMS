@@ -67,8 +67,9 @@ const CarrierDetails: React.FC = () => {
     : 'update-carrier';
 
   const { formData, saveFormValues } = useContext(ModalContext);
+  console.log('CARRIER DETAILS DATA', formData);
 
-  const isUpdate = formData !== null && formData['id']; // Do we need this?
+  const isUpdate = formData !== null && formData['id'];
 
   const {
     setValue, // set value of a form field
@@ -109,7 +110,8 @@ const CarrierDetails: React.FC = () => {
 
   // submit the values to the context
   const onSubmit = useCallback(
-    async (carrier: Carrier) => {
+    (carrier: Carrier) => {
+      console.log('submitting carrier', carrier);
       saveFormValues(carrier);
       reset();
       router.push(`/carriers/${segment}/insurance`);
@@ -117,7 +119,9 @@ const CarrierDetails: React.FC = () => {
     [saveFormValues, router, segment, reset]
   );
 
-  // if there's an update, we have to use the map to get the correct field values
+  // if there's an update
+  // check for more than just an update
+
   useEffect(() => {
     if (isUpdate) {
       Object.keys(carrierDataMap).forEach((formField) => {
@@ -129,7 +133,7 @@ const CarrierDetails: React.FC = () => {
     }
   }, [formData, setValue, isUpdate]);
 
-  // keep fields populated when switching tabs or going back
+  // keep fields populated when going back
   useEffect(() => {
     if (formData) {
       Object.keys(formData).forEach((formField) => {

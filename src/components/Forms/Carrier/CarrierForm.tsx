@@ -30,13 +30,13 @@ export const CarrierForm = () => {
     setError(''); // clear previous errors
 
     // let's start with the redux of it all
-
+    console.log('submitting', carrier);
     // if not an update
-    try {
-      await dispatch(createCarrier(carrier)).unwrap();
-    } catch (error) {
-      setError(`Error creating carrier: ${error}`);
-    }
+    // try {
+    //   await dispatch(createCarrier(carrier)).unwrap();
+    // } catch (error) {
+    //   setError(`Error creating carrier: ${error}`);
+    // }
     // map data from context data into object for carrier insurance
 
     // async redux

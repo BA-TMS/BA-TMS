@@ -9,7 +9,7 @@ import TextInput from '../../UI_Elements/Form/TextInput';
 import DateSelect from '@/components/UI_Elements/Form/DateSelect';
 import Button from '@/components/UI_Elements/buttons/Button';
 import { useRouter, usePathname } from 'next/navigation';
-import { carrierDataMap } from '@/types/carrierTypes';
+import { carrierInsDataMap } from '@/types/carrierTypes';
 
 // external carrier insurance
 // this component uses yup and react-hook-form to submit form values to a context
@@ -80,8 +80,10 @@ const CarrierInsuranceForm: React.FC = () => {
     : 'update-carrier';
 
   const { formData, saveFormValues } = useContext(ModalContext);
+  console.log('CARRIER INS DATA', formData);
 
-  const isUpdate = formData !== null && !!formData['id'];
+  const isUpdate = formData.CarrierInsurance !== null;
+  console.log('CARRIER INS Update?', isUpdate);
 
   const {
     setValue, // set value of a form field
@@ -122,7 +124,8 @@ const CarrierInsuranceForm: React.FC = () => {
 
   // submit the values to the context
   const onSubmit = useCallback(
-    async (carrier: CarrierInsurance) => {
+    (carrier: CarrierInsurance) => {
+      console.log('submitting carrier insurance', carrier);
       saveFormValues(carrier);
       reset();
       router.push(`/carriers/${segment}/review`);
@@ -133,28 +136,31 @@ const CarrierInsuranceForm: React.FC = () => {
   // if there's an update, we have to use the map to get the correct field values
   // in this case, we are using the CarrierInsurance object from formData
   useEffect(() => {
-    if (isUpdate) {
+    if (isUpdate && formData?.CarrierInsurance) {
       const carrierInsurance = formData.CarrierInsurance;
 
-      Object.keys(carrierDataMap).forEach((formField) => {
-        console.log('form field', formField);
-        console.log('value?', carrierInsurance[carrierDataMap[formField]]);
-        setValue(
-          formField as keyof CarrierInsurance,
-          carrierInsurance[carrierDataMap[formField]]
-        );
+      Object.keys(carrierInsDataMap).forEach((formField) => {
+        console.log('FORM FIELD', formField);
+        console.log('corresponding map', carrierInsDataMap[formField]);
+
+        if (carrierInsurance[carrierInsDataMap[formField]] !== undefined) {
+          setValue(
+            formField as keyof CarrierInsurance,
+            carrierInsurance[carrierInsDataMap[formField]]
+          );
+        }
       });
     }
   }, [formData, setValue, isUpdate]);
 
   // keep fields populated when going back
-  // useEffect(() => {
-  //   if (formData) {
-  //     Object.keys(formData).forEach((formField) => {
-  //       setValue(formField as keyof CarrierInsurance, formData[formField]);
-  //     });
-  //   }
-  // }, [formData, setValue]);
+  useEffect(() => {
+    if (formData && !isUpdate) {
+      Object.keys(formData).forEach((formField) => {
+        setValue(formField as keyof CarrierInsurance, formData[formField]);
+      });
+    }
+  }, [formData, setValue, isUpdate]);
 
   return (
     <div>
