@@ -36,12 +36,46 @@ async function main() {
   }
 
   for (const currCarrier of carriers) {
-    const resp = await prisma.carrier.upsert({
-      where: { dotId: currCarrier.dotId },
+    const carrierResp = await prisma.carrier.upsert({
+      where: { id: currCarrier.id },
       update: {},
-      create: currCarrier,
+      create: {
+        carrierName: currCarrier.carrierName,
+        address: currCarrier.address,
+        city: currCarrier.city,
+        state: currCarrier.state,
+        postCountry: currCarrier.postCountry,
+        postCode: currCarrier.postCode,
+        contactTelephone: currCarrier.contactTelephone,
+        paymentTerms: currCarrier.paymentTerms,
+        docketNumType: currCarrier.docketNumType,
+        docketNumber: currCarrier.docketNumber,
+        dotId: currCarrier.dotId,
+        taxId: currCarrier.taxId,
+      },
     });
-    carrierIds.push(resp.id);
+
+    const carrierInsurance = currCarrier.CarrierInsurance;
+    if (carrierInsurance) {
+      await prisma.carrierInsurance.upsert({
+        where: { carrierId: carrierResp.id },
+        update: {
+          fmcsaInsCompany: carrierInsurance.fmcsaInsCompany,
+          fmcsaInsPolicy: carrierInsurance.fmcsaInsPolicy,
+          fmcsaType: carrierInsurance.fmcsaType,
+          fmcsaCoverage: carrierInsurance.fmcsaCoverage,
+        },
+        create: {
+          carrierId: carrierResp.id,
+          fmcsaInsCompany: carrierInsurance.fmcsaInsCompany,
+          fmcsaInsPolicy: carrierInsurance.fmcsaInsPolicy,
+          fmcsaType: carrierInsurance.fmcsaType,
+          fmcsaCoverage: carrierInsurance.fmcsaCoverage,
+        },
+      });
+    }
+
+    carrierIds.push(carrierResp.id);
   }
 
   for (const currDriver of drivers) {
@@ -216,10 +250,11 @@ const users = [
 
 const carriers = [
   {
+    id: '123-942850',
     carrierName: 'Carrier1',
     address: '70 Wall St',
     city: 'Wethersfield',
-    state: 'CT',
+    state: 'Conneticut',
     postCountry: 'USA',
     postCode: '06109',
     contactTelephone: '9987654321',
@@ -228,12 +263,19 @@ const carriers = [
     docketNumber: '12974',
     dotId: '42',
     taxId: '42',
+    CarrierInsurance: {
+      fmcsaInsCompany: 'FMCSA Company',
+      fmcsaInsPolicy: '42',
+      fmcsaType: 'BPID',
+      fmcsaCoverage: '40000',
+    },
   },
   {
+    id: '123-942851',
     carrierName: 'Carrier2',
     address: '79 Mayflower St',
     city: 'Smyrna',
-    state: 'GA',
+    state: 'Georgia',
     postCountry: 'USA',
     postCode: '30080',
     contactTelephone: '1112223333',
@@ -242,6 +284,12 @@ const carriers = [
     docketNumber: '12454',
     dotId: '7',
     taxId: '7',
+    CarrierInsurance: {
+      fmcsaInsCompany: 'FMCSA Company',
+      fmcsaInsPolicy: '7',
+      fmcsaType: 'BPID',
+      fmcsaCoverage: '40000',
+    },
   },
 ];
 
