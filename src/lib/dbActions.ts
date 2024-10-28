@@ -9,7 +9,7 @@ import { CarrierFormData } from '@/types/carrierTypes';
 const prisma = new PrismaClient();
 
 const LOAD_RELATIONS = {
-  carrier: { select: { name: true } },
+  carrier: { select: { carrierName: true } },
   driver: { select: { name: true } },
   customer: { select: { companyName: true } },
   shipper: { select: { name: true } },
