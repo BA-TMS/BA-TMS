@@ -19,6 +19,8 @@ const ViewCarrier = ({ data }: ViewCarrierProps) => {
 
   const { saveFormValues } = useContext(ModalContext);
 
+  console.log('VIEW', data);
+
   if (!data) {
     return (
       <div className="flex flex-col h-full">
@@ -147,11 +149,7 @@ const ViewCarrier = ({ data }: ViewCarrierProps) => {
         <div className="w-full md:w-1/3">
           <DataDisplay
             title="FMCSA Expiration"
-            text={
-              data['CarrierInsurance']?.fmcsaInsExpiration
-                ? data['CarrierInsurance']?.fmcsaInsExpiration.toDateString()
-                : ''
-            }
+            text={data['CarrierInsurance']?.fmcsaInsExpiration}
           />
         </div>
       </div>
@@ -189,11 +187,7 @@ const ViewCarrier = ({ data }: ViewCarrierProps) => {
         <div className="w-full md:w-1/3">
           <DataDisplay
             title="Liability Expiration Date"
-            text={
-              data['CarrierInsurance']?.liabilityExpiration
-                ? data['CarrierInsurance']?.liabilityExpiration.toDateString()
-                : ''
-            }
+            text={data['CarrierInsurance']?.liabilityExpiration}
           />
         </div>
       </div>
@@ -231,11 +225,7 @@ const ViewCarrier = ({ data }: ViewCarrierProps) => {
         <div className="w-full md:w-1/3">
           <DataDisplay
             title="Auto Expiration Date"
-            text={
-              data['CarrierInsurance']?.autoInsExpiration
-                ? data['CarrierInsurance']?.autoInsExpiration.toDateString()
-                : ''
-            }
+            text={data['CarrierInsurance']?.autoInsExpiration}
           />
         </div>
       </div>
@@ -279,11 +269,7 @@ const ViewCarrier = ({ data }: ViewCarrierProps) => {
         <div className="w-full md:w-1/3">
           <DataDisplay
             title="Cargo Expiration"
-            text={
-              data['CarrierInsurance']?.cargoExpiration
-                ? data['CarrierInsurance']?.cargoExpiration.toDateString()
-                : ''
-            }
+            text={data['CarrierInsurance']?.cargoExpiration}
           />
         </div>
       </div>

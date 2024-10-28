@@ -23,12 +23,39 @@ const formatron = function (carrier: CarrierData) {
     factor: carrier.factor ? carrier.factor.name : null,
     createdAt:
       carrier.createdAt instanceof Date
-        ? carrier.createdAt.toISOString()
+        ? carrier.createdAt.toDateString()
         : null,
     updatedAt:
       carrier.updatedAt instanceof Date
-        ? carrier.updatedAt.toISOString()
+        ? carrier.updatedAt.toDateString()
         : null,
+    CarrierInsurance: {
+      ...carrier.CarrierInsurance,
+      createdAt:
+        carrier.CarrierInsurance?.createdAt instanceof Date
+          ? carrier.CarrierInsurance?.createdAt.toDateString()
+          : null,
+      updatedAt:
+        carrier.CarrierInsurance?.updatedAt instanceof Date
+          ? carrier.CarrierInsurance?.updatedAt.toDateString()
+          : null,
+      liabilityExpiration:
+        carrier.CarrierInsurance?.liabilityExpiration instanceof Date
+          ? carrier.CarrierInsurance?.liabilityExpiration.toDateString()
+          : null,
+      autoInsExpiration:
+        carrier.CarrierInsurance?.autoInsExpiration instanceof Date
+          ? carrier.CarrierInsurance?.autoInsExpiration.toDateString()
+          : null,
+      cargoExpiration:
+        carrier.CarrierInsurance?.cargoExpiration instanceof Date
+          ? carrier.CarrierInsurance?.cargoExpiration.toDateString()
+          : null,
+      fmcsaInsExpiration:
+        carrier.CarrierInsurance?.fmcsaInsExpiration instanceof Date
+          ? carrier.CarrierInsurance?.fmcsaInsExpiration.toDateString()
+          : undefined,
+    },
   } as unknown as CarrierData;
 };
 
