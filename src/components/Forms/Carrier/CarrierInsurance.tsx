@@ -36,13 +36,10 @@ const carrierInsuranceSchema = yup.object({
   'Auto Contact': yup.string().nullable(),
 
   'Cargo Company': yup.string().nullable(),
-  'Cargo Policy #': yup
-    .string()
-
-    .nullable(),
+  'Cargo Policy #': yup.string().nullable(),
   'Cargo Expiration Date': yup.date().nullable(),
-  'Cargo Telephone': yup.string().nullable(),
-  'Cargo Contact': yup
+  'Cargo Contact': yup.string().nullable(),
+  'Cargo Telephone': yup
     .string()
     .transform((value) => (value === '' ? null : value))
     .matches(/^\d{9,10}$/, 'Must enter valid phone number')
