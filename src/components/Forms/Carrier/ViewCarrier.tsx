@@ -3,7 +3,7 @@
 import { useContext } from 'react';
 import { ModalContext } from '@/Context/modalContext';
 import { useRouter } from 'next/navigation';
-import { CarrierData, CarrierInsuranceData } from '@/types/carrierTypes';
+import { CarrierData } from '@/types/carrierTypes';
 import Button from '@/components/UI_Elements/buttons/Button';
 import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 import AddressDisplay from '@/components/UI_Elements/Display/AddressDisplay';
@@ -11,13 +11,35 @@ import AddressDisplay from '@/components/UI_Elements/Display/AddressDisplay';
 // this component displays information about a specific carrier
 
 interface ViewCarrierProps {
-  data: CarrierData & CarrierInsuranceData;
+  data: CarrierData | undefined;
 }
 
 const ViewCarrier = ({ data }: ViewCarrierProps) => {
   const router = useRouter();
 
   const { saveFormValues } = useContext(ModalContext);
+
+  if (!data) {
+    return (
+      <div className="flex flex-col h-full">
+        <div className="py-5 flex-grow">
+          <p className="body2 text-error-dark text-center">
+            Oops! Something went wrong- Could not find External Carrier.
+          </p>
+        </div>
+        <div className="py-3.5 gap-2 border-t border-grey-300 dark:border-grey-700 flex justify-end bg-white dark:bg-grey-900 z-10">
+          <Button
+            type="button"
+            onClick={() => {
+              router.back();
+            }}
+          >
+            Back
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="py-4 flex flex-col">
@@ -91,31 +113,43 @@ const ViewCarrier = ({ data }: ViewCarrierProps) => {
         <div className="flex flex-col w-full xl:w-1/2">
           <DataDisplay
             title="FMCSA Insurance Company"
-            text={data['fmcsaInsCompany']}
+            text={data['CarrierInsurance']?.fmcsaInsCompany}
           />
         </div>
 
         <div className="flex flex-col w-full xl:w-1/2">
-          <DataDisplay title="FMCSA Policy #" text={data['fmcsaInsPolicy']} />
+          <DataDisplay
+            title="FMCSA Policy #"
+            text={data['CarrierInsurance']?.fmcsaInsPolicy}
+          />
         </div>
       </div>
 
       <div className="flex flex-col gap-4 md:flex-row">
         <div className="w-full md:w-1/3">
-          <DataDisplay title="FMCSA Type" text={data['fmcsaType']} />
+          <DataDisplay
+            title="FMCSA Type"
+            text={data['CarrierInsurance']?.fmcsaType}
+          />
         </div>
         <div className="w-full md:w-1/3">
-          <DataDisplay title="FMCSA Coverage $" text={data['fmcsaCoverage']} />
+          <DataDisplay
+            title="FMCSA Coverage $"
+            text={data['CarrierInsurance']?.fmcsaCoverage}
+          />
         </div>
         <div className="w-full md:w-1/3">
-          <DataDisplay title="FMCSA Telephone" text={data['fmcsaTelephone']} />
+          <DataDisplay
+            title="FMCSA Telephone"
+            text={data['CarrierInsurance']?.fmcsaTelephone}
+          />
         </div>
         <div className="w-full md:w-1/3">
           <DataDisplay
             title="FMCSA Expiration"
             text={
-              data['fmcsaInsExpiration']
-                ? data['fmcsaInsExpiration'].toDateString()
+              data['CarrierInsurance']?.fmcsaInsExpiration
+                ? data['CarrierInsurance']?.fmcsaInsExpiration.toDateString()
                 : ''
             }
           />
@@ -127,14 +161,14 @@ const ViewCarrier = ({ data }: ViewCarrierProps) => {
         <div className="flex flex-col w-full xl:w-1/2">
           <DataDisplay
             title="Liability Insurance Company"
-            text={data['liabilityCompany']}
+            text={data['CarrierInsurance']?.liabilityCompany}
           />
         </div>
 
         <div className="flex flex-col w-full xl:w-1/2">
           <DataDisplay
             title="Liability Policy #"
-            text={data['liabilityPolicy']}
+            text={data['CarrierInsurance']?.liabilityPolicy}
           />
         </div>
       </div>
@@ -143,21 +177,21 @@ const ViewCarrier = ({ data }: ViewCarrierProps) => {
         <div className="w-full md:w-1/3">
           <DataDisplay
             title="Liability Contact"
-            text={data['liabilityContact']}
+            text={data['CarrierInsurance']?.liabilityContact}
           />
         </div>
         <div className="w-full md:w-1/3">
           <DataDisplay
             title="Liability Telephone"
-            text={data['liabilityTelephone']}
+            text={data['CarrierInsurance']?.liabilityTelephone}
           />
         </div>
         <div className="w-full md:w-1/3">
           <DataDisplay
             title="Liability Expiration Date"
             text={
-              data['autoInsExpiration']
-                ? data['autoInsExpiration'].toDateString()
+              data['CarrierInsurance']?.liabilityExpiration
+                ? data['CarrierInsurance']?.liabilityExpiration.toDateString()
                 : ''
             }
           />
@@ -169,28 +203,37 @@ const ViewCarrier = ({ data }: ViewCarrierProps) => {
         <div className="flex flex-col w-full xl:w-1/2">
           <DataDisplay
             title="Auto Insurance Company"
-            text={data['autoInsCompany']}
+            text={data['CarrierInsurance']?.autoInsCompany}
           />
         </div>
 
         <div className="flex flex-col w-full xl:w-1/2">
-          <DataDisplay title="Auto Policy #" text={data['autoInsPolicy']} />
+          <DataDisplay
+            title="Auto Policy #"
+            text={data['CarrierInsurance']?.autoInsPolicy}
+          />
         </div>
       </div>
 
       <div className="flex flex-col gap-4 md:flex-row">
         <div className="w-full md:w-1/3">
-          <DataDisplay title="Auto Contact" text={data['autoInsContact']} />
+          <DataDisplay
+            title="Auto Contact"
+            text={data['CarrierInsurance']?.autoInsContact}
+          />
         </div>
         <div className="w-full md:w-1/3">
-          <DataDisplay title="Auto Telephone" text={data['autoInsTelephone']} />
+          <DataDisplay
+            title="Auto Telephone"
+            text={data['CarrierInsurance']?.autoInsTelephone}
+          />
         </div>
         <div className="w-full md:w-1/3">
           <DataDisplay
             title="Auto Expiration Date"
             text={
-              data['autoInsExpiration']
-                ? data['autoInsExpiration'].toDateString()
+              data['CarrierInsurance']?.autoInsExpiration
+                ? data['CarrierInsurance']?.autoInsExpiration.toDateString()
                 : ''
             }
           />
@@ -200,30 +243,45 @@ const ViewCarrier = ({ data }: ViewCarrierProps) => {
       {/* Cargo Company */}
       <div className="mt-5 flex flex-col gap-5 xl:flex-row">
         <div className="flex flex-col w-full xl:w-1/2">
-          <DataDisplay title="Cargo Company" text={data['cargoCompany']} />
+          <DataDisplay
+            title="Cargo Company"
+            text={data['CarrierInsurance']?.cargoCompany}
+          />
         </div>
 
         <div className="flex flex-col w-full xl:w-1/2">
-          <DataDisplay title="Cargo Policy #" text={data['cargoPolicy']} />
+          <DataDisplay
+            title="Cargo Policy #"
+            text={data['CarrierInsurance']?.cargoPolicy}
+          />
         </div>
       </div>
 
       <div className="flex flex-col gap-4 md:flex-row">
         <div className="w-full md:w-1/3">
-          <DataDisplay title="Cargo Contact" text={data['cargoContact']} />
+          <DataDisplay
+            title="Cargo Contact"
+            text={data['CarrierInsurance']?.cargoContact}
+          />
         </div>
         <div className="w-full md:w-1/3">
-          <DataDisplay title="Cargo Telephone" text={data['cargoTelephone']} />
+          <DataDisplay
+            title="Cargo Telephone"
+            text={data['CarrierInsurance']?.cargoTelephone}
+          />
         </div>
         <div className="w-full md:w-1/3">
-          <DataDisplay title="Cargo WSIB #" text={data['cargoWSIB']} />
+          <DataDisplay
+            title="Cargo WSIB #"
+            text={data['CarrierInsurance']?.cargoWSIB}
+          />
         </div>
         <div className="w-full md:w-1/3">
           <DataDisplay
             title="Cargo Expiration"
             text={
-              data['cargoExpiration']
-                ? data['cargoExpiration'].toDateString()
+              data['CarrierInsurance']?.cargoExpiration
+                ? data['CarrierInsurance']?.cargoExpiration.toDateString()
                 : ''
             }
           />

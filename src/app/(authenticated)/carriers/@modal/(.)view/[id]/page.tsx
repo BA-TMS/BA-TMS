@@ -18,18 +18,15 @@ export default function ViewCarrierModal() {
   const carrierId = pathname.split('/view/')[1];
 
   // use the id to pull from redux
-  // need to get the CarrierInsurance property
   const carrier = useSelector((state: RootState) =>
     state.carriers.items.find(
       (carrier: CarrierData) => carrier.id === carrierId
     )
   );
 
-  console.log('CARRIER', carrier);
-
   return (
     <Modal title={'View External Carrier'}>
-      {carrier ? <ViewCarrier data={carrier} /> : <p>oops</p>}
+      <ViewCarrier data={carrier} />
     </Modal>
   );
 }

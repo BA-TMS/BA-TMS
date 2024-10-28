@@ -29,10 +29,6 @@ const formatron = function (carrier: CarrierData) {
       carrier.updatedAt instanceof Date
         ? carrier.updatedAt.toISOString()
         : null,
-
-    CarrierInsurance: carrier.CarrierInsurance
-      ? carrier.CarrierInsurance.id
-      : null, // ?? see what this looks like
   } as unknown as CarrierData;
 };
 
@@ -40,7 +36,7 @@ export const fetchCarriers = createAsyncThunk<CarrierData[]>(
   'carriers/fetchCarriers',
   async () => {
     const data = await getCarriers();
-
+    console.log('GET CARRIERS', data);
     return data.map((carrier: CarrierData) => formatron(carrier));
   }
 );
