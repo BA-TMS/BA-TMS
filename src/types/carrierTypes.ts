@@ -26,10 +26,10 @@ export interface CarrierData {
   ursNumber: string | null;
   dotId: string;
 
-  factor: { name: string } | null; // i think
+  factor: { name: string } | null;
   factorId: string | null;
 
-  CarrierInsurance?: CarrierInsuranceData; // i think?
+  CarrierInsurance?: CarrierInsuranceData;
 
   notes: string | null;
 }

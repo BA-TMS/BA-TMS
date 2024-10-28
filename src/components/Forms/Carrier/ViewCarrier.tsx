@@ -19,8 +19,6 @@ const ViewCarrier = ({ data }: ViewCarrierProps) => {
 
   const { saveFormValues } = useContext(ModalContext);
 
-  console.log('VIEW', data);
-
   if (!data) {
     return (
       <div className="flex flex-col h-full">

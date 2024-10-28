@@ -63,7 +63,7 @@ export const fetchCarriers = createAsyncThunk<CarrierData[]>(
   'carriers/fetchCarriers',
   async () => {
     const data = await getCarriers();
-    console.log('GET CARRIERS', data);
+
     return data.map((carrier: CarrierData) => formatron(carrier));
   }
 );
@@ -74,7 +74,7 @@ export const createCarrier = createAsyncThunk<CarrierData, CarrierFormData>(
     try {
       const response = await addCarrier({ carrier });
 
-      return formatron(response);
+      return formatron(response as CarrierData);
     } catch (error) {
       return rejectWithValue('Failed to create carrier');
     }
@@ -95,7 +95,7 @@ export const updateCarrier = createAsyncThunk<
         carrier: updatedCarrier as CarrierFormData,
       });
 
-      return formatron(response);
+      return formatron(response as CarrierData);
     } catch (error) {
       return rejectWithValue('Failed to update carrier');
     }
