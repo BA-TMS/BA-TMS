@@ -30,7 +30,6 @@ export const CarrierForm = () => {
     setIsSubmitting(true);
     setError(''); // clear previous errors
 
-    console.log('submitting', carrier);
     // if not an update
     if (!isUpdate) {
       try {
@@ -53,8 +52,6 @@ export const CarrierForm = () => {
     setIsSubmitting(false);
   };
 
-  // in the event of an update
-  // we're goung to have to check what kind of id this is (carrier or carrier insurance)
   useEffect(() => {
     if (formData !== null && formData['id']) {
       setIsUpdate(true);
