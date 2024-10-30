@@ -7,12 +7,12 @@ async function main() {
   const customerIds = [];
   // I tried to use the indexes from the arrays of objects, but this seems weird and fragile in TS. Something to return to?
   let loadPos = 0;
-  let userPos = 0;
+  const userPos = 0;
   let driverPos = 0;
 
   for (const currOrg of orgs) {
     const resp = await prisma.organization.upsert({
-      where: { name: currOrg.name },
+      where: { orgName: currOrg.orgName },
       update: {},
       create: currOrg,
     });
@@ -20,20 +20,21 @@ async function main() {
   }
 
   const a2zresp = await prisma.organization.upsert({
-    where: { name: a2zorg.name },
+    where: { orgName: a2zorg.orgName },
     update: {},
+    create: a2zorg,
     create: a2zorg,
   });
 
-  for (const currUser of users) {
-    currUser.orgId = orgIds[userPos % orgIds.length];
-    const resp = await prisma.user.upsert({
-      where: { id: currUser.id },
-      update: {},
-      create: currUser,
-    });
-    userPos += 1;
-  }
+  // for (const currUser of users) {
+  //   currUser.orgId = orgIds[userPos % orgIds.length];
+  //   const resp = await prisma.user.upsert({
+  //     where: { id: currUser.id },
+  //     update: {},
+  //     create: currUser,
+  //   });
+  //   userPos += 1;
+  // }
 
   for (const currCarrier of carriers) {
     const carrierResp = await prisma.carrier.upsert({
@@ -206,27 +207,31 @@ async function seedAccountPreferences() {
 
 const orgs = [
   {
-    name: 'Org1',
+    orgName: 'Swift Logistics',
     address: '73 N. Hightland Court',
-    city: 'Lititz',
+    city: 'West Redding',
     state: 'PA',
     postCountry: 'USA',
-    postCode: '17543',
+    postCode: '19611',
     telephone: '1234567890',
+    docketNumType: 'FF',
+    docketNumber: '138963',
   },
   {
-    name: 'Org2',
+    orgName: 'Tortoise Logistics',
     address: '26 Mill Circle',
     city: 'Greenwood',
     state: 'SC',
     postCountry: 'USA',
     postCode: '17543',
     telephone: '6168675309',
+    docketNumType: 'MC',
+    docketNumber: '138965',
   },
 ];
 
 const a2zorg = {
-  name: 'A2Z Port',
+  orgName: 'BA Logistics',
   address: '55 Place Street',
   city: 'Long Beach',
   state: 'CA',
@@ -235,18 +240,18 @@ const a2zorg = {
   telephone: '7373300444',
 };
 
-const users = [
-  {
-    id: '11111',
-    email: 'testuser1@org1.com',
-    orgId: null,
-  },
-  {
-    id: '2222',
-    email: 'testuser2@org2.com',
-    orgId: null,
-  },
-];
+// const users = [
+//   {
+//     id: '11111',
+//     email: 'testuser1@org1.com',
+//     orgId: null,
+//   },
+//   {
+//     id: '2222',
+//     email: 'testuser2@org2.com',
+//     orgId: null,
+//   },
+// ];
 
 const carriers = [
   {
