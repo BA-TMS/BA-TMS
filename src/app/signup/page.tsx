@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import Link from 'next/link';
 import Button from '@/components/UI_Elements/buttons/Button';
 import { Logo } from '@/assets/logo';
-import { signUp } from '@/app/login/actions';
+import { signUp } from './actions';
 
 // error messages for yup-password validation
 yup.setLocale({
