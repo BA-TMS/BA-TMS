@@ -7,6 +7,11 @@ import { createClient } from '@util/supabase/server';
 import { headers } from 'next/headers';
 import { SupabaseClient } from '@supabase/supabase-js';
 
+// users should be added to supabase auth table
+// should also add a new organization to organization table
+// new user entry in user table
+// new entry in permissions table
+
 interface NewUser {
   firstName: string;
   lastName: string;

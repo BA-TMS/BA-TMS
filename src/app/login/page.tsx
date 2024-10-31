@@ -98,7 +98,7 @@ export default async function Login({
             </p>
             <Link
               className="text-primary hover:text-primary-dark justify-center font-public font-bold w-auto h-auto disabled:text-grey-500 disabled:pointer-events-none text-button-lg my-2"
-              href={'/signup'}
+              href={'/signup/company'}
             >
               Sign Up
             </Link>
