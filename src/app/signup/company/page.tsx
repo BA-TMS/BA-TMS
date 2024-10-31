@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
@@ -11,8 +11,8 @@ import Button from '@/components/UI_Elements/buttons/Button';
 import { useRouter } from 'next/navigation';
 
 const orgSchema = yup.object().shape({
-  'Company Name': yup.string().required('First Name is required.'),
-  Address: yup.string().required('First Name is required.'),
+  'Company Name': yup.string().required(),
+  Address: yup.string().required(),
   'Address Field 2': yup.string(),
   City: yup.string().required(),
   State: yup.string().required(),
@@ -31,12 +31,13 @@ type NewOrg = yup.InferType<typeof orgSchema>;
 export default function Signup() {
   const router = useRouter();
 
-  const { saveFormValues } = useContext(ModalContext);
+  const { formData, saveFormValues } = useContext(ModalContext);
 
   const {
     control,
     handleSubmit,
     reset,
+    setValue,
     // setError,
     formState: { errors, isSubmitting },
   } = useForm<NewOrg>({
@@ -64,6 +65,15 @@ export default function Signup() {
     reset(); // update form to default values
     router.push('/signup/user'); // next step
   };
+
+  // keep fields populated when switching tabs or going back
+  useEffect(() => {
+    if (formData) {
+      Object.keys(formData).forEach((formField) => {
+        setValue(formField as keyof NewOrg, formData[formField]);
+      });
+    }
+  }, [formData, setValue]);
 
   return (
     <>

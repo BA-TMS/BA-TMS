@@ -13,8 +13,8 @@ export default function SignUpLayout({
 }) {
   return (
     <ContextProvider>
-      <div className="min-h-screen bg-grey-100 flex items-center justify-center">
-        <div className=" bg-white border rounded-lg border-grey-300 p-10 mx-auto w-full max-w-280">
+      <div className="min-h-screen bg-grey-100 flex items-center justify-center h-screen">
+        <div className=" bg-white border rounded-lg border-grey-300 p-10 mx-auto w-full max-w-280 h-5/6">
           <header className="flex flex-col justify-between items-center mb-3">
             {Logo}
             <h2 className="text-title-md mt-6">Sign Up</h2>
