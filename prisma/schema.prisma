@@ -24,7 +24,7 @@ model Organization { // This is a collection of TMS users
   id            String    @id @default(uuid())
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  orgName          String    @unique
+  orgName       String    @unique
   address       String
   addressAddOn  String?
   city          String
@@ -32,6 +32,8 @@ model Organization { // This is a collection of TMS users
   postCountry   String
   postCode      String
   telephone     String
+  tollFree      String?
+  fax           String?
   docketNumType DocketNumber
   docketNumber  String      @unique
   dotId         String?     @unique
