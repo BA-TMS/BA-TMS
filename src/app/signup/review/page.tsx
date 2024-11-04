@@ -1,213 +1,192 @@
 'use client';
-import * as yup from 'yup';
-import YupPassword from 'yup-password';
-YupPassword(yup);
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
+
+import { useState, useContext } from 'react';
+// import { useForm } from 'react-hook-form';
+import { ModalContext } from '@/Context/modalContext';
 import Button from '@/components/UI_Elements/buttons/Button';
+import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
+import AddressDisplay from '@/components/UI_Elements/Display/AddressDisplay';
+import { useRouter } from 'next/navigation';
 import { signUp } from '../actions';
 
-// error messages for yup-password validation
-yup.setLocale({
-  string: {
-    minLowercase: 'Password must contain at least 1 lower case character.',
-    minUppercase: 'Password must contain at least 1 upper case character.',
-    minNumbers: 'Password must contain at least 1 number.',
-    minSymbols: 'Password must contain at least 1 special character.',
-    min: 'Password must be at least 8 characters.',
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } as any,
-  // per docs- when using typescript, append `as any` to the end of this object to avoid type errors.
-});
+interface SignUpData {
+  'First Name': string;
+  'Last Name': string;
+  Email: string;
+  Password: string;
+  'Personal Telephone': string;
 
-const newUserSchema = yup.object().shape({
-  firstName: yup.string().required('First Name is required.'),
-  lastName: yup.string().required('First Name is required.'),
-  email: yup
-    .string()
-    .email('Must use a valid email.')
-    .required('Email is required.'),
-  tel: yup.string().required('Phone Number is required.'),
-  password: yup.string().password().required('Password is required.'),
-});
+  'Company Name': string;
+  Address: string;
+  'Address Field 2'?: string;
+  City: string;
+  State: string;
+  Zip: string;
+  Country: string;
+  Telephone: string;
+  'Toll Free'?: string;
+  Fax?: string;
+  'Docket Number Type': string;
+  'Docket Number': string;
+  'DOT ID#'?: string;
+}
 
-type NewUser = yup.InferType<typeof newUserSchema>;
+// this component handles the actual user sign up auth with supabase
+// signup will create an entry in the auth.users table
+// use prisma in signup actions to create rows in corresponding tables
 
-export default function Signup({
-  searchParams,
-}: {
-  searchParams: { message: string };
-}) {
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors, isSubmitting },
-  } = useForm<NewUser>({
-    defaultValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      tel: '',
-      password: '',
-    },
-    resolver: yupResolver(newUserSchema),
-  });
+export default function Signup() {
+  // probably will need state to display errors
+  // should form data go into component state at any point?
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const onSubmit = async (data: NewUser) => {
-    try {
-      console.log('signup data:', data);
+  const router = useRouter();
 
-      await signUp(data);
-    } catch (error) {
-      console.log('Error submitting form:', error);
-      setError('root', { message: 'Error Submitting Form - Please try Again' });
-    }
+  // first, we need to access the form data and make sure it is displayed
+  const { formData, saveFormValues } = useContext(ModalContext);
+  console.log('REVIEW FORM DATA', formData);
+
+  // set is submitting to true
+  // do auth signup
+  // then prisma create tables
+  // confirm email flow
+  // clear context
+  // set is submitting false
+  // handle errors at all points
+  const onSubmit = (data: SignUpData) => {
+    setIsSubmitting(true);
+    console.log('SUBMITTING DATA', data);
+
+    setTimeout(() => {
+      console.log('timing out');
+      setIsSubmitting(false);
+    }, 1000);
   };
 
+  // auth signup
+  // const onSubmit = async (data) => {
+  //   try {
+  //     console.log('signup data:', data);
+
+  //     await signUp(data);
+  //   } catch (error) {
+  //     console.log('Error submitting form:', error);
+  //     setError('root', { message: 'Error Submitting Form - Please try Again' });
+  //   }
+  // };
+
   return (
-    <>
-      <p className="body2 dark:text-black mt-4">Please review details</p>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground"
-      >
-        <div className="relative">
-          <input
-            {...register('firstName')}
-            type="text"
-            name="firstName"
-            id="firstName"
-            className="block px-2.5 pb-2.5 pt-4 w-full body2 dark:text-black bg-transparent rounded-lg border border-grey-400 appearance-none  focus:outline-none focus:ring-0 focus:border-primary peer"
-            placeholder=""
-            autoComplete="given-name"
-            required
-          />
+    <div className="flex flex-col h-full justify-between">
+      <p className="mt-3.5 mb-5 body2 text-grey-800 text-center">
+        Confirm Details to Finish Sign Up
+      </p>
 
-          <label
-            htmlFor="firstName"
-            className="absolute body2 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:text-black px-2 peer-focus:px-2 peer-focus:text-primary  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
-          >
-            First Name*
-          </label>
+      <DataDisplay title="Company Name" text={formData['Company Name']} />
+
+      <div className="flex flex-col gap-4 md:flex-row">
+        <div className="w-full md:w-1/3">
+          <DataDisplay title="Telephone" text={formData['Telephone']} />
         </div>
-        {errors.firstName && (
-          <p className="font-public font-normal text-text-sm mb-1 text-danger text-center">
-            {errors.firstName.message}
-          </p>
-        )}
-
-        <div className="relative">
-          <input
-            {...register('lastName')}
-            type="text"
-            name="lastName"
-            id="lastName"
-            className="block px-2.5 pb-2.5 pt-4 w-full body2 dark:text-black bg-transparent rounded-lg border border-grey-400 appearance-none  focus:outline-none focus:ring-0 focus:border-primary peer"
-            placeholder=""
-            autoComplete="family-name"
-            required
-          />
-
-          <label
-            htmlFor="lastName"
-            className="absolute body2 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:text-black px-2 peer-focus:px-2 peer-focus:text-primary  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
-          >
-            Last Name*
-          </label>
+        <div className="w-full md:w-1/3">
+          <DataDisplay title="Toll Free" text={formData['Toll Free']} />
         </div>
-        {errors.lastName && (
-          <p className="font-public font-normal text-text-sm mb-1 text-danger text-center">
-            {errors.lastName.message}
-          </p>
-        )}
-
-        <div className="relative ">
-          <input
-            {...register('email')}
-            type="text"
-            name="email"
-            id="email"
-            className="block px-2.5 pb-2.5 pt-4 w-full body2 dark:text-black bg-transparent rounded-lg border border-grey-400 appearance-none  focus:outline-none focus:ring-0 focus:border-primary peer"
-            placeholder=""
-            autoComplete="email"
-            required
-          />
-          <label
-            htmlFor="email"
-            className="absolute body2 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:text-black px-2 peer-focus:px-2 peer-focus:text-primary  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
-          >
-            Email*
-          </label>
+        <div className="w-full md:w-1/3">
+          <DataDisplay title="Fax" text={formData['Fax']} />
         </div>
-        {errors.email && (
-          <p className="font-public font-normal text-text-sm mb-1 text-danger text-center">
-            {errors.email.message}
-          </p>
-        )}
+      </div>
 
-        <div className="relative">
-          <input
-            {...register('tel')}
-            type="text"
-            name="tel"
-            id="tel"
-            className="block px-2.5 pb-2.5 pt-4 w-full body2 dark:text-black bg-transparent rounded-lg border border-grey-400 appearance-none  focus:outline-none focus:ring-0 focus:border-primary peer"
-            placeholder=""
-            autoComplete="tel"
-            required
+      <div className="flex flex-col gap-4 md:flex-row">
+        <div className="flex flex-col self-center w-full">
+          <AddressDisplay
+            title={'Address'}
+            addressLine1={formData['Address']}
+            addressLine2={formData['Address Field 2']}
+            city={formData['City']}
+            state={formData['State']}
+            zip={formData['Zip']}
+            country={formData['Country']}
           />
-          <label
-            htmlFor="tel"
-            className="absolute body2 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:text-black px-2 peer-focus:px-2 peer-focus:text-primary  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
-          >
-            Phone Number*
-          </label>
         </div>
-        {errors.tel && (
-          <p className="font-public font-normal text-text-sm mb-1 text-danger text-center">
-            {errors.tel.message}
-          </p>
-        )}
-
-        <div className="relative">
-          <input
-            {...register('password')}
-            type="password"
-            name="password"
-            id="password"
-            className="block px-2.5 pb-2.5 pt-4 w-full body2 dark:text-black bg-transparent rounded-lg border border-grey-400 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer"
-            placeholder=""
-            autoComplete="new-password"
-            required
+        <div className="w-full md:w-1/3">
+          <DataDisplay
+            title="Docket Number"
+            text={
+              formData['Docket Number Type'] + ' ' + formData['Docket Number']
+            }
           />
-          <label
-            htmlFor="password"
-            className="absolute body2 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:text-black px-2 peer-focus:px-2 peer-focus:text-primary  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
-          >
-            Password*
-          </label>
         </div>
-        {errors.password && (
-          <p className="font-public font-normal text-text-sm mb-1 text-danger text-center">
-            {errors.password.message}
-          </p>
-        )}
+        <div className="w-full md:w-1/3">
+          <DataDisplay title="DOT ID#" text={formData['DOT ID#']} />
+        </div>
+      </div>
 
-        <Button type="submit">{isSubmitting ? 'Submitting' : 'Sign Up'}</Button>
+      <div className="flex flex-col gap-4 md:flex-row">
+        <div className="w-full md:w-1/4">
+          <DataDisplay title="First Name" text={formData['First Name']} />
+        </div>
+        <div className="w-full md:w-1/4">
+          <DataDisplay title="Last Name" text={formData['Last Name']} />
+        </div>
+        <div className="w-full md:w-1/4">
+          <DataDisplay title="Email" text={formData['Email']} />
+        </div>
+        <div className="w-full md:w-1/4">
+          <DataDisplay
+            title="Personal Telephone"
+            text={formData['Personal Telephone']}
+          />
+        </div>
+      </div>
 
-        {errors.root && (
-          <p className="font-public font-normal text-text-sm text-danger text-center mt-2">
-            {errors.root.message}
-          </p>
+      <div className="py-3.5 gap-2 border-t border-grey-300 dark:border-grey-700 flex justify-between sticky bottom-0 bg-white dark:bg-grey-900 z-10">
+        {error && (
+          <div className="min-h-5 mr-2 self-center">
+            <p className="caption mb-1 text-error-dark">{error}</p>
+          </div>
         )}
+        <Button
+          id="cancel"
+          type="button"
+          disabled={isSubmitting}
+          onClick={() => {
+            const cancel = confirm('Cancel Signup?');
+            if (cancel) {
+              saveFormValues({}, true); // clears context values
+              router.push('/'); // this will go to the login page
+            } else return;
+          }}
+          variant="outline"
+          intent="default"
+        >
+          Cancel
+        </Button>
 
-        {searchParams?.message && (
-          <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
-            {searchParams.message}
-          </p>
-        )}
-      </form>
-    </>
+        <div className="flex justify-end gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            intent="success"
+            disabled={isSubmitting}
+            onClick={() => {
+              router.back();
+            }}
+          >
+            Back
+          </Button>
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            onClick={() => {
+              onSubmit(formData as SignUpData);
+              // saveFormValues({}, true); // Reset form data after submission
+              // router.push('/customers'); // push to wherever it should go
+            }}
+          >
+            {isSubmitting ? 'Submitting...' : 'Confirm Sign Up'}
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 }
