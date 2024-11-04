@@ -76,78 +76,74 @@ export default function Signup() {
   }, [formData, setValue]);
 
   return (
-    <>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col justify-between flex-grow"
-      >
-        <p className="mt-3.5 mb-5 body2 text-grey-800 text-center">
-          Enter details about your company
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col h-full justify-between"
+    >
+      <p className="mt-3.5 mb-5 body2 text-grey-800 text-center">
+        Enter details about your company
+      </p>
+
+      <div className="flex flex-col gap-4 md:flex-row">
+        <div className="w-full md:w-1/2">
+          <TextInput control={control} name="Company Name" required={true} />
+
+          <TextInput control={control} name="Toll Free" />
+        </div>
+        <div className="w-full md:w-1/2">
+          <TextInput control={control} name="Telephone" required={true} />
+
+          <TextInput control={control} name="Fax" />
+        </div>
+      </div>
+
+      <TextInput control={control} name="Address" required={true} />
+
+      <TextInput control={control} name="Address Field 2" />
+
+      {/* City, State, Zip, Country */}
+      <div className="flex flex-col gap-4 md:flex-row">
+        <div className="w-full md:w-1/4">
+          <TextInput control={control} name="City" required={true} />
+        </div>
+        <div className="w-full md:w-1/4">
+          <TextInput control={control} name="State" required={true} />
+        </div>
+        <div className="w-full md:w-1/4">
+          <TextInput control={control} name="Zip" required={true} />
+        </div>
+        <div className="w-full md:w-1/4">
+          <TextInput control={control} name="Country" required={true} />
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-4 md:flex-row">
+        <div className="w-full md:w-1/3">
+          <SelectInput
+            control={control}
+            name="Docket Number Type"
+            options={[{ MC: 'MC' }, { FF: 'FF' }]}
+          />
+        </div>
+        <div className="w-full md:w-1/3">
+          <TextInput control={control} name="Docket Number" />
+        </div>
+        <div className="w-full md:w-1/3">
+          <TextInput control={control} name="DOT ID#" />
+        </div>
+      </div>
+
+      {errors.root && (
+        <p className="font-public font-normal text-text-sm text-danger text-center mt-2">
+          {errors.root.message}
         </p>
+      )}
 
-        <div className="flex flex-col gap-4 md:flex-row">
-          <div className="w-full md:w-1/2">
-            <TextInput control={control} name="Company Name" required={true} />
-
-            <TextInput control={control} name="Toll Free" />
-          </div>
-          <div className="w-full md:w-1/2">
-            <TextInput control={control} name="Telephone" required={true} />
-
-            <TextInput control={control} name="Fax" />
-          </div>
-        </div>
-
-        <TextInput control={control} name="Address" required={true} />
-
-        <TextInput control={control} name="Address Field 2" />
-
-        {/* City, State, Zip, Country */}
-        <div className="flex flex-col gap-4 md:flex-row">
-          <div className="w-full md:w-1/4">
-            <TextInput control={control} name="City" required={true} />
-          </div>
-          <div className="w-full md:w-1/4">
-            <TextInput control={control} name="State" required={true} />
-          </div>
-          <div className="w-full md:w-1/4">
-            <TextInput control={control} name="Zip" required={true} />
-          </div>
-          <div className="w-full md:w-1/4">
-            <TextInput control={control} name="Country" required={true} />
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-4 md:flex-row">
-          <div className="w-full md:w-1/3">
-            <SelectInput
-              control={control}
-              name="Docket Number Type"
-              options={[{ MC: 'MC' }, { FF: 'FF' }]}
-            />
-          </div>
-          <div className="w-full md:w-1/3">
-            <TextInput control={control} name="Docket Number" />
-          </div>
-          <div className="w-full md:w-1/3">
-            <TextInput control={control} name="DOT ID#" />
-          </div>
-        </div>
-
-        {errors.root && (
-          <p className="font-public font-normal text-text-sm text-danger text-center mt-2">
-            {errors.root.message}
-          </p>
-        )}
-
-        <div className="py-3.5 gap-2 border-t border-grey-300 flex justify-between bottom-0">
-          <div className="ml-auto">
-            <Button type="submit" disabled={isSubmitting}>
-              Next
-            </Button>
-          </div>
-        </div>
-      </form>
-    </>
+      <div className="py-4 gap-2 border-t border-grey-300 bg-white flex justify-end sticky bottom-0 z-10">
+        <Button type="submit" disabled={isSubmitting}>
+          Next
+        </Button>
+      </div>
+    </form>
   );
 }

@@ -76,44 +76,40 @@ export default function Signup() {
   }, [formData, setValue]);
 
   return (
-    <>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col justify-between flex-grow"
-      >
-        <p className="mt-3.5 mb-5 body2 text-grey-800 text-center">
-          This administrator will have the ability to add additional users and
-          set their permission levels once sign up is complete
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col h-full justify-between"
+    >
+      <p className="mt-3.5 mb-5 body2 text-grey-800 text-center">
+        This administrator will have the ability to add additional users and set
+        their permission levels once sign up is complete
+      </p>
+
+      <div className="flex flex-col items-center w-full">
+        <div className="w-2/3">
+          <TextInput control={control} name="First Name" required={true} />
+
+          <TextInput control={control} name="Last Name" required={true} />
+
+          <TextInput control={control} name="Email" required={true} />
+
+          <TextInput control={control} name="Telephone" required={true} />
+
+          <TextInput control={control} name="Password" required={true} />
+        </div>
+      </div>
+
+      {errors.root && (
+        <p className="font-public font-normal text-text-sm text-danger text-center mt-2">
+          {errors.root.message}
         </p>
+      )}
 
-        <div className="flex flex-col items-center w-full">
-          <div className="w-2/3">
-            <TextInput control={control} name="First Name" required={true} />
-
-            <TextInput control={control} name="Last Name" required={true} />
-
-            <TextInput control={control} name="Email" required={true} />
-
-            <TextInput control={control} name="Telephone" required={true} />
-
-            <TextInput control={control} name="Password" required={true} />
-          </div>
-        </div>
-
-        {errors.root && (
-          <p className="font-public font-normal text-text-sm text-danger text-center mt-2">
-            {errors.root.message}
-          </p>
-        )}
-
-        <div className="py-3.5 gap-2 border-t border-grey-300 flex justify-between bottom-0">
-          <div className="ml-auto">
-            <Button type="submit" disabled={isSubmitting}>
-              Next
-            </Button>
-          </div>
-        </div>
-      </form>
-    </>
+      <div className="py-4 gap-2 border-t border-grey-300 bg-white flex justify-end sticky bottom-0 z-10">
+        <Button type="submit" disabled={isSubmitting}>
+          Next
+        </Button>
+      </div>
+    </form>
   );
 }
