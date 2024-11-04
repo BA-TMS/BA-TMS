@@ -1,4 +1,4 @@
-import { createClient } from '@util/supabase/server';
+import { createSupabaseServerClient } from '@util/supabase/server';
 import Link from 'next/link';
 import { login } from './actions';
 import { SubmitButton } from '@/components/Authentication/submit-button';
@@ -10,7 +10,7 @@ export default async function Login({
 }: {
   searchParams: { message: string };
 }) {
-  const supabase = createClient();
+  const supabase = createSupabaseServerClient();
 
   const {
     data: { user },

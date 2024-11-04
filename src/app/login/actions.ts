@@ -3,12 +3,12 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { createClient } from '@util/supabase/server';
+import { createSupabaseServerClient } from '@util/supabase/server';
 import { headers } from 'next/headers';
 // import { SupabaseAuthClient } from '@supabase/supabase-js/dist/module/lib/SupabaseAuthClient';
 
 export async function login(formData: FormData) {
-  const supabase = createClient();
+  const supabase = createSupabaseServerClient();
 
   const data = {
     email: formData.get('email') as string,
@@ -35,7 +35,7 @@ export const resendConfirmEmail = async (formData: FormData) => {
 
   const origin = headers().get('origin');
   const email = formData.get('email') as string;
-  const supabase = createClient();
+  const supabase = createSupabaseServerClient();
 
   const { error } = await supabase.auth.resend({
     type: 'signup',
@@ -56,7 +56,7 @@ export const resendConfirmEmail = async (formData: FormData) => {
 export const signOut = async () => {
   'use server';
 
-  const supabase = createClient();
+  const supabase = createSupabaseServerClient();
   await supabase.auth.signOut();
   revalidatePath('/login', 'layout');
   return redirect('/login');
@@ -65,7 +65,7 @@ export const signOut = async () => {
 export async function forgotPassword(formData: FormData) {
   const origin = headers().get('origin');
   const email = formData.get('email') as string;
-  const supabase = createClient();
+  const supabase = createSupabaseServerClient();
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: `${origin}/login/reset-password`,
@@ -83,7 +83,7 @@ export async function forgotPassword(formData: FormData) {
 export const resetPassword = async (code: string, password: string) => {
   'use server';
 
-  const supabase = createClient();
+  const supabase = createSupabaseServerClient();
 
   if (code) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);

@@ -7,7 +7,7 @@ import Button from '@/components/UI_Elements/buttons/Button';
 import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 import AddressDisplay from '@/components/UI_Elements/Display/AddressDisplay';
 import { useRouter } from 'next/navigation';
-import { signUp } from '../actions';
+import { signUpAdmin } from '../actions';
 
 interface SignUpData {
   'First Name': string;
@@ -54,27 +54,29 @@ export default function Signup() {
   // clear context
   // set is submitting false
   // handle errors at all points
-  const onSubmit = (data: SignUpData) => {
-    setIsSubmitting(true);
-    console.log('SUBMITTING DATA', data);
+  // const onSubmit = (data: SignUpData) => {
+  //   setIsSubmitting(true);
+  //   console.log('SUBMITTING DATA', data);
 
-    setTimeout(() => {
-      console.log('timing out');
-      setIsSubmitting(false);
-    }, 1000);
-  };
+  //   setTimeout(() => {
+  //     console.log('timing out');
+  //     setIsSubmitting(false);
+  //   }, 1000);
+  // };
 
   // auth signup
-  // const onSubmit = async (data) => {
-  //   try {
-  //     console.log('signup data:', data);
+  const onSubmit = async (data: SignUpData) => {
+    setIsSubmitting(true);
+    try {
+      console.log('signup data:', data);
 
-  //     await signUp(data);
-  //   } catch (error) {
-  //     console.log('Error submitting form:', error);
-  //     setError('root', { message: 'Error Submitting Form - Please try Again' });
-  //   }
-  // };
+      await signUpAdmin(data);
+    } catch (error) {
+      console.log('Error submitting form:', error);
+      setError('crap there was an error');
+    }
+    setIsSubmitting(false);
+  };
 
   return (
     <div className="flex flex-col h-full justify-between">
