@@ -1,8 +1,23 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
+import { createClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 
+// create admin client
+export const createSupbaseAdmin = async () => {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SERVICE_ROLE!,
+    {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+    }
+  );
+};
+
 // supabase client for server components
-export const createClient = () => {
+export const createAuthClient = () => {
   const cookieStore = cookies();
 
   return createServerClient(
