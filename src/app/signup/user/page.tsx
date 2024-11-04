@@ -32,7 +32,7 @@ const newUserSchema = yup.object().shape({
     .email('Must use a valid email.')
     .required('Email is required.'),
   Password: yup.string().password().required('Password is required.'),
-  Telephone: yup.string().required('Phone Number is required.'),
+  'Personal Telephone': yup.string().required('Phone Number is required.'),
 });
 
 type NewUser = yup.InferType<typeof newUserSchema>;
@@ -55,7 +55,7 @@ export default function Signup() {
       'Last Name': '',
       Email: '',
       Password: '',
-      Telephone: '',
+      'Personal Telephone': '',
     },
     resolver: yupResolver(newUserSchema),
   });
@@ -91,11 +91,26 @@ export default function Signup() {
 
           <TextInput control={control} name="Last Name" required={true} />
 
-          <TextInput control={control} name="Email" required={true} />
+          <TextInput
+            control={control}
+            name="Email"
+            type="email"
+            required={true}
+          />
 
-          <TextInput control={control} name="Telephone" required={true} />
+          <TextInput
+            control={control}
+            name="Personal Telephone"
+            type="tel"
+            required={true}
+          />
 
-          <TextInput control={control} name="Password" required={true} />
+          <TextInput
+            control={control}
+            name="Password"
+            type="password"
+            required={true}
+          />
         </div>
       </div>
 
@@ -106,9 +121,22 @@ export default function Signup() {
       )}
 
       <div className="py-4 gap-2 border-t border-grey-300 bg-white flex justify-end sticky bottom-0 z-10">
-        <Button type="submit" disabled={isSubmitting}>
-          Next
-        </Button>
+        <div className="flex justify-end gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            intent="success"
+            disabled={isSubmitting}
+            onClick={() => {
+              router.back();
+            }}
+          >
+            Back
+          </Button>
+          <Button type="submit" disabled={isSubmitting}>
+            Next
+          </Button>
+        </div>
       </div>
     </form>
   );
