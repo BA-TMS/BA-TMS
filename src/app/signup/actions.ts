@@ -9,15 +9,6 @@ import { headers } from 'next/headers';
 
 const prisma = new PrismaClient();
 
-// handle prisma relations
-// const ORG_RELATIONS =
-
-// const USER_RELATIONS = {
-//   organization: { select: { orgName: true } },
-//   Permissions: true,
-// };
-
-// what is the actual data shape coming in?
 interface SignUpData {
   'First Name': string;
   'Last Name': string;
@@ -61,17 +52,16 @@ export async function addOrganization(data: SignUpData) {
       docketNumber: data['Docket Number'],
 
       users: {
-        // create entry in User
+        // create entry in User table
         create: [
           {
             email: data['Email'],
-            password: data['Password'],
             firstName: data['First Name'],
             lastName: data['Last Name'],
             telephone: data['Personal Telephone'],
 
             Permissions: {
-              // create entry in Permissions
+              // create entry in Permissions table
               create: {
                 role: 'ADMIN',
                 status: 'ACTIVE',
@@ -85,6 +75,8 @@ export async function addOrganization(data: SignUpData) {
   return resp;
 }
 
+// this function handles supabase auth signup and creates entry in auth.users
+// it calls the above addOrganization function to also update our tables
 export async function signUpAdmin(data: SignUpData) {
   console.log('Create Admin data', data);
 
@@ -98,7 +90,7 @@ export async function signUpAdmin(data: SignUpData) {
     email: data['Email'],
     password: data['Password'],
     options: {
-      emailRedirectTo: `${origin}/login`, // where we redirect after?
+      emailRedirectTo: `${origin}/login`,
       data: {
         // sends this info to auth users table raw_user_metadata
         first_name: data['First Name'],
@@ -122,14 +114,6 @@ export async function signUpAdmin(data: SignUpData) {
   // revlidate path (optionally if needed)
   // where do we do the email confirm?
 }
-
-// interface NewUser {
-//   firstName: string;
-//   lastName: string;
-//   email: string;
-//   tel: string;
-//   password: string;
-// }
 
 // export const signUp = async (data: NewUser) => {
 //   'use server';
