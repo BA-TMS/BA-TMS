@@ -1,11 +1,11 @@
-import { createClient } from '../../../util/supabase/server';
+import { createSupabaseServerClient } from '../../../util/supabase/server';
 import Link from 'next/link';
 import { signOut } from '@/app/login/actions';
 
 // button for login/ logout
 
 export default async function AuthButton() {
-  const supabase = createClient();
+  const supabase = createSupabaseServerClient();
 
   const {
     data: { user },
