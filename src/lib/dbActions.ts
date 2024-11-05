@@ -440,21 +440,21 @@ export async function addTruck({ truck }: { truck: any }) {
   });
 }
 
-export async function addUser({ user }: { user: any }) {
-  const resp = await prisma.user.create({
-    data: {
-      id: user['ID'],
-      email: user['Email'],
-      firstName: user['First Name'],
-      lastName: user['Last Name'],
-      telCountry: user['Country Code'],
-      telephone: user['Phone Number'],
-      orgId: user['Oganization'],
-      role: user['Role'],
-      imageURL: user['Image URL'],
-    },
-  });
-}
+// export async function addUser({ user }: { user: any }) {
+//   const resp = await prisma.user.create({
+//     data: {
+//       id: user['ID'],
+//       email: user['Email'],
+//       firstName: user['First Name'],
+//       lastName: user['Last Name'],
+//       telCountry: user['Country Code'],
+//       telephone: user['Phone Number'],
+//       orgId: user['Oganization'],
+//       role: user['Role'],
+//       imageURL: user['Image URL'],
+//     },
+//   });
+// }
 
 /** Update row */
 async function updater(table: any, targetId: number, upateData: any) {

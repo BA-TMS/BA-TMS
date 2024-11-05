@@ -52,7 +52,7 @@ model User { // Individual users at an organization
   telephone     String
   organization  Organization  @relation(fields: [orgId], references: [id])
   orgId         String
-  permissions   Permissions?  // prisma does not support manditory one to one relations
+  Permissions   Permissions?  // prisma does not support manditory one to one relations
 }
 
 enum UserRole {

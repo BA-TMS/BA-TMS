@@ -7,7 +7,7 @@ import Button from '@/components/UI_Elements/buttons/Button';
 import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 import AddressDisplay from '@/components/UI_Elements/Display/AddressDisplay';
 import { useRouter } from 'next/navigation';
-import { signUpAdmin } from '../actions';
+import { signUpAdmin, addOrganization } from '../actions';
 
 interface SignUpData {
   'First Name': string;
