@@ -10,13 +10,12 @@ import { headers } from 'next/headers';
 const prisma = new PrismaClient();
 
 // handle prisma relations
-const ORG_RELATIONS = 
+// const ORG_RELATIONS =
 
-
-const USER_RELATIONS = {
-  organization: { select: { orgName: true } },
-  Permissions: true,
-};
+// const USER_RELATIONS = {
+//   organization: { select: { orgName: true } },
+//   Permissions: true,
+// };
 
 // what is the actual data shape coming in?
 interface SignUpData {
@@ -41,8 +40,10 @@ interface SignUpData {
   'DOT ID#'?: string;
 }
 
+// this function handles creating table entries in prisma
 export async function addOrganization(data: SignUpData) {
   console.log('add org data,', data);
+
   // insert data into our own org table (prisma)
   const resp = await prisma.organization.create({
     data: {
@@ -58,6 +59,27 @@ export async function addOrganization(data: SignUpData) {
       fax: data['Fax'],
       docketNumType: data['Docket Number Type'] as DocketNumber,
       docketNumber: data['Docket Number'],
+
+      users: {
+        // create entry in User
+        create: [
+          {
+            email: data['Email'],
+            password: data['Password'],
+            firstName: data['First Name'],
+            lastName: data['Last Name'],
+            telephone: data['Personal Telephone'],
+
+            Permissions: {
+              // create entry in Permissions
+              create: {
+                role: 'ADMIN',
+                status: 'ACTIVE',
+              },
+            },
+          },
+        ],
+      },
     },
   });
   return resp;
@@ -72,7 +94,6 @@ export async function signUpAdmin(data: SignUpData) {
   const supabase = createSupabaseServerClient();
 
   // create new user in supabase auth table
-  // this is working
   const result = await supabase.auth.signUp({
     email: data['Email'],
     password: data['Password'],
@@ -96,28 +117,6 @@ export async function signUpAdmin(data: SignUpData) {
   // create the organization
   const org = await addOrganization(data);
   // TODO - Error handling
-
-  // insert data into our own user table (prisma)
-  // const user = await prisma.user.create({
-  //   data: {
-  //     email: data['Email'],
-  //     password: data['Password'],
-  //     firstName: data['First Name'],
-  //     lastName: data['Last Name'],
-  //     telephone: data['Personal Telephone'],
-  //     organization: {
-  //       connect: { id: '' }, // we are going to need the id of the organization that was just created
-  //     },
-  //     Permissions: {
-  //       // create entry in Permissions tabe
-  //       create: {
-  //         role: 'ADMIN',
-  //         status: 'ACTIVE',
-  //       },
-  //     },
-  //   },
-  //   include: USER_RELATIONS,
-  // });
 
   // error handling
   // revlidate path (optionally if needed)
