@@ -149,6 +149,7 @@ export const LoadForm = () => {
           name="Owner"
           required={true}
           dbaction={getOrganizations}
+          nameKey="orgName"
         />
 
         <div className="flex flex-col gap-5 xl:flex-row">
