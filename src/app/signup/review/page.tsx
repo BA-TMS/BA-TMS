@@ -33,8 +33,6 @@ interface SignUpData {
 // this component handles the actual user sign up auth with supabase
 
 export default function Signup() {
-  // probably will need state to display errors
-  // should form data go into component state at any point?
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -55,10 +53,12 @@ export default function Signup() {
     try {
       await signUpAdmin(data);
     } catch (error) {
-      setError(`${error}`);
+      console.log('await error', error);
+      setError(`${error.message}`);
       setIsSubmitting(false);
       return;
     }
+    // don't do this?
     setTimeout(() => {
       console.log('timing out');
       saveFormValues({}, true);

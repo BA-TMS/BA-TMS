@@ -61,7 +61,6 @@ export default function Signup() {
   });
 
   const onSubmit = (data: NewUser) => {
-    console.log('clicked', data);
     saveFormValues(data);
     reset(); // update form to default values
     router.push('/signup/review'); // next step

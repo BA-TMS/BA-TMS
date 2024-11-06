@@ -3,7 +3,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { DocketNumber, PrismaClient } from '@prisma/client';
+import { DocketNumber, PrismaClient, Prisma } from '@prisma/client';
 import { createSupabaseServerClient } from '@util/supabase/server';
 import { headers } from 'next/headers';
 import { SupabaseClient } from '@supabase/supabase-js';
@@ -34,8 +34,6 @@ interface SignUpData {
 
 // this function handles creating table entries in prisma
 async function addOrganization(data: SignUpData) {
-  console.log('add org data,', data);
-
   try {
     // insert data into our own org table (prisma)
     const resp = await prisma.organization.create({
@@ -76,23 +74,35 @@ async function addOrganization(data: SignUpData) {
     });
     return resp;
   } catch (error) {
-    console.log('CONSOLE LOG ERROR', error);
-    console.error('Error adding organization:', error);
-    throw new Error('Failed to add organization');
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      const uniqueFields = {
+        orgName: 'Company Name',
+        DocketNumber: 'Docket Number',
+        dotId: 'DOT ID#',
+      };
+      // unique constraint violation
+      if (error.code === 'P2002') {
+        throw `An account with this ${
+          uniqueFields[error.meta?.target]
+        } already exists - please try again`;
+      }
+    }
+    // add other error codes as needed
+    throw error; // misc errors
   }
 }
 
 // this function handles supabase auth signup and creates entry in auth.users
 // it calls the above addOrganization function to also update our tables
 export async function signUpAdmin(data: SignUpData) {
-  console.log('Create Admin data', data);
-
   const origin = headers().get('origin');
 
   // connect to supabase auth client
   const supabase = createSupabaseServerClient();
 
   // create new user in supabase auth table
+  // returns a fake object if the same email already exists- do we want to handle?
+  // https://supabase.com/docs/reference/javascript/auth-signup
   const result = await supabase.auth.signUp({
     email: data['Email'],
     password: data['Password'],
@@ -109,23 +119,24 @@ export async function signUpAdmin(data: SignUpData) {
   });
 
   // if there is an error when creating new user, return message
-  // don't do the other tables
   if (result.error?.message) {
-    return JSON.stringify(result);
+    return JSON.stringify(result.error);
   }
 
-  // create the organization
+  // create the organization/ user/ permissions
   const org = await addOrganization(data);
+
   // TODO - Error handling
+  // if this errors we need to return something
 
-  // revlidate path (optionally if needed) - i forget what this does
-  revalidatePath('/', 'layout');
+  // // revlidate path (optionally if needed) - i forget what this does
+  // revalidatePath('/', 'layout');
 
-  // This may come in handy later?
-  addListener(supabase);
+  // // This may come in handy later?
+  // addListener(supabase);
 
-  // where to redirect after this is successful?
-  return redirect('/signup/confirm');
+  // // where to redirect after this is successful?
+  // return redirect('/signup/confirm');
 }
 
 const addListener = (client: SupabaseClient) => {
