@@ -1,11 +1,9 @@
-/* eslint-disable quotes */
 'use server';
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { createSupabaseServerClient } from '@util/supabase/server';
 import { headers } from 'next/headers';
-// import { SupabaseAuthClient } from '@supabase/supabase-js/dist/module/lib/SupabaseAuthClient';
 
 export async function login(formData: FormData) {
   const supabase = createSupabaseServerClient();
@@ -29,29 +27,6 @@ export async function login(formData: FormData) {
     redirect('/login?message=Invalid Login Credentials');
   }
 }
-
-export const resendConfirmEmail = async (formData: FormData) => {
-  'use server';
-
-  const origin = headers().get('origin');
-  const email = formData.get('email') as string;
-  const supabase = createSupabaseServerClient();
-
-  const { error } = await supabase.auth.resend({
-    type: 'signup',
-    email: email,
-    options: {
-      emailRedirectTo: `${origin}/`,
-    },
-  });
-  if (error) {
-    return redirect('/login/confirm?message=Could not resend email');
-  }
-
-  revalidatePath('/', 'layout');
-
-  return redirect('/login/confirm?message=Email sent'); // stay on confirm page and display message
-};
 
 export const signOut = async () => {
   'use server';

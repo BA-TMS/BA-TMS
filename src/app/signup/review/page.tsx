@@ -1,13 +1,12 @@
 'use client';
 
 import { useState, useContext } from 'react';
-// import { useForm } from 'react-hook-form';
 import { ModalContext } from '@/Context/modalContext';
 import Button from '@/components/UI_Elements/buttons/Button';
 import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 import AddressDisplay from '@/components/UI_Elements/Display/AddressDisplay';
 import { useRouter } from 'next/navigation';
-import { signUpAdmin, addOrganization } from '../actions';
+import { signUpAdmin } from '../actions';
 
 interface SignUpData {
   'First Name': string;
@@ -32,8 +31,6 @@ interface SignUpData {
 }
 
 // this component handles the actual user sign up auth with supabase
-// signup will create an entry in the auth.users table
-// use prisma in signup actions to create rows in corresponding tables
 
 export default function Signup() {
   // probably will need state to display errors
@@ -43,39 +40,30 @@ export default function Signup() {
 
   const router = useRouter();
 
-  // first, we need to access the form data and make sure it is displayed
   const { formData, saveFormValues } = useContext(ModalContext);
-  console.log('REVIEW FORM DATA', formData);
-
-  // set is submitting to true
-  // do auth signup
-  // then prisma create tables
-  // confirm email flow
-  // clear context
-  // set is submitting false
-  // handle errors at all points
-  // const onSubmit = (data: SignUpData) => {
-  //   setIsSubmitting(true);
-  //   console.log('SUBMITTING DATA', data);
-
-  //   setTimeout(() => {
-  //     console.log('timing out');
-  //     setIsSubmitting(false);
-  //   }, 1000);
-  // };
 
   // auth signup
   const onSubmit = async (data: SignUpData) => {
     setIsSubmitting(true);
-    try {
-      console.log('signup data:', data);
 
+    if (!data['Company Name']) {
+      setError('Cound not submit data - please try again');
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
       await signUpAdmin(data);
     } catch (error) {
-      console.log('Error submitting form:', error);
-      setError('crap there was an error');
+      setError(`${error}`);
+      setIsSubmitting(false);
+      return;
     }
-    setIsSubmitting(false);
+    setTimeout(() => {
+      console.log('timing out');
+      saveFormValues({}, true);
+      setIsSubmitting(false);
+    }, 500);
   };
 
   return (
@@ -142,11 +130,6 @@ export default function Signup() {
       </div>
 
       <div className="py-3.5 gap-2 border-t border-grey-300 dark:border-grey-700 flex justify-between sticky bottom-0 bg-white dark:bg-grey-900 z-10">
-        {error && (
-          <div className="min-h-5 mr-2 self-center">
-            <p className="caption mb-1 text-error-dark">{error}</p>
-          </div>
-        )}
         <Button
           id="cancel"
           type="button"
@@ -163,6 +146,12 @@ export default function Signup() {
         >
           Cancel
         </Button>
+
+        {error && (
+          <div className="min-h-5 mr-2 self-center">
+            <p className="subtitle mb-1 text-error-dark">{error}</p>
+          </div>
+        )}
 
         <div className="flex justify-end gap-2">
           <Button
@@ -181,8 +170,6 @@ export default function Signup() {
             disabled={isSubmitting}
             onClick={() => {
               onSubmit(formData as SignUpData);
-              // saveFormValues({}, true); // Reset form data after submission
-              // router.push('/customers'); // push to wherever it should go
             }}
           >
             {isSubmitting ? 'Submitting...' : 'Confirm Sign Up'}
