@@ -75,16 +75,15 @@ async function addOrganization(data: SignUpData) {
     return resp;
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      const uniqueFields = {
+      const uniqueFields: Record<string, unknown> = {
         orgName: 'Company Name',
-        DocketNumber: 'Docket Number',
+        docketNumber: 'Docket Number',
         dotId: 'DOT ID#',
       };
       // unique constraint violation
       if (error.code === 'P2002') {
-        throw `An account with this ${
-          uniqueFields[error.meta?.target]
-        } already exists - please try again`;
+        const target = error.meta?.target as string;
+        throw `An account with this ${uniqueFields[target]} already exists - please try again`;
       }
     }
     // add other error codes as needed
@@ -118,6 +117,8 @@ export async function signUpAdmin(data: SignUpData) {
     },
   });
 
+  // we need a way to not continue
+
   // if there is an error when creating new user, return message
   if (result.error?.message) {
     return JSON.stringify(result.error);
@@ -125,6 +126,7 @@ export async function signUpAdmin(data: SignUpData) {
 
   // create the organization/ user/ permissions
   const org = await addOrganization(data);
+  console.log('ORG RESULT', org);
 
   // TODO - Error handling
   // if this errors we need to return something
@@ -132,11 +134,11 @@ export async function signUpAdmin(data: SignUpData) {
   // // revlidate path (optionally if needed) - i forget what this does
   // revalidatePath('/', 'layout');
 
-  // // This may come in handy later?
-  // addListener(supabase);
+  // This may come in handy later?
+  addListener(supabase);
 
   // // where to redirect after this is successful?
-  // return redirect('/signup/confirm');
+  return redirect('/signup/confirm');
 }
 
 const addListener = (client: SupabaseClient) => {
