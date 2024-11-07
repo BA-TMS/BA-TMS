@@ -54,14 +54,12 @@ export default function Signup() {
     try {
       await signUpAdmin(data);
     } catch (error) {
-      console.log('await error', error);
-      setError(`${error.message}`);
+      setError(`${error.message}`); // not sure how to fix type error
       setIsSubmitting(false);
       return;
     }
     // don't do this?
     setTimeout(() => {
-      console.log('timing out');
       saveFormValues({}, true);
       setIsSubmitting(false);
     }, 500);

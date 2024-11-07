@@ -96,6 +96,18 @@ async function addOrganization(data: SignUpData) {
 export async function signUpAdmin(data: SignUpData) {
   const origin = headers().get('origin');
 
+  // may want to not make auth.user if org already exists
+  // we may need to modify this in the future
+  const company = await prisma.organization.findUnique({
+    where: {
+      orgName: data['Company Name'],
+    },
+  });
+
+  if (company !== null) {
+    throw 'This company account already exists';
+  }
+
   // connect to supabase auth client
   const supabase = createSupabaseServerClient();
 
@@ -117,30 +129,39 @@ export async function signUpAdmin(data: SignUpData) {
     },
   });
 
-  console.log('RESULT', result);
-
   // if there is an error when creating new user, return message
   if (result.error?.name) {
     throw `${result.error.message}`;
   }
 
-  // we need a way to not continue if user exists
-  // return, do not create entries in the other tables
+  // do not continue signup if user exists in our public table
+  const user = await prisma.user.findUnique({
+    where: {
+      email: data['Email'],
+    },
+    select: {
+      email: true,
+    },
+  });
+
+  // if user is not null, throw an error
+  // we may need to modify this in the future
+  if (user !== null) {
+    throw 'This user account already exists';
+  }
 
   // create the organization/ user/ permissions
-  // const org = await addOrganization(data);
-
-  // TODO - Error handling
-  // if this errors we need to return something
+  // should throw error if issue
+  await addOrganization(data);
 
   // // revlidate path (optionally if needed) - i forget what this does
-  // revalidatePath('/', 'layout');
+  revalidatePath('/', 'layout');
 
-  // This may come in handy later?
+  // This may come in handy later
   addListener(supabase);
 
-  // // where to redirect after this is successful?
-  // return redirect('/signup/confirm');
+  // // where to redirect after this is successful
+  return redirect('/signup/confirm');
 }
 
 const addListener = (client: SupabaseClient) => {
