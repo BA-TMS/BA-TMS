@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useContext, useCallback } from 'react';
+import React, { useEffect, useContext, useCallback, useState } from 'react';
 import { ModalContext } from '@/Context/modalContext';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -31,6 +31,9 @@ const customerSchema = yup.object({
 type Customer = yup.InferType<typeof customerSchema>;
 
 const AdvancedCustomerDetails: React.FC = () => {
+  const [isClicked, setIsClicked] = useState(false);
+  const [isBackClicked, setIsBackClicked] = useState(false);
+
   const router = useRouter();
 
   const pathname = usePathname();
@@ -61,6 +64,7 @@ const AdvancedCustomerDetails: React.FC = () => {
   // submit the values to the context
   const onSubmit = useCallback(
     async (customer: Customer) => {
+      setIsClicked(true);
       saveFormValues(customer);
       reset(); // update form to default values
       router.push(`/customers/${segment}/review`); // next step
@@ -148,14 +152,15 @@ const AdvancedCustomerDetails: React.FC = () => {
               type="button"
               variant="outline"
               intent="success"
-              disabled={isSubmitting}
+              disabled={isSubmitting || isBackClicked}
               onClick={() => {
+                setIsBackClicked(true);
                 router.back();
               }}
             >
               Back
             </Button>
-            <Button type="submit" disabled={isSubmitting}>
+            <Button type="submit" disabled={isSubmitting || isClicked}>
               Next
             </Button>
           </div>
