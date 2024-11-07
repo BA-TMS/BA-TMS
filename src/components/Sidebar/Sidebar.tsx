@@ -35,7 +35,7 @@ const adminOptions = [
   { name: 'Drivers', href: '/drivers' },
   { name: 'Trucks', href: '#' },
   { name: 'Trailers', href: '#' },
-  { name: 'External Carriers', href: '/carrier' },
+  { name: 'External Carriers', href: '/carriers' },
   { name: 'Customs Brokers', href: '#' },
   { name: 'Factoring Companies', href: '#' },
   { name: 'Users', href: '#' },

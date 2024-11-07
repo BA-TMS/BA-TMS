@@ -3,11 +3,11 @@
 // customer form
 export const customerStatus = [{ Active: 'ACTIVE' }, { Inactive: 'INACTIVE' }];
 
+export const status = [{ Active: 'ACTIVE' }, { Inactive: 'INACTIVE' }];
+
 export const currency = [{ USD: 'USD' }, { CAD: 'CAD' }];
 
 type Owner = 'Company Truck' | 'Owner/ Operator';
-
-export const status: string[] = ['ACTIVE', 'INACTIVE', 'NOTAVAILABLE'];
 
 export const owner: Owner[] = ['Company Truck', 'Owner/ Operator'];
 

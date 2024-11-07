@@ -85,10 +85,7 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({
         {view && (
           <div className="flex flex-wrap">
             <Link href={view}>
-              <Button
-                onClick={() => console.log('clicked ', id)}
-                className="flex w-full gap-2 border-b border-grey-200 dark:border-grey-700 py-3 hover:text-primary"
-              >
+              <Button className="flex w-full gap-2 border-b border-grey-200 dark:border-grey-700 py-3 hover:text-primary">
                 <VisibilityIcon fontSize="small" />
                 View Details
               </Button>

@@ -14,7 +14,7 @@ const DataDisplay = ({ title, text }: DisplayProps) => {
       <p className="subtitle2 px-2 text-grey-800 dark:text-white bg-transparent">
         {title}
       </p>
-      <p className="block indent-5 px-3 py-3.5 w-full h-12 body2 text-grey-800 bg-grey-300 rounded-[7px]">
+      <p className="block indent-5 px-3 py-3.5 w-full min-h-12 body2 text-grey-800 bg-grey-300 rounded-[7px]">
         {text}
       </p>
     </div>
