@@ -23,7 +23,6 @@ async function main() {
     where: { orgName: a2zorg.orgName },
     update: {},
     create: a2zorg,
-    create: a2zorg,
   });
 
   // for (const currUser of users) {
@@ -238,6 +237,8 @@ const a2zorg = {
   postCountry: 'USA',
   postCode: '90712',
   telephone: '7373300444',
+  docketNumType: 'FF',
+  docketNumber: '123456',
 };
 
 // const users = [
