@@ -43,6 +43,7 @@ export default function Signup() {
   // auth signup
   const onSubmit = async (data: SignUpData) => {
     setIsSubmitting(true);
+    setError(null);
 
     if (!data['Company Name']) {
       setError('Cound not submit data - please try again');

@@ -100,7 +100,7 @@ export async function signUpAdmin(data: SignUpData) {
   const supabase = createSupabaseServerClient();
 
   // create new user in supabase auth table
-  // returns a fake object if the same email already exists- do we want to handle?
+  // returns a fake object if the same email already exists
   // https://supabase.com/docs/reference/javascript/auth-signup
   const result = await supabase.auth.signUp({
     email: data['Email'],
@@ -117,16 +117,18 @@ export async function signUpAdmin(data: SignUpData) {
     },
   });
 
-  // we need a way to not continue
+  console.log('RESULT', result);
 
   // if there is an error when creating new user, return message
-  if (result.error?.message) {
-    return JSON.stringify(result.error);
+  if (result.error?.name) {
+    throw `${result.error.message}`;
   }
 
+  // we need a way to not continue if user exists
+  // return, do not create entries in the other tables
+
   // create the organization/ user/ permissions
-  const org = await addOrganization(data);
-  console.log('ORG RESULT', org);
+  // const org = await addOrganization(data);
 
   // TODO - Error handling
   // if this errors we need to return something
@@ -138,7 +140,7 @@ export async function signUpAdmin(data: SignUpData) {
   addListener(supabase);
 
   // // where to redirect after this is successful?
-  return redirect('/signup/confirm');
+  // return redirect('/signup/confirm');
 }
 
 const addListener = (client: SupabaseClient) => {
