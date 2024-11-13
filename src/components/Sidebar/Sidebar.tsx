@@ -25,7 +25,7 @@ import { UserContext } from '@/Context/userContextProvider';
 
 const userOptions = [
   { name: 'Plans & Pricing', href: '#' },
-  { name: 'Settings', href: '/user/settings' },
+  { name: 'Settings', href: '/settings' },
 ];
 
 const adminOptions = [
@@ -206,7 +206,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             <SidebarListItem
               pathname={pathname}
               icon={UserIcon}
-              path={'/user/settings'}
+              path={'/settings'}
               name={'User'}
               options={userOptions}
             />
