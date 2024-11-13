@@ -13,13 +13,6 @@ import Select from 'react-select';
 import { Country, State } from 'country-state-city';
 import * as Yup from 'yup';
 
-const secondaryNavigation = [
-  { name: 'Account', href: '#', current: true },
-  { name: 'Notifications', href: '#', current: false },
-  { name: 'Billing', href: '#', current: false },
-  { name: 'Teams', href: '../user/settings/team', current: false },
-];
-
 export default function Account() {
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [selectedState, setSelectedState] = useState(null);
@@ -135,31 +128,6 @@ export default function Account() {
 
   return (
     <>
-      {/* Tabs */}
-      <div>
-        {/* removed dlassName="border-b border-white/5" */}
-        <div>
-          {/* Secondary navigation */}
-          <nav className="flex overflow-x-auto py-4">
-            <ul
-              role="list"
-              className="flex min-w-full flex-none gap-x-6 px-4 text-sm font-semibold leading-6 text-gray-400 sm:px-6 lg:px-8"
-            >
-              {secondaryNavigation.map((item) => (
-                <li key={item.name}>
-                  <a
-                    href={item.href}
-                    className={item.current ? 'text-indigo-400' : ''}
-                  >
-                    {item.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
-      </div>
-
       {/* Start of Info form */}
       <div className="max-w-350 ">
         {/* <Breadcrumb pageName="Settings" /> */}

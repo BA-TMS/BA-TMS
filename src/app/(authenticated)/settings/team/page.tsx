@@ -18,13 +18,6 @@ type Member = {
   status: string;
 };
 
-const secondaryNavigation = [
-  { name: 'Account', href: '/user/settings', current: true },
-  { name: 'Notifications', href: '#', current: false },
-  { name: 'Billing', href: '#', current: false },
-  { name: 'Teams', href: '#', current: false },
-];
-
 type Members = Member[];
 
 const columns = [
@@ -133,30 +126,7 @@ export default function SettingsPage() {
 
   return (
     <>
-      {/* Tabs */}
-      <div>
-        {/* removed dlassName="border-b border-white/5" */}
-        <div>
-          {/* Secondary navigation */}
-          <nav className="flex overflow-x-auto py-4">
-            <ul
-              role="list"
-              className="flex min-w-full flex-none gap-x-6 px-4 text-sm font-semibold leading-6 text-gray-400 sm:px-6 lg:px-8"
-            >
-              {secondaryNavigation.map((item) => (
-                <li key={item.name}>
-                  <a
-                    href={item.href}
-                    className={item.current ? 'text-indigo-400' : ''}
-                  >
-                    {item.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
-      </div>
+      <h2>Teams Page</h2>
 
       {/* Filter */}
       <div className="rounded-t-lg flex flex-end space-between border border-stroke bg-white dark:border-strokedark dark:bg-black p-6">
