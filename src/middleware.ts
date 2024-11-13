@@ -20,8 +20,7 @@ const protectedRoutes = [
   '/other-numbers',
   '/preferences',
   '/third-party',
-  '/user',
-  '/users',
+  '/settings',
 ];
 const publicRoutes = ['/login', '/signup'];
 
