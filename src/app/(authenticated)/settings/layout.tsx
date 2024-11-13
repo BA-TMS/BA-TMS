@@ -1,12 +1,12 @@
 'use client';
 
-// import Link from 'next/link';
+import Link from 'next/link';
 import PageTitle from '@/components/Page/PageTitle';
 
 // we are gonna need to do parallel routes
 
 const secondaryNavigation = [
-  { name: 'Profile', href: '/settings', current: true },
+  { name: 'Profile', href: '/settings/profile', current: true },
   { name: 'Team', href: '/settings/team', current: false },
   { name: 'Billing', href: '#', current: false },
   { name: 'Social Links', href: '#', current: false },
@@ -34,12 +34,12 @@ export default function SettingsLayout({
         >
           {secondaryNavigation.map((item) => (
             <li key={item.name}>
-              <a
+              <Link
                 href={item.href}
                 className={item.current ? 'text-indigo-400' : ''}
               >
                 {item.name}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
