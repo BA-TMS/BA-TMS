@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { updateSession } from '@util/supabase/middleware';
-import { createClient } from '@util/supabase/server';
+import { createSupabaseServerClient } from '@util/supabase/server';
 
 // old code just handling supabase middleware
 // export async function middleware(request: NextRequest) {
@@ -37,7 +37,7 @@ export default async function middleware(request: NextRequest) {
   await updateSession(request);
 
   // checking for a user
-  const supabase = createClient();
+  const supabase = createSupabaseServerClient();
 
   const {
     data: { user },

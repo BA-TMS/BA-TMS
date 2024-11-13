@@ -6,8 +6,10 @@ import { UseControllerProps, useController } from 'react-hook-form';
 interface TextInputProps extends UseControllerProps {
   isTextArea?: boolean;
   rows?: number;
-  control?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  control?: any; // control is from react-hook-form
   required?: boolean;
+  type?: 'password' | 'tel' | 'email'; // type of input
 }
 
 const TextInput = ({
@@ -16,6 +18,7 @@ const TextInput = ({
   isTextArea,
   rows,
   required,
+  type,
 }: TextInputProps) => {
   const {
     field,
@@ -47,6 +50,7 @@ const TextInput = ({
               {...field}
               placeholder={field.name}
               className="block px-3 py-3.5 w-full body2 text-grey-800 dark:text-white bg-transparent rounded-[7px] border border-grey-400 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer"
+              type={type}
             />
             <label
               htmlFor={name}
