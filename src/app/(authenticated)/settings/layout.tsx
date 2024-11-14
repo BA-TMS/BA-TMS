@@ -1,19 +1,24 @@
 'use client';
 
-import Link from 'next/link';
 import PageTitle from '@/components/Page/PageTitle';
+import { NavTabs } from '@/components/UI_Elements/Navigation/NavTabs';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import ShareIcon from '@mui/icons-material/Share';
+import KeyIcon from '@mui/icons-material/Key';
 
-// we are gonna need to do parallel routes
+// we may need to do parallel routes to handle forms
 
 const secondaryNavigation = [
-  { name: 'Profile', href: '/settings/profile', current: true },
-  { name: 'Team', href: '/settings/team', current: false },
-  { name: 'Billing', href: '#', current: false },
-  { name: 'Social Links', href: '#', current: false },
+  { name: 'Profile', href: '/settings/profile', icon: AccountCircleIcon },
+  { name: 'Team', href: '/settings/team', icon: SupervisedUserCircleIcon },
+  { name: 'Billing', href: '#', icon: AccountBalanceWalletIcon },
+  { name: 'Social Links', href: '#', icon: ShareIcon },
   {
     name: 'Change Password',
     href: '/settings/password',
-    current: false,
+    icon: KeyIcon,
   },
 ];
 
@@ -27,25 +32,11 @@ export default function SettingsLayout({
   return (
     <>
       <PageTitle pageTitle="Settings" />
-      <nav className="flex overflow-x-auto py-4">
-        <ul
-          role="list"
-          className="flex min-w-full flex-none gap-x-6 px-4 text-sm font-semibold leading-6 text-gray-400 sm:px-6 lg:px-8"
-        >
-          {secondaryNavigation.map((item) => (
-            <li key={item.name}>
-              <Link
-                href={item.href}
-                className={item.current ? 'text-indigo-400' : ''}
-              >
-                {item.name}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
-      {children}
-      {modal}
+      <NavTabs tabs={secondaryNavigation} />
+      <div className="mt-5 w-full ">
+        {children}
+        {modal}
+      </div>
     </>
   );
 }
