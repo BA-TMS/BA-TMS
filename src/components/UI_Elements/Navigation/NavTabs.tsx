@@ -13,9 +13,7 @@ import Link from 'next/link';
 // this is the MUI tab that acts as navigation
 // is styled by TabLabel
 // pass an array of objects to generate Tab Labels
-// color is the color we want the tab
-// value is the name on the tab
-// need icon for tab label
+// color is the color we want the tab - related to active tab
 
 export interface TabData {
   name: string;
@@ -28,17 +26,13 @@ interface CustomTabsProps {
 }
 
 export function NavTabs({ tabs }: CustomTabsProps) {
-  // active tab matches the path
-  const [activeTab, setActiveTab] = React.useState('All');
+  const [activeTab, setActiveTab] = React.useState(tabs[0].name); // really need a better way for initial state
 
-  // this should check the path
   const handleTabChange = (
     event: React.SyntheticEvent<Element, Event> | null,
     newValue: string | number | null
   ) => {
-    console.log('new value', newValue);
     if (typeof newValue === 'string') {
-      // must be string for our state
       setActiveTab(newValue);
     }
   };
@@ -52,11 +46,13 @@ export function NavTabs({ tabs }: CustomTabsProps) {
     >
       <TabsList>
         {tabs.map((label, index) => {
-          console.log(label);
           return (
             <Link key={index} href={label.href}>
               <Tab value={label.name}>
-                <NavTabLabel Icon={label.icon} color={'default'} />
+                <NavTabLabel
+                  Icon={label.icon}
+                  color={activeTab === label.name ? 'success' : 'default'}
+                />
                 {label.name}
               </Tab>
             </Link>

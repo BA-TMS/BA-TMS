@@ -1,11 +1,8 @@
 import { cva, VariantProps } from 'class-variance-authority';
 import { SvgIconComponent } from '@mui/icons-material';
 
-// need an icon
-// check if active tab- change color to green
-
 export interface TabProps extends VariantProps<typeof labelStyles> {
-  Icon?: SvgIconComponent;
+  Icon?: SvgIconComponent; // accepts an MUI icon as a prop
 }
 
 const labelStyles = cva(
