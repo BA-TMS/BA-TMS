@@ -1,163 +1,69 @@
 'use client';
-import { useState, useContext } from 'react';
-import Table from '@ui/Table/Table';
-import Searchbar from '@/components/UI_Elements/Searchbar';
 
-import { ModalContext } from '@/Context/modalContext';
-import FormModal from '@/components/Modals/FormModal';
-import MemberForm from '@/components/Forms/MemberForm';
+import { useState, useContext, useEffect } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import Table from '@ui/Table/Table';
+import TableSkeleton from '@ui/Table/TableSkeleton';
+import TableHeaderBlank from '@ui/Table/TableHeaderBlank';
+import Searchbar from '@/components/UI_Elements/Searchbar';
+import Dropdown from '@/components/UI_Elements/Input/Dropdown';
 import Button from '@ui/buttons/Button';
 
-type Member = {
-  avatar: string;
-  name: string;
-  email: string;
-  role: string;
-  authentication: string;
-  lastLogin: string;
-  status: string;
-};
-
-type Members = Member[];
+// this page will need some sort of protections
+// made with parts of other components
 
 const columns = [
-  { field: 'name', headerName: 'Member' },
+  { field: 'firstName', headerName: 'First Name' },
+  { field: 'lastName', headerName: 'Last Name' },
   { field: 'email', headerName: 'Email Address' },
   {
     field: 'role',
-    headerName: 'Roles',
-    cellRenderer: (role, row) => (
-      <span className="inline-block rounded py-0.5 px-2.5 text-sm font-medium text-meta-3 bg-meta-3/[0.08]">
-        {role}
-      </span>
-    ),
-  },
-  { field: 'lastLogin', headerName: 'Last Login' },
-];
-
-const placeholderMembers = [
-  {
-    avatar: '/images/user/user-17.png',
-    name: 'Andrei Statescu',
-    email: 'Andrei@a2zport.com',
-    role: 'Developer',
-    authentication: 'Yes',
-    lastLogin: 'Jan 22, 2024, 8:33 PM',
-    status: 'active',
-  },
-  {
-    avatar: '/images/user/user-18.png',
-    name: 'Daniel Lepe',
-    email: 'Dan@example.com',
-    role: 'Manager',
-    authentication: 'No',
-    lastLogin: 'Feb 15, 2024, 1:45 PM',
-    status: 'active',
-  },
-  {
-    avatar: '/images/user/user-19.png',
-    name: 'Jacob Reola',
-    email: 'Jacob@example.com',
-    role: 'Designer',
-    authentication: 'Yes',
-    lastLogin: 'Mar 10, 2024, 10:02 AM',
-    status: 'lost',
-  },
-  {
-    avatar: '/images/user/user-20.png',
-    name: 'Josh Reola',
-    email: 'Josh@example.com',
-    role: 'Engineer',
-    authentication: 'No',
-    lastLogin: 'Apr 5, 2024, 12:54 PM',
-    status: 'active',
-  },
-  {
-    avatar: '/images/user/user-21.png',
-    name: 'Mrutunjay Singh',
-    email: 'Mrutunjay@example.com',
-    role: 'Analyst',
-    authentication: 'Yes',
-    lastLogin: 'May 1, 2024, 5:30 PM',
-    status: 'lost',
-  },
-  {
-    avatar: '/images/user/user-22.png',
-    name: 'Leonardo Cabral',
-    email: 'Leonardo@example.com',
-    role: 'Tester',
-    authentication: 'No',
-    lastLogin: 'Jun 20, 2024, 3:45 PM',
-    status: 'active',
-  },
-  {
-    avatar: '/images/user/user-23.png',
-    name: 'example',
-    email: 'example@example.com',
-    role: 'Tester',
-    authentication: 'No',
-    lastLogin: 'Jun 16, 2024, 1:40 PM',
-    status: 'active',
+    headerName: 'Role',
   },
 ];
 
 export default function SettingsPage() {
-  const teamMembers: Members = placeholderMembers;
+  const [status, setStatus] = useState('Not Loading'); // replace with redux status
 
-  const [filteredMembers, setFilteredMembers] = useState<Members>(teamMembers);
-
-  const { toggleOpen } = useContext(ModalContext);
-
-  const handleClick = () => {
-    console.log('Clicked');
-    toggleOpen();
-  };
-
-  function updateFilteredMembers(filter: string) {
-    const filteredMembers = teamMembers.filter(
-      (member) =>
-        member.name?.toLowerCase().includes(filter.toLowerCase()) ||
-        member.email?.toLowerCase().includes(filter.toLowerCase())
-    );
-    // Update the team members list with the filtered results
-    // (Assuming you have a state variable to store the filtered members)
-    setFilteredMembers(filteredMembers);
-  }
+  const [searchValue, setSearchValue] = useState<string>(''); // search value
+  const [searchField, setSearchField] = useState<string>('All'); // specific field if any
+  const [filteredValue, setFilteredValue] = useState([]); // add type with redux
 
   return (
     <>
-      <h2>Teams Page</h2>
-
-      {/* Filter */}
-      <div className="rounded-t-lg flex flex-end space-between border border-stroke bg-white dark:border-strokedark dark:bg-black p-6">
+      <TableHeaderBlank />
+      <div className="h-26 px-5 py-6 flex gap-4 bg-white dark:bg-grey-900 border-x border-t border-grey-300 dark:border-grey-700">
         <Searchbar
-          placeholder="Search by name or email..."
+          placeholder={'Search...'}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            const value = e.target.value;
-            updateFilteredMembers(value);
+            // const value = e.target.value;
+            // search(value); // update the search value
           }}
         />
+        <Dropdown
+          label={'Sort By'}
+          options={['Name']}
+          searchField={() => {}} // update the field to search
+        />
 
-        {/* End Filter Block */}
-
-        {/* New Member Block */}
-        <Button onClick={handleClick}>+ New Member</Button>
-        <FormModal>
-          <MemberForm />
-        </FormModal>
+        <div className="relative flex items-center w-50">
+          <Link href="">
+            <Button>Add Member</Button>
+          </Link>
+        </div>
       </div>
-      {/* End New Member Block */}
 
-      {/* Data Table Block */}
-      <Table
-        columns={columns.map((member) => ({
-          field: member.field, // Assuming 'field' is a unique identifier for columns
-          headerName: member.headerName,
-          cellRenderer: member.cellRenderer,
-        }))}
-        data={filteredMembers}
-      />
-      {/* End Data Table Block */}
+      {status === 'loading' ? (
+        <TableSkeleton columns={columns} />
+      ) : (
+        <Table
+          columns={columns}
+          data={filteredValue}
+          update={() => null}
+          view={''}
+        />
+      )}
     </>
   );
 }
