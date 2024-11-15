@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from 'react';
 import clsx from 'clsx';
 import { SvgIconComponent } from '@mui/icons-material';
@@ -9,6 +11,7 @@ import NavTabLabel from './NavTabLabel';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 // this is the MUI tab that acts as navigation
 // is styled by TabLabel
@@ -25,24 +28,43 @@ interface CustomTabsProps {
   tabs: TabData[];
 }
 
-export function NavTabs({ tabs }: CustomTabsProps) {
-  const [activeTab, setActiveTab] = React.useState(tabs[0].name); // really need a better way for initial state
+const pathToTabMap: { [key: string]: string } = {
+  '/settings/profile': 'Profile',
+  '/settings/team': 'Team',
+  '/settings/password': 'Change Password',
+  // Add more paths as needed
+};
 
-  const handleTabChange = (
-    event: React.SyntheticEvent<Element, Event> | null,
-    newValue: string | number | null
-  ) => {
-    if (typeof newValue === 'string') {
-      setActiveTab(newValue);
+export function NavTabs({ tabs }: CustomTabsProps) {
+  const path = usePathname();
+
+  const [activeTab, setActiveTab] = React.useState<string>('');
+
+  // update the active tab based on current pathname
+  React.useEffect(() => {
+    const newTab = pathToTabMap[path];
+
+    if (newTab) {
+      setActiveTab(newTab);
     }
-  };
+  }, [path]);
+
+  // const handleTabChange = (
+  //   event: React.SyntheticEvent<Element, Event> | null,
+  //   newValue: string | number | null
+  // ) => {
+  //   if (typeof newValue === 'string') {
+  //     console.log(newValue);
+  //     setActiveTab(newValue);
+  //   }
+  // };
 
   return (
     <Tabs
       className="mt-5"
       value={activeTab}
       aria-label="tabs"
-      onChange={handleTabChange} // Callback invoked when new value is being set
+      // onChange={handleTabChange} // Callback invoked when new value is being set
     >
       <TabsList>
         {tabs.map((label, index) => {
