@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -7,6 +8,7 @@ import TextInput from '@ui/Form/TextInput';
 import SelectInput from '@ui/Form/SelectInput';
 import Button from '@/components/UI_Elements/buttons/Button';
 import { useRouter } from 'next/navigation';
+import { signUpUser } from '@/app/(authenticated)/settings/actions';
 
 // this component handles sending an email invite for a new user using supabase auth
 
@@ -30,14 +32,16 @@ const userSchema = yup.object({
 type User = yup.InferType<typeof userSchema>;
 
 const AddUserForm = () => {
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
   const router = useRouter();
 
   const {
     handleSubmit,
-    // reset,
+    reset,
     setError,
     control,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<User>({
     defaultValues: {
       'First Name': '',
@@ -50,18 +54,22 @@ const AddUserForm = () => {
 
   // we will want to tie this in with redux I think
   const onSubmit = async (data: User) => {
+    setIsSubmitting(true);
     console.log('submitting', data);
     // reset(); // update form to default values
-    router.push('/settings/team');
+    // router.push('/settings/team');
 
     try {
-      const { data, error } = await supabase.auth.admin.inviteUserByEmail(
-        'email@example.com'
-      );
+      await signUpUser(data);
     } catch (error) {
       console.log('Error submitting form:', error);
       setError('root', { message: 'Error Submitting Form - Please try Again' });
+      setIsSubmitting(false);
+      return;
     }
+    setTimeout(() => {
+      setIsSubmitting(false);
+    }, 500);
   };
 
   return (
