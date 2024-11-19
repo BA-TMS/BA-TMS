@@ -206,3 +206,27 @@ export const resendConfirmEmail = async (formData: FormData) => {
 
   return redirect('/signup/confirm?message=Email sent'); // stay on confirm page and display message
 };
+
+// new invited user sets password
+export const setPassword = async (password: string, token: string) => {
+  const supabase = createSupabaseServerClient();
+
+  // refresh the session
+  await supabase.auth.refreshSession({ refresh_token: token });
+
+  const { error: userError } = await supabase.auth.updateUser({
+    password: password,
+  });
+
+  if (userError) {
+    console.log('Failed to get Supabase auth user', userError);
+    throw `${userError}`;
+  }
+
+  // it doesn't do metadata?
+  // missing a step
+  // auth context
+
+  // then we have to go somewhere
+  return redirect('/');
+};

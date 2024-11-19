@@ -37,7 +37,7 @@ export async function signUpUser(data: SignUpData) {
   // create user in supabase auth table with metadata + send email invite
   // connect to supabase auth client
   const { error } = await supabase.auth.admin.inviteUserByEmail(data['Email'], {
-    redirectTo: `${origin}/welcome`,
+    redirectTo: `${origin}/signup/welcome`,
     data: {
       // sends this info to auth users table raw_user_metadata
       first_name: data['First Name'],
