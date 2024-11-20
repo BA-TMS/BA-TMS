@@ -6,8 +6,9 @@ YupPassword(yup);
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import TextInput from '@/components/UI_Elements/Form/TextInput';
+import { SubmitButton } from '@/components/Authentication/submit-button';
 import Button from '@/components/UI_Elements/buttons/Button';
-import { setPassword } from '../actions';
+import { setPassword, resendConfirmEmail } from '../actions';
 
 // this is a welcome page for invited users to set their auth password
 
@@ -36,7 +37,10 @@ const passwordSchema = yup.object().shape({
 type Password = yup.InferType<typeof passwordSchema>;
 
 export const WelcomeUser = () => {
-  const urlParams = new URLSearchParams(window.location.hash.substring(1)); // Remove the leading #
+  // do we need to log out any existing users?
+  // how to handle the case in which someone else might be signed in
+
+  const urlParams = new URLSearchParams(window.location.hash.substring(1));
   const refreshToken = urlParams.get('refresh_token');
 
   const {
@@ -56,7 +60,9 @@ export const WelcomeUser = () => {
   const onSubmit = (data: Password) => {
     // set error if there is no refresh token
     if (refreshToken === null) {
-      setError('root', { message: 'Oops, error setting password' });
+      const errorMessage = urlParams.get('error_description');
+      console.log(errorMessage);
+      setError('root', { message: `${errorMessage}` });
       return;
     }
 
@@ -94,11 +100,16 @@ export const WelcomeUser = () => {
         </div>
       </div>
 
-      <div className="h-6">
+      <div className="h-10 text-center">
         {errors.root && (
-          <p className="font-public font-normal text-text-sm text-error text-center">
+          <p className="font-public font-normal text-text-sm text-error mb-2">
             {errors.root.message}
           </p>
+        )}
+        {errors.root?.message === 'Email link is invalid or has expired' && (
+          <Button variant={'outline'} onClick={() => console.log('resend')}>
+            Resend Email
+          </Button>
         )}
       </div>
 
