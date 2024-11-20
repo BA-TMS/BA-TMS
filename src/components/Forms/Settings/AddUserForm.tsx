@@ -38,7 +38,6 @@ const AddUserForm = () => {
 
   const {
     handleSubmit,
-    reset,
     setError,
     control,
     formState: { errors },
@@ -56,14 +55,12 @@ const AddUserForm = () => {
   const onSubmit = async (data: User) => {
     setIsSubmitting(true);
     console.log('submitting', data);
-    // reset(); // update form to default values
-    // router.push('/settings/team');
 
     try {
       await signUpUser(data);
     } catch (error) {
       console.log('Error submitting form:', error);
-      setError('root', { message: 'Error Submitting Form - Please try Again' });
+      setError('root', { message: `${error}` });
       setIsSubmitting(false);
       return;
     }
@@ -100,7 +97,11 @@ const AddUserForm = () => {
         />
       </div>
 
-      {errors.root && <p className="mb-5 text-danger">{errors.root.message}</p>}
+      {errors.root && (
+        <p className="font-public font-normal text-text-sm text-error mb-2">
+          {errors.root.message}
+        </p>
+      )}
 
       <div className="py-3.5 gap-2 border-t border-grey-300 dark:border-grey-700 flex justify-between sticky bottom-0 bg-white dark:bg-grey-900 z-10">
         <div className="flex justify-end gap-2">
