@@ -164,13 +164,12 @@ export async function signUpAdmin(data: SignUpData) {
   return redirect('/signup/confirm');
 }
 
+// events emitted by supabase
 const addListener = (client: SupabaseClient) => {
   client.auth.onAuthStateChange((event) => {
     if (event === 'INITIAL_SESSION') {
       console.log("Ayy, I'm initial-sessionin' heah!");
-    }
-    // We do not, at present, appear to emit ANY of these events. Should we?
-    else if (event === 'SIGNED_IN') {
+    } else if (event === 'SIGNED_IN') {
       console.log("Ayy, I'm signin' in heah!");
     } else if (event === 'SIGNED_OUT') {
       console.log("Ayy, I'm signin' out heah!");
@@ -209,6 +208,7 @@ export const resendConfirmEmail = async (formData: FormData) => {
 
 // new invited user sets password
 export const setPassword = async (password: string, token: string) => {
+  console.log('password', password);
   const supabase = createSupabaseServerClient();
 
   // refresh the session
@@ -223,10 +223,19 @@ export const setPassword = async (password: string, token: string) => {
     throw `${userError}`;
   }
 
-  // it doesn't do metadata?
-  // missing a step
-  // auth context
+  const sesh = await supabase.auth.getSession();
+  console.log(sesh);
 
-  // then we have to go somewhere
-  return redirect('/');
+  // do something
+  revalidatePath('/', 'layout'); // i want this to rerender the layout or something????
+  revalidatePath('/(authenticated)/dispatch', 'page');
+
+  // This may come in handy later
+  // gives us an initial session
+  addListener(supabase);
+
+  // // where to redirect after this is successful
+  // '/' is initial session and user info is undefined
+  // so we want to not do an initial session and go to login?
+  return redirect('/dispatch');
 };
