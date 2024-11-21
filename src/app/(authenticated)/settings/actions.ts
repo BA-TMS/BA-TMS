@@ -12,23 +12,12 @@ import {
 interface SignUpData {
   'First Name': string;
   'Last Name': string;
+  Telephone?: string;
   Email: string;
   Role: string;
 }
 
-// get a user's info
-export async function getAuthUser() {
-  'use server';
-
-  const supabase = createSupabaseServerClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  return user;
-}
-
+// this function handles supabase auth signup and creates entry in auth.users
 export async function signUpUser(data: SignUpData) {
   const origin = headers().get('origin');
   // connect to supabase auth client
@@ -42,7 +31,7 @@ export async function signUpUser(data: SignUpData) {
       // sends this info to auth users table raw_user_metadata
       first_name: data['First Name'],
       last_name: data['Last Name'],
-      //   phone_number: data['Personal Telephone'],
+      phone_number: data['Telephone'],
       role: data['Role'], // sign up as an owner
     },
   });

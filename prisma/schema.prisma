@@ -48,7 +48,7 @@ model User { // Individual users at an organization
   email         String        @unique
   firstName     String       
   lastName      String
-  telephone     String
+  telephone     String?
   organization  Organization  @relation(fields: [orgId], references: [id])
   orgId         String
   Permissions   Permissions?  // prisma does not support manditory one to one relations

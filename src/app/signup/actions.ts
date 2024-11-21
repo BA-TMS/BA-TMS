@@ -213,6 +213,10 @@ export const setPassword = async (password: string, token: string) => {
   // refresh the session
   await supabase.auth.refreshSession({ refresh_token: token });
 
+  if (password === '') {
+    throw 'empty password';
+  }
+
   const { error: userError } = await supabase.auth.updateUser({
     password: password,
   });

@@ -26,6 +26,7 @@ const userSchema = yup.object({
     .string()
     .email('Must use a valid email.')
     .required('Email is required.'),
+  Telephone: yup.string(),
   Role: yup.string().required('Please enter user role'),
 });
 
@@ -46,6 +47,7 @@ const AddUserForm = () => {
       'First Name': '',
       'Last Name': '',
       Email: '',
+      Telephone: '',
       Role: 'DISPATCHER',
     },
     resolver: yupResolver(userSchema),
@@ -88,6 +90,8 @@ const AddUserForm = () => {
           type="email"
           required={true}
         />
+
+        <TextInput control={control} name="Telephone" type="tel" />
 
         <SelectInput
           control={control}
