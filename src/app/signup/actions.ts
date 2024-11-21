@@ -208,7 +208,6 @@ export const resendConfirmEmail = async (formData: FormData) => {
 
 // new invited user sets password
 export const setPassword = async (password: string, token: string) => {
-  console.log('password', password);
   const supabase = createSupabaseServerClient();
 
   // refresh the session
@@ -223,19 +222,12 @@ export const setPassword = async (password: string, token: string) => {
     throw `${userError}`;
   }
 
-  const sesh = await supabase.auth.getSession();
-  console.log(sesh);
-
-  // do something
-  revalidatePath('/', 'layout'); // i want this to rerender the layout or something????
+  // clear cached data
+  revalidatePath('/', 'layout');
   revalidatePath('/(authenticated)/dispatch', 'page');
 
-  // This may come in handy later
-  // gives us an initial session
+  // tells us we have an initial session
   addListener(supabase);
 
-  // // where to redirect after this is successful
-  // '/' is initial session and user info is undefined
-  // so we want to not do an initial session and go to login?
   return redirect('/dispatch');
 };

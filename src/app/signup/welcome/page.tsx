@@ -1,14 +1,15 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import * as yup from 'yup';
 import YupPassword from 'yup-password';
 YupPassword(yup);
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import TextInput from '@/components/UI_Elements/Form/TextInput';
-import { SubmitButton } from '@/components/Authentication/submit-button';
 import Button from '@/components/UI_Elements/buttons/Button';
-import { setPassword, resendConfirmEmail } from '../actions';
+import { setPassword } from '../actions';
+import { useRouter } from 'next/navigation';
 
 // this is a welcome page for invited users to set their auth password
 
@@ -37,11 +38,16 @@ const passwordSchema = yup.object().shape({
 type Password = yup.InferType<typeof passwordSchema>;
 
 export const WelcomeUser = () => {
-  // do we need to log out any existing users?
-  // how to handle the case in which someone else might be signed in
+  const router = useRouter();
 
-  const urlParams = new URLSearchParams(window.location.hash.substring(1));
-  const refreshToken = urlParams.get('refresh_token');
+  const [urlParams, setUrlParams] = useState<URLSearchParams | null>(null);
+
+  useEffect(() => {
+    const hash = window.location.hash.substring(1);
+    setUrlParams(new URLSearchParams(hash));
+  }, []);
+
+  const refreshToken = urlParams?.get('refresh_token');
 
   const {
     control,
@@ -60,16 +66,15 @@ export const WelcomeUser = () => {
   const onSubmit = (data: Password) => {
     // set error if there is no refresh token
     if (refreshToken === null) {
-      const errorMessage = urlParams.get('error_description');
-      console.log(errorMessage);
+      const errorMessage = urlParams?.get('error_description');
       setError('root', { message: `${errorMessage}` });
       return;
     }
 
     try {
-      setPassword(data['Password'], refreshToken);
+      setPassword(data['Password'], refreshToken as string); // it should be a string at this point
     } catch (error) {
-      console.log(error);
+      setError('root', { message: `${error}` });
     }
   };
 
@@ -105,11 +110,6 @@ export const WelcomeUser = () => {
           <p className="font-public font-normal text-text-sm text-error mb-2">
             {errors.root.message}
           </p>
-        )}
-        {errors.root?.message === 'Email link is invalid or has expired' && (
-          <Button variant={'outline'} onClick={() => console.log('resend')}>
-            Resend Email
-          </Button>
         )}
       </div>
 

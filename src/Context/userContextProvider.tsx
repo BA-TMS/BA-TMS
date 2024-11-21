@@ -28,9 +28,6 @@ export const UserContextProvider: React.FC<UserProviderProps> = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = useState<boolean>(true);
 
-  console.log('USER', user);
-  console.log('SESHIE', session);
-
   useEffect(() => {
     const setData = async () => {
       const {
