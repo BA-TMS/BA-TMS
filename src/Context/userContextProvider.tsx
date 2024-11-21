@@ -28,6 +28,9 @@ export const UserContextProvider: React.FC<UserProviderProps> = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = useState<boolean>(true);
 
+  console.log('USER', user);
+  console.log('SESHIE', session);
+
   useEffect(() => {
     const setData = async () => {
       const {
@@ -46,6 +49,9 @@ export const UserContextProvider: React.FC<UserProviderProps> = ({
       (_event, session) => {
         if (_event === 'SIGNED_OUT') {
           console.log('Token has expired or user is signed out.');
+        }
+        if (_event === 'INITIAL_SESSION') {
+          console.log('Initial session');
         }
         setSession(session);
         setUser(session?.user ?? null);

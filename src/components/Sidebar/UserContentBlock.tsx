@@ -1,14 +1,20 @@
 'use client';
-// import { useContext } from 'react';
-// import { UserContext } from '@/Context/userContextProvider';
+
 import Image from 'next/image';
 import User01 from '@/assets/User01.jpg';
 
 interface UserContentProps {
   firstName: string | null;
   lastName: string | null;
-  role: string | undefined;
+  role: keyof typeof roleMap;
 }
+
+const roleMap = {
+  DISPATCHER: 'Dispatcher',
+  SALES_REP: 'Sales Rep',
+  ADMIN: 'Admin',
+  OWNER: 'Owner',
+};
 
 const UserContentBlock = ({ firstName, lastName, role }: UserContentProps) => {
   return (
@@ -26,7 +32,7 @@ const UserContentBlock = ({ firstName, lastName, role }: UserContentProps) => {
           {`${firstName} ${lastName}`}
         </p>
         <p className="font-public font-normal text-text-sm text-grey-500 ">
-          {role ? role : 'user'}
+          {role ? roleMap[role] : 'User'}
         </p>
       </div>
     </section>
