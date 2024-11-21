@@ -2,10 +2,7 @@
 
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
-import {
-  createSupabaseServerClient,
-  createSupbaseAdmin,
-} from '@util/supabase/server';
+import { createSupbaseAdmin } from '@util/supabase/server';
 
 // actions for interacting with supabase and prisma
 
@@ -16,6 +13,10 @@ interface SignUpData {
   Email: string;
   Role: string;
 }
+
+// this function handles creating entries in our public prisma tables
+// need to add a user and related permissions
+// organization must be whichever organization is linked to the account
 
 // this function handles supabase auth signup and creates entry in auth.users
 export async function signUpUser(data: SignUpData) {
@@ -32,7 +33,7 @@ export async function signUpUser(data: SignUpData) {
       first_name: data['First Name'],
       last_name: data['Last Name'],
       phone_number: data['Telephone'],
-      role: data['Role'], // sign up as an owner
+      role: data['Role'],
     },
   });
 

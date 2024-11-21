@@ -33,7 +33,7 @@ interface SignUpData {
 }
 
 // this function handles creating table entries in prisma
-async function addOrganization(data: SignUpData) {
+async function addOrganization(data: SignUpData, id: string) {
   try {
     // insert data into our own org table (prisma)
     const resp = await prisma.organization.create({
@@ -55,6 +55,7 @@ async function addOrganization(data: SignUpData) {
           // create entry in User table
           create: [
             {
+              id: id, // same id in auth and public
               email: data['Email'],
               firstName: data['First Name'],
               lastName: data['Last Name'],
@@ -63,7 +64,7 @@ async function addOrganization(data: SignUpData) {
               Permissions: {
                 // create entry in Permissions table
                 create: {
-                  role: 'ADMIN',
+                  role: 'OWNER',
                   status: 'ACTIVE',
                 },
               },
@@ -124,7 +125,7 @@ export async function signUpAdmin(data: SignUpData) {
         first_name: data['First Name'],
         last_name: data['Last Name'],
         phone_number: data['Personal Telephone'],
-        role: 'Owner', // sign up as an owner
+        role: 'OWNER', // sign up as an owner
       },
     },
   });
@@ -150,9 +151,11 @@ export async function signUpAdmin(data: SignUpData) {
     throw 'This user account already exists';
   }
 
+  const authId = result.data.user?.id; // the id that auth table is using
+
   // create the organization/ user/ permissions
   // should throw error if issue
-  await addOrganization(data);
+  await addOrganization(data, authId as string); // should be a string
 
   // // revlidate path (optionally if needed) - i forget what this does
   revalidatePath('/', 'layout');
