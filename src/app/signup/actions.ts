@@ -126,6 +126,7 @@ export async function signUpAdmin(data: SignUpData) {
         last_name: data['Last Name'],
         phone_number: data['Personal Telephone'],
         role: 'OWNER', // sign up as an owner
+        org_name: data['Company Name'], // organization so we can reference later
       },
     },
   });
