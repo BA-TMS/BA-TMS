@@ -12,6 +12,10 @@ import { signUpUser } from '@/app/(authenticated)/settings/actions';
 
 // this component handles sending an email invite for a new user using supabase auth
 
+interface FormProps {
+  company: string; // company name
+}
+
 const options = [
   { Admin: 'ADMIN' },
   { 'Sales Rep': 'SALES_REP' },
@@ -32,7 +36,7 @@ const userSchema = yup.object({
 
 type User = yup.InferType<typeof userSchema>;
 
-const AddUserForm = () => {
+const AddUserForm = ({ company }: FormProps) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const router = useRouter();
@@ -56,10 +60,10 @@ const AddUserForm = () => {
   // we will want to tie this in with redux I think
   const onSubmit = async (data: User) => {
     setIsSubmitting(true);
-    console.log('submitting', data);
+    console.log('submitting', data + company);
 
     try {
-      await signUpUser(data);
+      await signUpUser(data, company);
     } catch (error) {
       console.log('Error submitting form:', error);
       setError('root', { message: `${error}` });

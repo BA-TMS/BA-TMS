@@ -5,8 +5,9 @@ import { redirect } from 'next/navigation';
 import { createSupbaseAdmin } from '@util/supabase/server';
 import { PrismaClient, UserRole } from '@prisma/client';
 
-const prisma = new PrismaClient();
 // actions for interacting with supabase and prisma
+
+const prisma = new PrismaClient();
 
 interface SignUpData {
   'First Name': string;
@@ -16,10 +17,28 @@ interface SignUpData {
   Role: string;
 }
 
+async function getOrgId(name: string) {
+  const org = await prisma.organization.findUnique({
+    where: {
+      orgName: name,
+    },
+  });
+
+  if (org === null) {
+    throw 'Can not find organization ID';
+  }
+
+  return org.id;
+}
+
 // this function handles creating entries in our public prisma tables
 // organization must be whichever organization is linked to the account
-async function addUser(data: SignUpData, id: string) {
+async function addUser(data: SignUpData, id: string, orgName: string) {
   console.log('data', data, id);
+
+  // get org id to assign tp user
+  const orgId = await getOrgId(orgName);
+
   // insert data into our public.users
   try {
     const response = await prisma.user.create({
@@ -29,7 +48,7 @@ async function addUser(data: SignUpData, id: string) {
         firstName: data['First Name'],
         lastName: data['Last Name'],
         telephone: data['Telephone'] as string, // see if this works
-        orgId: '', // how to access this
+        orgId: orgId, // handles relation for user to organization
 
         Permissions: {
           // create entry in Permissions table
@@ -46,7 +65,7 @@ async function addUser(data: SignUpData, id: string) {
 }
 
 // this function handles supabase auth signup and creates entry in auth.users
-export async function signUpUser(formData: SignUpData) {
+export async function signUpUser(formData: SignUpData, company: string) {
   const origin = headers().get('origin');
   // connect to supabase auth client
   const supabase = await createSupbaseAdmin();
@@ -72,10 +91,10 @@ export async function signUpUser(formData: SignUpData) {
     throw `${error.message}`;
   }
 
-  const userId = data.user.id;
+  const userId = data.user.id; // so we can use same id in public and auth user tables
 
   // create the entries in public table
-  await addUser(formData, '231');
+  await addUser(formData, userId, company);
 
   // where to redirect after this is successful
   return redirect('/settings/team');
