@@ -34,9 +34,8 @@ async function getOrgId(name: string) {
 // this function handles creating entries in our public prisma tables
 // organization must be whichever organization is linked to the account
 async function addUser(data: SignUpData, id: string, orgName: string) {
-  console.log('data', data, id);
-
-  // get org id to assign tp user
+  // get org id to assign to user
+  // if this errors, function does not continue
   const orgId = await getOrgId(orgName);
 
   // insert data into our public.users
@@ -47,7 +46,7 @@ async function addUser(data: SignUpData, id: string, orgName: string) {
         email: data['Email'],
         firstName: data['First Name'],
         lastName: data['Last Name'],
-        telephone: data['Telephone'] as string, // see if this works
+        telephone: data['Telephone'] as string,
         orgId: orgId, // handles relation for user to organization
 
         Permissions: {
@@ -60,13 +59,14 @@ async function addUser(data: SignUpData, id: string, orgName: string) {
       },
     });
   } catch (error) {
-    console.log(error);
+    throw `${error}`;
   }
 }
 
 // this function handles supabase auth signup and creates entry in auth.users
 export async function signUpUser(formData: SignUpData, company: string) {
   const origin = headers().get('origin');
+
   // connect to supabase auth client
   const supabase = await createSupbaseAdmin();
 
@@ -82,6 +82,7 @@ export async function signUpUser(formData: SignUpData, company: string) {
         last_name: formData['Last Name'],
         phone_number: formData['Telephone'],
         role: formData['Role'],
+        org_name: company,
       },
     }
   );
