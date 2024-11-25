@@ -40,6 +40,7 @@ type Password = yup.InferType<typeof passwordSchema>;
 export const WelcomeUser = () => {
   const router = useRouter();
 
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [urlParams, setUrlParams] = useState<URLSearchParams | null>(null);
 
   useEffect(() => {
@@ -54,7 +55,7 @@ export const WelcomeUser = () => {
     handleSubmit,
     // reset,
     setError,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<Password>({
     defaultValues: {
       Password: '',
@@ -64,10 +65,12 @@ export const WelcomeUser = () => {
   });
 
   const onSubmit = (data: Password) => {
+    setIsSubmitting(true);
     // set error if there is no refresh token
     if (refreshToken === null) {
       const errorMessage = urlParams?.get('error_description');
       setError('root', { message: `${errorMessage}` });
+      setIsSubmitting(false);
       return;
     }
 
@@ -76,6 +79,9 @@ export const WelcomeUser = () => {
     } catch (error) {
       setError('root', { message: `${error}` });
     }
+    setTimeout(() => {
+      setIsSubmitting(false);
+    }, 500);
   };
 
   return (
