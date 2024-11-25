@@ -3,44 +3,79 @@
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { createSupbaseAdmin } from '@util/supabase/server';
+import { PrismaClient, UserRole } from '@prisma/client';
 
+const prisma = new PrismaClient();
 // actions for interacting with supabase and prisma
 
 interface SignUpData {
   'First Name': string;
   'Last Name': string;
-  Telephone?: string;
+  Telephone?: string | null;
   Email: string;
   Role: string;
 }
 
 // this function handles creating entries in our public prisma tables
-// need to add a user and related permissions
 // organization must be whichever organization is linked to the account
+async function addUser(data: SignUpData, id: string) {
+  console.log('data', data, id);
+  // insert data into our public.users
+  try {
+    const response = await prisma.user.create({
+      data: {
+        id: id, // same id in auth and public
+        email: data['Email'],
+        firstName: data['First Name'],
+        lastName: data['Last Name'],
+        telephone: data['Telephone'] as string, // see if this works
+        orgId: '', // how to access this
+
+        Permissions: {
+          // create entry in Permissions table
+          create: {
+            role: data['Role'] as UserRole,
+            status: 'ACTIVE',
+          },
+        },
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 // this function handles supabase auth signup and creates entry in auth.users
-export async function signUpUser(data: SignUpData) {
+export async function signUpUser(formData: SignUpData) {
   const origin = headers().get('origin');
   // connect to supabase auth client
   const supabase = await createSupbaseAdmin();
 
   // create user in supabase auth table with metadata + send email invite
   // connect to supabase auth client
-  const { error } = await supabase.auth.admin.inviteUserByEmail(data['Email'], {
-    redirectTo: `${origin}/signup/welcome`,
-    data: {
-      // sends this info to auth users table raw_user_metadata
-      first_name: data['First Name'],
-      last_name: data['Last Name'],
-      phone_number: data['Telephone'],
-      role: data['Role'],
-    },
-  });
+  const { data, error } = await supabase.auth.admin.inviteUserByEmail(
+    formData['Email'],
+    {
+      redirectTo: `${origin}/signup/welcome`,
+      data: {
+        // sends this info to auth users table raw_user_metadata
+        first_name: formData['First Name'],
+        last_name: formData['Last Name'],
+        phone_number: formData['Telephone'],
+        role: formData['Role'],
+      },
+    }
+  );
 
   // if there is an error, return message
   if (error) {
     throw `${error.message}`;
   }
+
+  const userId = data.user.id;
+
+  // create the entries in public table
+  await addUser(formData, '231');
 
   // where to redirect after this is successful
   return redirect('/settings/team');

@@ -13,6 +13,12 @@ import Button from '@ui/buttons/Button';
 // this page will need some sort of protections
 // made with parts of other components
 
+// adding a team member:
+//  will need to send an email for supabase auth + add to auth.user
+//  add to public.user and public.permissions
+
+// redux
+
 const columns = [
   { field: 'firstName', headerName: 'First Name' },
   { field: 'lastName', headerName: 'Last Name' },
@@ -21,14 +27,16 @@ const columns = [
     field: 'role',
     headerName: 'Role',
   },
+  {
+    field: 'status',
+    headerName: 'Status',
+  },
 ];
 
-export default function SettingsPage() {
-  const [status, setStatus] = useState('Not Loading'); // replace with redux status
+const dropdownOptions: string[] = ['All', 'Name', 'Role', 'Status'];
 
-  const [searchValue, setSearchValue] = useState<string>(''); // search value
-  const [searchField, setSearchField] = useState<string>('All'); // specific field if any
-  const [filteredValue, setFilteredValue] = useState([]); // add type with redux
+export default function SettingsPage() {
+  const [status, setStatus] = useState(''); // replace with redux status
 
   return (
     <>
@@ -43,13 +51,13 @@ export default function SettingsPage() {
         />
         <Dropdown
           label={'Sort By'}
-          options={['Name']}
+          options={dropdownOptions}
           searchField={() => {}} // update the field to search
         />
 
         <div className="relative flex items-center w-50">
-          <Link href="">
-            <Button>Add Member</Button>
+          <Link href="/settings/team/add-user">
+            <Button>Add User</Button>
           </Link>
         </div>
       </div>
@@ -57,12 +65,7 @@ export default function SettingsPage() {
       {status === 'loading' ? (
         <TableSkeleton columns={columns} />
       ) : (
-        <Table
-          columns={columns}
-          data={filteredValue}
-          update={() => null}
-          view={''}
-        />
+        <Table columns={columns} data={[]} update={() => null} view={''} />
       )}
     </>
   );

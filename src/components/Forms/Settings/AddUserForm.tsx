@@ -26,7 +26,7 @@ const userSchema = yup.object({
     .string()
     .email('Must use a valid email.')
     .required('Email is required.'),
-  Telephone: yup.string(),
+  Telephone: yup.string().nullable(),
   Role: yup.string().required('Please enter user role'),
 });
 
