@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { signUpUser } from '@/app/(authenticated)/settings/actions';
 import { TeamMember } from '@/types/teamTypes';
 import { getTeam } from '@/app/(authenticated)/settings/actions';
 import { Status, UserRole } from '@prisma/client';
@@ -34,12 +35,47 @@ const formatron = function (user: TeamMember) {
   } as unknown as TeamMember;
 };
 
-// Define Async Thunks
+// fetch all users for a specific organization
 export const fetchTeam = createAsyncThunk<TeamMember[], string>(
   'team/fetchTeam',
   async (orgName) => {
     const data = await getTeam(orgName);
     return data.map((team: TeamMember) => formatron(team));
+  }
+);
+
+// add a new user to the organization
+// do we need this function since the add happens on a different page?
+export const addUser = createAsyncThunk<any, any>(
+  'team/addUser',
+  async (user, { rejectWithValue }) => {
+    try {
+      const response = await signUpUser(); // what do we pass in?
+
+      return formatron(response as TeamMember);
+    } catch (error) {
+      return rejectWithValue('Failed to create team member');
+    }
+  }
+);
+
+// update a user
+// do we need this one
+export const updateUser = createAsyncThunk<any, any>(
+  'team/updateUser',
+  async (
+    { id, updatedCarrier }: UpdatedCarrierPayload,
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await apiUpdatecarrier(id, {
+        carrier: updatedCarrier as TeamMember,
+      });
+
+      return formatron(response as TeamMember);
+    } catch (error) {
+      return rejectWithValue('Failed to update carrier');
+    }
   }
 );
 
@@ -70,6 +106,30 @@ const teamSlice = createSlice({
       .addCase(fetchTeam.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message || 'Failed to fetch team';
+      })
+      //   .addCase(addUser.fulfilled, (state, action) => {
+      //     state.items.push(action.payload);
+      //   })
+      //   .addCase(addUser.rejected, (state, action) => {
+      //     const message = action.payload;
+      //     state.status = 'failed';
+      //     state.error = message as string;
+      //   });
+      .addCase(
+        updateUser.fulfilled,
+        (state, action: PayloadAction<TeamMember>) => {
+          const index = state.items.findIndex(
+            (user) => user.id === action.payload.id
+          );
+          if (index !== -1) {
+            state.items[index] = action.payload;
+          }
+        }
+      )
+      .addCase(updateUser.rejected, (state, action) => {
+        const message = action.payload;
+        state.status = 'failed';
+        state.error = message as string;
       });
   },
 });
