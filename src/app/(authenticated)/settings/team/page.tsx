@@ -16,7 +16,6 @@ import { fetchTeam } from '@/store/slices/teamSlice';
 import { TeamMember } from '@/types/teamTypes';
 
 // this page will need some sort of protections
-// made with parts of other components
 
 // TODO: redux
 
@@ -33,8 +32,6 @@ const columns = [
     headerName: 'Status',
   },
 ];
-
-const dropdownOptions: string[] = ['All', 'Name', 'Role', 'Status'];
 
 export default function SettingsPage() {
   const { user } = useContext(UserContext);
@@ -55,6 +52,48 @@ export default function SettingsPage() {
     // error,
   } = useSelector((state: RootState) => state.team);
 
+  // update specific field to search
+  // currently only handling status
+  const updateField = (field: string) => {
+    setSearchField(field);
+  };
+
+  // search
+  const handleSearch = (users: TeamMember[], value: string, status: string) => {
+    // status to uppercase
+    const userStatus = status?.toUpperCase();
+
+    // filter by status (if it's "Active" or "Inactive")
+    let filteredUsers = users;
+
+    if (userStatus === 'ACTIVE' || userStatus === 'INACTIVE') {
+      filteredUsers = users.filter(
+        (user) => user.Permissions?.status === userStatus
+      );
+    }
+
+    // If no search value, return the filtered list by status
+    if (!value) {
+      return filteredUsers;
+    }
+
+    // search across all fields with the given value
+    if (status === 'All') {
+      return filteredUsers.filter((user) =>
+        Object.values(user).some((userField) =>
+          userField?.toString().toLowerCase().includes(value.toLowerCase())
+        )
+      );
+    }
+
+    // If status is specific (like "Active"), apply search value filtering
+    return filteredUsers.filter((user) =>
+      Object.values(user).some((userField) =>
+        userField?.toString().toLowerCase().includes(value.toLowerCase())
+      )
+    );
+  };
+
   // get initial team
   useEffect(() => {
     dispatch(fetchTeam(orgName));
@@ -63,8 +102,7 @@ export default function SettingsPage() {
   // Update filtered team
   useEffect(() => {
     let updatedTeam = [...team];
-    console.log(updatedTeam);
-    // updatedTeam = handleSearch(updatedTeam, searchValue, searchField);
+    updatedTeam = handleSearch(updatedTeam, searchValue, searchField);
     setFilteredValue(updatedTeam);
   }, [team, searchValue, searchField]);
 
@@ -75,14 +113,14 @@ export default function SettingsPage() {
         <Searchbar
           placeholder={'Search...'}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            // const value = e.target.value;
-            // search(value); // update the search value
+            const value = e.target.value;
+            setSearchValue(value);
           }}
         />
         <Dropdown
           label={'Sort By'}
-          options={dropdownOptions}
-          searchField={() => {}} // update the field to search
+          options={['Active', 'Inactive', 'All']}
+          searchField={updateField} // update the field to narrow search
         />
 
         <div className="relative flex items-center w-50">

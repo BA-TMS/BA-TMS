@@ -22,13 +22,16 @@ export async function getTeam(org: string) {
           orgName: true,
           id: true,
         },
-      }, // Includes related organization details
+      },
       Permissions: {
         select: {
           role: true,
           status: true,
         },
-      }, // Includes related permissions if any
+      },
+    },
+    orderBy: {
+      lastName: 'asc', // alphabetized by last name
     },
   });
   return users;

@@ -29,6 +29,7 @@ const formatron = function (user: TeamMember) {
       user.createdAt instanceof Date ? user.createdAt.toDateString() : null,
     updatedAt:
       user.updatedAt instanceof Date ? user.updatedAt.toDateString() : null,
+    name: `${user.firstName} ${user.lastName}`, // in case we need to search full name
     // add role and status
     role: roleMap[user.Permissions?.role as UserRole],
     status: statusMap[user.Permissions?.status as Status],
