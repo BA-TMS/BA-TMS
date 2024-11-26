@@ -1,7 +1,5 @@
 'use Client';
 
-import { useContext } from 'react';
-import { ModalContext } from '@/Context/modalContext';
 import { useRouter } from 'next/navigation';
 import { FormattedTeamMember } from '@/types/teamTypes';
 import Button from '@/components/UI_Elements/buttons/Button';
@@ -15,8 +13,6 @@ interface ViewMemberProps {
 
 const ViewTeamMember = ({ data }: ViewMemberProps) => {
   const router = useRouter();
-
-  const { saveFormValues } = useContext(ModalContext);
 
   if (!data) {
     return (
@@ -70,9 +66,7 @@ const ViewTeamMember = ({ data }: ViewMemberProps) => {
           variant="outline"
           intent="default"
           onClick={() => {
-            // send data to context
-            saveFormValues(data);
-            router.push(''); // go to edit route
+            router.push(`/settings/team/update-user/${data['id']}`); // go to edit route
           }}
         >
           Edit

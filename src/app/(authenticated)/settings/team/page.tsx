@@ -17,8 +17,6 @@ import { TeamMember } from '@/types/teamTypes';
 
 // this page will need some sort of protections
 
-// TODO: redux
-
 const columns = [
   { field: 'firstName', headerName: 'First Name' },
   { field: 'lastName', headerName: 'Last Name' },
