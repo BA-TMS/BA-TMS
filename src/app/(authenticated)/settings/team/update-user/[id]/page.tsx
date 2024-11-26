@@ -3,18 +3,18 @@
 import { useSelector } from 'react-redux';
 import { usePathname } from 'next/navigation';
 import FullPageFormContainer from '@/components/UI_Elements/Form/FullPageContainer';
-import ViewTeamMember from '@/components/Forms/Settings/ViewTeamMember';
+import UpdateTeamMember from '@/components/Forms/Settings/UpdateTeamMember';
 import { RootState } from '@/store/store';
 import { FormattedTeamMember, TeamMember } from '@/types/teamTypes';
 
 // page uses dynamic routing as we don't know what the id is
 // takes in the id to find the entry
 
-export default function ViewTeamMemberPage() {
+export default function UpdateTeamMemberPage() {
   const pathname = usePathname();
 
   // slice the pathname to get the id
-  const memberId = pathname.split('/settings/team/view/')[1];
+  const memberId = pathname.split('/settings/team/update-user/')[1];
 
   // use the id to pull from redux
   const user = useSelector((state: RootState) =>
@@ -22,8 +22,8 @@ export default function ViewTeamMemberPage() {
   );
 
   return (
-    <FullPageFormContainer title={'View Team Member'}>
-      <ViewTeamMember data={user as FormattedTeamMember} />
+    <FullPageFormContainer title={'Update Team Member'}>
+      <UpdateTeamMember user={user as FormattedTeamMember} />
     </FullPageFormContainer>
   );
 }

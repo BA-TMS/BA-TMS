@@ -1,5 +1,5 @@
 export interface TeamMember {
-  id: String;
+  id: string;
   createdAt: Date | string;
   updatedAt: Date | string;
   email: string;
@@ -18,5 +18,11 @@ export interface UserPermissions {
   role: 'ADMIN' | 'SALES_REP' | 'DISPATCHER' | 'OWNER';
   status: 'ACTIVE' | 'INACTIVE';
   userId: string;
-  user: TeamMember; // is this right?
+  user: TeamMember;
+}
+
+export interface FormattedTeamMember extends TeamMember {
+  name: string;
+  role: 'ADMIN' | 'SALES_REP' | 'DISPATCHER' | 'OWNER';
+  status: 'ACTIVE' | 'INACTIVE';
 }

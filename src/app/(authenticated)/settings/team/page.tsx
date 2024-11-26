@@ -94,10 +94,15 @@ export default function SettingsPage() {
     );
   };
 
+  // update team member
+  const updateTeam = async (id: string) => {
+    router.push(`/settings/team/update-user/${id}`);
+  };
+
   // get initial team
   useEffect(() => {
     dispatch(fetchTeam(orgName));
-  }, [dispatch]);
+  }, [dispatch, orgName]);
 
   // Update filtered team
   useEffect(() => {
@@ -118,7 +123,7 @@ export default function SettingsPage() {
           }}
         />
         <Dropdown
-          label={'Sort By'}
+          label={'Status'}
           options={['Active', 'Inactive', 'All']}
           searchField={updateField} // update the field to narrow search
         />
@@ -136,8 +141,8 @@ export default function SettingsPage() {
         <Table
           columns={columns}
           data={filteredValue}
-          update={() => null}
-          view={''}
+          update={updateTeam}
+          view={'/settings/team/view/'}
         />
       )}
     </>
