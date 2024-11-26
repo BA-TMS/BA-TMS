@@ -6,9 +6,9 @@ export interface TeamMember {
   firstName: string;
   lastName: string;
   telephone: string | null;
-  organization: { name: string } | null; // how does this come in?
+  organization: { orgName: string; id: string };
   orgId: string;
-  Permissions?: UserPermissions; // permissions table
+  Permissions: { role: string; status: string } | null;
 }
 
 export interface UserPermissions {

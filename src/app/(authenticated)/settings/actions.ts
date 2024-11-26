@@ -9,6 +9,31 @@ import { PrismaClient, UserRole } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+export async function getTeam(org: string) {
+  const users = prisma.user.findMany({
+    where: {
+      organization: {
+        orgName: org,
+      },
+    },
+    include: {
+      organization: {
+        select: {
+          orgName: true,
+          id: true,
+        },
+      }, // Includes related organization details
+      Permissions: {
+        select: {
+          role: true,
+          status: true,
+        },
+      }, // Includes related permissions if any
+    },
+  });
+  return users;
+}
+
 interface SignUpData {
   'First Name': string;
   'Last Name': string;
