@@ -9,10 +9,8 @@ import AddUserForm from '@/components/Forms/Settings/AddUserForm';
 
 export default function AddUser() {
   const { user } = useContext(UserContext);
-  console.log('USER', user);
 
   const orgName = user?.user_metadata.org_name;
-  console.log('ORG NAME?', orgName);
 
   return (
     <FullPageFormContainer title="Invite New User">

@@ -3,21 +3,22 @@
 import { useState, useContext, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { UserContext } from '@/Context/userContextProvider';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/store/store';
 import Table from '@ui/Table/Table';
 import TableSkeleton from '@ui/Table/TableSkeleton';
 import TableHeaderBlank from '@ui/Table/TableHeaderBlank';
 import Searchbar from '@/components/UI_Elements/Searchbar';
 import Dropdown from '@/components/UI_Elements/Input/Dropdown';
 import Button from '@ui/buttons/Button';
+import { fetchTeam } from '@/store/slices/teamSlice';
+import { TeamMember } from '@/types/teamTypes';
 
 // this page will need some sort of protections
 // made with parts of other components
 
-// adding a team member:
-//  will need to send an email for supabase auth + add to auth.user
-//  add to public.user and public.permissions
-
-// redux
+// TODO: redux
 
 const columns = [
   { field: 'firstName', headerName: 'First Name' },
@@ -36,7 +37,36 @@ const columns = [
 const dropdownOptions: string[] = ['All', 'Name', 'Role', 'Status'];
 
 export default function SettingsPage() {
-  const [status, setStatus] = useState(''); // replace with redux status
+  const { user } = useContext(UserContext);
+
+  const orgName = user?.user_metadata.org_name;
+
+  const [filteredValue, setFilteredValue] = useState<TeamMember[]>([]);
+  const [searchValue, setSearchValue] = useState<string>(''); // search value
+  const [searchField, setSearchField] = useState<string>('All'); // specific field if any
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  const router = useRouter();
+
+  const {
+    items: team,
+    status,
+    // error,
+  } = useSelector((state: RootState) => state.team);
+
+  // get initial team
+  useEffect(() => {
+    dispatch(fetchTeam(orgName));
+  }, [dispatch]);
+
+  // Update filtered team
+  useEffect(() => {
+    let updatedTeam = [...team];
+    console.log(updatedTeam);
+    // updatedTeam = handleSearch(updatedTeam, searchValue, searchField);
+    setFilteredValue(updatedTeam);
+  }, [team, searchValue, searchField]);
 
   return (
     <>
@@ -65,7 +95,12 @@ export default function SettingsPage() {
       {status === 'loading' ? (
         <TableSkeleton columns={columns} />
       ) : (
-        <Table columns={columns} data={[]} update={() => null} view={''} />
+        <Table
+          columns={columns}
+          data={filteredValue}
+          update={() => null}
+          view={''}
+        />
       )}
     </>
   );

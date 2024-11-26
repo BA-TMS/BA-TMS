@@ -1,12 +1,25 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { TeamMember } from '@/types/teamTypes';
 import { getTeam } from '@/app/(authenticated)/settings/actions';
+import { Status, UserRole } from '@prisma/client';
 
 interface TeamState {
   items: TeamMember[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
 }
+
+const roleMap = {
+  DISPATCHER: 'Dispatcher',
+  SALES_REP: 'Sales Rep',
+  ADMIN: 'Admin',
+  OWNER: 'Owner',
+};
+
+const statusMap = {
+  ACTIVE: 'Active',
+  INACTIVE: 'Inactive',
+};
 
 const formatron = function (user: TeamMember) {
   return {
@@ -15,12 +28,9 @@ const formatron = function (user: TeamMember) {
       user.createdAt instanceof Date ? user.createdAt.toDateString() : null,
     updatedAt:
       user.updatedAt instanceof Date ? user.updatedAt.toDateString() : null,
-    // organization: {
-    //   ...user.organization,
-    // },
-    // Permissions: {
-    //   ...user.Permissions,
-    // },
+    // add role and status
+    role: roleMap[user.Permissions?.role as UserRole],
+    status: statusMap[user.Permissions?.status as Status],
   } as unknown as TeamMember;
 };
 
