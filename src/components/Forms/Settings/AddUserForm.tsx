@@ -57,10 +57,8 @@ const AddUserForm = ({ company }: FormProps) => {
     resolver: yupResolver(userSchema),
   });
 
-  // we will want to tie this in with redux I think
   const onSubmit = async (data: User) => {
     setIsSubmitting(true);
-    console.log('submitting', data + company);
 
     try {
       await signUpUser(data, company);
