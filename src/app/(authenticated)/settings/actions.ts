@@ -131,7 +131,28 @@ export async function signUpUser(formData: UserData, company: string) {
   return redirect('/settings/team');
 }
 
-// updating a user
+// update user in auth.users
+async function updateAuthData(data: UserData, id: string) {
+  console.log('updating metadata...', data);
+
+  const supabase = await createSupbaseAdmin();
+
+  const { error } = await supabase.auth.admin.updateUserById(id, {
+    user_metadata: {
+      first_name: data['First Name'],
+      last_name: data['Last Name'],
+      phone_number: data['Telephone'],
+      role: data['Role'],
+    },
+    email: data['Email'],
+  });
+
+  if (error) {
+    throw `${error.message}`;
+  }
+}
+
+// updating a user in public tables
 export async function updateUser(data: UserData, id: string) {
   console.log('data in action', data);
   try {
@@ -159,6 +180,10 @@ export async function updateUser(data: UserData, id: string) {
         },
       },
     });
+
+    // call function to update auth.users
+    await updateAuthData(data, id);
+
     return response;
   } catch (error) {
     throw `${error}`;
