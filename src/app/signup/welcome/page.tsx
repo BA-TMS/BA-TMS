@@ -81,7 +81,7 @@ export const WelcomeUser = () => {
     }
     setTimeout(() => {
       setIsSubmitting(false);
-    }, 500);
+    }, 1000);
   };
 
   return (

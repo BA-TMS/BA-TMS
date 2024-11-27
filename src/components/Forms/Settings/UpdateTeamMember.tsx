@@ -12,6 +12,7 @@ import Button from '@/components/UI_Elements/buttons/Button';
 import { useRouter } from 'next/navigation';
 import { FormattedTeamMember } from '@/types/teamTypes';
 import { updateTeamMember } from '@/store/slices/teamSlice';
+import { resendInvite } from '@/app/(authenticated)/settings/actions';
 
 // this component updates details for a user in both public.users and auth.users
 
@@ -103,7 +104,6 @@ const UpdateTeamMember = ({ user }: FormProps) => {
     setIsSubmitting(true);
 
     try {
-      console.log('submitting', data);
       await dispatch(
         updateTeamMember({
           id: user['id'],
@@ -111,6 +111,23 @@ const UpdateTeamMember = ({ user }: FormProps) => {
         })
       ).unwrap();
       router.push('/settings/team');
+    } catch (error) {
+      setError('root', { message: `${error}` });
+      setIsSubmitting(false);
+      return;
+    }
+    setTimeout(() => {
+      setIsSubmitting(false);
+    }, 500);
+  };
+
+  // function to resend invite
+  const handleInvite = async () => {
+    setIsSubmitting(true);
+    try {
+      await resendInvite(user['email']);
+      //   router.push('/settings/team');
+      setError('root', { message: `Confirmation email sent` });
     } catch (error) {
       setError('root', { message: `${error}` });
       setIsSubmitting(false);
@@ -178,6 +195,9 @@ const UpdateTeamMember = ({ user }: FormProps) => {
             Cancel
           </Button>
         </div>
+        <Button type="button" variant="text" onClick={handleInvite}>
+          Click here to re-send email invite
+        </Button>
         <Button type="submit" disabled={isSubmitting}>
           Update User
         </Button>
