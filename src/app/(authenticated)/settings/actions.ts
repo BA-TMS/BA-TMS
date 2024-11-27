@@ -18,6 +18,8 @@ interface UserData {
 
 const prisma = new PrismaClient();
 
+// gets users belonging to specific organization
+// ordered by status and last name
 export async function getTeam(org: string) {
   const users = prisma.user.findMany({
     where: {
@@ -39,9 +41,16 @@ export async function getTeam(org: string) {
         },
       },
     },
-    orderBy: {
-      lastName: 'asc', // alphabetized by last name
-    },
+    orderBy: [
+      {
+        Permissions: {
+          status: 'asc',
+        },
+      },
+      {
+        lastName: 'asc',
+      },
+    ],
   });
   return users;
 }
@@ -133,8 +142,6 @@ export async function signUpUser(formData: UserData, company: string) {
 
 // update user in auth.users
 async function updateAuthData(data: UserData, id: string) {
-  console.log('updating metadata...', data);
-
   const supabase = await createSupbaseAdmin();
 
   const { error } = await supabase.auth.admin.updateUserById(id, {
@@ -154,7 +161,6 @@ async function updateAuthData(data: UserData, id: string) {
 
 // updating a user in public tables
 export async function updateUser(data: UserData, id: string) {
-  console.log('data in action', data);
   try {
     const response = await prisma.user.update({
       where: {
