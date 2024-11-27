@@ -1,13 +1,24 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { signUpUser } from '@/app/(authenticated)/settings/actions';
-import { TeamMember } from '@/types/teamTypes';
-import { getTeam } from '@/app/(authenticated)/settings/actions';
+import { FormattedTeamMember, TeamMember } from '@/types/teamTypes';
+import { getTeam, updateUser } from '@/app/(authenticated)/settings/actions';
 import { Status, UserRole } from '@prisma/client';
 
 interface TeamState {
   items: TeamMember[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
+}
+
+interface Payload {
+  id: string;
+  updatedUser: {
+    'First Name': string;
+    'Last Name': string;
+    Telephone?: string | null;
+    Email: string;
+    Role: string;
+    Status: string;
+  };
 }
 
 const roleMap = {
@@ -30,10 +41,10 @@ const formatron = function (user: TeamMember) {
     updatedAt:
       user.updatedAt instanceof Date ? user.updatedAt.toDateString() : null,
     name: `${user.firstName} ${user.lastName}`, // in case we need to search full name
-    // add role and status
+    // add role and status to get them out of nested object
     role: roleMap[user.Permissions?.role as UserRole],
     status: statusMap[user.Permissions?.status as Status],
-  } as unknown as TeamMember;
+  } as unknown as FormattedTeamMember;
 };
 
 // fetch all users for a specific organization
@@ -45,37 +56,16 @@ export const fetchTeam = createAsyncThunk<TeamMember[], string>(
   }
 );
 
-// add a new user to the organization
-// do we need this function since the add happens on a different page?
-export const addUser = createAsyncThunk<any, any>(
-  'team/addUser',
-  async (user, { rejectWithValue }) => {
-    try {
-      const response = await signUpUser(); // what do we pass in?
-
-      return formatron(response as TeamMember);
-    } catch (error) {
-      return rejectWithValue('Failed to create team member');
-    }
-  }
-);
-
 // update a user
-// do we need this one
-export const updateUser = createAsyncThunk<any, any>(
+export const updateTeamMember = createAsyncThunk<FormattedTeamMember, Payload>(
   'team/updateUser',
-  async (
-    { id, updatedCarrier }: UpdatedCarrierPayload,
-    { rejectWithValue }
-  ) => {
+  async ({ id, updatedUser }: Payload, { rejectWithValue }) => {
     try {
-      const response = await apiUpdatecarrier(id, {
-        carrier: updatedCarrier as TeamMember,
-      });
+      const response = await updateUser(updatedUser, id);
 
-      return formatron(response as TeamMember);
+      return formatron(response as FormattedTeamMember);
     } catch (error) {
-      return rejectWithValue('Failed to update carrier');
+      return rejectWithValue('Failed to update team member');
     }
   }
 );
@@ -117,7 +107,7 @@ const teamSlice = createSlice({
       //     state.error = message as string;
       //   });
       .addCase(
-        updateUser.fulfilled,
+        updateTeamMember.fulfilled,
         (state, action: PayloadAction<TeamMember>) => {
           const index = state.items.findIndex(
             (user) => user.id === action.payload.id
@@ -127,7 +117,7 @@ const teamSlice = createSlice({
           }
         }
       )
-      .addCase(updateUser.rejected, (state, action) => {
+      .addCase(updateTeamMember.rejected, (state, action) => {
         const message = action.payload;
         state.status = 'failed';
         state.error = message as string;

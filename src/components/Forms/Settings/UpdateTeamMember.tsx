@@ -4,16 +4,16 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/store/store';
 import TextInput from '@ui/Form/TextInput';
 import SelectInput from '@ui/Form/SelectInput';
 import Button from '@/components/UI_Elements/buttons/Button';
 import { useRouter } from 'next/navigation';
 import { FormattedTeamMember } from '@/types/teamTypes';
+import { updateTeamMember } from '@/store/slices/teamSlice';
 
 // this component updates details for a user in both public.users and auth.users
-
-// action to upate public.user
-// action to update auth.user metadata
 
 interface FormProps {
   user: FormattedTeamMember;
@@ -27,6 +27,24 @@ const options = [
 ];
 
 const statusOptions = [{ Active: 'ACTIVE' }, { Inactive: 'INACTIVE' }];
+
+const roleMap = {
+  Dispatcher: 'DISPATCHER',
+  'Sales Rep': 'SALES_REP',
+  Admin: 'ADMIN',
+  Owner: 'OWNER',
+} as const;
+
+type RoleMap = typeof roleMap;
+type RoleKey = keyof RoleMap;
+
+const statusMap = {
+  Active: 'ACTIVE',
+  Inactive: 'INACTIVE',
+} as const;
+
+type StatusMap = typeof statusMap;
+type StatusKey = keyof StatusMap;
 
 const userSchema = yup.object({
   'First Name': yup.string().required('First Name is required.'),
@@ -43,7 +61,7 @@ const userSchema = yup.object({
 type User = yup.InferType<typeof userSchema>;
 
 const UpdateTeamMember = ({ user }: FormProps) => {
-  console.log('user to update', user);
+  const dispatch = useDispatch<AppDispatch>();
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
@@ -74,24 +92,30 @@ const UpdateTeamMember = ({ user }: FormProps) => {
       setValue('Last Name', user['lastName']);
       setValue('Email', user['email']);
       setValue('Telephone', user['telephone']);
-      setValue('Role', user['role'].toUpperCase());
-      setValue('Status', user['status'].toUpperCase());
+      setValue('Role', roleMap[user['role'] as RoleKey]);
+      setValue('Status', statusMap[user['status'] as StatusKey]);
     }
   }, [user, setValue]);
 
+  // action to upate public.user
+  // action to update auth.user metadata
   const onSubmit = async (data: User) => {
     setIsSubmitting(true);
 
-    console.log('submitting', data);
-
-    // try {
-    //   await signUpUser(data, company);
-    // } catch (error) {
-    //   console.log('Error submitting form:', error);
-    //   setError('root', { message: `${error}` });
-    //   setIsSubmitting(false);
-    //   return;
-    // }
+    try {
+      console.log('submitting', data);
+      await dispatch(
+        updateTeamMember({
+          id: user['id'],
+          updatedUser: data,
+        })
+      ).unwrap();
+      router.push('/settings/team');
+    } catch (error) {
+      setError('root', { message: `${error}` });
+      setIsSubmitting(false);
+      return;
+    }
     setTimeout(() => {
       setIsSubmitting(false);
     }, 500);
