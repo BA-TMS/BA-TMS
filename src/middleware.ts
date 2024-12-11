@@ -7,15 +7,16 @@ import { createSupabaseServerClient } from '@util/supabase/server';
 
 const protectedRoutes = [
   '/',
-  '/dashboard',
-  '/dispatch',
   '/carriers',
   '/customers',
+  '/dashboard',
+  '/dispatch',
   '/drayage',
+  '/drivers',
   '/other-numbers',
   '/preferences',
-  '/third-party',
   '/settings',
+  '/third-party',
 ];
 const publicRoutes = ['/login', '/signup'];
 
