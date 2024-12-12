@@ -1,6 +1,6 @@
 'use client';
 
-import { ContextProvider } from '@/Context/modalContext';
+import { ContextProvider } from '@/context/modalContext';
 import OtherNumbersForm from '@/components/Forms/OtherNumbersForm';
 
 const OtherNumbersPage = () => {

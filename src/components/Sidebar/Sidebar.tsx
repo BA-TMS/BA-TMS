@@ -21,7 +21,7 @@ import {
 } from '@/assets/icons/layout';
 import { Logo } from '@/assets/logo';
 import { useContext } from 'react';
-import { UserContext } from '@/Context/userContextProvider';
+import { UserContext } from '@/context/userContextProvider';
 
 const userOptions = [
   { name: 'Plans & Pricing', href: '#' },

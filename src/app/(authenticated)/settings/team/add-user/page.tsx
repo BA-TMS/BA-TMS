@@ -1,7 +1,7 @@
 'use client';
 
 import { useContext } from 'react';
-import { UserContext } from '@/Context/userContextProvider';
+import { UserContext } from '@/context/userContextProvider';
 import FullPageFormContainer from '@/components/UI_Elements/Form/FullPageContainer';
 import AddUserForm from '@/components/Forms/Settings/AddUserForm';
 

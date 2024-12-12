@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useContext, ReactNode } from 'react';
-import { ModalContext } from '@/Context/modalContext';
+import { ModalContext } from '@/context/modalContext';
 
 interface FormModalProps {
   formTitle: string; // what you want to name the form

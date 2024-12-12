@@ -6,7 +6,7 @@ import YupPassword from 'yup-password';
 YupPassword(yup);
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { ModalContext } from '@/Context/modalContext';
+import { ModalContext } from '@/context/modalContext';
 import TextInput from '@/components/UI_Elements/Form/TextInput';
 import Button from '@/components/UI_Elements/buttons/Button';
 import { useRouter } from 'next/navigation';

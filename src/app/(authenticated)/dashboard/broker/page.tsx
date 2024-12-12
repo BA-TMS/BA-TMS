@@ -2,7 +2,7 @@
 
 'use client';
 
-import { ContextProvider } from '@/Context/modalContext';
+import { ContextProvider } from '@/context/modalContext';
 import Broker from '@/components/Table/Broker';
 
 export default function Home() {

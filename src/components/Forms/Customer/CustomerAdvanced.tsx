@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useContext, useCallback, useState } from 'react';
-import { ModalContext } from '@/Context/modalContext';
+import { ModalContext } from '@/context/modalContext';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';

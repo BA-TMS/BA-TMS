@@ -1,7 +1,7 @@
 'use client';
 
 import { useContext, useState, useEffect } from 'react';
-import { ModalContext } from '@/Context/modalContext';
+import { ModalContext } from '@/context/modalContext';
 import FormModal from '../Modals/FormModal';
 import Table from '../UI_Elements/Table/Table';
 import { getBrokers } from '@/lib/dbActions';

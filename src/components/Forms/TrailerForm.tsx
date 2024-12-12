@@ -8,7 +8,7 @@ import TextInput from '../UI_Elements/Form/TextInput';
 import SelectInput from '../UI_Elements/Form/SelectInput';
 import DateSelect from '../UI_Elements/Form/DateSelect';
 import { status, trailers } from './data/details';
-import { ModalContext } from '@/Context/modalContext';
+import { ModalContext } from '@/context/modalContext';
 import { addTrailer } from '@/lib/dbActions';
 
 const trailerSchema = yup.object({

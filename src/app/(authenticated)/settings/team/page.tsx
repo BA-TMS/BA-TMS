@@ -3,7 +3,7 @@
 import { useState, useContext, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { UserContext } from '@/Context/userContextProvider';
+import { UserContext } from '@/context/userContextProvider';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
 import Table from '@ui/Table/Table';

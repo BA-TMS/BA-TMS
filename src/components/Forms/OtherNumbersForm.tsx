@@ -8,7 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import TextInput from '../UI_Elements/Form/TextInput';
 import SelectInput from '../UI_Elements/Form/SelectInput';
 import { usStates } from '@/components/Forms/data/states';
-import { ModalContext } from '@/Context/modalContext';
+import { ModalContext } from '@/context/modalContext';
 import { addUser } from '@/lib/dbActions';
 
 const otherSchema = yup.object({
