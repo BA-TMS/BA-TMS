@@ -440,22 +440,6 @@ export async function addTruck({ truck }: { truck: any }) {
   });
 }
 
-// export async function addUser({ user }: { user: any }) {
-//   const resp = await prisma.user.create({
-//     data: {
-//       id: user['ID'],
-//       email: user['Email'],
-//       firstName: user['First Name'],
-//       lastName: user['Last Name'],
-//       telCountry: user['Country Code'],
-//       telephone: user['Phone Number'],
-//       orgId: user['Oganization'],
-//       role: user['Role'],
-//       imageURL: user['Image URL'],
-//     },
-//   });
-// }
-
 /** Update row */
 async function updater(table: any, targetId: number, upateData: any) {
   const resp = table.update({
@@ -669,10 +653,6 @@ export async function updateShipper(
   const resp = updater(prisma.shipper, id, formData);
 }
 
-export async function updateUser(id: number, { formData }: { formData: any }) {
-  const resp = updater(prisma.user, id, formData);
-}
-
 export async function updateAccountPreferences(prefs: any) {
   await prisma.accountPreferences.update({
     where: {
@@ -714,8 +694,4 @@ export async function deleteLoad(id: number) {
 
 export async function deleteShipper(id: number) {
   const resp = deleter(prisma.shipper, id);
-}
-
-export async function deleteUser(id: number) {
-  const resp = deleter(prisma.user, id);
 }

@@ -26,7 +26,7 @@ yup.setLocale({
 
 const newUserSchema = yup.object().shape({
   'First Name': yup.string().required('First Name is required.'),
-  'Last Name': yup.string().required('First Name is required.'),
+  'Last Name': yup.string().required('Last Name is required.'),
   Email: yup
     .string()
     .email('Must use a valid email.')

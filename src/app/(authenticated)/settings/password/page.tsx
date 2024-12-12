@@ -1,10 +1,5 @@
 'use client';
 import React, { useState } from 'react';
-import Input from '../../../../../components/Settings-General/Input';
-import Button from '../../../../../components/Settings-General/Button';
-import Iconify from '@/components/iconify/Iconify';
-import { Stack } from '@mui/material';
-import { useTranslation } from 'react-i18next';
 
 const PasswordReset = () => {
   const [oldPassword, setOldPassword] = useState('');
@@ -16,8 +11,6 @@ const PasswordReset = () => {
   const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
-
-  const { t: translate } = useTranslation();
 
   const handleOldPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setOldPassword(e.target.value);
@@ -47,48 +40,28 @@ const PasswordReset = () => {
 
   return (
     <>
-      <Iconify
-        icon={`${showOldPassword ? 'mdi:eye' : 'mdi:eye-closed'}`}
-        onClick={() => setShowOldPassword(!showOldPassword)}
-      />
-      <Input
+      <h2>Reset Password Page</h2>
+      <input
         type={showOldPassword ? 'text' : 'password'}
-        label="Old Password"
         id="oldPassword"
         value={oldPassword}
         onChange={handleOldPassword}
       />
 
-      <Iconify
-        icon={`${showNewPassword ? 'mdi:eye' : 'mdi:eye-closed'}`}
-        onClick={() => setShowNewPassword(!showNewPassword)}
-      />
-      <Input
+      <input
         type={showNewPassword ? 'text' : 'password'}
-        label="New Password"
         id="newPassword"
         value={newPassword}
         onChange={handlePasswordChange}
       />
-      <Stack component="span" direction="row" alignItems="center">
-        <Iconify icon="eva:info-fill" width={16} sx={{ mr: 0.5 }} />{' '}
-        {`${translate(
-          'Password must contain: At least 8 characters, 1 Uppercase, 1 Lowercase, 1 Special Character, and 1 Number'
-        )}`}
-      </Stack>
 
-      <Iconify
-        icon={`${showConfirmPassword ? 'mdi:eye' : 'mdi:eye-closed'}`}
-        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-      />
-      <Input
+      <input
         type={showConfirmPassword ? 'text' : 'password'}
-        label="Confirm Password"
         id="confirmPassword"
         value={confirmPassword}
         onChange={handleConfirmPasswordChange}
       />
-      <Button onClick={handleResetPassword}>Reset Password</Button>
+      <button onClick={handleResetPassword}>Reset Password</button>
     </>
   );
 };

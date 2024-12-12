@@ -33,7 +33,7 @@ interface SignUpData {
 }
 
 // this function handles creating table entries in prisma
-async function addOrganization(data: SignUpData) {
+async function addOrganization(data: SignUpData, id: string) {
   try {
     // insert data into our own org table (prisma)
     const resp = await prisma.organization.create({
@@ -55,6 +55,7 @@ async function addOrganization(data: SignUpData) {
           // create entry in User table
           create: [
             {
+              id: id, // same id in auth and public
               email: data['Email'],
               firstName: data['First Name'],
               lastName: data['Last Name'],
@@ -63,7 +64,7 @@ async function addOrganization(data: SignUpData) {
               Permissions: {
                 // create entry in Permissions table
                 create: {
-                  role: 'ADMIN',
+                  role: 'OWNER',
                   status: 'ACTIVE',
                 },
               },
@@ -124,7 +125,8 @@ export async function signUpAdmin(data: SignUpData) {
         first_name: data['First Name'],
         last_name: data['Last Name'],
         phone_number: data['Personal Telephone'],
-        role: 'Owner', // sign up as an owner
+        role: 'OWNER', // sign up as an owner
+        org_name: data['Company Name'], // organization so we can reference later
       },
     },
   });
@@ -150,9 +152,11 @@ export async function signUpAdmin(data: SignUpData) {
     throw 'This user account already exists';
   }
 
+  const authId = result.data.user?.id; // the id that auth table is using
+
   // create the organization/ user/ permissions
   // should throw error if issue
-  await addOrganization(data);
+  await addOrganization(data, authId as string); // should be a string
 
   // // revlidate path (optionally if needed) - i forget what this does
   revalidatePath('/', 'layout');
@@ -164,13 +168,12 @@ export async function signUpAdmin(data: SignUpData) {
   return redirect('/signup/confirm');
 }
 
+// events emitted by supabase
 const addListener = (client: SupabaseClient) => {
   client.auth.onAuthStateChange((event) => {
     if (event === 'INITIAL_SESSION') {
       console.log("Ayy, I'm initial-sessionin' heah!");
-    }
-    // We do not, at present, appear to emit ANY of these events. Should we?
-    else if (event === 'SIGNED_IN') {
+    } else if (event === 'SIGNED_IN') {
       console.log("Ayy, I'm signin' in heah!");
     } else if (event === 'SIGNED_OUT') {
       console.log("Ayy, I'm signin' out heah!");
@@ -205,4 +208,34 @@ export const resendConfirmEmail = async (formData: FormData) => {
   revalidatePath('/', 'layout');
 
   return redirect('/signup/confirm?message=Email sent'); // stay on confirm page and display message
+};
+
+// new invited user sets password
+export const setPassword = async (password: string, token: string) => {
+  const supabase = createSupabaseServerClient();
+
+  // refresh the session
+  await supabase.auth.refreshSession({ refresh_token: token });
+
+  if (password === '') {
+    throw 'empty password';
+  }
+
+  const { error: userError } = await supabase.auth.updateUser({
+    password: password,
+  });
+
+  if (userError) {
+    console.log('Failed to get Supabase auth user', userError);
+    throw `${userError}`;
+  }
+
+  // clear cached data
+  revalidatePath('/', 'layout');
+  revalidatePath('/(authenticated)/dispatch', 'page');
+
+  // tells us we have an initial session
+  addListener(supabase);
+
+  return redirect('/dispatch');
 };

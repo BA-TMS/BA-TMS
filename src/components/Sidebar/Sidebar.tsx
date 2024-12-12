@@ -25,7 +25,7 @@ import { UserContext } from '@/Context/userContextProvider';
 
 const userOptions = [
   { name: 'Plans & Pricing', href: '#' },
-  { name: 'Settings', href: '/user/settings' },
+  { name: 'Settings', href: '/settings' },
 ];
 
 const adminOptions = [
@@ -51,7 +51,7 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
-  const { userSession } = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   const pathname = usePathname();
 
@@ -60,6 +60,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
   const storedSidebarExpanded = true;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [sidebarExpanded, setSidebarExpanded] = useState(
     storedSidebarExpanded === null ? false : storedSidebarExpanded === true
   );
@@ -122,9 +123,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         </button>
 
         <ContentBlock
-          firstName={userSession.first_name}
-          lastName={userSession.last_name}
-          role={userSession.role}
+          firstName={user?.user_metadata.first_name}
+          lastName={user?.user_metadata.last_name}
+          role={user?.user_metadata.role}
         />
       </header>
 
@@ -206,7 +207,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             <SidebarListItem
               pathname={pathname}
               icon={UserIcon}
-              path={'/user/settings'}
+              path={'/settings'}
               name={'User'}
               options={userOptions}
             />
@@ -217,7 +218,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       {/* Support Contact Section */}
       <section className="px-4 py-4 mt-auto flex flex-col items-center justify-center">
         <h4 className="mb-3 mt-3 subtitle1 text-grey-600 dark:text-grey-300">
-          {`Hi, ${userSession.first_name}`}
+          {`Hi, ${user?.user_metadata.first_name}`}
         </h4>
         <p className="mb-3 text-center body2 text-grey-600 dark:text-grey-300">
           Need Help? <br /> Please contact us.

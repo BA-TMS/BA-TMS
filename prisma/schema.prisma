@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,21 +7,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Status {
-  ACTIVE
-  INACTIVE
-}
-
-enum DocketNumber {
-  FF
-  MC
-}
-
-model Organization { // This is a collection of TMS users
-  id            String    @id @default(uuid())
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  orgName       String    @unique
+model Organization {
+  id            String       @id @default(uuid())
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
   address       String
   addressAddOn  String?
   city          String
@@ -32,156 +18,127 @@ model Organization { // This is a collection of TMS users
   postCountry   String
   postCode      String
   telephone     String
-  tollFree      String?
-  fax           String?
   docketNumType DocketNumber
-  docketNumber  String      @unique
-  dotId         String?     @unique
+  docketNumber  String       @unique
+  dotId         String?      @unique
+  fax           String?
+  orgName       String       @unique
+  tollFree      String?
   loads         Load[]
   users         User[]
 }
 
-model User { // Individual users at an organization
-  id            String        @id @default(uuid()) 
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  email         String        @unique
-  firstName     String       
-  lastName      String
-  telephone     String
-  organization  Organization  @relation(fields: [orgId], references: [id])
-  orgId         String
-  Permissions   Permissions?  // prisma does not support manditory one to one relations
+model User {
+  id           String       @id @default(uuid())
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  email        String       @unique
+  orgId        String
+  firstName    String
+  lastName     String
+  telephone    String?
+  Permissions  Permissions?
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
 }
 
-enum UserRole {
-  ADMIN
-  SALES_REP
-  DISPATCHER
-  OWNER
-}
-
-model Permissions { // permissions for users
-  id            String        @id @default(uuid())
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  role          UserRole      @default(DISPATCHER)
-  status        Status
-  userId        String        @unique
-  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+model Permissions {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  role      UserRole
+  status    Status
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Load {
   id           String       @id @default(uuid())
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
-  owner        Organization @relation(fields: [ownerId], references: [id])
   ownerId      String
   loadNum      String
-  payOrderNum  String
-  shipDate     DateTime     @default(now())
-  deliveryDate DateTime?
-  carrier      Carrier?     @relation(fields: [carrierId], references: [id])
   carrierId    String?
-  driver       Driver?      @relation(fields: [driverId], references: [id])
-  driverId     String? // If blank, display only carrier info
-  customer     Customer     @relation(fields: [customerId], references: [id])
+  driverId     String?
   customerId   String
-  // Can shippers and consigness be in a single table with fields indicating if they fill each role?
-  shipper      Shipper?     @relation(fields: [originId], references: [id])
   originId     String?
-  consignee    Consignee?   @relation(fields: [destId], references: [id])
   destId       String?
   status       LoadStatus   @default(OPEN)
+  deliveryDate DateTime?
+  payOrderNum  String
+  shipDate     DateTime     @default(now())
+  carrier      Carrier?     @relation(fields: [carrierId], references: [id])
+  customer     Customer     @relation(fields: [customerId], references: [id])
+  consignee    Consignee?   @relation(fields: [destId], references: [id])
+  driver       Driver?      @relation(fields: [driverId], references: [id])
+  shipper      Shipper?     @relation(fields: [originId], references: [id])
+  owner        Organization @relation(fields: [ownerId], references: [id])
 
-  @@unique([ownerId, loadNum]) // Loads can be numbered by user, but a user can't have two loads with the same number
-}
-
-enum LoadStatus {
-  OPEN
-  COVERED
-  DISPATCHED
-  LOADING
-  ON_ROUTE
-  UNLOADING
-  DELIVERED
-  NEEDS_REVIEW
-  CLAIM
+  @@unique([ownerId, loadNum])
 }
 
 model Carrier {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  status    Status   @default(ACTIVE)
-
-  carrierName   String
-  address       String
-  addressField2 String?
-  addressField3 String?
-  city          String
-  state         String
-  postCountry   String
-  postCode      String
-
-  contactName      String?
+  id               String            @id @default(uuid())
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  address          String
+  city             String
+  state            String
+  postCountry      String
+  postCode         String
+  dotId            String            @unique
+  factorId         String?
+  taxId            String?           @unique
+  addressField2    String?
+  addressField3    String?
+  carrierName      String
   contactEmail     String?
+  contactFax       String?
+  contactName      String?
   contactTelephone String
   contactTollFree  String?
-  contactFax       String?
-
-  paymentTerms  String
-  taxId         String?      @unique
-  docketNumType DocketNumber
-  docketNumber  String       @unique
-  ursNumber     String?      @unique
-  dotId         String       @unique
-
-  factor   Factor?  @relation(fields: [factorId], references: [id])
-  factorId String?
-  loads    Load[]
-  drivers  Driver[]
-  CarrierInsurance CarrierInsurance?
-
+  docketNumType    DocketNumber
+  docketNumber     String            @unique
   notes            String?
+  paymentTerms     String
+  status           Status            @default(ACTIVE)
+  ursNumber        String?           @unique
+  factor           Factor?           @relation(fields: [factorId], references: [id])
+  CarrierInsurance CarrierInsurance?
+  drivers          Driver[]
+  loads            Load[]
 }
 
 model CarrierInsurance {
-  id        String   @id @default(uuid())
-  carrier   Carrier  @relation(fields: [carrierId], references: [id])
-  carrierId String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  id                  String    @id @default(uuid())
+  carrierId           String    @unique
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
   liabilityCompany    String?
   liabilityPolicy     String?
   liabilityExpiration DateTime?
   liabilityTelephone  String?
   liabilityContact    String?
-
-  autoInsCompany    String?
-  autoInsPolicy     String?
-  autoInsExpiration DateTime?
-  autoInsTelephone  String?
-  autoInsContact    String?
-
-  cargoCompany    String?
-  cargoPolicy     String?
-  cargoExpiration DateTime?
-  cargoTelephone  String?
-  cargoContact    String?
-  cargoWSIB       String?
-
-  fmcsaInsCompany    String
-  fmcsaInsPolicy     String
-  fmcsaInsExpiration DateTime?
-  fmcsaType          String
-  fmcsaCoverage      String
-  fmcsaTelephone     String?
+  autoInsCompany      String?
+  autoInsPolicy       String?
+  autoInsExpiration   DateTime?
+  autoInsTelephone    String?
+  autoInsContact      String?
+  cargoCompany        String?
+  cargoPolicy         String?
+  cargoExpiration     DateTime?
+  cargoTelephone      String?
+  cargoContact        String?
+  cargoWSIB           String?
+  fmcsaInsCompany     String
+  fmcsaInsPolicy      String
+  fmcsaInsExpiration  DateTime?
+  fmcsaType           String
+  fmcsaCoverage       String
+  fmcsaTelephone      String?
+  carrier             Carrier   @relation(fields: [carrierId], references: [id])
 }
 
 model Driver {
-  // Do drivers need their own insurance info, or is that attached to carriers?
   id         String   @id @default(uuid())
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
@@ -189,58 +146,47 @@ model Driver {
   license    String   @unique
   telCountry String   @default("1")
   telephone  String
+  employerId String
   employer   Carrier  @relation(fields: [employerId], references: [id])
-  employerId String // Are drivers always associated with a carrier?
   loads      Load[]
 }
 
 model Customer {
-  id        String         @id @default(uuid())
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
-  status    CustomerStatus @default(ACTIVE)
-
-  companyName String @unique
-
-  contactName          String
-  secondaryContactName String?
-  salesRepName         String?
-  contactEmail         String
-  contactTelephone     String
-  contactTollFree      String?
-  contactFax           String?
-  contactCountry       String
-
-  contactAddress       String
-  contactAddressField2 String?
-  contactAddressField3 String?
-  contactCity          String
-  contactState         String
-  contactPostCode      String
-
-  billingEmail         String
-  billingTelephone     String
-  billingCountry       String
+  id                   String         @id @default(uuid())
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
   billingAddress       String
   billingAddressField2 String?
   billingAddressField3 String?
   billingCity          String
-  billingState         String
+  billingCountry       String
+  billingEmail         String
   billingPostCode      String
-
-  currency     String  @default("USD")
-  paymentTerms String
-  creditLimit  Decimal @default(5000)
-  federalID    String
-  factor       Factor? @relation(fields: [factorId], references: [id])
-  factorId     String?
-
-  loads Load[]
-}
-
-enum CustomerStatus {
-  ACTIVE
-  INACTIVE
+  billingState         String
+  billingTelephone     String
+  companyName          String         @unique
+  contactAddress       String
+  contactAddressField2 String?
+  contactAddressField3 String?
+  contactCity          String
+  contactCountry       String
+  contactEmail         String
+  contactFax           String?
+  contactName          String
+  contactPostCode      String
+  contactState         String
+  contactTelephone     String
+  contactTollFree      String?
+  creditLimit          Decimal        @default(5000)
+  currency             String         @default("USD")
+  factorId             String?
+  federalID            String
+  paymentTerms         String
+  salesRepName         String?
+  secondaryContactName String?
+  status               CustomerStatus @default(ACTIVE)
+  factor               Factor?        @relation(fields: [factorId], references: [id])
+  loads                Load[]
 }
 
 model Shipper {
@@ -275,8 +221,6 @@ model Consignee {
   loads        Load[]
 }
 
-// If, as noted in Load table, shippers and consigness can be combined, it
-// might look like this.
 model Location {
   id           String   @id @default(uuid())
   createdAt    DateTime @default(now())
@@ -292,7 +236,6 @@ model Location {
   telephone    String
   isShipper    Boolean
   isConsignee  Boolean
-  // loads         Load[]
 }
 
 model Factor {
@@ -333,8 +276,7 @@ model CoverageMatrix {
   updatedAt        DateTime @updatedAt
   carrierId        String
   insurerId        String
-  // How many categories of insurance need noting? Is this an enum of a table of categories?
-  coverageCategory Int // TODO: this should be an enum (I think)
+  coverageCategory Int
 }
 
 model Broker {
@@ -361,7 +303,7 @@ model Truck {
   licensePlate     String   @unique
   plateExpiry      DateTime
   inspectionExpiry DateTime
-  type             String // TODO: This should be an enum
+  type             String
   iftaLicensed     Boolean  @default(false)
 }
 
@@ -372,14 +314,8 @@ model Trailer {
   licensePlate     String        @unique
   plateExpiry      DateTime
   inspectionExpiry DateTime
-  type             String // 1) Make an enum 2) The names of these often start w/ numbers (b/c they're trailers) so we need to have a naming scheme.
+  type             String
   status           TrailerStatus @default(ACTIVE)
-}
-
-enum TrailerStatus {
-  ACTIVE
-  NOTAVAILABLE
-  INACTIVE
 }
 
 model Billee {
@@ -410,4 +346,46 @@ model AccountPreferences {
   calendarFormat     String
   mileageSystem      String
   printSetting       String
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+}
+
+enum DocketNumber {
+  FF
+  MC
+}
+
+enum UserRole {
+  USER
+  ADMIN
+  DEVELOPER
+  OWNER
+  DISPATCHER
+  SALES_REP
+}
+
+enum LoadStatus {
+  OPEN
+  COVERED
+  DISPATCHED
+  LOADING
+  ON_ROUTE
+  UNLOADING
+  DELIVERED
+  NEEDS_REVIEW
+  CLAIM
+}
+
+enum CustomerStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum TrailerStatus {
+  ACTIVE
+  NOTAVAILABLE
+  INACTIVE
 }

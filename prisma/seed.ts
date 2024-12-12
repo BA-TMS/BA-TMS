@@ -25,15 +25,40 @@ async function main() {
     create: a2zorg,
   });
 
-  // for (const currUser of users) {
-  //   currUser.orgId = orgIds[userPos % orgIds.length];
-  //   const resp = await prisma.user.upsert({
-  //     where: { id: currUser.id },
-  //     update: {},
-  //     create: currUser,
-  //   });
-  //   userPos += 1;
-  // }
+  for (const currUser of users) {
+    console.log('Upserting user:', currUser);
+    const organization = await prisma.organization.findFirst({
+      where: { orgName: currUser.organization },
+    });
+
+    await prisma.user.upsert({
+      where: { id: currUser.id },
+      update: {},
+      create: {
+        id: currUser.id,
+        email: currUser.email,
+        firstName: currUser.firstName,
+        lastName: currUser.lastName,
+        orgId: organization.id,
+      },
+    });
+
+    const permissions = currUser.Permissions;
+
+    if (permissions) {
+      await prisma.permissions.upsert({
+        where: { userId: currUser.id },
+        update: {},
+        create: {
+          status: permissions.status,
+          role: permissions.role,
+          user: {
+            connect: { id: currUser.id }, // Link to the existing user
+          },
+        },
+      });
+    }
+  }
 
   for (const currCarrier of carriers) {
     const carrierResp = await prisma.carrier.upsert({
@@ -241,18 +266,30 @@ const a2zorg = {
   docketNumber: '123456',
 };
 
-// const users = [
-//   {
-//     id: '11111',
-//     email: 'testuser1@org1.com',
-//     orgId: null,
-//   },
-//   {
-//     id: '2222',
-//     email: 'testuser2@org2.com',
-//     orgId: null,
-//   },
-// ];
+const users = [
+  {
+    id: '112-334455',
+    email: 'hunter@balogistics.com',
+    firstName: 'Hunter',
+    lastName: 'Higgins',
+    organization: 'BA Logistics',
+    Permissions: {
+      role: 'DISPATCHER',
+      status: 'ACTIVE',
+    },
+  },
+  {
+    id: '112-334667',
+    email: 'patricia@balogistics.com',
+    firstName: 'Patricia',
+    lastName: 'Mendez',
+    organization: 'BA Logistics',
+    Permissions: {
+      role: 'OWNER',
+      status: 'ACTIVE',
+    },
+  },
+];
 
 const carriers = [
   {

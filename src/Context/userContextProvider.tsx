@@ -1,43 +1,24 @@
 import { createContext, useState, useEffect } from 'react';
 import { createClient } from '@util/supabase/client';
-// import { UserMetadata } from '@supabase/supabase-js';
-
-interface UserMetadata {
-  id: string | null;
-  email: string | null;
-  email_verified: boolean;
-  first_name: string | null;
-  last_name: string | null;
-  phone_number: string | null;
-  phone_verified: boolean;
-  sub: string | null;
-  role?: string;
-}
+import { User, Session } from '@supabase/supabase-js';
+import { Organization } from '@prisma/client';
 
 interface UserProviderProps {
   children: React.ReactNode;
 }
 
 interface UserContextProps {
-  userSession: UserMetadata;
-  updateSession: (newValue: UserMetadata) => void;
+  session: Session | null;
+  user: User | null;
+  organization: Organization | null;
+  signOut: () => void;
 }
 
-// Default values are initial state to provide
-const defaultUserMetadata: UserMetadata = {
-  id: null,
-  email: null,
-  email_verified: false,
-  first_name: null,
-  last_name: null,
-  phone_number: null,
-  phone_verified: false,
-  sub: null,
-};
-
 export const UserContext = createContext<UserContextProps>({
-  userSession: defaultUserMetadata,
-  updateSession: () => {},
+  session: null,
+  user: null,
+  organization: null,
+  signOut: () => {},
 });
 
 export const UserContextProvider: React.FC<UserProviderProps> = ({
@@ -45,31 +26,54 @@ export const UserContextProvider: React.FC<UserProviderProps> = ({
 }) => {
   const supabase = createClient();
 
-  const [userSession, setUserSession] =
-    useState<UserMetadata>(defaultUserMetadata);
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [organization, setOrganization] = useState<Organization | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const setData = async () => {
       const {
-        data: { user },
-      } = await supabase.auth.getUser();
+        data: { session },
+        error,
+      } = await supabase.auth.getSession();
 
-      const metadata = user?.user_metadata as UserMetadata;
+      if (error) throw error;
 
-      setUserSession(metadata);
+      setSession(session);
+      setUser(session?.user ?? null);
+      setOrganization(session?.user.user_metadata.org_name);
+      setLoading(false);
     };
 
-    fetchData();
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        if (_event === 'SIGNED_OUT') {
+          console.log('Token has expired or user is signed out.');
+        }
+        if (_event === 'INITIAL_SESSION') {
+          console.log('Initial session');
+        }
+        setSession(session);
+        setUser(session?.user ?? null);
+        setLoading(false);
+      }
+    );
+
+    setData();
+
+    return () => {
+      listener?.subscription.unsubscribe();
+    };
   }, [supabase.auth]);
 
-  const updateSession = (newValue: UserMetadata) => {
-    console.log(newValue);
-    setUserSession({ ...userSession, ...newValue });
+  const value = {
+    session,
+    user,
+    organization,
+    signOut: () => supabase.auth.signOut(),
   };
 
-  return (
-    <UserContext.Provider value={{ userSession, updateSession }}>
-      {children}
-    </UserContext.Provider>
-  );
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
