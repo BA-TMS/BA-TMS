@@ -1,5 +1,5 @@
 'use client';
-import ToggleButton from '@/components/Controls/ToggleButton';
+import ToggleButton from '@/components/UI_Elements/Controls/ToggleButton';
 import React, { useState } from 'react';
 
 // DATE IMPORTS
@@ -16,7 +16,7 @@ import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { TextField } from '@mui/material';
 
 import 'react-datepicker/dist/react-datepicker.css';
-import Table from '@/components/UI_Elements/Table';
+import Table from '@/components/UI_Elements/Table/Table';
 
 type DrayageData = {
   steamShipping: string;
