@@ -32,7 +32,7 @@ export default async function middleware(request: NextRequest) {
   // handle public routes
   const isPublicRoute = publicRoutes.includes(pathSegment);
 
-  // update session using supabase middleware- do we need?
+  // update session using supabase middleware
   await updateSession(request);
 
   // checking for a user
