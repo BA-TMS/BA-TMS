@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { NotificationIcon } from '@/assets/icons/layout';
+import { NotificationIcon } from '@/assets/Icons/Layout';
 
 const DropdownNotification = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);

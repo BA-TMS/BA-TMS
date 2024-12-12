@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { login } from './actions';
 import { SubmitButton } from '@/components/Authentication/submit-button';
 import AuthButton from '@/components/Authentication/AuthButton';
-import { Logo } from '@/assets/logo';
+import { Logo } from '@/assets/Logo';
 
 export default async function Login({
   searchParams,

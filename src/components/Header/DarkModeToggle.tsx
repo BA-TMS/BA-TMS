@@ -1,5 +1,5 @@
 import useColorMode from '../../hooks/useColorMode';
-import { LightModeIcon, DarkModeIcon } from '@/assets/icons';
+import { LightModeIcon, DarkModeIcon } from '@/assets/Icons';
 
 const DarkModeToggle = () => {
   const [colorMode, setColorMode] = useColorMode();

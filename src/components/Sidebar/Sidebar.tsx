@@ -18,8 +18,8 @@ import {
   SalesManagerIcon,
   TerminalCredIcon,
   UserIcon,
-} from '@/assets/icons/layout';
-import { Logo } from '@/assets/logo';
+} from '@/assets/Icons/Layout';
+import { Logo } from '@/assets/Logo';
 import { useContext } from 'react';
 import { UserContext } from '@/context/userContextProvider';
 
