@@ -1,7 +1,7 @@
 import { createSupabaseServerClient } from '@util/supabase/server';
 import Link from 'next/link';
 import { login } from './actions';
-import { SubmitButton } from '@/components/Authentication/submit-button';
+import { SubmitButton } from '@/components/Authentication/SubmitButton';
 import AuthButton from '@/components/Authentication/AuthButton';
 import { Logo } from '@/assets/Logo';
 
