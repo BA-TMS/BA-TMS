@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store/store';
 import TextInput from '@ui/Form/TextInput';
 import SelectInput from '@ui/Form/SelectInput';
-import Button from '@/components/UI_Elements/buttons/Button';
+import Button from '@/components/UI_Elements/Buttons/Button';
 import { useRouter } from 'next/navigation';
 import { FormattedTeamMember } from '@/types/teamTypes';
 import { updateTeamMember } from '@/store/slices/teamSlice';

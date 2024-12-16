@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import Button from '@ui/buttons/Button';
+import Button from '@/components/UI_Elements/Buttons/Button';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
