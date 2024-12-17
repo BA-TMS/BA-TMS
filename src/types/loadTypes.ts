@@ -24,7 +24,7 @@ export interface LoadData {
   originId: string | null;
   destId: string | null;
   status: LoadStatus;
-  carrier: { name: string } | null;
+  carrier: { carrierName: string } | null;
   driver: { name: string } | null;
   customer: { companyName: string } | null;
   shipper: { name: string } | null;
