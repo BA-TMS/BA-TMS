@@ -26,6 +26,8 @@ const roleMap = {
   SALES_REP: 'Sales Rep',
   ADMIN: 'Admin',
   OWNER: 'Owner',
+  USER: 'User',
+  DEVELOPER: 'Developer',
 };
 
 const statusMap = {
