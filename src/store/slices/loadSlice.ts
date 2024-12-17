@@ -81,7 +81,7 @@ export const updateLoad = createAsyncThunk<LoadData, UpdateLoadPayload>(
 // may need to handle errors here too
 export const deleteLoad = createAsyncThunk(
   'loads/deleteLoad',
-  async (id: number) => {
+  async (id: string) => {
     const response = await apiDeleteLoad(id);
     return response;
   }

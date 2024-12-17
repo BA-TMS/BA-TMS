@@ -1,11 +1,14 @@
 'use server';
 
-import { DocketNumber, PrismaClient } from '@prisma/client';
+import { DocketNumber, PrismaClient, Prisma } from '@prisma/client';
 import { CustomerFormData } from '@/types/customerTypes';
 import { LoadFormData } from '@/types/loadTypes';
 import { CarrierFormData } from '@/types/carrierTypes';
 
-// regular prisma client
+// This file contains different server actions for interracting with the database via Prisma client
+// TODO: Read resp. to confirm success of write.
+// TODO: Update specific types for pages when created: broker, consignee, driver, factor, shipper, third party, billee, truck
+
 const prisma = new PrismaClient();
 
 const LOAD_RELATIONS = {
@@ -25,8 +28,18 @@ const CUSTOMER_RELATIONS = {
   factor: { select: { name: true } },
 };
 
+// Generic type for Prisma relations object
+type PrismaRelation<Model> = {
+  [key in keyof Model]?: {
+    select: Record<string, boolean>;
+  };
+};
+
 /** Get existing table data */
-async function getter(table: any, relations: any) {
+async function getter(
+  table: any,
+  relations: PrismaRelation<PrismaClient | null>
+) {
   const resp = await table.findMany({
     include: relations,
   });
@@ -78,7 +91,6 @@ export async function getCustomer(id: string) {
 }
 
 export async function getCustomers() {
-  // const customers = await prisma.customer.findMany();
   const relations = {
     factor: { select: { name: true } },
   };
@@ -162,14 +174,6 @@ export async function getAccountPreferences() {
 }
 
 /** Add new entries to tables. */
-// TODO: Create a central location for form types to replace any.
-// TODO: Read resp. to confirm success of write.
-async function creater(table: any, insertData: any) {
-  const resp = await table.create({
-    data: insertData,
-  });
-  return resp;
-}
 
 export async function addBroker({ broker }: { broker: any }) {
   const resp = await prisma.broker.create({
@@ -441,7 +445,7 @@ export async function addTruck({ truck }: { truck: any }) {
 }
 
 /** Update row */
-async function updater(table: any, targetId: number, upateData: any) {
+async function updater(table: any, targetId: number, upateData: unknown) {
   const resp = table.update({
     where: {
       id: targetId,
@@ -663,35 +667,11 @@ export async function updateAccountPreferences(prefs: any) {
 }
 
 /** Delete rows */
-async function deleter(table: any, targetId: number) {
-  const resp = table.delete({
+
+export async function deleteLoad(id: string) {
+  return prisma.load.delete({
     where: {
-      id: targetId,
+      id: id,
     },
   });
-  return resp;
-}
-
-export async function deleteCarrier(id: number) {
-  const resp = deleter(prisma.carrier, id);
-}
-
-export async function deleteConsignee(id: number) {
-  const resp = deleter(prisma.consignee, id);
-}
-
-export async function deleteCustomer(id: number) {
-  const resp = deleter(prisma.customer, id);
-}
-
-export async function deleteDriver(id: number) {
-  const resp = deleter(prisma.driver, id);
-}
-
-export async function deleteLoad(id: number) {
-  const resp = deleter(prisma.load, id);
-}
-
-export async function deleteShipper(id: number) {
-  const resp = deleter(prisma.shipper, id);
 }
