@@ -2,7 +2,7 @@
 
 'use client';
 
-import { ContextProvider } from '@/Context/modalContext';
+import { ContextProvider } from '@/context/modalContext';
 import FactoringCompany from '@/components/Table/FactoringCompany';
 
 export default function Home() {

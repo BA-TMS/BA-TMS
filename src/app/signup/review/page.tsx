@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useContext } from 'react';
-import { ModalContext } from '@/Context/modalContext';
-import Button from '@/components/UI_Elements/buttons/Button';
+import { ModalContext } from '@/context/modalContext';
+import Button from '@/components/UI_Elements/Buttons/Button';
 import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 import AddressDisplay from '@/components/UI_Elements/Display/AddressDisplay';
 import { useRouter } from 'next/navigation';

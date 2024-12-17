@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useContext, useCallback } from 'react';
-import { ModalContext } from '@/Context/modalContext';
+import { ModalContext } from '@/context/modalContext';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -12,7 +12,7 @@ import { getFactors } from '@/lib/dbActions';
 import { usStates } from '@/components/Forms/data/states';
 import { paymentTerms } from '../data/details';
 import { status } from '../data/details';
-import Button from '@/components/UI_Elements/buttons/Button';
+import Button from '@/components/UI_Elements/Buttons/Button';
 import { useRouter, usePathname } from 'next/navigation';
 import { carrierDataMap } from '@/types/carrierTypes';
 

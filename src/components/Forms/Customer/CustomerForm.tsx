@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { ModalContext } from '@/Context/modalContext';
+import { ModalContext } from '@/context/modalContext';
 import * as yup from 'yup';
-import Button from '../../UI_Elements/buttons/Button';
+import Button from '../../UI_Elements/Buttons/Button';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store/store';
 import { createCustomer, updateCustomer } from '@/store/slices/customerSlice';

@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import TextInput from '../UI_Elements/Form/TextInput';
 import SelectInput from '../UI_Elements/Form/SelectInput';
 import DateSelect from '../UI_Elements/Form/DateSelect';
-import { ModalContext } from '@/Context/modalContext';
+import { ModalContext } from '@/context/modalContext';
 import { addTruck } from '@/lib/dbActions';
 
 const truckSchema = yup.object({

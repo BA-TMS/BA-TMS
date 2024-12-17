@@ -3,7 +3,7 @@
 import { useState, useContext, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { UserContext } from '@/Context/userContextProvider';
+import { UserContext } from '@/context/userContextProvider';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
 import Table from '@ui/Table/Table';
@@ -11,7 +11,7 @@ import TableSkeleton from '@ui/Table/TableSkeleton';
 import TableHeaderBlank from '@ui/Table/TableHeaderBlank';
 import Searchbar from '@/components/UI_Elements/Searchbar';
 import Dropdown from '@/components/UI_Elements/Input/Dropdown';
-import Button from '@ui/buttons/Button';
+import Button from '@/components/UI_Elements/Buttons/Button';
 import { fetchTeam } from '@/store/slices/teamSlice';
 import { TeamMember } from '@/types/teamTypes';
 

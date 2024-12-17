@@ -1,4 +1,4 @@
-import { SearchIcon } from '@/assets/icons/layout';
+import { SearchIcon } from '@/assets/Icons/Layout';
 
 interface SearchbarProps {
   placeholder: string;

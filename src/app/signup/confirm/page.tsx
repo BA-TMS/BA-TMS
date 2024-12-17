@@ -2,8 +2,8 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { resendConfirmEmail } from '../actions';
-import { SubmitButton } from '@/components/Authentication/submit-button';
-import Button from '@/components/UI_Elements/buttons/Button';
+import { SubmitButton } from '@/components/Authentication/SubmitButton';
+import Button from '@/components/UI_Elements/Buttons/Button';
 
 export default function Confirm({
   searchParams,

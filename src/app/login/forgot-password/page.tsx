@@ -2,8 +2,8 @@ import Link from 'next/link';
 import { createSupabaseServerClient } from '@util/supabase/server';
 import { redirect } from 'next/navigation';
 import { forgotPassword } from '../actions';
-import { SubmitButton } from '@/components/Authentication/submit-button';
-import { Logo } from '@/assets/logo';
+import { SubmitButton } from '@/components/Authentication/SubmitButton';
+import { Logo } from '@/assets/Logo';
 
 export default async function ForgotPassword({
   searchParams,

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useContext, useState, useCallback } from 'react';
-import { ModalContext } from '@/Context/modalContext';
+import { ModalContext } from '@/context/modalContext';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -11,7 +11,7 @@ import SelectInput from '../../UI_Elements/Form/SelectInput';
 import { usStates } from '@/components/Forms/data/states';
 import { customerStatus } from '../data/details';
 import { customerFieldMap } from '@/types/customerTypes';
-import Button from '@/components/UI_Elements/buttons/Button';
+import Button from '@/components/UI_Elements/Buttons/Button';
 import { useRouter, usePathname } from 'next/navigation';
 
 // this component uses yup and react-hook-form to submit form values to a context

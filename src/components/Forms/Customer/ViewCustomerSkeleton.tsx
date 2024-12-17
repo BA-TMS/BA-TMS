@@ -1,6 +1,6 @@
 'use client';
 
-import Button from '@/components/UI_Elements/buttons/Button';
+import Button from '@/components/UI_Elements/Buttons/Button';
 import { useRouter } from 'next/navigation';
 
 // this component shows if there is a problem displaying customer data

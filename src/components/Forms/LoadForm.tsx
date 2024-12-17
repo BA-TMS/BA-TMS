@@ -6,7 +6,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import TextInput from '../UI_Elements/Form/TextInput';
 import DynamicSelect from '../UI_Elements/Form/DynamicSelect';
-import { ModalContext } from '@/Context/modalContext';
+import { ModalContext } from '@/context/modalContext';
 import {
   getCarriers,
   getConsignees,
@@ -16,7 +16,7 @@ import {
   getShippers,
 } from '@/lib/dbActions';
 import DateSelect from '../UI_Elements/Form/DateSelect';
-import Button from '../UI_Elements/buttons/Button';
+import Button from '../UI_Elements/Buttons/Button';
 import SelectInput from '../UI_Elements/Form/SelectInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';

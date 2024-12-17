@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useEffect, useState, useContext } from 'react';
-import Button from '../../UI_Elements/buttons/Button';
-import { ModalContext } from '@/Context/modalContext';
+import Button from '../../UI_Elements/Buttons/Button';
+import { ModalContext } from '@/context/modalContext';
 import { createCarrier, updateCarrier } from '@/store/slices/carrierSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';

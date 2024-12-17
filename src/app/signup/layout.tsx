@@ -1,8 +1,8 @@
 'use client';
 
-import { Logo } from '@/assets/logo';
+import { Logo } from '@/assets/Logo';
 import Link from 'next/link';
-import { ContextProvider } from '@/Context/modalContext';
+import { ContextProvider } from '@/context/modalContext';
 
 // TODO: change width and height to fit on screen
 

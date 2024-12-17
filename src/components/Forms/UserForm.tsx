@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import TextInput from '../UI_Elements/Form/TextInput';
 import SelectInput from '../UI_Elements/Form/SelectInput';
 import DynamicSelect from '../UI_Elements/Form/DynamicSelect';
-import { ModalContext } from '@/Context/modalContext';
+import { ModalContext } from '@/context/modalContext';
 import { addUser, getOrganizations } from '@/lib/dbActions';
 
 const userSchema = yup.object({

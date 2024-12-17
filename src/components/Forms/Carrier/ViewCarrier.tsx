@@ -1,10 +1,10 @@
 'use Client';
 
 import { useContext } from 'react';
-import { ModalContext } from '@/Context/modalContext';
+import { ModalContext } from '@/context/modalContext';
 import { useRouter } from 'next/navigation';
 import { CarrierData } from '@/types/carrierTypes';
-import Button from '@/components/UI_Elements/buttons/Button';
+import Button from '@/components/UI_Elements/Buttons/Button';
 import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 import AddressDisplay from '@/components/UI_Elements/Display/AddressDisplay';
 

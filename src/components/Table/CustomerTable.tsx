@@ -1,8 +1,8 @@
 'use client';
 
 import { useContext, useState, useEffect } from 'react';
-import { ModalContext } from '@/Context/modalContext';
-import Button from '../UI_Elements/buttons/Button';
+import { ModalContext } from '@/context/modalContext';
+import Button from '../UI_Elements/Buttons/Button';
 import Table from '../UI_Elements/Table/Table';
 import TableSkeleton from '../UI_Elements/Table/TableSkeleton';
 import { TableSearch } from '../UI_Elements/Table/TableSearch';

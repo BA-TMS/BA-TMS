@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import TextInput from '../UI_Elements/Form/TextInput';
 import SelectInput from '../UI_Elements/Form/SelectInput';
 import { usStates } from './data/states';
-import { ModalContext } from '@/Context/modalContext';
+import { ModalContext } from '@/context/modalContext';
 import { addBroker } from '@/lib/dbActions';
 
 const customsBrokerSchema = yup.object({

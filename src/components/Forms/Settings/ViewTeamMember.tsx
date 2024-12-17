@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { FormattedTeamMember } from '@/types/teamTypes';
-import Button from '@/components/UI_Elements/buttons/Button';
+import Button from '@/components/UI_Elements/Buttons/Button';
 import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 
 // this component displays information about a specific user/ member of the team

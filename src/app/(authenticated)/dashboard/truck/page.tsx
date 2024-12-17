@@ -2,7 +2,7 @@
 
 'use client';
 
-import { ContextProvider } from '@/Context/modalContext';
+import { ContextProvider } from '@/context/modalContext';
 import Truck from '@/components/Table/Truck';
 
 export default function Home() {

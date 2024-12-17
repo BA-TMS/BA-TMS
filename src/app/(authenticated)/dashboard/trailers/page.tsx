@@ -2,7 +2,7 @@
 
 'use client';
 
-import { ContextProvider } from '@/Context/modalContext';
+import { ContextProvider } from '@/context/modalContext';
 import Trailer from '@/components/Table/Trailer';
 
 export default function Home() {

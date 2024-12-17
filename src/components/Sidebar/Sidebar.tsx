@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import ContentBlock from './UserContentBlock';
-import Button from '@ui/buttons/Button';
+import Button from '@/components/UI_Elements/Buttons/Button';
 import SidebarListItem from './SidebarListItem';
 import {
   AccountingIcon,
@@ -18,10 +18,10 @@ import {
   SalesManagerIcon,
   TerminalCredIcon,
   UserIcon,
-} from '@/assets/icons/layout';
-import { Logo } from '@/assets/logo';
+} from '@/assets/Icons/Layout';
+import { Logo } from '@/assets/Logo';
 import { useContext } from 'react';
-import { UserContext } from '@/Context/userContextProvider';
+import { UserContext } from '@/context/userContextProvider';
 
 const userOptions = [
   { name: 'Plans & Pricing', href: '#' },

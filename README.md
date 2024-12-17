@@ -1,15 +1,3 @@
-# Auto-formatting
-
-All of the code in this repo should be automatically formatted & linted.
-
-A lot of that should be accomplished by use of two VSCode extensions, plus two config files:
-
-- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) ([archive](https://web.archive.org/web/20231114192610/https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)). Config file: `/.prettierrc.json`
-
-- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) ([archive](https://web.archive.org/web/20231120210105/https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)). Config file `/.eslintrc.json`
-
-# From `npx create-next-app`
-
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
@@ -70,12 +58,45 @@ The seed script (`yarn seed`) can be run at any time to restore dummy DB data. T
 
 <br/>
 
-# File Structure
+# Style Guide
+
+### File Structure
 
 This is a [Next.js App](https://nextjs.org/docs) using Next.js 14 App router
 
-**/util** - Contains general-purpose utility functions.
-<br />
-**/scripts** - These are scripts to be run from the command line. These files are not part of the core application.
-<br />
-**/src/lib** - Contains specialized helper functions.
+[Next.js Project Structure](https://nextjs.org/docs/app/getting-started/project-structure)
+
+- **prisma** - Prisma schema, migrations, and seed script
+  <br >
+- **/public** - Contains all static assets such as images (currently images stored as SVGs)
+  <br >
+- **/scripts** - These are scripts to be run from the command line. These files are not part of the core application
+  <br >
+- **/src**
+  - /src/app - Directories in this folder correspond to routes and contain nested routes, layouts, and server actions as needed
+  - /src/assets - Icons being stored as React components (other assets as needed)
+  - /src/components - React components
+  - /src/context - React context
+  - /src/hooks - Custom hooks
+  - /src/lib - Specialized helper functions
+  - /src/store - Redux store and slices for async thunks
+  - /src/types - Files with type declarations that can be used across the app
+    <br>
+- **/util** - Contains general-purpose utility functions
+
+  <br/>
+
+**Naming Conventions For Files**
+
+- Capitalize folders containing React Components (ex: 'Components')
+  - Files containing React components are to be capitalized, using PascalCase (ex: 'AuthButton.tsx')
+- Lowercase other folders (ex: 'util')
+  - Files not containing React components are to use camelCase (ex: 'carrierTypes.ts')
+
+### Format
+
+All of the code in this repo should be formatted & linted using Prettier and ESLint:
+
+- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) ([archive](https://web.archive.org/web/20231114192610/https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)). Config file: `/.prettierrc.json`
+
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) ([archive](https://web.archive.org/web/20231120210105/https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)). Config file `/.eslintrc.json`
