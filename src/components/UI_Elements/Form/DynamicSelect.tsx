@@ -9,14 +9,20 @@ import { UseControllerProps, useController } from 'react-hook-form';
 // T represents shape of the data fetched
 // may need to refactor this to make nameKey mandatory as new schema changes happen
 
-interface SelectInputProps<T> extends UseControllerProps {
-  dbaction: () => Promise<T[]>;
-  control?: any; // this is from external library
-  required?: boolean;
-  nameKey?: string; // in case the data returned from dbaction does not have a "name" key but instead the "name" is something else, like "companyName"
+interface Option {
+  id: string;
+  [key: string]: string | boolean | number; // Allows other properties with dynamic keys in case name is something different ex: "companyName"
 }
 
-const DynamicSelect = <T extends { id: string; name: string }>({
+interface SelectInputProps<T> extends UseControllerProps {
+  dbaction: () => Promise<T[]>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  control?: any; // this is from external library
+  required?: boolean;
+  nameKey?: keyof T; // in case the data returned from dbaction does not have a "name" key but instead the "name" is something else, like "companyName"
+}
+
+const DynamicSelect = <T extends Option>({
   dbaction,
   control,
   required,
@@ -69,7 +75,7 @@ const DynamicSelect = <T extends { id: string; name: string }>({
           ) : (
             options.map((option) => (
               <option key={option.id} value={option.id}>
-                {option.name ? option.name : option[nameKey]}
+                {option.name ? option.name : option[nameKey as keyof T]}
               </option>
             ))
           )}
