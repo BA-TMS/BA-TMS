@@ -124,10 +124,14 @@ const UpdateTeamMember = ({ user }: FormProps) => {
   // function to resend invite
   const handleInvite = async () => {
     setIsSubmitting(true);
+
     try {
       await resendInvite(user['email']);
       //   router.push('/settings/team');
-      setError('root', { message: `Confirmation email sent` });
+      setError('root', {
+        message:
+          'If user has not confirmed, their email, a confirmation email will be sent',
+      });
     } catch (error) {
       setError('root', { message: `${error}` });
       setIsSubmitting(false);

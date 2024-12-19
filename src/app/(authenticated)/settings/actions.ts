@@ -2,10 +2,7 @@
 
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
-import {
-  createSupbaseAdmin,
-  createSupabaseServerClient,
-} from '@util/supabase/server';
+import { createSupbaseAdmin } from '@util/supabase/server';
 import { PrismaClient, Status, UserRole } from '@prisma/client';
 
 // actions for interacting with supabase and prisma
@@ -202,7 +199,7 @@ export async function updateUser(data: UserData, id: string) {
 export const resendInvite = async (email: string) => {
   const origin = headers().get('origin');
 
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupbaseAdmin();
 
   const { error } = await supabase.auth.resend({
     type: 'signup',
