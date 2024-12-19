@@ -11,6 +11,8 @@ import { status, trailers } from './data/details';
 import { ModalContext } from '@/context/modalContext';
 import { addTrailer } from '@/lib/dbActions';
 
+// TODO: Fix type errors when creating this page
+
 const trailerSchema = yup.object({
   'Trailer Type': yup.string(),
   'License Plate': yup.string().required('License Plate is required'),
@@ -96,7 +98,7 @@ export const TrailerForm = () => {
                 />
                 <SelectInput
                   control={control}
-                  options={trailers}
+                  options={trailers} // fix when creating trailers page
                   name="Trailer Type"
                 />
               </div>

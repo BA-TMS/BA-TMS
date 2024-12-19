@@ -254,7 +254,7 @@ const CarrierDetails: React.FC = () => {
           <DynamicSelect
             control={control}
             name="Factoring Company"
-            dbaction={getFactors}
+            dbaction={getFactors} // fix when creating factor page
           />
 
           <TextInput control={control} name="Notes" isTextArea={true} />

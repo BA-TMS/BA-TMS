@@ -109,7 +109,7 @@ export const ThirdPartyForm = () => {
                 <SelectInput
                   control={control}
                   name="State"
-                  options={usStates.map((state) => state.name)}
+                  options={usStates}
                   required={true}
                 />
                 <TextInput

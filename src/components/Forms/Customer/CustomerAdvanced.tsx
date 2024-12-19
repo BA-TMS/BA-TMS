@@ -118,7 +118,7 @@ const AdvancedCustomerDetails: React.FC = () => {
               <DynamicSelect
                 control={control}
                 name="Factoring Company"
-                dbaction={getFactors}
+                dbaction={getFactors} // fix when creating factor page
               />
             </div>
           </div>
