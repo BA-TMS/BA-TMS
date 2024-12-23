@@ -220,22 +220,21 @@ export const resendInvite = async (email: string) => {
 };
 
 // user updates their own password
-export const updatePassword = async (password: string, token: string) => {
+export const updatePassword = async (password: string) => {
   const supabase = createSupabaseServerClient();
 
-  // refresh the session using token
-  await supabase.auth.refreshSession({ refresh_token: token });
+  // refresh the session using token- do we need token?
+  await supabase.auth.refreshSession();
 
-  const { data, error } = await supabase.auth.updateUser({
+  const { error } = await supabase.auth.updateUser({
     password: password,
   });
 
-  // handle error
+  // handle error- return string
   if (error) {
-    console.log('ERROR', error);
-    throw `${error}`;
+    return error.message;
   }
 
-  // return data if we need it
-  return data;
+  // return
+  return;
 };
