@@ -85,12 +85,12 @@ const PasswordReset = () => {
 
   return (
     <div className="bg-grey-100 dark:bg-grey-800 flex flex-col items-center justify-center">
-      <div className="flex flex-col bg-white border rounded-lg border-grey-300 px-4.5 w-4/6 h-5/6 pt-2">
+      <div className="flex flex-col bg-white dark:bg-grey-900 border rounded-lg border-grey-300 dark:border-grey-700 px-4.5 w-4/6 h-5/6 pt-2">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col h-full justify-between"
         >
-          <p className="my-5 body1 text-grey-800 text-center">
+          <p className="my-5 body1 text-grey-800 dark:text-white text-center">
             Change Password
           </p>
 
@@ -120,7 +120,7 @@ const PasswordReset = () => {
             )}
           </div>
 
-          <div className="py-4 gap-2 border-t border-grey-300 bg-white flex justify-end sticky bottom-0 z-10">
+          <div className="py-4 gap-2 border-t border-grey-300 dark:border-grey-700 flex justify-end sticky bottom-0 z-10">
             <div className="flex justify-end gap-2">
               <Button type="submit" disabled={isSubmitting}>
                 Save Changes
