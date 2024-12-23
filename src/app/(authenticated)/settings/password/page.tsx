@@ -66,6 +66,8 @@ const PasswordReset = () => {
       // handle successful update
       clearErrors('root'); // clear error
       // form is cleared via useEffect when isSubmitSuccessful is true
+      // let the user know that it worked (may want to change)
+      alert('Password updated successfully');
     }
 
     setTimeout(() => {
