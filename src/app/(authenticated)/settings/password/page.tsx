@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import * as yup from 'yup';
 import YupPassword from 'yup-password';
 YupPassword(yup);
@@ -42,9 +42,10 @@ const PasswordReset = () => {
   const {
     control,
     handleSubmit,
-    // reset,
+    reset,
     setError,
-    formState: { errors },
+    clearErrors,
+    formState: { errors, isSubmitSuccessful },
   } = useForm<Password>({
     defaultValues: {
       Password: '',
@@ -56,31 +57,29 @@ const PasswordReset = () => {
   const onSubmit = async (data: Password) => {
     setIsSubmitting(true);
 
-    // why did this not work
-    // try {
-    //   console.log('trying...');
-    //   updatePassword(data['Password']); // add token
-
-    // } catch (error) {
-    //   setError('root', { message: `${error}` });
-    // }
-
-    const result = await updatePassword(data['Password']); // add token
+    const result = await updatePassword(data['Password']); // add token?
 
     // if result is a string, it's an error
     if (typeof result === 'string') {
       setError('root', { message: result });
+    } else {
+      // handle successful update
+      clearErrors('root'); // clear error
+      // form is cleared via useEffect when isSubmitSuccessful is true
     }
-
-    // handle success
 
     setTimeout(() => {
       setIsSubmitting(false);
     }, 1000);
   };
 
-  // handle errors
   // clear form on success
+  useEffect(() => {
+    reset({
+      Password: '',
+      'Confirm Password': '',
+    });
+  }, [reset, isSubmitSuccessful]);
 
   return (
     <div className="bg-grey-100 dark:bg-grey-800 flex flex-col items-center justify-center">

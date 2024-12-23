@@ -9,7 +9,6 @@ import { useForm } from 'react-hook-form';
 import TextInput from '@/components/UI_Elements/Form/TextInput';
 import Button from '@/components/UI_Elements/Buttons/Button';
 import { setPassword } from '../actions';
-import { useRouter } from 'next/navigation';
 
 // this is a welcome page for invited users to set their auth password
 
@@ -38,8 +37,6 @@ const passwordSchema = yup.object().shape({
 type Password = yup.InferType<typeof passwordSchema>;
 
 export const WelcomeUser = () => {
-  const router = useRouter();
-
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [urlParams, setUrlParams] = useState<URLSearchParams | null>(null);
 
