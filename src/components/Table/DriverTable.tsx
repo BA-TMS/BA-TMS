@@ -1,7 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+// import { ModalContext } from '@/context/modalContext';
 import Table from '../UI_Elements/Table/Table';
+import TableSkeleton from '../UI_Elements/Table/TableSkeleton';
+import TableHeaderBlank from '../UI_Elements/Table/TableHeaderBlank';
+import { TableSearch } from '../UI_Elements/Table/TableSearch';
+import Button from '../UI_Elements/Buttons/Button';
+import Link from 'next/link';
+// import { useRouter } from 'next/navigation';
 import { getDrivers } from '@/lib/dbActions';
 
 type Driver = {
@@ -22,41 +29,53 @@ const columns = [
 ];
 
 export default function Drivers() {
-  const [drivers, setDrivers] = useState<Driver[]>([]);
+  const [searchValue, setSearchValue] = useState<string>(''); // search value
+  const [searchField, setSearchField] = useState<string>('All'); // specific field if any
+  const [filteredValue, setFilteredValue] = useState<Driver[]>([]);
 
-  const handleClick = () => {
-    // toggleOpen();
-  };
+  // replace with redux
+  const [status, setStatus] = useState('loading');
 
   // data fetched and passed to Table
   useEffect(() => {
     const fetchDrivers = async () => {
       const data = await getDrivers();
       console.log('drivers', data);
-      setDrivers(data);
+      setFilteredValue(data);
     };
 
     fetchDrivers();
+    setStatus('');
   }, []);
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8">
-      <button
-        onClick={handleClick}
-        className="float-right rounded-md bg-primary py-3 px-9 font-medium text-white hover:bg-opacity-80"
-      >
-        Add Driver
-      </button>
-      <div className="sm:flex sm:items-center">
-        <div className="sm:flex-auto">
-          <h1 className="text-base leading-6 text-gray-900">Drivers</h1>
-          <p className="mt-2 text-md text-gray-700">
-            A list of all the driver information.
-          </p>
+    <>
+      <div className="relative flex justify-end mb-6">
+        <div className="absolute right-4 bottom-2">
+          <Link href="">
+            <Button>Add Driver</Button>
+          </Link>
         </div>
-        <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none"></div>
       </div>
-      <Table columns={columns} data={drivers} update={() => null}></Table>
-    </div>
+      <TableHeaderBlank />
+      <TableSearch
+        placeholder={'Search...'}
+        dropdownLabel="Status"
+        dropdownOptions={['Active', 'Inactive', 'All']}
+        search={setSearchValue}
+        updateField={() => null}
+      />
+
+      {status === 'loading' ? (
+        <TableSkeleton columns={columns} />
+      ) : (
+        <Table
+          columns={columns}
+          data={filteredValue}
+          update={() => null}
+          // view={'/carriers/view/'}
+        />
+      )}
+    </>
   );
 }
