@@ -1,12 +1,13 @@
 'use client';
 
 import Driver from '@/components/Table/Driver';
-import { ContextProvider } from '@/context/modalContext';
+import PageTitle from '@/components/Page/PageTitle';
 
 export default function Drivers() {
   return (
-    <ContextProvider>
+    <>
+      <PageTitle pageTitle="Drivers" />
       <Driver />
-    </ContextProvider>
+    </>
   );
 }
