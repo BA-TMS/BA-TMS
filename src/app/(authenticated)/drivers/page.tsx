@@ -1,13 +1,13 @@
 'use client';
 
-import Driver from '@/components/Table/Driver';
+import Drivers from '@/components/Table/DriverTable';
 import PageTitle from '@/components/Page/PageTitle';
 
-export default function Drivers() {
+export default function DriverPage() {
   return (
     <>
       <PageTitle pageTitle="Drivers" />
-      <Driver />
+      <Drivers />
     </>
   );
 }

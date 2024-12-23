@@ -1,9 +1,6 @@
 'use client';
 
-import { useContext, useState, useEffect } from 'react';
-import { ModalContext } from '@/context/modalContext';
-import FormModal from '../Modals/FormModal';
-import DriverForm from '../Forms/DriverForm';
+import { useState, useEffect } from 'react';
 import Table from '../UI_Elements/Table/Table';
 import { getDrivers } from '@/lib/dbActions';
 
@@ -24,12 +21,11 @@ const columns = [
   { field: 'employerId', headerName: 'Employer ID' },
 ];
 
-export default function Driver() {
+export default function Drivers() {
   const [drivers, setDrivers] = useState<Driver[]>([]);
-  const { toggleOpen } = useContext(ModalContext);
 
   const handleClick = () => {
-    toggleOpen();
+    // toggleOpen();
   };
 
   // data fetched and passed to Table
@@ -58,13 +54,9 @@ export default function Driver() {
             A list of all the driver information.
           </p>
         </div>
-        <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-          <FormModal>
-            <DriverForm />
-          </FormModal>
-        </div>
+        <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none"></div>
       </div>
-      <Table columns={columns} data={drivers}></Table>
+      <Table columns={columns} data={drivers} update={() => null}></Table>
     </div>
   );
 }
