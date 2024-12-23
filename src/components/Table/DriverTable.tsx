@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/store/store';
 // import { ModalContext } from '@/context/modalContext';
 import Table from '../UI_Elements/Table/Table';
 import TableSkeleton from '../UI_Elements/Table/TableSkeleton';
@@ -10,6 +12,7 @@ import Button from '../UI_Elements/Buttons/Button';
 import Link from 'next/link';
 // import { useRouter } from 'next/navigation';
 import { getDrivers } from '@/lib/dbActions';
+import { fetchDrivers } from '@/store/slices/driverSlice';
 
 type Driver = {
   name: string;
@@ -33,20 +36,24 @@ export default function Drivers() {
   const [searchField, setSearchField] = useState<string>('All'); // specific field if any
   const [filteredValue, setFilteredValue] = useState<Driver[]>([]);
 
-  // replace with redux
-  const [status, setStatus] = useState('loading');
+  const dispatch = useDispatch<AppDispatch>();
 
-  // data fetched and passed to Table
+  const {
+    items: drivers,
+    status,
+    // error,
+  } = useSelector((state: RootState) => state.drivers);
+
   useEffect(() => {
-    const fetchDrivers = async () => {
-      const data = await getDrivers();
-      console.log('drivers', data);
-      setFilteredValue(data);
-    };
+    dispatch(fetchDrivers());
+  }, [dispatch]);
 
-    fetchDrivers();
-    setStatus('');
-  }, []);
+  // Update filtered drivers when carrier or searchValue changes
+  useEffect(() => {
+    const updatedDrivers = [...drivers];
+    // updatedDrivers = handleSearch(updatedDrivers, searchValue, searchField);
+    setFilteredValue(updatedDrivers);
+  }, [drivers, searchValue, searchField]);
 
   return (
     <>
