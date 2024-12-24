@@ -13,17 +13,7 @@ import Button from '../UI_Elements/Buttons/Button';
 import Link from 'next/link';
 // import { useRouter } from 'next/navigation';
 import { fetchDrivers } from '@/store/slices/driverSlice';
-import { DriverFormData } from '@/types/driverTypes';
-
-// we want to only show drivers that are linked to the company
-
-type Driver = {
-  name: string;
-  license: string;
-  telCountry: string;
-  telephone: string;
-  employerId: string;
-};
+import { DriverData } from '@/types/driverTypes';
 
 // this is passed to Table
 const columns = [
@@ -37,9 +27,11 @@ const columns = [
 export default function Drivers() {
   const [searchValue, setSearchValue] = useState<string>(''); // search value
   const [searchField, setSearchField] = useState<string>('All'); // specific field if any
-  const [filteredValue, setFilteredValue] = useState<Driver[]>([]);
+  const [filteredValue, setFilteredValue] = useState<DriverData[]>([]);
 
   const dispatch = useDispatch<AppDispatch>();
+
+  // const router = useRouter();
 
   const { user } = useContext(UserContext);
 
@@ -54,11 +46,7 @@ export default function Drivers() {
   const { saveFormValues } = useContext(ModalContext);
 
   // search
-  function handleSearch(
-    drivers: DriverFormData[],
-    value: string,
-    status: string
-  ) {
+  function handleSearch(drivers: DriverData[], value: string, status: string) {
     // status to uppercase
     const driverStatus = status?.toUpperCase();
 
@@ -113,7 +101,7 @@ export default function Drivers() {
     <>
       <div className="relative flex justify-end mb-6">
         <div className="absolute right-4 bottom-2">
-          <Link href="">
+          <Link href="/drivers/add-driver/details">
             <Button>Add Driver</Button>
           </Link>
         </div>
