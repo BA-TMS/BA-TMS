@@ -35,6 +35,12 @@ const CUSTOMER_RELATIONS = {
   factor: { select: { name: true } },
 };
 
+const DRIVER_RELATIONS = {
+  organization: { select: { orgName: true } },
+  // loads: { select: true }, // will need to handle load relations
+  employer: { select: { carrierName: true } },
+};
+
 // Generic type for Prisma model
 
 // Generic type for Prisma relations object
@@ -109,7 +115,9 @@ export async function getCustomers() {
 }
 
 export async function getDrivers() {
-  const drivers = await prisma.driver.findMany();
+  console.log('GET DRIVERS');
+  // const drivers = await prisma.driver.findMany();
+  const drivers = await await getter(prisma.driver, DRIVER_RELATIONS);
   return drivers;
 }
 

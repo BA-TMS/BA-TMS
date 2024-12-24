@@ -14,6 +14,8 @@ import Link from 'next/link';
 import { fetchDrivers } from '@/store/slices/driverSlice';
 import { DriverFormData } from '@/types/driverTypes';
 
+// we want to only show drivers that are linked to the company
+
 type Driver = {
   name: string;
   license: string;

@@ -1,20 +1,31 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { getDrivers } from '@/lib/dbActions';
-import { DriverFormData } from '@/types/driverTypes';
+import { DriverFormData, DriverData } from '@/types/driverTypes';
 
 interface DriverState {
-  items: DriverFormData[];
+  items: DriverData[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
 }
 
-export const fetchDrivers = createAsyncThunk(
+const formatron = function (driver: DriverData) {
+  return {
+    ...driver,
+    createdAt:
+      driver.createdAt instanceof Date ? driver.createdAt.toDateString() : null,
+    updatedAt:
+      driver.updatedAt instanceof Date ? driver.updatedAt.toDateString() : null,
+  } as unknown as DriverData;
+};
+
+export const fetchDrivers = createAsyncThunk<DriverData[]>(
   'drivers/fetchDrivers',
   async () => {
     const data = await getDrivers();
 
-    // return data.map((carrier: CarrierData) => formatron(carrier));
-    return data;
+    console.log('DATA', data);
+
+    return data.map((driver: DriverData) => formatron(driver));
   }
 );
 
