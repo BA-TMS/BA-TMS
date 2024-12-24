@@ -18,10 +18,10 @@ const formatron = function (driver: DriverData) {
   } as unknown as DriverData;
 };
 
-export const fetchDrivers = createAsyncThunk<DriverData[]>(
+export const fetchDrivers = createAsyncThunk<DriverData[], string>(
   'drivers/fetchDrivers',
-  async () => {
-    const data = await getDrivers();
+  async (orgName) => {
+    const data = await getDrivers(orgName);
 
     console.log('DATA', data);
 

@@ -114,10 +114,15 @@ export async function getCustomers() {
   return customers;
 }
 
-export async function getDrivers() {
-  console.log('GET DRIVERS');
-  // const drivers = await prisma.driver.findMany();
-  const drivers = await await getter(prisma.driver, DRIVER_RELATIONS);
+export async function getDrivers(organization: string) {
+  const drivers = await prisma.driver.findMany({
+    where: {
+      organization: {
+        orgName: organization,
+      },
+    },
+    include: DRIVER_RELATIONS,
+  });
   return drivers;
 }
 

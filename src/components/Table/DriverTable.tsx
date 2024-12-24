@@ -4,6 +4,7 @@ import { useState, useEffect, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
 import { ModalContext } from '@/context/modalContext';
+import { UserContext } from '@/context/userContextProvider';
 import Table from '../UI_Elements/Table/Table';
 import TableSkeleton from '../UI_Elements/Table/TableSkeleton';
 import TableHeaderBlank from '../UI_Elements/Table/TableHeaderBlank';
@@ -39,6 +40,10 @@ export default function Drivers() {
   const [filteredValue, setFilteredValue] = useState<Driver[]>([]);
 
   const dispatch = useDispatch<AppDispatch>();
+
+  const { user } = useContext(UserContext);
+
+  const orgName = user?.user_metadata.org_name;
 
   const {
     items: drivers,
@@ -94,8 +99,8 @@ export default function Drivers() {
   }
 
   useEffect(() => {
-    dispatch(fetchDrivers());
-  }, [dispatch]);
+    dispatch(fetchDrivers(orgName));
+  }, [dispatch, orgName]);
 
   // Update filtered drivers when driver or searchValue changes
   useEffect(() => {
