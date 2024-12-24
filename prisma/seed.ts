@@ -61,9 +61,23 @@ async function main() {
   }
 
   for (const currCarrier of carriers) {
+    console.log('Upserting carrier:', currCarrier);
     const carrierResp = await prisma.carrier.upsert({
       where: { id: currCarrier.id },
-      update: {},
+      update: {
+        carrierName: currCarrier.carrierName,
+        address: currCarrier.address,
+        city: currCarrier.city,
+        state: currCarrier.state,
+        postCountry: currCarrier.postCountry,
+        postCode: currCarrier.postCode,
+        contactTelephone: currCarrier.contactTelephone,
+        paymentTerms: currCarrier.paymentTerms,
+        docketNumType: currCarrier.docketNumType,
+        docketNumber: currCarrier.docketNumber,
+        dotId: currCarrier.dotId,
+        taxId: currCarrier.taxId,
+      },
       create: {
         carrierName: currCarrier.carrierName,
         address: currCarrier.address,
@@ -104,7 +118,9 @@ async function main() {
   }
 
   for (const currDriver of drivers) {
-    currDriver.employerId = carrierIds[driverPos % carrierIds.length];
+    console.log('Upserting driver:', currDriver);
+
+    currDriver.orgId = orgIds[driverPos % orgIds.length];
     const resp = await prisma.driver.upsert({
       where: { license: currDriver.license },
       update: {},
@@ -293,7 +309,7 @@ const users = [
 
 const carriers = [
   {
-    id: '123-942850',
+    id: 'a0f1826a-ed37-4e8d-988e-d52afd2a953a',
     carrierName: 'Carrier1',
     address: '70 Wall St',
     city: 'New York',
@@ -314,7 +330,7 @@ const carriers = [
     },
   },
   {
-    id: '123-942851',
+    id: '3997ed89-8767-4020-b8e1-7011469af2e7',
     carrierName: 'Carrier2',
     address: '79 Mayflower St',
     city: 'Smyrna',
@@ -341,13 +357,21 @@ const drivers = [
     name: 'Speed',
     license: '111111',
     telephone: '1111111111',
-    employerId: null,
+    email: 'speed@speeddrives.com',
+    country: 'USA',
+    state: 'TX',
+    city: 'El Paso',
+    orgId: null,
   },
   {
     name: 'Rex',
     license: '222222',
     telephone: '2222222222',
-    employerId: null,
+    email: 'rex@drive.com',
+    country: 'USA',
+    state: 'GA',
+    city: 'Atlanta',
+    orgId: null,
   },
 ];
 

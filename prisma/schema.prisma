@@ -150,6 +150,7 @@ model Driver {
   country   String
   state     String
   city      String
+  zip       String?
   license   String?  @unique
   notes     String?
 
