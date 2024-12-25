@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useContext } from 'react';
+import { useEffect, useContext, useCallback } from 'react';
 import { ModalContext } from '@/context/modalContext';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -46,14 +46,15 @@ export const DriverForm = () => {
 
   const { formData, saveFormValues } = useContext(ModalContext);
 
-  const isUpdate = formData !== null && formData['id'];
+  // const isUpdate = formData !== null && formData['id'];
 
   const {
     handleSubmit,
-    setError,
+    // setError,
+    setValue,
     reset,
     control,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors, isSubmitting },
   } = useForm<Driver>({
     defaultValues: {
       Status: '',
@@ -71,34 +72,43 @@ export const DriverForm = () => {
     resolver: yupResolver(driverSchema),
   });
 
-  const onSubmit = async (data: Driver) => {
-    console.log(data); // see the data
-    // try {
-    //   await addDriver({ driver: data });
-    //   console.log('driver added successfully');
-    // } catch (error) {
-    //   console.log('Error submitting form:', error);
-    //   setError('root', { message: 'Error Submitting Form - Please try Again' });
-    // }
-  };
+  // submit the values to the context
+  const onSubmit = useCallback(
+    (driver: Driver) => {
+      console.log('SUBMITTING DRIVER', driver);
+      saveFormValues(driver);
+      reset();
+      router.push(`/drivers/${segment}/review`);
+    },
+    [saveFormValues, router, segment, reset]
+  );
 
+  // useEffect(() => {
+  //   if (isSubmitSuccessful) {
+  //     reset({
+  //       Status: '',
+  //       'Driver Name': '',
+  //       Telephone: '',
+  //       Email: '',
+  //       Country: '',
+  //       State: '',
+  //       City: '',
+  //       Zip: '',
+  //       License: '',
+  //       Employer: '',
+  //       Notes: '',
+  //     });
+  //   }
+  // }, [isSubmitSuccessful, reset]);
+
+  // keep fields populated when going back from review page
   useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset({
-        Status: '',
-        'Driver Name': '',
-        Telephone: '',
-        Email: '',
-        Country: '',
-        State: '',
-        City: '',
-        Zip: '',
-        License: '',
-        Employer: '',
-        Notes: '',
+    if (formData) {
+      Object.keys(formData).forEach((formField) => {
+        setValue(formField as keyof Driver, formData[formField]);
       });
     }
-  }, [isSubmitSuccessful, reset]);
+  }, [formData, setValue]);
 
   return (
     <div className="flex flex-col h-full">
