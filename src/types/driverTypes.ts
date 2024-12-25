@@ -1,12 +1,19 @@
 import { Load } from '@prisma/client';
 
 export interface DriverFormData {
+  Status: 'ACTIVE' | 'INACTIVE';
   'Driver Name': string;
-  'Country Code': string;
-  'Phone Number': string;
-  'License Number': string;
-  Employer: string;
-  Notes?: string | null;
+  Telephone: string;
+  Email: string | null;
+
+  City: string;
+  State: string;
+  Zip: string;
+  Country: string;
+
+  License: string | null;
+  Employer: string | null;
+  Notes: string | null;
 }
 
 export interface DriverData {
