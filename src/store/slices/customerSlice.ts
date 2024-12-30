@@ -22,8 +22,14 @@ const formatron = function (customer: CustomerData) {
   return {
     ...customer,
     factor: customer.factor ? customer.factor.name : null,
-    createdAt: customer.createdAt ? customer.createdAt.toISOString() : null,
-    updatedAt: customer.updatedAt ? customer.updatedAt.toISOString() : null,
+    createdAt:
+      customer.createdAt instanceof Date
+        ? customer.createdAt.toISOString()
+        : null,
+    updatedAt:
+      customer.updatedAt instanceof Date
+        ? customer.updatedAt.toISOString()
+        : null,
   } as unknown as CustomerData;
 };
 

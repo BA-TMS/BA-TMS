@@ -4,8 +4,18 @@ import { DocketNumber, PrismaClient } from '@prisma/client';
 import { CustomerFormData } from '@/types/customerTypes';
 import { LoadFormData } from '@/types/loadTypes';
 import { CarrierFormData } from '@/types/carrierTypes';
+import { BrokerFormData } from '@/types/brokerTypes';
+import { ConsigneeFormData } from '@/types/consigneeTypes';
+import { DriverFormData } from '@/types/driverTypes';
+import { FactorFormData } from '@/types/factorTypes';
+import { ShipperFormData } from '@/types/shipperTypes';
+import { BilleeFormData } from '@/types/billeeTypes';
+import { TrailerFormData } from '@/types/trailerTypes';
+import { TruckFormData } from '@/types/truckTypes';
+import { AccountPreferences } from '@/types/accountTypes';
 
-// regular prisma client
+// This file contains different server actions for interracting with the database via Prisma client
+
 const prisma = new PrismaClient();
 
 const LOAD_RELATIONS = {
@@ -25,8 +35,21 @@ const CUSTOMER_RELATIONS = {
   factor: { select: { name: true } },
 };
 
+// Generic type for Prisma model
+
+// Generic type for Prisma relations object
+type PrismaRelation<Model> = {
+  [key in keyof Model]?: {
+    select: Record<string, boolean>;
+  };
+};
+
 /** Get existing table data */
-async function getter(table: any, relations: any) {
+async function getter(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  table: any, // can't figure out how to type this - it's going to be any of our Prisma models
+  relations: PrismaRelation<PrismaClient | null>
+) {
   const resp = await table.findMany({
     include: relations,
   });
@@ -78,7 +101,6 @@ export async function getCustomer(id: string) {
 }
 
 export async function getCustomers() {
-  // const customers = await prisma.customer.findMany();
   const relations = {
     factor: { select: { name: true } },
   };
@@ -162,16 +184,8 @@ export async function getAccountPreferences() {
 }
 
 /** Add new entries to tables. */
-// TODO: Create a central location for form types to replace any.
-// TODO: Read resp. to confirm success of write.
-async function creater(table: any, insertData: any) {
-  const resp = await table.create({
-    data: insertData,
-  });
-  return resp;
-}
 
-export async function addBroker({ broker }: { broker: any }) {
+export async function addBroker({ broker }: { broker: BrokerFormData }) {
   const resp = await prisma.broker.create({
     data: {
       name: broker['Broker Name'],
@@ -187,6 +201,7 @@ export async function addBroker({ broker }: { broker: any }) {
       // notes: carrier['Notes'] || null, // optional field, notes not in table yet
     },
   });
+  return resp;
 }
 
 export async function addCarrier({ carrier }: { carrier: CarrierFormData }) {
@@ -257,7 +272,11 @@ export async function addCarrier({ carrier }: { carrier: CarrierFormData }) {
   return resp;
 }
 
-export async function addConsignee({ consignee }: { consignee: any }) {
+export async function addConsignee({
+  consignee,
+}: {
+  consignee: ConsigneeFormData;
+}) {
   const resp = await prisma.consignee.create({
     data: {
       name: consignee['Consignee Name'],
@@ -273,6 +292,7 @@ export async function addConsignee({ consignee }: { consignee: any }) {
       // notes: consignee['Notes'] || null, // optional field, notes not in db table yet
     },
   });
+  return resp;
 }
 
 export async function addCustomer({
@@ -326,20 +346,21 @@ export async function addCustomer({
   return resp;
 }
 
-export async function addDriver({ driver }: { driver: any }) {
+export async function addDriver({ driver }: { driver: DriverFormData }) {
   const resp = await prisma.driver.create({
     data: {
       name: driver['Driver Name'],
       telCountry: driver['Country Code'],
       telephone: driver['Phone Number'],
-      license: driver['License Number'] || null, // optional
+      license: driver['License Number'],
       employerId: driver['Employer'],
       // notes: carrier['Notes'] || null, // optional field, notes not in table yet
     },
   });
+  return resp;
 }
 
-export async function addFactoringCo({ factor }: { factor: any }) {
+export async function addFactoringCo({ factor }: { factor: FactorFormData }) {
   const resp = await prisma.factor.create({
     data: {
       name: factor['Factoring Company Name'],
@@ -354,6 +375,7 @@ export async function addFactoringCo({ factor }: { factor: any }) {
       // notes: factor['Notes'] || null, // optional field, notes not in db table yet
     },
   });
+  return resp;
 }
 
 export async function addLoad({ load }: { load: LoadFormData }) {
@@ -383,7 +405,7 @@ export async function addLoad({ load }: { load: LoadFormData }) {
   return resp;
 }
 
-export async function addShipper({ shipper }: { shipper: any }) {
+export async function addShipper({ shipper }: { shipper: ShipperFormData }) {
   const resp = await prisma.shipper.create({
     data: {
       name: shipper['Shipper Name'],
@@ -397,9 +419,10 @@ export async function addShipper({ shipper }: { shipper: any }) {
       telephone: shipper['Phone Number'],
     },
   });
+  return resp;
 }
 
-export async function addThirdParty({ billee }: { billee: any }) {
+export async function addThirdParty({ billee }: { billee: BilleeFormData }) {
   const resp = await prisma.billee.create({
     data: {
       name: billee['Third Party Name'],
@@ -413,9 +436,10 @@ export async function addThirdParty({ billee }: { billee: any }) {
       telephone: billee['Phone Number'],
     },
   });
+  return resp;
 }
 
-export async function addTrailer({ trailer }: { trailer: any }) {
+export async function addTrailer({ trailer }: { trailer: TrailerFormData }) {
   const resp = await prisma.trailer.create({
     data: {
       licensePlate: trailer['License Plate'],
@@ -425,23 +449,30 @@ export async function addTrailer({ trailer }: { trailer: any }) {
       status: trailer['Status'],
     },
   });
+  return resp;
 }
 
-export async function addTruck({ truck }: { truck: any }) {
+export async function addTruck({ truck }: { truck: TruckFormData }) {
   const resp = await prisma.truck.create({
     data: {
       truckNum: truck['Truck Number'],
-      licensePlate: truck['License Plate'] || null, // Optional field
+      licensePlate: truck['License Plate'], // should be optional?
       type: truck['Truck Type'],
       plateExpiry: truck['Plate Expiry'],
       inspectionExpiry: truck['Inspection Expiry'],
       iftaLicensed: truck['IFTA Licensed'],
     },
   });
+  return resp;
 }
 
 /** Update row */
-async function updater(table: any, targetId: number, upateData: any) {
+async function updater(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  table: any, // same issue as in the getter, not sure how to type this
+  targetId: number,
+  upateData: unknown
+) {
   const resp = table.update({
     where: {
       id: targetId,
@@ -525,9 +556,10 @@ export async function updateCarrier(
 
 export async function updateConsignee(
   id: number,
-  { formData }: { formData: any }
+  { formData }: { formData: ConsigneeFormData }
 ) {
   const resp = updater(prisma.consignee, id, formData);
+  return resp;
 }
 
 export async function updateCustomer(
@@ -597,9 +629,10 @@ export async function updateCustomer(
 
 export async function updateDriver(
   id: number,
-  { formData }: { formData: any }
+  { formData }: { formData: Partial<DriverFormData> }
 ) {
   const resp = updater(prisma.driver, id, formData);
+  return resp;
 }
 
 export async function updateLoad(
@@ -648,12 +681,13 @@ export async function updateLoad(
 
 export async function updateShipper(
   id: number,
-  { formData }: { formData: any }
+  { formData }: { formData: Partial<ShipperFormData> }
 ) {
   const resp = updater(prisma.shipper, id, formData);
+  return resp;
 }
 
-export async function updateAccountPreferences(prefs: any) {
+export async function updateAccountPreferences(prefs: AccountPreferences) {
   await prisma.accountPreferences.update({
     where: {
       id: '0',
@@ -663,35 +697,11 @@ export async function updateAccountPreferences(prefs: any) {
 }
 
 /** Delete rows */
-async function deleter(table: any, targetId: number) {
-  const resp = table.delete({
+
+export async function deleteLoad(id: string) {
+  return prisma.load.delete({
     where: {
-      id: targetId,
+      id: id,
     },
   });
-  return resp;
-}
-
-export async function deleteCarrier(id: number) {
-  const resp = deleter(prisma.carrier, id);
-}
-
-export async function deleteConsignee(id: number) {
-  const resp = deleter(prisma.consignee, id);
-}
-
-export async function deleteCustomer(id: number) {
-  const resp = deleter(prisma.customer, id);
-}
-
-export async function deleteDriver(id: number) {
-  const resp = deleter(prisma.driver, id);
-}
-
-export async function deleteLoad(id: number) {
-  const resp = deleter(prisma.load, id);
-}
-
-export async function deleteShipper(id: number) {
-  const resp = deleter(prisma.shipper, id);
 }

@@ -11,6 +11,8 @@ import { usStates } from '@/components/Forms/data/states';
 import { ModalContext } from '@/context/modalContext';
 import { addUser } from '@/lib/dbActions';
 
+// TODO: Fix type errors when creating this page
+
 const otherSchema = yup.object({
   'Other Name': yup.string().required('Other Name is required'),
   isOnDispatch: yup.bool(),

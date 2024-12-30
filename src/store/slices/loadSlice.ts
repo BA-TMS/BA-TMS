@@ -29,7 +29,7 @@ const formatron = function (rawLoad: LoadData) {
       ? rawLoad.deliveryDate.toDateString()
       : null,
 
-    carrier: rawLoad.carrier ? rawLoad.carrier.name : null,
+    carrier: rawLoad.carrier ? rawLoad.carrier.carrierName : null,
     driver: rawLoad.driver ? rawLoad.driver.name : null,
     customer: rawLoad.customer ? rawLoad.customer.companyName : null,
     shipper: rawLoad.shipper ? rawLoad.shipper.name : null,
@@ -81,7 +81,7 @@ export const updateLoad = createAsyncThunk<LoadData, UpdateLoadPayload>(
 // may need to handle errors here too
 export const deleteLoad = createAsyncThunk(
   'loads/deleteLoad',
-  async (id: number) => {
+  async (id: string) => {
     const response = await apiDeleteLoad(id);
     return response;
   }

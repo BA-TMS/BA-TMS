@@ -187,14 +187,14 @@ export const LoadForm = () => {
               control={control}
               name="Driver"
               required={false}
-              dbaction={getDrivers}
+              dbaction={getDrivers} // fix when creating drivers page
             />
 
             <DynamicSelect
               control={control}
               name="Shipper"
               required={false}
-              dbaction={getShippers}
+              dbaction={getShippers} // fix when creating shippers page
             />
 
             <DynamicSelect
