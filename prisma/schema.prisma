@@ -144,6 +144,8 @@ model Driver {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   status    Status   @default(ACTIVE)
+  type      DriverType  @default(SINGLE)
+
   name      String
   telephone String
   email     String?
@@ -152,13 +154,34 @@ model Driver {
   city      String
   zip       String?
   license   String?  @unique
+
   notes     String?
+
+  driverTwo   TeamDriver? 
 
   employerId   String?
   employer     Carrier?     @relation(fields: [employerId], references: [id])
   loads        Load[]
   orgId        String
   organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+}
+
+model TeamDriver {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name      String
+  telephone String
+  email     String?
+  country   String
+  state     String
+  city      String
+  zip       String?
+  license   String?  @unique
+
+  driverId    String? @unique // One-to-one relation with Driver
+  driver      Driver? @relation(fields: [driverId], references: [id])
 }
 
 model Customer {
@@ -398,4 +421,9 @@ enum TrailerStatus {
   ACTIVE
   NOTAVAILABLE
   INACTIVE
+}
+
+enum DriverType{
+  SINGLE
+  TEAM
 }
