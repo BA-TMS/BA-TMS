@@ -2,7 +2,10 @@
 
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { createSupbaseAdmin } from '@util/supabase/server';
+import {
+  createSupbaseAdmin,
+  createSupabaseServerClient,
+} from '@util/supabase/server';
 import { PrismaClient, Status, UserRole } from '@prisma/client';
 
 // actions for interacting with supabase and prisma
@@ -213,5 +216,25 @@ export const resendInvite = async (email: string) => {
     throw `${error}`;
   }
 
+  return;
+};
+
+// user updates their own password
+export const updatePassword = async (password: string) => {
+  const supabase = createSupabaseServerClient();
+
+  // refresh the session using token- do we need token?
+  await supabase.auth.refreshSession();
+
+  const { error } = await supabase.auth.updateUser({
+    password: password,
+  });
+
+  // handle error- return string
+  if (error) {
+    return error.message;
+  }
+
+  // return
   return;
 };
