@@ -18,6 +18,7 @@ import { useRouter, usePathname } from 'next/navigation';
 
 const driverSchema = yup.object({
   Status: yup.string().required('Must enter Status'),
+  Type: yup.string().required('Select driver type'),
   'Driver Name': yup.string().required('Driver Name is required'),
   Telephone: yup.string().required('Telephone is required'),
   Email: yup.string().email('Must use a valid email').nullable(),
@@ -29,7 +30,7 @@ const driverSchema = yup.object({
     .matches(/^\d{5}$/, 'Zip must be 5 digits')
     .required('Zip Code is required '),
   License: yup.string().nullable(),
-  Employer: yup.string().nullable(),
+  Employer: yup.string().required('Must assign to carrier'),
   Notes: yup.string().max(250, 'Must be under 250 characters'),
 });
 
@@ -52,12 +53,14 @@ export const DriverForm = () => {
     handleSubmit,
     // setError,
     setValue,
+    getValues,
     reset,
     control,
     formState: { errors, isSubmitting },
   } = useForm<Driver>({
     defaultValues: {
       Status: '',
+      Type: '',
       'Driver Name': '',
       Telephone: '',
       Email: '',
@@ -75,12 +78,20 @@ export const DriverForm = () => {
   // submit the values to the context
   const onSubmit = useCallback(
     (driver: Driver) => {
+      const type = getValues('Type');
+
       console.log('SUBMITTING DRIVER', driver);
       saveFormValues(driver);
       reset();
-      router.push(`/drivers/${segment}/review`);
+
+      // if type is team, add the second driver
+      if (type === 'SINGLE') {
+        router.push(`/drivers/${segment}/review`);
+      } else {
+        router.push(`/drivers/${segment}/team`);
+      }
     },
-    [saveFormValues, router, segment, reset]
+    [saveFormValues, router, segment, reset, getValues]
   );
 
   // useEffect(() => {
@@ -127,6 +138,14 @@ export const DriverForm = () => {
                 control={control}
                 name="Status"
                 options={status}
+                required={true}
+              />
+            </div>
+            <div className="w-full md:w-1/4">
+              <SelectInput
+                control={control}
+                name="Type"
+                options={[{ Single: 'SINGLE' }, { Team: 'TEAM' }]}
                 required={true}
               />
             </div>
@@ -177,6 +196,7 @@ export const DriverForm = () => {
                 name="Employer"
                 dbaction={getCarriers}
                 nameKey="carrierName"
+                required={true}
               />
             </div>
           </div>
