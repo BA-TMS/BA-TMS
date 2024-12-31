@@ -135,109 +135,109 @@ export const DriverReviewForm = () => {
               zip={formData['Zip']}
               country={formData['Country']}
             />
+
+            {isTeam ? (
+              <>
+                <div className="flex flex-col gap-5 xl:flex-row">
+                  <div className="flex flex-col w-full xl:w-1/2">
+                    <DataDisplay
+                      title="Driver Two Name"
+                      text={formData['Driver Two Name']}
+                    />
+                  </div>
+
+                  <div className="flex flex-col w-full xl:w-1/2">
+                    <DataDisplay
+                      title="Driver Two License"
+                      text={formData['Driver License']}
+                    />
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-5 xl:flex-row">
+                  <div className="flex flex-col w-full xl:w-1/2">
+                    <DataDisplay
+                      title="Driver Two Telephone"
+                      text={formData['Driver Telephone']}
+                    />
+                  </div>
+
+                  <div className="flex flex-col w-full xl:w-1/2">
+                    <DataDisplay
+                      title="Driver Two Email"
+                      text={formData['Driver Email']}
+                    />
+                  </div>
+                </div>
+
+                <div className="flex flex-col self-center w-full">
+                  <AddressDisplay
+                    title="Driver Two Address"
+                    addressLine1={formData['Driver Address']}
+                    city={formData['Driver City']}
+                    state={formData['Driver State']}
+                    zip={formData['Driver Zip']}
+                    country={formData['Driver Country']}
+                  />
+                </div>
+              </>
+            ) : null}
+
+            <DataDisplay title="Notes" text={formData['Notes']} />
           </div>
+        </div>
 
-          {isTeam ? (
-            <>
-              <div className="flex flex-col gap-5 xl:flex-row">
-                <div className="flex flex-col w-full xl:w-1/2">
-                  <DataDisplay
-                    title="Driver Two Name"
-                    text={formData['Driver Two Name']}
-                  />
-                </div>
+        <div className="py-3.5 gap-2 border-t border-grey-300 dark:border-grey-700 flex justify-between sticky bottom-0 bg-white dark:bg-grey-900 z-10">
+          {error && (
+            <div className="min-h-5 mr-2 self-center">
+              <p className="caption mb-1 text-error-dark">{error}</p>
+            </div>
+          )}
+          {errorState && ( // errors coming from redux toolkit
+            <div className="min-h-5 mr-2 self-center">
+              <p className="caption mb-1 text-error-dark">{errorState}</p>
+            </div>
+          )}
+          <Button
+            id="cancel"
+            type="button"
+            disabled={isSubmitting}
+            onClick={() => {
+              const cancel = confirm('Cancel this entry?');
+              if (cancel) {
+                saveFormValues({}, true); // clears context values
+                router.push('/drivers');
+              } else return;
+            }}
+            variant="outline"
+            intent="default"
+          >
+            Cancel
+          </Button>
 
-                <div className="flex flex-col w-full xl:w-1/2">
-                  <DataDisplay
-                    title="Driver Two License"
-                    text={formData['Driver License']}
-                  />
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-5 xl:flex-row">
-                <div className="flex flex-col w-full xl:w-1/2">
-                  <DataDisplay
-                    title="Driver Two Telephone"
-                    text={formData['Driver Telephone']}
-                  />
-                </div>
-
-                <div className="flex flex-col w-full xl:w-1/2">
-                  <DataDisplay
-                    title="Driver Two Email"
-                    text={formData['Driver Email']}
-                  />
-                </div>
-              </div>
-
-              <div className="flex flex-col self-center w-full">
-                <AddressDisplay
-                  title="Driver Two Address"
-                  addressLine1={formData['Driver Address']}
-                  city={formData['Driver City']}
-                  state={formData['Driver State']}
-                  zip={formData['Driver Zip']}
-                  country={formData['Driver Country']}
-                />
-              </div>
-            </>
-          ) : null}
-
-          <DataDisplay title="Notes" text={formData['Notes']} />
-
-          <div className="py-3.5 gap-2 border-t border-grey-300 dark:border-grey-700 flex justify-between sticky bottom-0 bg-white dark:bg-grey-900 z-10">
-            {error && (
-              <div className="min-h-5 mr-2 self-center">
-                <p className="caption mb-1 text-error-dark">{error}</p>
-              </div>
-            )}
-            {errorState && ( // errors coming from redux toolkit
-              <div className="min-h-5 mr-2 self-center">
-                <p className="caption mb-1 text-error-dark">{errorState}</p>
-              </div>
-            )}
+          <div className="flex justify-end gap-2">
             <Button
-              id="cancel"
               type="button"
+              variant="outline"
+              intent="success"
               disabled={isSubmitting}
               onClick={() => {
-                const cancel = confirm('Cancel this entry?');
-                if (cancel) {
-                  saveFormValues({}, true); // clears context values
-                  router.push('/drivers');
-                } else return;
+                router.back();
               }}
-              variant="outline"
-              intent="default"
             >
-              Cancel
+              Back
             </Button>
-
-            <div className="flex justify-end gap-2">
-              <Button
-                type="button"
-                variant="outline"
-                intent="success"
-                disabled={isSubmitting}
-                onClick={() => {
-                  router.back();
-                }}
-              >
-                Back
-              </Button>
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                onClick={() => {
-                  onSubmit(formData as DriverFormData);
-                  saveFormValues({}, true); // Reset form data after submission
-                  router.push('/drivers');
-                }}
-              >
-                {isSubmitting ? 'Submitting...' : isUpdate ? 'Update' : 'Add'}
-              </Button>
-            </div>
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              onClick={() => {
+                onSubmit(formData as DriverFormData);
+                saveFormValues({}, true); // Reset form data after submission
+                router.push('/drivers');
+              }}
+            >
+              {isSubmitting ? 'Submitting...' : isUpdate ? 'Update' : 'Add'}
+            </Button>
           </div>
         </div>
       </div>
