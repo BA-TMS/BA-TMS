@@ -105,6 +105,10 @@ export const DriverTwoForm = () => {
                 required={true}
               />
             </div>
+
+            <div className="flex flex-col w-full">
+              <TextInput control={control} name="Driver License" />
+            </div>
           </div>
 
           <div className="flex flex-col gap-5 xl:flex-row">
