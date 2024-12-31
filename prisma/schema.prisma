@@ -149,6 +149,7 @@ model Driver {
   name      String
   telephone String
   email     String?
+  address   String?
   country   String
   state     String
   city      String
@@ -174,6 +175,7 @@ model TeamDriver {
   name      String
   telephone String
   email     String?
+  address   String?
   country   String
   state     String
   city      String

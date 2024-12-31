@@ -22,6 +22,7 @@ const driverSchema = yup.object({
   'Driver Name': yup.string().required('Driver Name is required'),
   Telephone: yup.string().required('Telephone is required'),
   Email: yup.string().email('Must use a valid email').nullable(),
+  Address: yup.string().nullable(),
   Country: yup.string().required('Country is required'),
   State: yup.string().required('State is required'),
   City: yup.string().required('City is required'),
@@ -64,6 +65,7 @@ export const DriverForm = () => {
       'Driver Name': '',
       Telephone: '',
       Email: '',
+      Address: '',
       Country: '',
       State: '',
       City: '',
@@ -93,24 +95,6 @@ export const DriverForm = () => {
     },
     [saveFormValues, router, segment, reset, getValues]
   );
-
-  // useEffect(() => {
-  //   if (isSubmitSuccessful) {
-  //     reset({
-  //       Status: '',
-  //       'Driver Name': '',
-  //       Telephone: '',
-  //       Email: '',
-  //       Country: '',
-  //       State: '',
-  //       City: '',
-  //       Zip: '',
-  //       License: '',
-  //       Employer: '',
-  //       Notes: '',
-  //     });
-  //   }
-  // }, [isSubmitSuccessful, reset]);
 
   // keep fields populated when going back from review page
   useEffect(() => {
@@ -163,6 +147,10 @@ export const DriverForm = () => {
             <div className="flex flex-col w-full xl:w-1/2">
               <TextInput control={control} name="Email" />
             </div>
+          </div>
+
+          <div className="w-full">
+            <TextInput control={control} name="Address" />
           </div>
 
           <div className="flex flex-col gap-4 md:flex-row">

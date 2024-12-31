@@ -2,10 +2,12 @@ import { Load } from '@prisma/client';
 
 export interface DriverFormData {
   Status: 'ACTIVE' | 'INACTIVE';
+  Type: 'TEAM' | 'SINGLE';
   'Driver Name': string;
   Telephone: string;
   Email: string | null;
 
+  Address: string | null;
   City: string;
   State: string;
   Zip: string;
@@ -16,14 +18,30 @@ export interface DriverFormData {
   Notes: string | null;
 }
 
+export interface DriverTwoFormData {
+  'Driver Two Name': string;
+  'Driver Telephone': string;
+  'Driver Email': string | null;
+
+  'Driver Address': string | null;
+  'Driver City': string;
+  'Driver State': string;
+  'Driver Zip': string;
+  'Driver Country': string;
+
+  'Driver License': string | null;
+}
+
 export interface DriverData {
   id: string;
   createdAt: Date | string;
   updatedAt: Date | string;
   status: string; // "ACTIVE" | "INACTIVE" ??
+  type: string; // 'SINGLE' | 'TEAM ??
   name: string;
   telephone: string;
   email: string | null;
+  address: string | null;
   country: string;
   state: string;
   city: string;
@@ -31,7 +49,8 @@ export interface DriverData {
   license: string | null;
   notes: string | null;
 
-  // are drivers linked with carriers always/ sometimes/ never?
+  // driverTwo: TeamDriver; ?? optional
+
   employerId: string | null;
   employer: { carrierName: string } | null;
 

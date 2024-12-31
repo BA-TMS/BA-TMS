@@ -15,16 +15,17 @@ import { useRouter, usePathname } from 'next/navigation';
 
 const driverSchema = yup.object({
   'Driver Two Name': yup.string().required('Driver Name is required'),
-  'Driver Two Telephone': yup.string().required('Telephone is required'),
-  'Driver Two Email': yup.string().email('Must use a valid email').nullable(),
-  'Driver Two Country': yup.string().required('Country is required'),
-  'Driver Two State': yup.string().required('State is required'),
-  'Driver Two City': yup.string().required('City is required'),
-  'Driver Two Zip': yup
+  'Driver Telephone': yup.string().required('Telephone is required'),
+  'Driver Email': yup.string().email('Must use a valid email').nullable(),
+  'Driver Address': yup.string().nullable(),
+  'Driver Country': yup.string().required('Country is required'),
+  'Driver State': yup.string().required('State is required'),
+  'Driver City': yup.string().required('City is required'),
+  'Driver Zip': yup
     .string()
     .matches(/^\d{5}$/, 'Zip must be 5 digits')
     .required('Zip Code is required '),
-  'Driver Two License': yup.string().nullable(),
+  'Driver License': yup.string().nullable(),
 });
 
 type Driver = yup.InferType<typeof driverSchema>;
@@ -52,13 +53,14 @@ export const DriverTwoForm = () => {
   } = useForm<Driver>({
     defaultValues: {
       'Driver Two Name': '',
-      'Driver Two Telephone': '',
-      'Driver Two Email': '',
-      'Driver Two Country': '',
-      'Driver Two State': '',
-      'Driver Two City': '',
-      'Driver Two Zip': '',
-      'Driver Two License': '',
+      'Driver Telephone': '',
+      'Driver Email': '',
+      'Driver Address': '',
+      'Driver Country': '',
+      'Driver State': '',
+      'Driver City': '',
+      'Driver Zip': '',
+      'Driver License': '',
     },
     resolver: yupResolver(driverSchema),
   });
@@ -74,24 +76,6 @@ export const DriverTwoForm = () => {
     },
     [saveFormValues, router, segment, reset]
   );
-
-  // useEffect(() => {
-  //   if (isSubmitSuccessful) {
-  //     reset({
-  //       Status: '',
-  //       'Driver Name': '',
-  //       Telephone: '',
-  //       Email: '',
-  //       Country: '',
-  //       State: '',
-  //       City: '',
-  //       Zip: '',
-  //       License: '',
-  //       Employer: '',
-  //       Notes: '',
-  //     });
-  //   }
-  // }, [isSubmitSuccessful, reset]);
 
   // keep fields populated when going back from review page
   useEffect(() => {
@@ -127,43 +111,39 @@ export const DriverTwoForm = () => {
             <div className="flex flex-col w-full xl:w-1/2">
               <TextInput
                 control={control}
-                name="Driver Two Telephone"
+                name="Driver Telephone"
                 required={true}
               />
             </div>
 
             <div className="flex flex-col w-full xl:w-1/2">
-              <TextInput control={control} name="Driver Two Email" />
+              <TextInput control={control} name="Driver Email" />
             </div>
+          </div>
+
+          <div className="w-full">
+            <TextInput control={control} name="Driver Address" />
           </div>
 
           <div className="flex flex-col gap-4 md:flex-row">
             <div className="w-full md:w-1/4">
-              <TextInput
-                control={control}
-                name="Driver Two City"
-                required={true}
-              />
+              <TextInput control={control} name="Driver City" required={true} />
             </div>
             <div className="w-full md:w-1/4">
               <SelectInput
                 control={control}
-                name="State"
+                name="Driver State"
                 options={usStates}
                 required={true}
               />
             </div>
             <div className="w-full md:w-1/4">
-              <TextInput
-                control={control}
-                name="Driver Two Zip"
-                required={true}
-              />
+              <TextInput control={control} name="Driver Zip" required={true} />
             </div>
             <div className="w-full md:w-1/4">
               <TextInput
                 control={control}
-                name="Driver Two Country"
+                name="Driver Country"
                 required={true}
               />
             </div>
@@ -195,9 +175,23 @@ export const DriverTwoForm = () => {
             Cancel
           </Button>
 
-          <Button type="submit" disabled={isSubmitting}>
-            Next
-          </Button>
+          <div className="flex justify-end gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              intent="success"
+              disabled={isSubmitting}
+              onClick={() => {
+                router.back();
+              }}
+            >
+              Back
+            </Button>
+
+            <Button type="submit" disabled={isSubmitting}>
+              Next
+            </Button>
+          </div>
         </div>
       </form>
     </div>
