@@ -4,11 +4,12 @@ import { useEffect, useContext, useState } from 'react';
 import { ModalContext } from '@/context/modalContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
-import { DriverData, DriverFormData } from '@/types/driverTypes';
+import { DriverFormData } from '@/types/driverTypes';
 import Button from '@/components/UI_Elements/Buttons/Button';
 import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 import AddressDisplay from '@/components/UI_Elements/Display/AddressDisplay';
 import { useRouter } from 'next/navigation';
+import { createDriver } from '@/store/slices/driverSlice';
 
 // this component submits form data from the context to database using redux
 
@@ -22,6 +23,7 @@ export const DriverReviewForm = () => {
   const router = useRouter();
 
   const { formData, saveFormValues } = useContext(ModalContext);
+  console.log(formData);
 
   //   const pathname = usePathname();
 
@@ -48,7 +50,7 @@ export const DriverReviewForm = () => {
     if (!isUpdate) {
       try {
         console.log('DRIVER REDUX HERE', driver);
-        // await dispatch(createdriver(driver)).unwrap();
+        await dispatch(createDriver(driver)).unwrap();
       } catch (error) {
         setError(`Error creating driver: ${error}`);
       }
@@ -184,6 +186,7 @@ export const DriverReviewForm = () => {
             ) : null}
 
             <DataDisplay title="Notes" text={formData['Notes']} />
+            <DataDisplay title="Org" text={formData['orgName']} />
           </div>
         </div>
 

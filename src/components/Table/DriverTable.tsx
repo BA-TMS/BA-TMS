@@ -18,10 +18,9 @@ import { DriverData } from '@/types/driverTypes';
 // this is passed to Table
 const columns = [
   { field: 'name', headerName: 'Name' },
-  { field: 'telCountry', headerName: 'Country Code' },
   { field: 'telephone', headerName: 'Phone Number' },
   { field: 'license', headerName: 'License Number' },
-  { field: 'employerId', headerName: 'Employer ID' },
+  { field: 'employer', headerName: 'Employer' },
 ];
 
 export default function Drivers() {

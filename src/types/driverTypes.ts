@@ -16,6 +16,8 @@ export interface DriverFormData {
   License: string | null;
   Employer: string | null;
   Notes: string | null;
+
+  orgName: string;
 }
 
 export interface DriverTwoFormData {

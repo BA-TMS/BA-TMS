@@ -140,11 +140,11 @@ model CarrierInsurance {
 }
 
 model Driver {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  status    Status   @default(ACTIVE)
-  type      DriverType  @default(SINGLE)
+  id        String     @id @default(uuid())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  status    Status     @default(ACTIVE)
+  type      DriverType @default(SINGLE)
 
   name      String
   telephone String
@@ -154,11 +154,11 @@ model Driver {
   state     String
   city      String
   zip       String?
-  license   String?  @unique
+  license   String? @unique
 
-  notes     String?
+  notes String?
 
-  driverTwo   TeamDriver? 
+  driverTwo TeamDriver?
 
   employerId   String?
   employer     Carrier?     @relation(fields: [employerId], references: [id])
@@ -180,10 +180,10 @@ model TeamDriver {
   state     String
   city      String
   zip       String?
-  license   String?  @unique
+  license   String? @unique
 
-  driverId    String? @unique // One-to-one relation with Driver
-  driver      Driver? @relation(fields: [driverId], references: [id])
+  driverId String? @unique // One-to-one relation with Driver
+  driver   Driver? @relation(fields: [driverId], references: [id])
 }
 
 model Customer {
@@ -425,7 +425,7 @@ enum TrailerStatus {
   INACTIVE
 }
 
-enum DriverType{
+enum DriverType {
   SINGLE
   TEAM
 }

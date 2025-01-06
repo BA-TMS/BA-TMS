@@ -1,6 +1,6 @@
 'use server';
 
-import { DocketNumber, PrismaClient } from '@prisma/client';
+import { DocketNumber, PrismaClient, DriverType } from '@prisma/client';
 import { CustomerFormData } from '@/types/customerTypes';
 import { LoadFormData } from '@/types/loadTypes';
 import { CarrierFormData } from '@/types/carrierTypes';
@@ -360,15 +360,42 @@ export async function addCustomer({
 }
 
 export async function addDriver({ driver }: { driver: DriverFormData }) {
+  // find organization based on name
+  const organization = await prisma.organization.findFirst({
+    where: {
+      orgName: driver.orgName,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  // TODO: Better error handling
+  if (organization === null) {
+    throw 'can not create driver';
+  }
+
   const resp = await prisma.driver.create({
     data: {
+      status: driver['Status'],
+      type: driver['Type'] as DriverType,
+
       name: driver['Driver Name'],
-      telCountry: driver['Country Code'],
-      telephone: driver['Phone Number'],
-      license: driver['License Number'],
+      telephone: driver['Telephone'],
+      email: driver['Email'],
+      address: driver['Address'],
+      country: driver['Country'],
+      state: driver['State'],
+      city: driver['City'],
+      zip: driver['Zip'],
+
+      license: driver['License'],
       employerId: driver['Employer'],
-      // notes: carrier['Notes'] || null, // optional field, notes not in table yet
+      orgId: organization.id,
+      // loads: driver['Loads'], // do this functionality
+      notes: driver['Notes'] || null,
     },
+    include: DRIVER_RELATIONS,
   });
   return resp;
 }

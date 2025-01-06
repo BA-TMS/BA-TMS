@@ -51,6 +51,7 @@ export const DriverForm = () => {
 
   const { user } = useContext(UserContext);
   const orgName = user?.user_metadata.org_name;
+  console.log(orgName);
 
   // const isUpdate = formData !== null && formData['id'];
 
@@ -194,6 +195,9 @@ export const DriverForm = () => {
                 required={true}
               />
             </div>
+          </div>
+          <div className="flex flex-col w-full">
+            <TextInput control={control} name="Notes" isTextArea={true} />
           </div>
         </div>
 
