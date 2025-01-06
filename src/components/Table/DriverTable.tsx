@@ -18,6 +18,7 @@ import { DriverData } from '@/types/driverTypes';
 // this is passed to Table
 const columns = [
   { field: 'name', headerName: 'Name' },
+  { field: '', headerName: 'Driver Two Name' },
   { field: 'telephone', headerName: 'Phone Number' },
   { field: 'license', headerName: 'License Number' },
   { field: 'employer', headerName: 'Employer' },

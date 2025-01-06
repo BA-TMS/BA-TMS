@@ -394,6 +394,20 @@ export async function addDriver({ driver }: { driver: DriverFormData }) {
       orgId: organization.id,
       // loads: driver['Loads'], // do this functionality
       notes: driver['Notes'] || null,
+
+      driverTwo: {
+        create: {
+          name: driver['Driver Two Name'],
+          telephone: driver['Driver Telephone'],
+          email: driver['Driver Email'],
+          address: driver['Driver Address'],
+          country: driver['Driver Country'],
+          state: driver['Driver State'],
+          city: driver['Driver City'],
+          zip: driver['Driver Zip'],
+          license: driver['Driver License'],
+        },
+      },
     },
     include: DRIVER_RELATIONS,
   });

@@ -49,7 +49,6 @@ export const DriverReviewForm = () => {
     // if not an update
     if (!isUpdate) {
       try {
-        console.log('DRIVER REDUX HERE', driver);
         await dispatch(createDriver(driver)).unwrap();
       } catch (error) {
         setError(`Error creating driver: ${error}`);

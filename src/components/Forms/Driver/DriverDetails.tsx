@@ -49,9 +49,9 @@ export const DriverForm = () => {
 
   const { formData, saveFormValues } = useContext(ModalContext);
 
+  // orgName because we will need it
   const { user } = useContext(UserContext);
   const orgName = user?.user_metadata.org_name;
-  console.log(orgName);
 
   // const isUpdate = formData !== null && formData['id'];
 
