@@ -2,6 +2,7 @@
 
 import { useEffect, useContext, useCallback } from 'react';
 import { ModalContext } from '@/context/modalContext';
+import { UserContext } from '@/context/userContextProvider';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -48,6 +49,9 @@ export const DriverForm = () => {
 
   const { formData, saveFormValues } = useContext(ModalContext);
 
+  const { user } = useContext(UserContext);
+  const orgName = user?.user_metadata.org_name;
+
   // const isUpdate = formData !== null && formData['id'];
 
   const {
@@ -80,6 +84,9 @@ export const DriverForm = () => {
   // submit the values to the context
   const onSubmit = useCallback(
     (driver: Driver) => {
+      // assigning the organization name
+      saveFormValues({ orgName: orgName });
+
       const type = getValues('Type');
 
       console.log('SUBMITTING DRIVER', driver);
@@ -93,7 +100,7 @@ export const DriverForm = () => {
         router.push(`/drivers/${segment}/team`);
       }
     },
-    [saveFormValues, router, segment, reset, getValues]
+    [saveFormValues, router, segment, reset, getValues, orgName]
   );
 
   // keep fields populated when going back from review page
