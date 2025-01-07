@@ -14,6 +14,7 @@ import SelectInput from '@/components/UI_Elements/Form/SelectInput';
 import Button from '@/components/UI_Elements/Buttons/Button';
 import { getCarriers } from '@/lib/dbActions';
 import { useRouter, usePathname } from 'next/navigation';
+import { driverDataMap } from '@/types/driverTypes';
 
 // this component uses yup and react-hook-form to submit form values to a context
 
@@ -33,7 +34,7 @@ const driverSchema = yup.object({
     .required('Zip Code is required '),
   License: yup.string().nullable(),
   Employer: yup.string().required('Must assign to carrier'),
-  Notes: yup.string().max(250, 'Must be under 250 characters'),
+  Notes: yup.string().max(250, 'Must be under 250 characters').nullable(),
 });
 
 type Driver = yup.InferType<typeof driverSchema>;
@@ -49,11 +50,13 @@ export const DriverForm = () => {
 
   const { formData, saveFormValues } = useContext(ModalContext);
 
+  console.log('form data', formData);
+
   // orgName because we will need it
   const { user } = useContext(UserContext);
   const orgName = user?.user_metadata.org_name;
 
-  // const isUpdate = formData !== null && formData['id'];
+  const isUpdate = formData !== null && formData['id'];
 
   const {
     handleSubmit,
@@ -103,6 +106,15 @@ export const DriverForm = () => {
     },
     [saveFormValues, router, segment, reset, getValues, orgName]
   );
+
+  // map the fields if is an update
+  useEffect(() => {
+    if (isUpdate) {
+      Object.keys(driverDataMap).forEach((formField) => {
+        setValue(formField as keyof Driver, formData[driverDataMap[formField]]);
+      });
+    }
+  }, [formData, setValue, isUpdate]);
 
   // keep fields populated when going back from review page
   useEffect(() => {

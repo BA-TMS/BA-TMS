@@ -115,6 +115,16 @@ export async function getCustomers() {
   return customers;
 }
 
+export async function getDriver(id: string) {
+  const driver = await prisma.driver.findUnique({
+    where: {
+      id: id,
+    },
+    include: DRIVER_RELATIONS,
+  });
+  return driver;
+}
+
 export async function getDrivers(organization: string) {
   const drivers = await prisma.driver.findMany({
     where: {

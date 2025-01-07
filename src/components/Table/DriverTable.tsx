@@ -3,7 +3,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
-// import { ModalContext } from '@/context/modalContext';
+import { ModalContext } from '@/context/modalContext';
 import { UserContext } from '@/context/userContextProvider';
 import Table from '../UI_Elements/Table/Table';
 import TableSkeleton from '../UI_Elements/Table/TableSkeleton';
@@ -11,7 +11,7 @@ import TableHeaderBlank from '../UI_Elements/Table/TableHeaderBlank';
 import { TableSearch } from '../UI_Elements/Table/TableSearch';
 import Button from '../UI_Elements/Buttons/Button';
 import Link from 'next/link';
-// import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { fetchDrivers } from '@/store/slices/driverSlice';
 import { DriverData } from '@/types/driverTypes';
 
@@ -30,7 +30,7 @@ export default function Drivers() {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  // const router = useRouter();
+  const router = useRouter();
 
   const { user } = useContext(UserContext);
 
@@ -42,7 +42,7 @@ export default function Drivers() {
     // error,
   } = useSelector((state: RootState) => state.drivers);
 
-  // const { saveFormValues } = useContext(ModalContext);
+  const { saveFormValues } = useContext(ModalContext);
 
   // search
   function handleSearch(drivers: DriverData[], value: string, status: string) {
@@ -85,6 +85,19 @@ export default function Drivers() {
     setSearchField(field);
   }
 
+  // update driver
+  // this could probably be refactored more
+  const updateDriver = (id: string) => {
+    const data = drivers.find((driver) => driver.id === id); // select from redux
+
+    if (data) {
+      saveFormValues(data);
+      router.push('/drivers/update-driver/details');
+    } else {
+      console.error('Driver not found with ID:', id);
+    }
+  };
+
   useEffect(() => {
     dispatch(fetchDrivers(orgName));
   }, [dispatch, orgName]);
@@ -120,8 +133,8 @@ export default function Drivers() {
         <Table
           columns={columns}
           data={filteredValue}
-          update={() => null}
-          // view={'/carriers/view/'}
+          update={updateDriver}
+          view={'/drivers/view/'}
         />
       )}
     </>

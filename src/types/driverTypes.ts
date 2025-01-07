@@ -78,3 +78,36 @@ export interface TeamDriver {
   zip: string | null;
   license: string | null;
 }
+
+// mapping object
+export const driverDataMap: Record<string, keyof DriverData> = {
+  Status: 'status',
+  Type: 'type',
+  'Driver Name': 'name',
+  Telephone: 'telephone',
+  Email: 'email',
+
+  Address: 'address',
+  City: 'city',
+  State: 'state',
+  Zip: 'zip',
+  Country: 'country',
+
+  License: 'license',
+  Employer: 'employer',
+  Notes: 'notes',
+};
+
+// // driver two information is optional
+// // this is if there is a driver team
+// 'Driver Two Name': string;
+// 'Driver Telephone': string;
+// 'Driver Email': string | null;
+
+// 'Driver Address': string | null;
+// 'Driver City': string;
+// 'Driver State': string;
+// 'Driver Zip': string | null;
+// 'Driver Country': string;
+
+// 'Driver License': string | null;
