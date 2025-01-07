@@ -185,21 +185,10 @@ export const DriverReviewForm = () => {
             ) : null}
 
             <DataDisplay title="Notes" text={formData['Notes']} />
-            <DataDisplay title="Org" text={formData['orgName']} />
           </div>
         </div>
 
         <div className="py-3.5 gap-2 border-t border-grey-300 dark:border-grey-700 flex justify-between sticky bottom-0 bg-white dark:bg-grey-900 z-10">
-          {error && (
-            <div className="min-h-5 mr-2 self-center">
-              <p className="caption mb-1 text-error-dark">{error}</p>
-            </div>
-          )}
-          {errorState && ( // errors coming from redux toolkit
-            <div className="min-h-5 mr-2 self-center">
-              <p className="caption mb-1 text-error-dark">{errorState}</p>
-            </div>
-          )}
           <Button
             id="cancel"
             type="button"
@@ -216,6 +205,17 @@ export const DriverReviewForm = () => {
           >
             Cancel
           </Button>
+
+          {error && (
+            <div className="min-h-5 mr-2 self-center">
+              <p className="caption mb-1 text-error-dark">{error}</p>
+            </div>
+          )}
+          {errorState && ( // errors coming from redux toolkit
+            <div className="min-h-5 mr-2 self-center">
+              <p className="caption mb-1 text-error-dark">{errorState}</p>
+            </div>
+          )}
 
           <div className="flex justify-end gap-2">
             <Button

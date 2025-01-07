@@ -68,7 +68,7 @@ export const DriverTwoForm = () => {
   // submit the values to the context
   const onSubmit = useCallback(
     (driver: Driver) => {
-      console.log('SUBMITTING DRIVER', driver);
+      console.log('SUBMITTING DRIVER TWO', driver);
       saveFormValues(driver);
       reset();
 

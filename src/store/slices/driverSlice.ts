@@ -39,6 +39,7 @@ export const createDriver = createAsyncThunk<DriverData, DriverFormData>(
 
       return formatron(response as DriverData);
     } catch (error) {
+      console.log(error);
       return rejectWithValue('Failed to create driver');
     }
   }

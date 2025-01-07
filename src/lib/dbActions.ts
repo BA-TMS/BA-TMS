@@ -375,43 +375,71 @@ export async function addDriver({ driver }: { driver: DriverFormData }) {
     throw 'can not create driver';
   }
 
-  const resp = await prisma.driver.create({
-    data: {
-      status: driver['Status'],
-      type: driver['Type'] as DriverType,
+  if (driver['Type'] === 'TEAM') {
+    const resp = await prisma.driver.create({
+      data: {
+        status: driver['Status'],
+        type: driver['Type'] as DriverType,
 
-      name: driver['Driver Name'],
-      telephone: driver['Telephone'],
-      email: driver['Email'],
-      address: driver['Address'],
-      country: driver['Country'],
-      state: driver['State'],
-      city: driver['City'],
-      zip: driver['Zip'],
+        name: driver['Driver Name'],
+        telephone: driver['Telephone'],
+        email: driver['Email'],
+        address: driver['Address'],
+        country: driver['Country'],
+        state: driver['State'],
+        city: driver['City'],
+        zip: driver['Zip'],
 
-      license: driver['License'],
-      employerId: driver['Employer'],
-      orgId: organization.id,
-      // loads: driver['Loads'], // do this functionality
-      notes: driver['Notes'] || null,
+        license: driver['License'],
+        employerId: driver['Employer'],
+        orgId: organization.id,
+        // loads: driver['Loads'], // do this functionality
+        notes: driver['Notes'] || null,
 
-      driverTwo: {
-        create: {
-          name: driver['Driver Two Name'],
-          telephone: driver['Driver Telephone'],
-          email: driver['Driver Email'],
-          address: driver['Driver Address'],
-          country: driver['Driver Country'],
-          state: driver['Driver State'],
-          city: driver['Driver City'],
-          zip: driver['Driver Zip'],
-          license: driver['Driver License'],
+        driverTwo: {
+          create: {
+            name: driver['Driver Two Name'],
+            telephone: driver['Driver Telephone'],
+            email: driver['Driver Email'],
+            address: driver['Driver Address'],
+            country: driver['Driver Country'],
+            state: driver['Driver State'],
+            city: driver['Driver City'],
+            zip: driver['Driver Zip'],
+            license: driver['Driver License'],
+          },
         },
       },
-    },
-    include: DRIVER_RELATIONS,
-  });
-  return resp;
+      include: DRIVER_RELATIONS,
+    });
+    return resp;
+  } else {
+    const resp = await prisma.driver.create({
+      data: {
+        status: driver['Status'],
+        type: driver['Type'] as DriverType,
+
+        name: driver['Driver Name'],
+        telephone: driver['Telephone'],
+        email: driver['Email'],
+        address: driver['Address'],
+        country: driver['Country'],
+        state: driver['State'],
+        city: driver['City'],
+        zip: driver['Zip'],
+
+        license: driver['License'],
+        employerId: driver['Employer'],
+        orgId: organization.id,
+        // loads: driver['Loads'], // do this functionality
+        notes: driver['Notes'] || null,
+
+        driverTwo: undefined,
+      },
+      include: DRIVER_RELATIONS,
+    });
+    return resp;
+  }
 }
 
 export async function addFactoringCo({ factor }: { factor: FactorFormData }) {
