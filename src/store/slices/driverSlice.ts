@@ -25,8 +25,6 @@ export const fetchDrivers = createAsyncThunk<DriverData[], string>(
   async (orgName) => {
     const data = await getDrivers(orgName);
 
-    console.log('DATA', data);
-
     return data.map((driver) => formatron(driver as DriverData));
   }
 );

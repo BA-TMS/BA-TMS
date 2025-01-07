@@ -136,7 +136,7 @@ model CarrierInsurance {
   fmcsaType           String
   fmcsaCoverage       String
   fmcsaTelephone      String?
-  carrier             Carrier   @relation(fields: [carrierId], references: [id])
+  carrier             Carrier   @relation(fields: [carrierId], references: [id], onDelete: Cascade)
 }
 
 model Driver {
@@ -154,7 +154,7 @@ model Driver {
   state     String
   city      String
   zip       String?
-  license   String? @unique
+  license   String? 
 
   notes String?
 
@@ -180,10 +180,10 @@ model TeamDriver {
   state     String
   city      String
   zip       String?
-  license   String? @unique
+  license   String? 
 
   driverId String? @unique // One-to-one relation with Driver
-  driver   Driver? @relation(fields: [driverId], references: [id])
+  driver   Driver? @relation(fields: [driverId], references: [id], onDelete: Cascade)
 }
 
 model Customer {
