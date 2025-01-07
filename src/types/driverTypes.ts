@@ -98,16 +98,14 @@ export const driverDataMap: Record<string, keyof DriverData> = {
   Notes: 'notes',
 };
 
-// // driver two information is optional
-// // this is if there is a driver team
-// 'Driver Two Name': string;
-// 'Driver Telephone': string;
-// 'Driver Email': string | null;
-
-// 'Driver Address': string | null;
-// 'Driver City': string;
-// 'Driver State': string;
-// 'Driver Zip': string | null;
-// 'Driver Country': string;
-
-// 'Driver License': string | null;
+export const teamDriverDataMap: Record<string, keyof TeamDriver> = {
+  'Driver Two Name': 'name',
+  'Driver Telephone': 'telephone',
+  'Driver Email': 'email',
+  'Driver Address': 'address',
+  'Driver City': 'city',
+  'Driver State': 'state',
+  'Driver Zip': 'zip',
+  'Driver Country': 'country',
+  'Driver License': 'license',
+};

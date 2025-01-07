@@ -10,6 +10,7 @@ import TextInput from '@ui/Form/TextInput';
 import SelectInput from '@/components/UI_Elements/Form/SelectInput';
 import Button from '@/components/UI_Elements/Buttons/Button';
 import { useRouter, usePathname } from 'next/navigation';
+import { teamDriverDataMap } from '@/types/driverTypes';
 
 // this component uses yup and react-hook-form to submit form values to a context
 
@@ -41,7 +42,7 @@ export const DriverTwoForm = () => {
 
   const { formData, saveFormValues } = useContext(ModalContext);
 
-  // const isUpdate = formData !== null && formData['id'];
+  const isUpdate = formData !== null && formData['id'];
 
   const {
     handleSubmit,
@@ -85,6 +86,20 @@ export const DriverTwoForm = () => {
       });
     }
   }, [formData, setValue]);
+
+  // map the fields if is an update
+  useEffect(() => {
+    if (isUpdate) {
+      const driverTwo = formData.driverTwo;
+
+      Object.keys(teamDriverDataMap).forEach((formField) => {
+        setValue(
+          formField as keyof Driver,
+          driverTwo[teamDriverDataMap[formField]]
+        );
+      });
+    }
+  }, [formData, setValue, isUpdate]);
 
   return (
     <div className="flex flex-col h-full">

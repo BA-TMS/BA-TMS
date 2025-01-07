@@ -17,6 +17,17 @@ const formatron = function (driver: DriverData) {
       driver.updatedAt instanceof Date ? driver.updatedAt.toDateString() : null,
     organization: driver.organization.orgName,
     employer: driver.employer ? driver.employer.carrierName : null,
+    driverTwo: {
+      ...driver.driverTwo,
+      createdAt:
+        driver.driverTwo?.createdAt instanceof Date
+          ? driver.driverTwo.createdAt.toDateString()
+          : null,
+      updatedAt:
+        driver.driverTwo?.updatedAt instanceof Date
+          ? driver.driverTwo.updatedAt.toDateString()
+          : null,
+    },
   } as unknown as DriverData;
 };
 

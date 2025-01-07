@@ -39,7 +39,7 @@ const DRIVER_RELATIONS = {
   organization: { select: { orgName: true } },
   // loads: { select: true }, // will need to handle load relations
   employer: { select: { carrierName: true } },
-  driverTwo: { select: { name: true } },
+  driverTwo: true,
 };
 
 // Generic type for Prisma model
