@@ -3,7 +3,7 @@
 import Modal from '@ui/Modal/Modal';
 import DriverReviewForm from '@/components/Forms/Driver/DriverReview';
 
-export default function UpdateDriverReview() {
+export default function UpdateDriverReviewModal() {
   return (
     <Modal title="Update Driver">
       <DriverReviewForm />
