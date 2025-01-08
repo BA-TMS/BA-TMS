@@ -1,6 +1,6 @@
 'use Client';
 
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { ModalContext } from '@/context/modalContext';
 import { useRouter } from 'next/navigation';
 import { DriverData } from '@/types/driverTypes';
@@ -16,6 +16,8 @@ interface ViewDriverProps {
 
 const ViewDriver = ({ data }: ViewDriverProps) => {
   const router = useRouter();
+
+  const [isTeam, setIsTeam] = useState<boolean>(false);
 
   const { saveFormValues } = useContext(ModalContext);
 
@@ -41,8 +43,16 @@ const ViewDriver = ({ data }: ViewDriverProps) => {
     );
   }
 
+  // if this is a team
+  useEffect(() => {
+    if (data['type'] === 'TEAM') {
+      setIsTeam(true);
+    }
+  }, [data]);
+
   return (
     <div className="py-4 flex flex-col">
+      {/* Driver One */}
       <div className="flex flex-col gap-4 md:flex-row">
         <div className="w-full md:w-1/4">
           <DataDisplay title="Status" text={data['status']} />
@@ -84,6 +94,53 @@ const ViewDriver = ({ data }: ViewDriverProps) => {
           country={data['country']}
         />
       </div>
+
+      {/* Driver Two */}
+      {isTeam ? (
+        <>
+          <div className="flex flex-col gap-5 xl:flex-row">
+            <div className="w-full">
+              <DataDisplay
+                title="Driver Two Name"
+                text={data['driverTwo']?.name}
+              />
+            </div>
+            <div className="w-full md:w-1/2">
+              <DataDisplay
+                title="Driver Two License"
+                text={data['driverTwo']?.license}
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-5 xl:flex-row">
+            <div className="flex flex-col w-full xl:w-1/2">
+              <DataDisplay
+                title="Driver Two Telephone"
+                text={data['driverTwo']?.telephone}
+              />
+            </div>
+
+            <div className="flex flex-col w-full xl:w-1/2">
+              <DataDisplay
+                title="Driver Two Email"
+                text={data['driverTwo']?.email}
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-col self-center w-full">
+            <AddressDisplay
+              title={'Driver Two Address'}
+              addressLine1={data['driverTwo']?.address as string}
+              city={data['driverTwo']?.city as string}
+              state={data['driverTwo']?.state as string}
+              zip={data['driverTwo']?.zip as string}
+              country={data['driverTwo']?.country as string}
+            />
+          </div>
+        </>
+      ) : null}
 
       <DataDisplay title="Notes" text={data['notes']} />
 
