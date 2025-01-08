@@ -10,6 +10,8 @@ import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 import AddressDisplay from '@/components/UI_Elements/Display/AddressDisplay';
 import { useRouter } from 'next/navigation';
 import { createDriver, updateDriver } from '@/store/slices/driverSlice';
+import { CarrierData } from '@/types/carrierTypes';
+import { getCarrier, getFactor } from '@/lib/dbActions';
 
 // this component submits form data from the context to database using redux
 
@@ -29,10 +31,28 @@ export const DriverReviewForm = () => {
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [isTeam, setIsTeam] = useState<boolean>(false);
 
-  // change this to carrier name for employer
-  // const [factor, setFactor] = useState<string | undefined>(''); // carrier name
+  // get the name of the employer (carrier)
+  const [employer, setEmployer] = useState<string | undefined>(''); // carrier name
 
-  // const factorId = formData['Factoring Company'];
+  const employerId = formData['Employer'];
+
+  // fetch carrier name when component mounts
+  useEffect(() => {
+    const fetchCarrier = async () => {
+      const employer = await getCarrier(employerId);
+      setEmployer(employer?.carrierName);
+    };
+
+    fetchCarrier();
+  }, [employerId]);
+
+  // use the id to pull from redux
+  // we could do it this way if we could guarantee carrier information would be in global state
+  // const employer = useSelector((state: RootState) =>
+  //   state.carriers.items.find(
+  //     (carrier: CarrierData) => carrier.id === formData['Employer']
+  //   )
+  // );
 
   // submit the values to redux
   const onSubmit = async (driver: DriverFormData) => {
@@ -94,7 +114,7 @@ export const DriverReviewForm = () => {
             <div className="flex flex-col w-full">
               <DataDisplay
                 title="Employer"
-                text={formData['Employer']} // get the name not the id
+                text={employer} // get the name not the id
               />
             </div>
           </div>
