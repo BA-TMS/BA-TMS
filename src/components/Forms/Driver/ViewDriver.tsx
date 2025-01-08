@@ -51,8 +51,8 @@ const ViewDriver = ({ data }: ViewDriverProps) => {
   }, [data]);
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex flex-col justify-between flex-grow">
+    <div className="pt-4 flex flex-col h-full">
+      <div className="flex flex-col flex-grow">
         {/* Driver One */}
         <div className="flex flex-col gap-4 md:flex-row">
           <div className="w-full md:w-1/4">
@@ -94,79 +94,79 @@ const ViewDriver = ({ data }: ViewDriverProps) => {
             zip={data['zip']}
             country={data['country']}
           />
+
+          {/* Driver Two */}
+          {isTeam ? (
+            <>
+              <div className="flex flex-col gap-5 xl:flex-row">
+                <div className="w-full">
+                  <DataDisplay
+                    title="Driver Two Name"
+                    text={data['driverTwo']?.name}
+                  />
+                </div>
+                <div className="w-full md:w-1/2">
+                  <DataDisplay
+                    title="Driver Two License"
+                    text={data['driverTwo']?.license}
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-5 xl:flex-row">
+                <div className="flex flex-col w-full xl:w-1/2">
+                  <DataDisplay
+                    title="Driver Two Telephone"
+                    text={data['driverTwo']?.telephone}
+                  />
+                </div>
+
+                <div className="flex flex-col w-full xl:w-1/2">
+                  <DataDisplay
+                    title="Driver Two Email"
+                    text={data['driverTwo']?.email}
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-col self-center w-full">
+                <AddressDisplay
+                  title={'Driver Two Address'}
+                  addressLine1={data['driverTwo']?.address as string}
+                  city={data['driverTwo']?.city as string}
+                  state={data['driverTwo']?.state as string}
+                  zip={data['driverTwo']?.zip as string}
+                  country={data['driverTwo']?.country as string}
+                />
+              </div>
+            </>
+          ) : null}
+
+          <DataDisplay title="Notes" text={data['notes']} />
         </div>
+      </div>
 
-        {/* Driver Two */}
-        {isTeam ? (
-          <>
-            <div className="flex flex-col gap-5 xl:flex-row">
-              <div className="w-full">
-                <DataDisplay
-                  title="Driver Two Name"
-                  text={data['driverTwo']?.name}
-                />
-              </div>
-              <div className="w-full md:w-1/2">
-                <DataDisplay
-                  title="Driver Two License"
-                  text={data['driverTwo']?.license}
-                />
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-5 xl:flex-row">
-              <div className="flex flex-col w-full xl:w-1/2">
-                <DataDisplay
-                  title="Driver Two Telephone"
-                  text={data['driverTwo']?.telephone}
-                />
-              </div>
-
-              <div className="flex flex-col w-full xl:w-1/2">
-                <DataDisplay
-                  title="Driver Two Email"
-                  text={data['driverTwo']?.email}
-                />
-              </div>
-            </div>
-
-            <div className="flex flex-col self-center w-full">
-              <AddressDisplay
-                title={'Driver Two Address'}
-                addressLine1={data['driverTwo']?.address as string}
-                city={data['driverTwo']?.city as string}
-                state={data['driverTwo']?.state as string}
-                zip={data['driverTwo']?.zip as string}
-                country={data['driverTwo']?.country as string}
-              />
-            </div>
-          </>
-        ) : null}
-
-        <DataDisplay title="Notes" text={data['notes']} />
-
-        <div className="py-3.5 gap-2 border-t border-grey-300 dark:border-grey-700 flex justify-between bottom-0 bg-white dark:bg-grey-900 z-10">
-          <Button
-            type="button"
-            variant="outline"
-            intent="default"
-            onClick={() => {
-              // send data to context
-              saveFormValues(data);
-              router.push('/drivers/update-driver/details');
-            }}
-          >
-            Edit
-          </Button>
-          <Button
-            type="button"
-            onClick={() => {
-              router.back();
-            }}
-          >
-            Ok
-          </Button>
-        </div>
+      <div className="py-3.5 gap-2 border-t border-grey-300 dark:border-grey-700 flex justify-between sticky bottom-0 bg-white dark:bg-grey-900 z-10">
+        <Button
+          type="button"
+          variant="outline"
+          intent="default"
+          onClick={() => {
+            // send data to context
+            saveFormValues(data);
+            router.push('/drivers/update-driver/details');
+          }}
+        >
+          Edit
+        </Button>
+        <Button
+          type="button"
+          onClick={() => {
+            router.back();
+          }}
+        >
+          Ok
+        </Button>
       </div>
     </div>
   );
