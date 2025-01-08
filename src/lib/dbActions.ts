@@ -739,6 +739,8 @@ export async function updateDriver(
     throw 'Can not update driver';
   }
 
+  // if type is single
+
   const resp = await prisma.driver.update({
     where: { id: id },
     data: {
@@ -759,32 +761,37 @@ export async function updateDriver(
       employerId: driver['Employer'],
       notes: driver['Notes'],
 
-      driverTwo: {
-        upsert: {
-          create: {
-            name: driver['Driver Two Name'],
-            telephone: driver['Driver Telephone'],
-            email: driver['Driver Email'],
-            address: driver['Driver Address'],
-            country: driver['Driver Country'],
-            state: driver['Driver State'],
-            city: driver['Driver City'],
-            zip: driver['Driver Zip'],
-            license: driver['Driver License'],
-          },
-          update: {
-            name: driver['Driver Two Name'],
-            telephone: driver['Driver Telephone'],
-            email: driver['Driver Email'],
-            address: driver['Driver Address'],
-            country: driver['Driver Country'],
-            state: driver['Driver State'],
-            city: driver['Driver City'],
-            zip: driver['Driver Zip'],
-            license: driver['Driver License'],
-          },
-        },
-      },
+      // changing driver type from team to single
+      // the formatting is weird on this
+      driverTwo:
+        driver['Type'] === 'SINGLE'
+          ? { delete: true }
+          : {
+              upsert: {
+                create: {
+                  name: driver['Driver Two Name'],
+                  telephone: driver['Driver Telephone'],
+                  email: driver['Driver Email'],
+                  address: driver['Driver Address'],
+                  country: driver['Driver Country'],
+                  state: driver['Driver State'],
+                  city: driver['Driver City'],
+                  zip: driver['Driver Zip'],
+                  license: driver['Driver License'],
+                },
+                update: {
+                  name: driver['Driver Two Name'],
+                  telephone: driver['Driver Telephone'],
+                  email: driver['Driver Email'],
+                  address: driver['Driver Address'],
+                  country: driver['Driver Country'],
+                  state: driver['Driver State'],
+                  city: driver['Driver City'],
+                  zip: driver['Driver Zip'],
+                  license: driver['Driver License'],
+                },
+              },
+            },
     },
     include: DRIVER_RELATIONS,
   });

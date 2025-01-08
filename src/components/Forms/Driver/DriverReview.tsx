@@ -48,7 +48,6 @@ export const DriverReviewForm = () => {
       }
     } else {
       try {
-        console.log('UPDATE DRIVER', driver);
         await dispatch(
           updateDriver({
             id: formData['id'],
