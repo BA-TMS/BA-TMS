@@ -4,12 +4,12 @@ import { useEffect, useContext, useState } from 'react';
 import { ModalContext } from '@/context/modalContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
-import { DriverFormData } from '@/types/driverTypes';
+import { DriverData, DriverFormData } from '@/types/driverTypes';
 import Button from '@/components/UI_Elements/Buttons/Button';
 import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 import AddressDisplay from '@/components/UI_Elements/Display/AddressDisplay';
 import { useRouter } from 'next/navigation';
-import { createDriver } from '@/store/slices/driverSlice';
+import { createDriver, updateDriver } from '@/store/slices/driverSlice';
 
 // this component submits form data from the context to database using redux
 
@@ -23,13 +23,6 @@ export const DriverReviewForm = () => {
   const router = useRouter();
 
   const { formData, saveFormValues } = useContext(ModalContext);
-  console.log(formData);
-
-  //   const pathname = usePathname();
-
-  //   const segment = pathname.includes('add-driver')
-  //     ? 'add-driver'
-  //     : 'update-driver';
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -37,9 +30,9 @@ export const DriverReviewForm = () => {
   const [isTeam, setIsTeam] = useState<boolean>(false);
 
   // change this to carrier name for employer
-  //   const [factor, setFactor] = useState<string | undefined>(''); // carrier name
+  // const [factor, setFactor] = useState<string | undefined>(''); // carrier name
 
-  //   const factorId = formData['Factoring Company'];
+  // const factorId = formData['Factoring Company'];
 
   // submit the values to redux
   const onSubmit = async (driver: DriverFormData) => {
@@ -56,12 +49,12 @@ export const DriverReviewForm = () => {
     } else {
       try {
         console.log('UPDATE DRIVER', driver);
-        // await dispatch(
-        //   updatedriver({
-        //     id: formData['id'],
-        //     updateddriver: driver as Partial<DriverData>, // check type
-        //   })
-        // ).unwrap();
+        await dispatch(
+          updateDriver({
+            id: formData['id'],
+            updatedDriver: driver as Partial<DriverData>,
+          })
+        ).unwrap();
       } catch (error) {
         setError(`Error updating driver: ${error}`);
       }
@@ -70,11 +63,11 @@ export const DriverReviewForm = () => {
   };
 
   // if this is an update
-  //   useEffect(() => {
-  //     if (formData !== null && formData['id']) {
-  //       setIsUpdate(true);
-  //     }
-  //   }, [formData]);
+  useEffect(() => {
+    if (formData !== null && formData['id']) {
+      setIsUpdate(true);
+    }
+  }, [formData]);
 
   // if this is a team
   useEffect(() => {

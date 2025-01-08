@@ -721,10 +721,60 @@ export async function updateCustomer(
 }
 
 export async function updateDriver(
-  id: number,
-  { formData }: { formData: Partial<DriverFormData> }
+  id: string,
+  { driver }: { driver: DriverFormData }
 ) {
-  const resp = updater(prisma.driver, id, formData);
+  // find organization based on name
+  const organization = await prisma.organization.findFirst({
+    where: {
+      orgName: driver.orgName,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  // TODO: Better error handling
+  if (organization === null) {
+    throw 'Can not update driver';
+  }
+
+  const resp = await prisma.driver.update({
+    where: { id: id },
+    data: {
+      status: driver['Status'],
+      type: driver['Type'],
+
+      name: driver['Driver Name'],
+      telephone: driver['Telephone'],
+      email: driver['Email'],
+      address: driver['Address'],
+      city: driver['City'],
+      state: driver['State'],
+      country: driver['Country'],
+      zip: driver['Zip'],
+      license: driver['License'],
+      // loads: driver['Loads'],
+      orgId: organization.id,
+      employerId: driver['Employer'],
+      notes: driver['Notes'],
+
+      driverTwo: {
+        update: {
+          name: driver['Driver Two Name'],
+          telephone: driver['Driver Telephone'],
+          email: driver['Driver Email'],
+          address: driver['Driver Address'],
+          country: driver['Driver Country'],
+          state: driver['Driver State'],
+          city: driver['Driver City'],
+          zip: driver['Driver Zip'],
+          license: driver['Driver License'],
+        },
+      },
+    },
+    include: DRIVER_RELATIONS,
+  });
   return resp;
 }
 

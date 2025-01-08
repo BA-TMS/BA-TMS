@@ -94,7 +94,7 @@ export const driverDataMap: Record<string, keyof DriverData> = {
   Country: 'country',
 
   License: 'license',
-  Employer: 'employer',
+  Employer: 'employerId',
   Notes: 'notes',
 };
 

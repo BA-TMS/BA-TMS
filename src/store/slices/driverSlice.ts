@@ -1,6 +1,15 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { getDrivers, addDriver } from '@/lib/dbActions';
+import {
+  getDrivers,
+  addDriver,
+  updateDriver as apiUpdateDriver,
+} from '@/lib/dbActions';
 import { DriverFormData, DriverData } from '@/types/driverTypes';
+
+interface UpdatedDriverPayload {
+  id: string;
+  updatedDriver: Partial<DriverData>;
+}
 
 interface DriverState {
   items: DriverData[];
@@ -54,6 +63,21 @@ export const createDriver = createAsyncThunk<DriverData, DriverFormData>(
   }
 );
 
+export const updateDriver = createAsyncThunk<DriverData, UpdatedDriverPayload>(
+  'drivers/updateDriverr',
+  async ({ id, updatedDriver }: UpdatedDriverPayload, { rejectWithValue }) => {
+    try {
+      const response = await apiUpdateDriver(id, {
+        driver: updatedDriver as DriverFormData,
+      });
+
+      return formatron(response as DriverData);
+    } catch (error) {
+      return rejectWithValue('Failed to update driver');
+    }
+  }
+);
+
 const driverSlice = createSlice({
   name: 'drivers',
   initialState: <DriverState>{
@@ -79,6 +103,22 @@ const driverSlice = createSlice({
         state.items.push(action.payload);
       })
       .addCase(createDriver.rejected, (state, action) => {
+        const message = action.payload;
+        state.status = 'failed';
+        state.error = message as string;
+      })
+      .addCase(
+        updateDriver.fulfilled,
+        (state, action: PayloadAction<DriverData>) => {
+          const index = state.items.findIndex(
+            (driver) => driver.id === action.payload.id
+          );
+          if (index !== -1) {
+            state.items[index] = action.payload;
+          }
+        }
+      )
+      .addCase(updateDriver.rejected, (state, action) => {
         const message = action.payload;
         state.status = 'failed';
         state.error = message as string;
