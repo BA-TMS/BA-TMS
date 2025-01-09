@@ -42,7 +42,7 @@ export const DriverTwoForm = () => {
 
   const { formData, saveFormValues } = useContext(ModalContext);
 
-  const isUpdate = formData !== null && formData['id'];
+  const isUpdate = formData.driverTwo !== null;
 
   const {
     handleSubmit,
@@ -89,7 +89,7 @@ export const DriverTwoForm = () => {
 
   // map the fields if is an update
   useEffect(() => {
-    if (isUpdate) {
+    if (isUpdate && formData.driverTwo) {
       const driverTwo = formData.driverTwo;
 
       Object.keys(teamDriverDataMap).forEach((formField) => {
