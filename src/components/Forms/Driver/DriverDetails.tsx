@@ -91,7 +91,6 @@ export const DriverForm = () => {
 
       const type = getValues('Type');
 
-      console.log('SUBMITTING DRIVER DETAILS', driver);
       saveFormValues(driver);
       reset();
 

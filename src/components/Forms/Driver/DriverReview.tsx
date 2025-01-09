@@ -5,13 +5,13 @@ import { ModalContext } from '@/context/modalContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
 import { DriverData, DriverFormData } from '@/types/driverTypes';
+import Loader from '@/components/UI_Elements/PageLoader';
 import Button from '@/components/UI_Elements/Buttons/Button';
 import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 import AddressDisplay from '@/components/UI_Elements/Display/AddressDisplay';
 import { useRouter } from 'next/navigation';
 import { createDriver, updateDriver } from '@/store/slices/driverSlice';
-import { CarrierData } from '@/types/carrierTypes';
-import { getCarrier, getFactor } from '@/lib/dbActions';
+import { getCarrier } from '@/lib/dbActions';
 
 // this component submits form data from the context to database using redux
 
@@ -30,21 +30,23 @@ export const DriverReviewForm = () => {
   const [error, setError] = useState<string | null>(null);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [isTeam, setIsTeam] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   // get the name of the employer (carrier)
   const [employer, setEmployer] = useState<string | undefined>(''); // carrier name
 
-  const employerId = formData['Employer'];
-
   // fetch carrier name when component mounts
   useEffect(() => {
+    const employerId = formData['Employer'];
+
     const fetchCarrier = async () => {
       const employer = await getCarrier(employerId);
       setEmployer(employer?.carrierName);
+      setLoading(false);
     };
 
     fetchCarrier();
-  }, [employerId]);
+  }, [employer]);
 
   // use the id to pull from redux
   // we could do it this way if we could guarantee carrier information would be in global state
@@ -94,6 +96,14 @@ export const DriverReviewForm = () => {
       setIsTeam(true);
     }
   }, [formData]);
+
+  if (loading) {
+    return (
+      <div className="flex flex-col h-full">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col h-full">

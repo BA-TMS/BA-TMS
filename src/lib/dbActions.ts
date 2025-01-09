@@ -765,7 +765,7 @@ export async function updateDriver(
       // the formatting is weird on this
       driverTwo:
         driver['Type'] === 'SINGLE'
-          ? { delete: true }
+          ? { delete: driver['Driver Two Name'] ? true : undefined } // if there was a driverTwo, delete
           : {
               upsert: {
                 create: {
