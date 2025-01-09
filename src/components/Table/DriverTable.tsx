@@ -46,7 +46,7 @@ export default function Drivers() {
 
   // search
   function handleSearch(drivers: DriverData[], value: string, status: string) {
-    // status to uppercase
+    // Convert status to uppercase for consistency
     const driverStatus = status?.toUpperCase();
 
     // Filter by status (if it's "Active" or "Inactive")
@@ -63,21 +63,26 @@ export default function Drivers() {
       return filteredDrivers;
     }
 
-    // search across all fields with the given value
-    if (status === 'All') {
-      return filteredDrivers.filter((driver) =>
-        Object.values(driver).some((carrierField) =>
-          carrierField?.toString().toLowerCase().includes(value.toLowerCase())
-        )
-      );
+    // recursive function
+    function deepSearch(object: any, searchValue: string): boolean {
+      if (object === null || object === undefined) {
+        return false;
+      }
+
+      if (typeof object === 'object') {
+        // recursively search nested objectects or arrays
+        return Object.values(object).some((value) =>
+          deepSearch(value, searchValue)
+        );
+      }
+
+      return object
+        .toString()
+        .toLowerCase()
+        .includes(searchValue.toLowerCase());
     }
 
-    // If status is specific (like "Active"), apply search value filtering
-    return filteredDrivers.filter((driver) =>
-      Object.values(driver).some((driverField) =>
-        driverField?.toString().toLowerCase().includes(value.toLowerCase())
-      )
-    );
+    return filteredDrivers.filter((driver) => deepSearch(driver, value));
   }
 
   // update specific field to search
