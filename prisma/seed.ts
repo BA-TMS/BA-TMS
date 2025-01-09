@@ -64,20 +64,6 @@ async function main() {
     console.log('Upserting carrier:', currCarrier);
     const carrierResp = await prisma.carrier.upsert({
       where: { id: currCarrier.id },
-      update: {
-        carrierName: currCarrier.carrierName,
-        address: currCarrier.address,
-        city: currCarrier.city,
-        state: currCarrier.state,
-        postCountry: currCarrier.postCountry,
-        postCode: currCarrier.postCode,
-        contactTelephone: currCarrier.contactTelephone,
-        paymentTerms: currCarrier.paymentTerms,
-        docketNumType: currCarrier.docketNumType,
-        docketNumber: currCarrier.docketNumber,
-        dotId: currCarrier.dotId,
-        taxId: currCarrier.taxId,
-      },
       create: {
         carrierName: currCarrier.carrierName,
         address: currCarrier.address,
@@ -91,6 +77,18 @@ async function main() {
         docketNumber: currCarrier.docketNumber,
         dotId: currCarrier.dotId,
         taxId: currCarrier.taxId,
+      },
+      update: {
+        carrierName: currCarrier.carrierName,
+        address: currCarrier.address,
+        city: currCarrier.city,
+        state: currCarrier.state,
+        postCountry: currCarrier.postCountry,
+        postCode: currCarrier.postCode,
+        contactTelephone: currCarrier.contactTelephone,
+        paymentTerms: currCarrier.paymentTerms,
+        docketNumType: currCarrier.docketNumType,
+        docketNumber: currCarrier.docketNumber,
       },
     });
 
@@ -122,7 +120,7 @@ async function main() {
 
     currDriver.orgId = orgIds[driverPos % orgIds.length];
     const resp = await prisma.driver.upsert({
-      where: { license: currDriver.license },
+      where: { id: currDriver.id },
       update: {},
       create: currDriver,
     });
@@ -362,6 +360,7 @@ const drivers = [
     state: 'TX',
     city: 'El Paso',
     orgId: null,
+    id: '3786ab8c-ebb1-4580-bc08-1be692fb5f07',
   },
   {
     name: 'Rex',
@@ -372,6 +371,7 @@ const drivers = [
     state: 'GA',
     city: 'Atlanta',
     orgId: null,
+    id: '1786ab8c-ebb1-4580-bd09-1be692fb5f07',
   },
 ];
 
