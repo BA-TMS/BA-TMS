@@ -245,7 +245,7 @@ async function seedAccountPreferences() {
 
 const orgs = [
   {
-    orgName: 'Swift Logistics',
+    orgName: 'Swift Delivery',
     address: '73 N. Hightland Court',
     city: 'West Redding',
     state: 'PA',
