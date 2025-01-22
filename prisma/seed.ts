@@ -506,21 +506,11 @@ const brokers = [
   {
     name: 'Broker1',
     crossing: 'Millers',
-    address: '343 Street Blvd',
-    city: 'Topeka',
-    state: 'KA',
-    postCountry: 'USA',
-    postCode: '54321',
     telephone: '9988776655',
   },
   {
     name: 'Broker2',
     crossing: 'Crossup',
-    address: '66 Orchard Ln',
-    city: 'Orange',
-    state: 'NJ',
-    postCountry: 'USA',
-    postCode: '23456',
     telephone: '1012023003',
   },
 ];
