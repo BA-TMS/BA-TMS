@@ -11,3 +11,16 @@ export interface BrokerFormData {
   'Phone Number': string;
   Notes?: string;
 }
+
+export interface BrokerData {
+  name: string;
+  crossing: string;
+  address: string;
+  addressAddOn: string | null;
+  city: string;
+  state: string;
+  postCountry: string;
+  postCode: string;
+  telCountry: string;
+  telephone: string;
+}
