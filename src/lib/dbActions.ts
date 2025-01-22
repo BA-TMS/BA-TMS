@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 'use server';
 
 import { DocketNumber, PrismaClient, DriverType } from '@prisma/client';
@@ -214,15 +215,8 @@ export async function addBroker({ broker }: { broker: BrokerFormData }) {
     data: {
       name: broker['Broker Name'],
       crossing: broker['Crossing'],
-      address: broker['Address'],
-      addressAddOn: broker['Address Line 2'] || null, // Optional field
-      city: broker['City'],
-      state: broker['State'],
-      postCountry: broker['Country'],
-      postCode: broker['Zip'],
-      telCountry: broker['Country Code'],
-      telephone: broker['Phone Number'],
-      // notes: carrier['Notes'] || null, // optional field, notes not in table yet
+      telephone: broker['Telephone'],
+      tollFree: broker['Toll Free'] ? broker['Toll Free'] : null,
     },
   });
   return resp;

@@ -27,7 +27,7 @@ const formatron = function (broker: BrokerData) {
   } as unknown as BrokerData;
 };
 
-export const fetchbrokers = createAsyncThunk<BrokerData[]>(
+export const fetchBrokers = createAsyncThunk<BrokerData[]>(
   'brokers/fetchBrokers',
   async () => {
     const data = await getBrokers();
@@ -74,14 +74,14 @@ const brokerSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchbrokers.pending, (state) => {
+      .addCase(fetchBrokers.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(fetchbrokers.fulfilled, (state, action) => {
+      .addCase(fetchBrokers.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.items = action.payload;
       })
-      .addCase(fetchbrokers.rejected, (state, action) => {
+      .addCase(fetchBrokers.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message || 'Failed to fetch brokers';
       });

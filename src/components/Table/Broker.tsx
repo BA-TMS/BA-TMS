@@ -3,6 +3,7 @@
 import { useContext, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
+import { fetchBrokers } from '@/store/slices/brokerSlice';
 import { ModalContext } from '@/context/modalContext';
 import TableHeaderBlank from '../UI_Elements/Table/TableHeaderBlank';
 import Table from '../UI_Elements/Table/Table';
@@ -10,7 +11,6 @@ import TableSkeleton from '../UI_Elements/Table/TableSkeleton';
 import { TableSearch } from '../UI_Elements/Table/TableSearch';
 import Button from '@ui/Buttons/Button';
 import { BrokerData } from '@/types/brokerTypes';
-import { getBrokers } from '@/lib/dbActions';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -27,27 +27,28 @@ export default function Broker() {
   const [searchField, setSearchField] = useState<string>('All'); // specific field if any
   const [filteredValue, setFilteredValue] = useState<BrokerData[]>([]);
 
-  // delete when redux
-  const [status, setStatus] = useState('loading');
-
   const dispatch = useDispatch<AppDispatch>();
 
   const router = useRouter();
 
+  const {
+    items: brokers,
+    status,
+    // error,
+  } = useSelector((state: RootState) => state.brokers);
+
   const { saveFormValues } = useContext(ModalContext);
 
-  // data fetched and passed to Table
-  // TODO: Switch to redux
   useEffect(() => {
-    const fetchBrokers = async () => {
-      const data = await getBrokers();
-      console.log('brokers', data);
-      setStatus('fulfilled');
-      setFilteredValue(data);
-    };
+    dispatch(fetchBrokers());
+  }, [dispatch]);
 
-    fetchBrokers();
-  }, []);
+  // Update filtered brokers when carrier or searchValue changes
+  // useEffect(() => {
+  //   let updatedBrokers = [...brokers];
+  //   updatedBrokers = handleSearch(updatedBrokers, searchValue, searchField);
+  //   setFilteredValue(updatedBrokers);
+  // }, [brokers, searchValue, searchField]);
 
   return (
     <>
@@ -73,7 +74,7 @@ export default function Broker() {
       ) : (
         <Table
           columns={columns}
-          data={filteredValue}
+          data={brokers}
           update={() => null}
           view={'/brokers/view/'}
         />
