@@ -39,16 +39,57 @@ export default function Broker() {
 
   const { saveFormValues } = useContext(ModalContext);
 
+  // search
+  function handleSearch(brokers: BrokerData[], value: string, status: string) {
+    // status to uppercase
+    const brokerStatus = status?.toUpperCase();
+
+    // // Filter by status (if it's "Active" or "Inactive")
+    let filteredBrokers = brokers;
+
+    if (brokerStatus === 'ACTIVE' || brokerStatus === 'INACTIVE') {
+      filteredBrokers = brokers.filter(
+        (broker) => broker.status === brokerStatus
+      );
+    }
+
+    // If no search value, return the filtered list by status
+    if (!value) {
+      return filteredBrokers;
+    }
+
+    // search across all fields with the given value
+    if (status === 'All') {
+      return filteredBrokers.filter((broker) =>
+        Object.values(broker).some((brokerField) =>
+          brokerField?.toString().toLowerCase().includes(value.toLowerCase())
+        )
+      );
+    }
+
+    // If status is specific (like "Active"), apply search value filtering
+    return filteredBrokers.filter((broker) =>
+      Object.values(broker).some((brokerField) =>
+        brokerField?.toString().toLowerCase().includes(value.toLowerCase())
+      )
+    );
+  }
+
+  // update specific field to search
+  function updateField(field: string) {
+    setSearchField(field);
+  }
+
   useEffect(() => {
     dispatch(fetchBrokers());
   }, [dispatch]);
 
-  // Update filtered brokers when carrier or searchValue changes
-  // useEffect(() => {
-  //   let updatedBrokers = [...brokers];
-  //   updatedBrokers = handleSearch(updatedBrokers, searchValue, searchField);
-  //   setFilteredValue(updatedBrokers);
-  // }, [brokers, searchValue, searchField]);
+  // Update filtered brokers when broker or searchValue changes
+  useEffect(() => {
+    let updatedBrokers = [...brokers];
+    updatedBrokers = handleSearch(updatedBrokers, searchValue, searchField);
+    setFilteredValue(updatedBrokers);
+  }, [brokers, searchValue, searchField]);
 
   return (
     <>
@@ -65,8 +106,8 @@ export default function Broker() {
         placeholder={'Search...'}
         dropdownLabel="Status"
         dropdownOptions={['Active', 'Inactive', 'All']}
-        search={() => null}
-        updateField={() => null}
+        search={setSearchValue}
+        updateField={updateField}
       />
 
       {status === 'loading' ? (
@@ -74,7 +115,7 @@ export default function Broker() {
       ) : (
         <Table
           columns={columns}
-          data={brokers}
+          data={filteredValue}
           update={() => null}
           view={'/brokers/view/'}
         />
