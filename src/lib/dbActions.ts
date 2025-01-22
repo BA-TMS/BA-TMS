@@ -1,6 +1,6 @@
 'use server';
 
-import { DocketNumber, PrismaClient } from '@prisma/client';
+import { DocketNumber, PrismaClient, DriverType } from '@prisma/client';
 import { CustomerFormData } from '@/types/customerTypes';
 import { LoadFormData } from '@/types/loadTypes';
 import { CarrierFormData } from '@/types/carrierTypes';
@@ -33,6 +33,13 @@ const CARRIER_RELATIONS = {
 
 const CUSTOMER_RELATIONS = {
   factor: { select: { name: true } },
+};
+
+const DRIVER_RELATIONS = {
+  organization: { select: { orgName: true } },
+  // loads: { select: true }, // will need to handle load relations
+  employer: { select: { carrierName: true } },
+  driverTwo: true,
 };
 
 // Generic type for Prisma model
@@ -108,8 +115,25 @@ export async function getCustomers() {
   return customers;
 }
 
-export async function getDrivers() {
-  const drivers = await prisma.driver.findMany();
+export async function getDriver(id: string) {
+  const driver = await prisma.driver.findUnique({
+    where: {
+      id: id,
+    },
+    include: DRIVER_RELATIONS,
+  });
+  return driver;
+}
+
+export async function getDrivers(organization: string) {
+  const drivers = await prisma.driver.findMany({
+    where: {
+      organization: {
+        orgName: organization,
+      },
+    },
+    include: DRIVER_RELATIONS,
+  });
   return drivers;
 }
 
@@ -347,17 +371,86 @@ export async function addCustomer({
 }
 
 export async function addDriver({ driver }: { driver: DriverFormData }) {
-  const resp = await prisma.driver.create({
-    data: {
-      name: driver['Driver Name'],
-      telCountry: driver['Country Code'],
-      telephone: driver['Phone Number'],
-      license: driver['License Number'],
-      employerId: driver['Employer'],
-      // notes: carrier['Notes'] || null, // optional field, notes not in table yet
+  // find organization based on name
+  const organization = await prisma.organization.findFirst({
+    where: {
+      orgName: driver.orgName,
+    },
+    select: {
+      id: true,
     },
   });
-  return resp;
+
+  // TODO: Better error handling
+  if (organization === null) {
+    throw 'can not create driver';
+  }
+
+  if (driver['Type'] === 'TEAM') {
+    const resp = await prisma.driver.create({
+      data: {
+        status: driver['Status'],
+        type: driver['Type'] as DriverType,
+
+        name: driver['Driver Name'],
+        telephone: driver['Telephone'],
+        email: driver['Email'],
+        address: driver['Address'],
+        country: driver['Country'],
+        state: driver['State'],
+        city: driver['City'],
+        zip: driver['Zip'],
+
+        license: driver['License'],
+        employerId: driver['Employer'],
+        orgId: organization.id,
+        // loads: driver['Loads'], // do this functionality
+        notes: driver['Notes'] || null,
+
+        driverTwo: {
+          create: {
+            name: driver['Driver Two Name'],
+            telephone: driver['Driver Telephone'],
+            email: driver['Driver Email'],
+            address: driver['Driver Address'],
+            country: driver['Driver Country'],
+            state: driver['Driver State'],
+            city: driver['Driver City'],
+            zip: driver['Driver Zip'],
+            license: driver['Driver License'],
+          },
+        },
+      },
+      include: DRIVER_RELATIONS,
+    });
+    return resp;
+  } else {
+    const resp = await prisma.driver.create({
+      data: {
+        status: driver['Status'],
+        type: driver['Type'] as DriverType,
+
+        name: driver['Driver Name'],
+        telephone: driver['Telephone'],
+        email: driver['Email'],
+        address: driver['Address'],
+        country: driver['Country'],
+        state: driver['State'],
+        city: driver['City'],
+        zip: driver['Zip'],
+
+        license: driver['License'],
+        employerId: driver['Employer'],
+        orgId: organization.id,
+        // loads: driver['Loads'], // do this functionality
+        notes: driver['Notes'] || null,
+
+        driverTwo: undefined,
+      },
+      include: DRIVER_RELATIONS,
+    });
+    return resp;
+  }
 }
 
 export async function addFactoringCo({ factor }: { factor: FactorFormData }) {
@@ -628,10 +721,80 @@ export async function updateCustomer(
 }
 
 export async function updateDriver(
-  id: number,
-  { formData }: { formData: Partial<DriverFormData> }
+  id: string,
+  { driver }: { driver: DriverFormData }
 ) {
-  const resp = updater(prisma.driver, id, formData);
+  // find organization based on name
+  const organization = await prisma.organization.findFirst({
+    where: {
+      orgName: driver.orgName,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  // TODO: Better error handling
+  if (organization === null) {
+    throw 'Can not update driver';
+  }
+
+  // if type is single
+
+  const resp = await prisma.driver.update({
+    where: { id: id },
+    data: {
+      status: driver['Status'],
+      type: driver['Type'],
+
+      name: driver['Driver Name'],
+      telephone: driver['Telephone'],
+      email: driver['Email'],
+      address: driver['Address'],
+      city: driver['City'],
+      state: driver['State'],
+      country: driver['Country'],
+      zip: driver['Zip'],
+      license: driver['License'],
+      // loads: driver['Loads'],
+      orgId: organization.id,
+      employerId: driver['Employer'],
+      notes: driver['Notes'],
+
+      // changing driver type from team to single
+      // the formatting is weird on this
+      driverTwo:
+        driver['Type'] === 'SINGLE'
+          ? { delete: driver['Driver Two Name'] ? true : undefined } // if there was a driverTwo, delete
+          : {
+              upsert: {
+                create: {
+                  name: driver['Driver Two Name'],
+                  telephone: driver['Driver Telephone'],
+                  email: driver['Driver Email'],
+                  address: driver['Driver Address'],
+                  country: driver['Driver Country'],
+                  state: driver['Driver State'],
+                  city: driver['Driver City'],
+                  zip: driver['Driver Zip'],
+                  license: driver['Driver License'],
+                },
+                update: {
+                  name: driver['Driver Two Name'],
+                  telephone: driver['Driver Telephone'],
+                  email: driver['Driver Email'],
+                  address: driver['Driver Address'],
+                  country: driver['Driver Country'],
+                  state: driver['Driver State'],
+                  city: driver['Driver City'],
+                  zip: driver['Driver Zip'],
+                  license: driver['Driver License'],
+                },
+              },
+            },
+    },
+    include: DRIVER_RELATIONS,
+  });
   return resp;
 }
 

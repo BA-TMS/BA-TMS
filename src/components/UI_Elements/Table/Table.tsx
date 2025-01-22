@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { useState } from 'react';
@@ -52,6 +53,12 @@ const Table = ({
     }
   }
 
+  function getNestedValue(obj: Record<string, any>, path: string): any {
+    return path
+      .split('.')
+      .reduce((acc, key) => (acc ? acc[key] : undefined), obj);
+  }
+
   return (
     <div className="rounded-b-2xl border border-grey-300 dark:border-grey-700 bg-white dark:bg-grey-900">
       <div className="max-w-full overflow-x-auto overflow-y-scroll">
@@ -78,16 +85,20 @@ const Table = ({
                 {columns.map((column, index) => (
                   <td key={index} className="p-4">
                     {column.cellRenderer ? (
-                      column.cellRenderer(row[column.field])
+                      column.cellRenderer(getNestedValue(row, column.field))
                     ) : (
                       <p
                         className={`${
                           index === 0 ? 'subtitle2' : 'body2'
                         } text-grey-800 dark:text-white`}
                       >
-                        {isDate(row[column.field])
-                          ? formatDate(row[column.field] as Date)
-                          : displayBooleanValue(row[column.field])}
+                        {isDate(getNestedValue(row, column.field))
+                          ? formatDate(
+                              getNestedValue(row, column.field) as Date
+                            )
+                          : displayBooleanValue(
+                              getNestedValue(row, column.field)
+                            )}
                       </p>
                     )}
                   </td>

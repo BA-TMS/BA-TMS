@@ -26,6 +26,7 @@ model Organization {
   tollFree      String?
   loads         Load[]
   users         User[]
+  Driver        Driver[]
 }
 
 model User {
@@ -135,20 +136,54 @@ model CarrierInsurance {
   fmcsaType           String
   fmcsaCoverage       String
   fmcsaTelephone      String?
-  carrier             Carrier   @relation(fields: [carrierId], references: [id])
+  carrier             Carrier   @relation(fields: [carrierId], references: [id], onDelete: Cascade)
 }
 
 model Driver {
-  id         String   @id @default(uuid())
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  name       String
-  license    String   @unique
-  telCountry String   @default("1")
-  telephone  String
-  employerId String
-  employer   Carrier  @relation(fields: [employerId], references: [id])
-  loads      Load[]
+  id        String     @id @default(uuid())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  status    Status     @default(ACTIVE)
+  type      DriverType @default(SINGLE)
+
+  name      String
+  telephone String
+  email     String?
+  address   String?
+  country   String
+  state     String
+  city      String
+  zip       String?
+  license   String? 
+
+  notes String?
+
+  driverTwo TeamDriver?
+
+  employerId   String?
+  employer     Carrier?     @relation(fields: [employerId], references: [id])
+  loads        Load[]
+  orgId        String
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+}
+
+model TeamDriver {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name      String
+  telephone String
+  email     String?
+  address   String?
+  country   String
+  state     String
+  city      String
+  zip       String?
+  license   String? 
+
+  driverId String? @unique // One-to-one relation with Driver
+  driver   Driver? @relation(fields: [driverId], references: [id], onDelete: Cascade)
 }
 
 model Customer {
@@ -388,4 +423,9 @@ enum TrailerStatus {
   ACTIVE
   NOTAVAILABLE
   INACTIVE
+}
+
+enum DriverType {
+  SINGLE
+  TEAM
 }

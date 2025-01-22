@@ -6,13 +6,13 @@
 // optional props
 interface DisplayProps {
   title: string;
-  addressLine1: string;
+  addressLine1: string | null;
   addressLine2?: string | null;
   addressLine3?: string | null;
-  city: string;
-  state: string;
-  zip: string;
-  country: string;
+  city: string | null;
+  state: string | null;
+  zip: string | null;
+  country: string | null;
 }
 
 const AddressDisplay = ({
