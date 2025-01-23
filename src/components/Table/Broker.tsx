@@ -44,7 +44,7 @@ export default function Broker() {
     // status to uppercase
     const brokerStatus = status?.toUpperCase();
 
-    // // Filter by status (if it's "Active" or "Inactive")
+    // Filter by status (if it's "Active" or "Inactive")
     let filteredBrokers = brokers;
 
     if (brokerStatus === 'ACTIVE' || brokerStatus === 'INACTIVE') {
@@ -81,13 +81,16 @@ export default function Broker() {
   }
 
   // update broker
-  // would it actually be easier to pull this info from redux?
+  // select from redux and pass to form values
   const updateBroker = async (id: string) => {
-    // const data = await getBroker(id);
-    // if (data !== null) {
-    //   saveFormValues(data);
-    //   router.push('/carriers/update-carrier/details');
-    // }
+    const data = brokers.find((broker) => broker.id === id);
+
+    if (data) {
+      saveFormValues(data);
+      router.push('/brokers/update-broker/details');
+    } else {
+      console.error('Customs Broker not found with ID:', id);
+    }
   };
 
   useEffect(() => {
