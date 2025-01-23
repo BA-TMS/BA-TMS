@@ -7,8 +7,10 @@ import { ModalContext } from '@/context/modalContext';
 import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 import Button from '@/components/UI_Elements/Buttons/Button';
 import { useRouter } from 'next/navigation';
-import { BrokerFormData } from '@/types/brokerTypes';
-import { createBroker } from '@/store/slices/brokerSlice';
+import { BrokerData, BrokerFormData } from '@/types/brokerTypes';
+import { createBroker, updateBroker } from '@/store/slices/brokerSlice';
+
+// this component submits form data from the context to database using redux
 
 export const CustomsBrokerReview: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -36,21 +38,26 @@ export const CustomsBrokerReview: React.FC = () => {
       } catch (error) {
         setError(`Error creating broker: ${error}`);
       }
+    } else {
+      try {
+        await dispatch(
+          updateBroker({
+            id: formData['id'],
+            updatedBroker: broker as Partial<BrokerData>,
+          })
+        ).unwrap();
+      } catch (error) {
+        setError(`Error updating carrier: ${error}`);
+      }
     }
-    // else {
-    //   try {
-    //     await dispatch(
-    //       updateCarrier({
-    //         id: formData['id'],
-    //         updatedCarrier: carrier as Partial<CarrierData>, // check type
-    //       })
-    //     ).unwrap();
-    //   } catch (error) {
-    //     setError(`Error updating carrier: ${error}`);
-    //   }
-    // }
     setIsSubmitting(false);
   };
+
+  useEffect(() => {
+    if (formData !== null && formData['id']) {
+      setIsUpdate(true);
+    }
+  }, [formData]);
 
   return (
     <div className="flex flex-col h-full">

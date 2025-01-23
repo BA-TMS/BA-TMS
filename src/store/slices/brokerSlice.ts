@@ -2,13 +2,13 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import {
   getBrokers,
   addBroker,
-  // updatebroker as apiUpdatebroker,
+  updateBroker as apiUpdateBroker,
 } from '@/lib/dbActions';
 import { BrokerData, BrokerFormData } from '@/types/brokerTypes';
 
 interface UpdatedBrokerPayload {
   id: string;
-  updatedbroker: Partial<BrokerData>;
+  updatedBroker: Partial<BrokerData>;
 }
 
 interface BrokerState {
@@ -49,20 +49,20 @@ export const createBroker = createAsyncThunk<BrokerData, BrokerFormData>(
   }
 );
 
-// export const updatebroker = createAsyncThunk<brokerData, UpdatedbrokerPayload>(
-//   'brokers/updatebroker',
-//   async ({ id, updatedbroker }: UpdatedbrokerPayload, { rejectWithValue }) => {
-//     try {
-//       const response = await apiUpdatebroker(id, {
-//         broker: updatedbroker as brokerFormData,
-//       });
+export const updateBroker = createAsyncThunk<BrokerData, UpdatedBrokerPayload>(
+  'brokers/updateBroker',
+  async ({ id, updatedBroker }: UpdatedBrokerPayload, { rejectWithValue }) => {
+    try {
+      const response = await apiUpdateBroker(id, {
+        broker: updatedBroker as BrokerFormData,
+      });
 
-//       return formatron(response as brokerData);
-//     } catch (error) {
-//       return rejectWithValue('Failed to update broker');
-//     }
-//   }
-// );
+      return formatron(response as BrokerData);
+    } catch (error) {
+      return rejectWithValue('Failed to update broker');
+    }
+  }
+);
 
 const brokerSlice = createSlice({
   name: 'brokers',
@@ -92,23 +92,23 @@ const brokerSlice = createSlice({
         const message = action.payload;
         state.status = 'failed';
         state.error = message as string;
+      })
+      .addCase(
+        updateBroker.fulfilled,
+        (state, action: PayloadAction<BrokerData>) => {
+          const index = state.items.findIndex(
+            (broker) => broker.id === action.payload.id
+          );
+          if (index !== -1) {
+            state.items[index] = action.payload;
+          }
+        }
+      )
+      .addCase(updateBroker.rejected, (state, action) => {
+        const message = action.payload;
+        state.status = 'failed';
+        state.error = message as string;
       });
-    // .addCase(
-    //   updatebroker.fulfilled,
-    //   (state, action: PayloadAction<brokerData>) => {
-    //     const index = state.items.findIndex(
-    //       (broker) => broker.id === action.payload.id
-    //     );
-    //     if (index !== -1) {
-    //       state.items[index] = action.payload;
-    //     }
-    //   }
-    // )
-    // .addCase(updatebroker.rejected, (state, action) => {
-    //   const message = action.payload;
-    //   state.status = 'failed';
-    //   state.error = message as string;
-    // });
   },
 });
 

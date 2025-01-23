@@ -570,6 +570,23 @@ async function updater(
   return resp;
 }
 
+export async function updateBroker(
+  id: string,
+  { broker }: { broker: BrokerFormData }
+) {
+  const resp = await prisma.broker.update({
+    where: { id: id },
+    data: {
+      status: broker['Status'],
+      name: broker['Broker Name'],
+      crossing: broker['Crossing'],
+      telephone: broker['Telephone'],
+      tollFree: broker['Toll Free'] ? broker['Toll Free'] : null,
+    },
+  });
+  return resp;
+}
+
 export async function updateCarrier(
   id: string,
   { carrier }: { carrier: CarrierFormData }
