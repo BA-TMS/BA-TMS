@@ -29,8 +29,6 @@ export const CustomsBrokerReview: React.FC = () => {
     setIsSubmitting(true);
     setError(''); // clear previous errors
 
-    console.log('BROKER', broker);
-
     // if not an update
     if (!isUpdate) {
       try {

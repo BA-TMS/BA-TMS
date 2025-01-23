@@ -65,7 +65,13 @@ async function getter(
 }
 
 export async function getBrokers() {
-  const brokers = await prisma.broker.findMany();
+  const brokers = await prisma.broker.findMany({
+    orderBy: [
+      {
+        name: 'asc',
+      },
+    ],
+  });
   return brokers;
 }
 
