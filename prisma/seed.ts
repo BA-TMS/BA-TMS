@@ -13,17 +13,11 @@ async function main() {
   for (const currOrg of orgs) {
     const resp = await prisma.organization.upsert({
       where: { orgName: currOrg.orgName },
-      update: {},
+      update: currOrg,
       create: currOrg,
     });
     orgIds.push(resp.id);
   }
-
-  const a2zresp = await prisma.organization.upsert({
-    where: { orgName: a2zorg.orgName },
-    update: {},
-    create: a2zorg,
-  });
 
   for (const currUser of users) {
     console.log('Upserting user:', currUser);
@@ -33,7 +27,12 @@ async function main() {
 
     await prisma.user.upsert({
       where: { id: currUser.id },
-      update: {},
+      update: {
+        email: currUser.email,
+        firstName: currUser.firstName,
+        lastName: currUser.lastName,
+        orgId: organization.id,
+      },
       create: {
         id: currUser.id,
         email: currUser.email,
@@ -63,7 +62,7 @@ async function main() {
   for (const currCarrier of carriers) {
     console.log('Upserting carrier:', currCarrier);
     const carrierResp = await prisma.carrier.upsert({
-      where: { id: currCarrier.id },
+      where: { dotId: currCarrier.dotId },
       create: {
         carrierName: currCarrier.carrierName,
         address: currCarrier.address,
@@ -89,6 +88,8 @@ async function main() {
         paymentTerms: currCarrier.paymentTerms,
         docketNumType: currCarrier.docketNumType,
         docketNumber: currCarrier.docketNumber,
+        dotId: currCarrier.dotId,
+        taxId: currCarrier.taxId,
       },
     });
 
@@ -187,7 +188,7 @@ async function main() {
 
   for (const currBroker of brokers) {
     const resp = await prisma.broker.upsert({
-      where: { telephone: currBroker.telephone },
+      where: { id: currBroker.id },
       update: {},
       create: currBroker,
     });
@@ -238,7 +239,7 @@ async function seedAccountPreferences() {
 
   await prisma.accountPreferences.upsert({
     where: { id: prefs.id },
-    update: {},
+    update: prefs,
     create: prefs,
   });
 }
@@ -267,18 +268,6 @@ const orgs = [
     docketNumber: '138965',
   },
 ];
-
-const a2zorg = {
-  orgName: 'BA Logistics',
-  address: '55 Place Street',
-  city: 'Long Beach',
-  state: 'CA',
-  postCountry: 'USA',
-  postCode: '90712',
-  telephone: '7373300444',
-  docketNumType: 'FF',
-  docketNumber: '123456',
-};
 
 const users = [
   {
@@ -504,11 +493,15 @@ const insurers = [
 
 const brokers = [
   {
+    id: '12AV43',
+    status: 'ACTIVE',
     name: 'Broker1',
     crossing: 'Millers',
     telephone: '9988776655',
   },
   {
+    id: '14VHG73',
+    status: 'ACTIVE',
     name: 'Broker2',
     crossing: 'Crossup',
     telephone: '1012023003',
