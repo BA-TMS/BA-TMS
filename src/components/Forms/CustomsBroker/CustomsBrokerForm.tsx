@@ -10,6 +10,7 @@ import Button from '@/components/UI_Elements/Buttons/Button';
 import { status } from '@/components/Forms/data/details';
 import { ModalContext } from '@/context/modalContext';
 import { useRouter, usePathname } from 'next/navigation';
+import { brokerDataMap } from '@/types/brokerTypes';
 
 const customsBrokerSchema = yup.object({
   Status: yup.string().required('Must enter Status'),
@@ -65,13 +66,36 @@ export const CustomsBrokerDetails: React.FC = () => {
   // submit the values to the context
   const onSubmit = useCallback(
     (broker: CustomsBroker) => {
-      console.log('ADDING BROKER', broker);
       saveFormValues(broker);
       reset();
       router.push(`/brokers/${segment}/review`);
     },
     [saveFormValues, router, segment, reset]
   );
+
+  // if there's an update
+  // check for more than just an update
+  useEffect(() => {
+    if (isUpdate) {
+      Object.keys(brokerDataMap).forEach((formField) => {
+        setValue(
+          formField as keyof CustomsBroker,
+          formData[brokerDataMap[formField]]
+            ? formData[brokerDataMap[formField]]
+            : ''
+        );
+      });
+    }
+  }, [formData, setValue, isUpdate]);
+
+  // keep fields populated when going back
+  useEffect(() => {
+    if (formData) {
+      Object.keys(formData).forEach((formField) => {
+        setValue(formField as keyof CustomsBroker, formData[formField]);
+      });
+    }
+  }, [formData, setValue]);
 
   return (
     <div className="flex flex-col h-full">

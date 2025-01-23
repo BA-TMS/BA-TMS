@@ -11,8 +11,17 @@ export interface BrokerData {
 }
 
 export interface BrokerFormData {
+  Status: 'ACTIVE' | 'INACTIVE';
   'Broker Name': string;
   Crossing: string;
   Telephone: string;
   'Toll Free': string;
 }
+
+export const brokerDataMap: Record<string, keyof BrokerData> = {
+  Status: 'status',
+  'Broker Name': 'name',
+  Crossing: 'crossing',
+  Telephone: 'telephone',
+  'Toll Free': 'tollFree',
+};

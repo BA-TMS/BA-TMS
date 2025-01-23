@@ -213,6 +213,7 @@ export async function getAccountPreferences() {
 export async function addBroker({ broker }: { broker: BrokerFormData }) {
   const resp = await prisma.broker.create({
     data: {
+      status: broker['Status'],
       name: broker['Broker Name'],
       crossing: broker['Crossing'],
       telephone: broker['Telephone'],
