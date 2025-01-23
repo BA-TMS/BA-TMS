@@ -246,6 +246,7 @@ async function seedAccountPreferences() {
 
 const orgs = [
   {
+    id: '103784cb-e739-446c-ba47-e92d92de648a',
     orgName: 'Swift Delivery',
     address: '73 N. Hightland Court',
     city: 'West Redding',
@@ -257,12 +258,13 @@ const orgs = [
     docketNumber: '138963',
   },
   {
-    orgName: 'Tortoise Logistics',
+    id: '103784cb-e739-446c-ba47-e92d92de648c',
+    orgName: 'BA Logistics',
     address: '26 Mill Circle',
-    city: 'Greenwood',
-    state: 'SC',
+    city: 'Long Beach',
+    state: 'CA',
     postCountry: 'USA',
-    postCode: '17543',
+    postCode: '90712',
     telephone: '6168675309',
     docketNumType: 'MC',
     docketNumber: '138965',
@@ -498,6 +500,7 @@ const brokers = [
     name: 'Broker1',
     crossing: 'Millers',
     telephone: '9988776655',
+    orgId: '103784cb-e739-446c-ba47-e92d92de648c',
   },
   {
     id: '14VHG73',
@@ -505,6 +508,7 @@ const brokers = [
     name: 'Broker2',
     crossing: 'Crossup',
     telephone: '1012023003',
+    orgId: '103784cb-e739-446c-ba47-e92d92de648c',
   },
 ];
 

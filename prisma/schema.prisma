@@ -27,6 +27,7 @@ model Organization {
   loads         Load[]
   users         User[]
   Driver        Driver[]
+  customsBroker Broker[]
 }
 
 model User {
@@ -323,6 +324,9 @@ model Broker {
   crossing  String
   telephone String
   tollFree  String?
+
+  orgId        String
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
 }
 
 model Truck {
