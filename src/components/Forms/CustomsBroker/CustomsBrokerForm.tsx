@@ -74,16 +74,16 @@ export const CustomsBrokerForm: React.FC = () => {
   );
 
   return (
-    <div>
+    <div className="flex flex-col h-full">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col justify-between"
+        className="flex flex-col justify-between flex-grow"
       >
         <p className="mt-3.5 mb-5 body2 text-grey-800 dark:text-white">
           Set Customs Broker Details
         </p>
 
-        <div>
+        <div className="flex-grow">
           <div className="flex flex-col gap-4 md:flex-row">
             <div className="w-full md:w-1/3">
               <TextInput control={control} name="Broker Name" required={true} />
@@ -113,7 +113,8 @@ export const CustomsBrokerForm: React.FC = () => {
             </p>
           )}
         </div>
-        <div className="py-3.5 gap-2 border-t border-grey-300 dark:border-grey-700 flex justify-between sticky bottom-0 bg-white dark:bg-grey-900 z-10">
+
+        <div className="py-3.5 gap-2 border-t border-grey-300 dark:border-grey-700 flex justify-between bottom-0 bg-white dark:bg-grey-900 z-10">
           <Button
             type="button"
             variant="outline"
