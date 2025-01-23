@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import {
   getBrokers,
-  // addbroker,
+  addBroker,
   // updatebroker as apiUpdatebroker,
 } from '@/lib/dbActions';
 import { BrokerData, BrokerFormData } from '@/types/brokerTypes';
@@ -36,18 +36,18 @@ export const fetchBrokers = createAsyncThunk<BrokerData[]>(
   }
 );
 
-// export const createbroker = createAsyncThunk<brokerData, brokerFormData>(
-//   'brokers/createbroker',
-//   async (broker, { rejectWithValue }) => {
-//     try {
-//       const response = await addbroker({ broker });
+export const createBroker = createAsyncThunk<BrokerData, BrokerFormData>(
+  'brokers/createBroker',
+  async (broker, { rejectWithValue }) => {
+    try {
+      const response = await addBroker({ broker });
 
-//       return formatron(response as brokerData);
-//     } catch (error) {
-//       return rejectWithValue('Failed to create broker');
-//     }
-//   }
-// );
+      return formatron(response as BrokerData);
+    } catch (error) {
+      return rejectWithValue('Failed to create broker');
+    }
+  }
+);
 
 // export const updatebroker = createAsyncThunk<brokerData, UpdatedbrokerPayload>(
 //   'brokers/updatebroker',
@@ -84,15 +84,15 @@ const brokerSlice = createSlice({
       .addCase(fetchBrokers.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message || 'Failed to fetch brokers';
+      })
+      .addCase(createBroker.fulfilled, (state, action) => {
+        state.items.push(action.payload);
+      })
+      .addCase(createBroker.rejected, (state, action) => {
+        const message = action.payload;
+        state.status = 'failed';
+        state.error = message as string;
       });
-    // .addCase(createbroker.fulfilled, (state, action) => {
-    //   state.items.push(action.payload);
-    // })
-    // .addCase(createbroker.rejected, (state, action) => {
-    //   const message = action.payload;
-    //   state.status = 'failed';
-    //   state.error = message as string;
-    // })
     // .addCase(
     //   updatebroker.fulfilled,
     //   (state, action: PayloadAction<brokerData>) => {
