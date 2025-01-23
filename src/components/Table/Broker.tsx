@@ -80,6 +80,16 @@ export default function Broker() {
     setSearchField(field);
   }
 
+  // update broker
+  // would it actually be easier to pull this info from redux?
+  const updateBroker = async (id: string) => {
+    // const data = await getBroker(id);
+    // if (data !== null) {
+    //   saveFormValues(data);
+    //   router.push('/carriers/update-carrier/details');
+    // }
+  };
+
   useEffect(() => {
     dispatch(fetchBrokers());
   }, [dispatch]);
@@ -116,7 +126,7 @@ export default function Broker() {
         <Table
           columns={columns}
           data={filteredValue}
-          update={() => null}
+          update={updateBroker}
           view={'/brokers/view/'}
         />
       )}
