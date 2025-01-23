@@ -33,7 +33,7 @@ const customsBrokerSchema = yup.object({
 
 type CustomsBroker = yup.InferType<typeof customsBrokerSchema>;
 
-export const CustomsBrokerForm: React.FC = () => {
+export const CustomsBrokerDetails: React.FC = () => {
   const router = useRouter();
 
   const pathname = usePathname();
@@ -139,4 +139,4 @@ export const CustomsBrokerForm: React.FC = () => {
   );
 };
 
-export default CustomsBrokerForm;
+export default CustomsBrokerDetails;
