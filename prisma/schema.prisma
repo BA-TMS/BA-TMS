@@ -18,15 +18,16 @@ model Organization {
   postCountry   String
   postCode      String
   telephone     String
-  docketNumType DocketNumber
-  docketNumber  String       @unique
-  dotId         String?      @unique
-  fax           String?
-  orgName       String       @unique
-  tollFree      String?
-  loads         Load[]
-  users         User[]
-  Driver        Driver[]
+  docketNumType DocketNumber @default(FF)
+
+  docketNumber String   @unique
+  dotId        String?  @unique
+  fax          String?
+  orgName      String   @unique
+  tollFree     String?
+  loads        Load[]
+  users        User[]
+  Driver       Driver[]
 }
 
 model User {
@@ -154,7 +155,7 @@ model Driver {
   state     String
   city      String
   zip       String?
-  license   String? 
+  license   String?
 
   notes String?
 
@@ -180,7 +181,7 @@ model TeamDriver {
   state     String
   city      String
   zip       String?
-  license   String? 
+  license   String?
 
   driverId String? @unique // One-to-one relation with Driver
   driver   Driver? @relation(fields: [driverId], references: [id], onDelete: Cascade)
