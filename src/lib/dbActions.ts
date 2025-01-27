@@ -239,7 +239,7 @@ export async function addBroker({ broker }: { broker: BrokerFormData }) {
 
   // TODO: Better error handling
   if (organization === null) {
-    throw 'can not create driver';
+    throw 'can not create broker';
   }
   const resp = await prisma.broker.create({
     data: {
@@ -605,6 +605,20 @@ export async function updateBroker(
   id: string,
   { broker }: { broker: BrokerFormData }
 ) {
+  // find organization based on name
+  const organization = await prisma.organization.findFirst({
+    where: {
+      orgName: broker.orgName,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  // TODO: Better error handling
+  if (organization === null) {
+    throw 'Can not update broker';
+  }
   const resp = await prisma.broker.update({
     where: { id: id },
     data: {
@@ -613,6 +627,7 @@ export async function updateBroker(
       crossing: broker['Crossing'],
       telephone: broker['Telephone'],
       tollFree: broker['Toll Free'] ? broker['Toll Free'] : null,
+      orgId: organization.id,
     },
   });
   return resp;
