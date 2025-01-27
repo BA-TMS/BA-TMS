@@ -27,10 +27,10 @@ const formatron = function (broker: BrokerData) {
   } as unknown as BrokerData;
 };
 
-export const fetchBrokers = createAsyncThunk<BrokerData[]>(
+export const fetchBrokers = createAsyncThunk<BrokerData[], string>(
   'brokers/fetchBrokers',
-  async () => {
-    const data = await getBrokers();
+  async (orgName) => {
+    const data = await getBrokers(orgName);
 
     return data.map((broker: BrokerData) => formatron(broker));
   }

@@ -8,6 +8,9 @@ export interface BrokerData {
   crossing: string;
   telephone: string;
   tollFree: string | null;
+
+  orgId: string;
+  organization: { orgName: string };
 }
 
 export interface BrokerFormData {
@@ -16,6 +19,8 @@ export interface BrokerFormData {
   Crossing: string;
   Telephone: string;
   'Toll Free': string;
+
+  orgName: string;
 }
 
 export const brokerDataMap: Record<string, keyof BrokerData> = {
