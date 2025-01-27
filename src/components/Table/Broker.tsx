@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
 import { fetchBrokers } from '@/store/slices/brokerSlice';
 import { ModalContext } from '@/context/modalContext';
+import { UserContext } from '@/context/userContextProvider';
 import TableHeaderBlank from '../UI_Elements/Table/TableHeaderBlank';
 import Table from '../UI_Elements/Table/Table';
 import TableSkeleton from '../UI_Elements/Table/TableSkeleton';
@@ -30,6 +31,9 @@ export default function Broker() {
   const dispatch = useDispatch<AppDispatch>();
 
   const router = useRouter();
+
+  // need this to select only customs brokers that are relevant to our organization
+  const { organization } = useContext(UserContext);
 
   const {
     items: brokers,
@@ -94,8 +98,8 @@ export default function Broker() {
   };
 
   useEffect(() => {
-    dispatch(fetchBrokers());
-  }, [dispatch]);
+    dispatch(fetchBrokers(organization));
+  }, [dispatch, organization]);
 
   // Update filtered brokers when broker or searchValue changes
   useEffect(() => {
