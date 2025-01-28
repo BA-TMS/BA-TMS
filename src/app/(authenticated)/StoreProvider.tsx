@@ -16,14 +16,17 @@ export default function StoreProvider({
 }: {
   children: React.ReactNode;
 }) {
+  const storeRef = useRef<AppStore | null>(null); // store is only created once
+
   // only fetch relevant entries from db
   const { organization } = useContext(UserContext);
   console.log('org', organization);
 
-  const storeRef = useRef<AppStore | null>(null); // ensure store is only created once
   if (!storeRef.current) {
     // create the store instance the first time this renders
     storeRef.current = makeStore();
+
+    // will want to do these when we have an organization
     storeRef.current.dispatch(fetchLoads());
     storeRef.current.dispatch(fetchBrokers(organization)); // check this
     storeRef.current.dispatch(fetchCarriers());
