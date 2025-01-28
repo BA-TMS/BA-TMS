@@ -1,18 +1,16 @@
 'use client';
 
-import { useState, useContext, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { UserContext } from '@/context/userContextProvider';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@/store/store';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 import Table from '@ui/Table/Table';
 import TableSkeleton from '@ui/Table/TableSkeleton';
 import TableHeaderBlank from '@ui/Table/TableHeaderBlank';
 import Searchbar from '@/components/UI_Elements/Searchbar';
 import Dropdown from '@/components/UI_Elements/Input/Dropdown';
 import Button from '@/components/UI_Elements/Buttons/Button';
-import { fetchTeam } from '@/store/slices/teamSlice';
 import { TeamMember } from '@/types/teamTypes';
 
 // this page will need some sort of protections
@@ -32,15 +30,9 @@ const columns = [
 ];
 
 export default function SettingsPage() {
-  const { user } = useContext(UserContext);
-
-  const orgName = user?.user_metadata.org_name;
-
   const [filteredValue, setFilteredValue] = useState<TeamMember[]>([]);
   const [searchValue, setSearchValue] = useState<string>(''); // search value
   const [searchField, setSearchField] = useState<string>('All'); // specific field if any
-
-  const dispatch = useDispatch<AppDispatch>();
 
   const router = useRouter();
 
@@ -96,11 +88,6 @@ export default function SettingsPage() {
   const updateTeam = async (id: string) => {
     router.push(`/settings/team/update-user/${id}`);
   };
-
-  // get initial team
-  useEffect(() => {
-    dispatch(fetchTeam(orgName));
-  }, [dispatch, orgName]);
 
   // Update filtered team
   useEffect(() => {

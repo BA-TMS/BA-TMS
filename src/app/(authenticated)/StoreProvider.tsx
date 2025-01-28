@@ -8,6 +8,7 @@ import { fetchBrokers } from '@/store/slices/brokerSlice';
 import { fetchCarriers } from '@/store/slices/carrierSlice';
 import { fetchCustomers } from '@/store/slices/customerSlice';
 import { fetchDrivers } from '@/store/slices/driverSlice';
+import { fetchTeam } from '@/store/slices/teamSlice';
 
 // client component to create store and share using provider
 export default function StoreProvider({
@@ -28,6 +29,7 @@ export default function StoreProvider({
     storeRef.current.dispatch(fetchCarriers());
     storeRef.current.dispatch(fetchCustomers());
     storeRef.current.dispatch(fetchDrivers(organization)); // check this
+    storeRef.current.dispatch(fetchTeam(organization)); // check this
   }
 
   return <Provider store={storeRef.current}>{children}</Provider>;
