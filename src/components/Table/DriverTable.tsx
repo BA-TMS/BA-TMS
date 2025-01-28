@@ -1,10 +1,9 @@
 'use client';
 
 import { useState, useEffect, useContext } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@/store/store';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 import { ModalContext } from '@/context/modalContext';
-import { UserContext } from '@/context/userContextProvider';
 import Table from '../UI_Elements/Table/Table';
 import TableSkeleton from '../UI_Elements/Table/TableSkeleton';
 import TableHeaderBlank from '../UI_Elements/Table/TableHeaderBlank';
@@ -12,7 +11,6 @@ import { TableSearch } from '../UI_Elements/Table/TableSearch';
 import Button from '../UI_Elements/Buttons/Button';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { fetchDrivers } from '@/store/slices/driverSlice';
 import { DriverData } from '@/types/driverTypes';
 
 // this is passed to Table
@@ -28,13 +26,7 @@ export default function Drivers() {
   const [searchField, setSearchField] = useState<string>('All'); // specific field if any
   const [filteredValue, setFilteredValue] = useState<DriverData[]>([]);
 
-  const dispatch = useDispatch<AppDispatch>();
-
   const router = useRouter();
-
-  const { user } = useContext(UserContext);
-
-  const orgName = user?.user_metadata.org_name;
 
   const {
     items: drivers,
@@ -102,10 +94,6 @@ export default function Drivers() {
       console.error('Driver not found with ID:', id);
     }
   };
-
-  useEffect(() => {
-    dispatch(fetchDrivers(orgName));
-  }, [dispatch, orgName]);
 
   // Update filtered drivers when driver or searchValue changes
   useEffect(() => {
