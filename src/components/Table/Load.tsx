@@ -12,7 +12,6 @@ import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import { fetchLoads } from '@/store/slices/loadSlice';
 import { AppDispatch, RootState } from '@/store/store';
 import { getLoad } from '@/lib/dbActions';
 import { deleteLoad } from '@/store/slices/loadSlice';
@@ -145,13 +144,13 @@ const Load = () => {
 
   const { saveFormValues } = useContext(ModalContext);
 
-  const router = useRouter();
-
   const {
     items: loads,
     status,
     // error, // are we going to handle errors?
   } = useSelector((state: RootState) => state.loads);
+
+  const router = useRouter();
 
   const [filteredLoads, setFilteredLoads] = useState<LoadData[]>([]);
 
@@ -171,9 +170,9 @@ const Load = () => {
   const [statusValue, setStatusValue] = useState<string>('All');
 
   // Fetch loads from the API
-  useEffect(() => {
-    dispatch(fetchLoads());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchLoads());
+  // }, [dispatch]);
 
   // Update filtered loads when loads or filters change
   useEffect(() => {
@@ -298,7 +297,7 @@ const Load = () => {
   // delete a load
   const loadDelete = async (id: string) => {
     try {
-      await dispatch(deleteLoad(id as unknown as number)).unwrap();
+      await dispatch(deleteLoad(id)).unwrap();
     } catch (error) {
       console.error('Error deleting load:', error);
     }
