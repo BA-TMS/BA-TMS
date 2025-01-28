@@ -16,8 +16,8 @@ export default function Template({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <StoreProvider>
-      <UserContextProvider>
+    <UserContextProvider>
+      <StoreProvider>
         <div className="text-black dark:text-grey-200 bg-grey-100 dark:bg-grey-800">
           {loading ? (
             <Loader />
@@ -45,7 +45,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
             </div>
           )}
         </div>
-      </UserContextProvider>
-    </StoreProvider>
+      </StoreProvider>
+    </UserContextProvider>
   );
 }

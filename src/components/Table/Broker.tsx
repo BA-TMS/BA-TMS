@@ -1,11 +1,9 @@
 'use client';
 
 import { useContext, useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@/store/store';
-import { fetchBrokers } from '@/store/slices/brokerSlice';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 import { ModalContext } from '@/context/modalContext';
-import { UserContext } from '@/context/userContextProvider';
 import TableHeaderBlank from '../UI_Elements/Table/TableHeaderBlank';
 import Table from '../UI_Elements/Table/Table';
 import TableSkeleton from '../UI_Elements/Table/TableSkeleton';
@@ -28,12 +26,7 @@ export default function Broker() {
   const [searchField, setSearchField] = useState<string>('All'); // specific field if any
   const [filteredValue, setFilteredValue] = useState<BrokerData[]>([]);
 
-  const dispatch = useDispatch<AppDispatch>();
-
   const router = useRouter();
-
-  // need this to select only customs brokers that are relevant to our organization
-  const { organization } = useContext(UserContext);
 
   const {
     items: brokers,
@@ -96,10 +89,6 @@ export default function Broker() {
       console.error('Customs Broker not found with ID:', id);
     }
   };
-
-  useEffect(() => {
-    dispatch(fetchBrokers(organization));
-  }, [dispatch, organization]);
 
   // Update filtered brokers when broker or searchValue changes
   useEffect(() => {
