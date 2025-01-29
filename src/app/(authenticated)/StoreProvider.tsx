@@ -1,4 +1,5 @@
 'use client';
+
 import { useRef, useContext } from 'react';
 import { Provider } from 'react-redux';
 import { makeStore, AppStore } from '@/store/store';
@@ -9,6 +10,8 @@ import { fetchCarriers } from '@/store/slices/carrierSlice';
 import { fetchCustomers } from '@/store/slices/customerSlice';
 import { fetchDrivers } from '@/store/slices/driverSlice';
 import { fetchTeam } from '@/store/slices/teamSlice';
+
+// TODO- see how this works on login
 
 // client component to create store and share using provider
 export default function StoreProvider({
