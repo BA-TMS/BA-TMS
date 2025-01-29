@@ -1,9 +1,10 @@
 'use client';
 
-import { useRef, useContext } from 'react';
+import { useEffect, useContext, useRef, useState } from 'react';
 import { Provider } from 'react-redux';
 import { makeStore, AppStore } from '@/store/store';
 import { UserContext } from '@/context/userContextProvider';
+import Loader from '@/components/UI_Elements/PageLoader';
 import { fetchLoads } from '@/store/slices/loadSlice';
 import { fetchBrokers } from '@/store/slices/brokerSlice';
 import { fetchCarriers } from '@/store/slices/carrierSlice';
@@ -11,31 +12,42 @@ import { fetchCustomers } from '@/store/slices/customerSlice';
 import { fetchDrivers } from '@/store/slices/driverSlice';
 import { fetchTeam } from '@/store/slices/teamSlice';
 
-// TODO- see how this works on login
-
 // client component to create store and share using provider
+
 export default function StoreProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const storeRef = useRef<AppStore | null>(null); // store is only created once
-
-  // only fetch relevant entries from db
+  const storeRef = useRef<AppStore | null>(null);
+  const [isStoreReady, setIsStoreReady] = useState(false);
   const { organization } = useContext(UserContext);
-  console.log('org', organization);
 
-  if (!storeRef.current) {
-    // create the store instance the first time this renders
-    storeRef.current = makeStore();
+  // create store instance the first time this component renders
+  useEffect(() => {
+    if (!storeRef.current) {
+      storeRef.current = makeStore();
+    }
+  }, []);
 
-    // will want to do these when we have an organization
-    storeRef.current.dispatch(fetchLoads());
-    storeRef.current.dispatch(fetchBrokers(organization)); // check this
-    storeRef.current.dispatch(fetchCarriers());
-    storeRef.current.dispatch(fetchCustomers());
-    storeRef.current.dispatch(fetchDrivers(organization)); // check this
-    storeRef.current.dispatch(fetchTeam(organization)); // check this
+  // dispatch actions when the store is created AND organization is available
+  useEffect(() => {
+    if (storeRef.current && organization && !isStoreReady) {
+      storeRef.current.dispatch(fetchLoads());
+      storeRef.current.dispatch(fetchBrokers(organization)); // check this
+      storeRef.current.dispatch(fetchCarriers());
+      storeRef.current.dispatch(fetchCustomers());
+      storeRef.current.dispatch(fetchDrivers(organization)); // check this
+      storeRef.current.dispatch(fetchTeam(organization)); // check this
+
+      // prevent redundant dispatches
+      setIsStoreReady(true);
+    }
+  }, [organization, isStoreReady]); // only run when `organization` changes
+
+  // wait for the store to be ready before rendering children
+  if (!isStoreReady) {
+    return <Loader />;
   }
 
   return <Provider store={storeRef.current}>{children}</Provider>;

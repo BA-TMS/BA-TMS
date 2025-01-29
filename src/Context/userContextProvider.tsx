@@ -3,6 +3,7 @@
 import { createContext, useState, useEffect } from 'react';
 import { createClient } from '@util/supabase/client';
 import { User, Session } from '@supabase/supabase-js';
+import Loader from '@/components/UI_Elements/PageLoader';
 
 interface UserProviderProps {
   children: React.ReactNode;
@@ -62,10 +63,10 @@ export const UserContextProvider: React.FC<UserProviderProps> = ({
     );
 
     setData();
+    setLoading(false);
 
     return () => {
       listener?.subscription.unsubscribe();
-      setLoading(false);
     };
   }, [supabase.auth]);
 
@@ -76,6 +77,8 @@ export const UserContextProvider: React.FC<UserProviderProps> = ({
     signOut: () => supabase.auth.signOut(),
     loading,
   };
+
+  if (loading) return <Loader />; // not certain this is doing anything
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
