@@ -46,7 +46,7 @@ export default function StoreProvider({
   }, [organization, isStoreReady]); // only run when `organization` changes
 
   // wait for the store to be ready before rendering children
-  if (!isStoreReady) {
+  if (!isStoreReady || !storeRef.current) {
     return <Loader />;
   }
 
