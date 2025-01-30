@@ -3,7 +3,8 @@ import { UseControllerProps, useController } from 'react-hook-form';
 
 // select input takes in an array of objects
 // options are mapped to create dropdown <option> elements and values
-// this solves if the display name and the value will be different
+// key: display value
+// value: what is submitted to db
 
 interface Options {
   [key: string]: any;

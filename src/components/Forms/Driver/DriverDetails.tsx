@@ -9,12 +9,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { status } from '../data/details';
 import { usStates } from '@/components/Forms/data/states';
 import TextInput from '@ui/Form/TextInput';
-import DynamicSelect from '@ui/Form/DynamicSelect';
 import SelectInput from '@/components/UI_Elements/Form/SelectInput';
 import Button from '@/components/UI_Elements/Buttons/Button';
-import { getCarriers } from '@/lib/dbActions';
 import { useRouter, usePathname } from 'next/navigation';
 import { driverDataMap } from '@/types/driverTypes';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 
 // this component uses yup and react-hook-form to submit form values to a context
 
@@ -53,6 +53,11 @@ export const DriverForm = () => {
   // orgName because we will need it
   const { user } = useContext(UserContext);
   const orgName = user?.user_metadata.org_name;
+
+  // access carriers from redux to pass to select
+  const carriers = useSelector((state: RootState) => state.carriers.items).map(
+    (carrier) => ({ [carrier.carrierName]: carrier.id })
+  );
 
   const isUpdate = formData !== null && formData['id'];
 
@@ -196,11 +201,10 @@ export const DriverForm = () => {
             </div>
 
             <div className="flex flex-col w-full xl:w-1/2">
-              <DynamicSelect
+              <SelectInput
                 control={control}
                 name="Employer"
-                dbaction={getCarriers}
-                nameKey="carrierName"
+                options={carriers}
                 required={true}
               />
             </div>
