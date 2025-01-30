@@ -34,11 +34,11 @@ export default function StoreProvider({
   useEffect(() => {
     if (storeRef.current && organization && !isStoreReady) {
       storeRef.current.dispatch(fetchLoads());
-      storeRef.current.dispatch(fetchBrokers(organization)); // check this
+      storeRef.current.dispatch(fetchBrokers(organization));
       storeRef.current.dispatch(fetchCarriers());
       storeRef.current.dispatch(fetchCustomers());
-      storeRef.current.dispatch(fetchDrivers(organization)); // check this
-      storeRef.current.dispatch(fetchTeam(organization)); // check this
+      storeRef.current.dispatch(fetchDrivers(organization));
+      storeRef.current.dispatch(fetchTeam(organization));
 
       // prevent redundant dispatches
       setIsStoreReady(true);

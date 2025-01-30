@@ -12,7 +12,8 @@ import { useRouter } from 'next/navigation';
 import { getFactor } from '@/lib/dbActions';
 
 // this component submits form data from the context to database using redux
-// TODO: find better way to get factor name than a db call?
+
+// TODO: refactor to use redux to get factor name instead of db call
 
 // Define the validation schema for customer data
 const customerSchema = yup.object({

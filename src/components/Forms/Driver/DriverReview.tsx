@@ -28,7 +28,7 @@ export const DriverReviewForm = () => {
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [isTeam, setIsTeam] = useState<boolean>(false);
 
-  // use the id to pull from redux
+  // use the id to pull carrier name (employer) from redux
   const employer = useSelector((state: RootState) =>
     state.carriers.items.find(
       (carrier: CarrierData) => carrier.id === formData['Employer']
