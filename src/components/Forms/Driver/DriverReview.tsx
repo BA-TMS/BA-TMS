@@ -5,17 +5,14 @@ import { ModalContext } from '@/context/modalContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
 import { DriverData, DriverFormData } from '@/types/driverTypes';
-import Loader from '@/components/UI_Elements/PageLoader';
 import Button from '@/components/UI_Elements/Buttons/Button';
 import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 import AddressDisplay from '@/components/UI_Elements/Display/AddressDisplay';
 import { useRouter } from 'next/navigation';
 import { createDriver, updateDriver } from '@/store/slices/driverSlice';
-import { getCarrier } from '@/lib/dbActions';
+import { CarrierData } from '@/types/carrierTypes';
 
 // this component submits form data from the context to database using redux
-
-// TODO- maybe fetch carrier name from redux rather than db
 
 export const DriverReviewForm = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -30,31 +27,13 @@ export const DriverReviewForm = () => {
   const [error, setError] = useState<string | null>(null);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [isTeam, setIsTeam] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
-
-  // get the name of the employer (carrier)
-  const [employer, setEmployer] = useState<string | undefined>(''); // carrier name
-
-  // fetch carrier name when component mounts
-  useEffect(() => {
-    const employerId = formData['Employer'];
-
-    const fetchCarrier = async () => {
-      const employer = await getCarrier(employerId);
-      setEmployer(employer?.carrierName);
-      setLoading(false);
-    };
-
-    fetchCarrier();
-  }, [employer]);
 
   // use the id to pull from redux
-  // we could do it this way if we could guarantee carrier information would be in global state
-  // const employer = useSelector((state: RootState) =>
-  //   state.carriers.items.find(
-  //     (carrier: CarrierData) => carrier.id === formData['Employer']
-  //   )
-  // );
+  const employer = useSelector((state: RootState) =>
+    state.carriers.items.find(
+      (carrier: CarrierData) => carrier.id === formData['Employer']
+    )
+  );
 
   // submit the values to redux
   const onSubmit = async (driver: DriverFormData) => {
@@ -97,14 +76,6 @@ export const DriverReviewForm = () => {
     }
   }, [formData]);
 
-  if (loading) {
-    return (
-      <div className="flex flex-col h-full">
-        <Loader />
-      </div>
-    );
-  }
-
   return (
     <div className="flex flex-col h-full">
       <div className="flex flex-col justify-between flex-grow">
@@ -124,7 +95,7 @@ export const DriverReviewForm = () => {
             <div className="flex flex-col w-full">
               <DataDisplay
                 title="Employer"
-                text={employer} // get the name not the id
+                text={employer?.carrierName} // get the name not the id
               />
             </div>
           </div>
