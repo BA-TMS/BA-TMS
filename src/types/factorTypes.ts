@@ -9,14 +9,15 @@ export interface FactorData {
   addressAddOn: string | null;
   city: string;
   state: string;
-  postCountry: string;
   postCode: string;
+  postCountry: string;
 
   primaryContact: string | null;
   telephone: string;
   tollFree: string | null;
   email: string | null;
   secondaryContact: string | null;
+  secondaryTelephone: string | null;
   notes: string | null;
 
   currency: string | null;
@@ -31,14 +32,25 @@ export interface FactorData {
 }
 
 export interface FactorFormData {
-  'Factoring Company Name': string;
+  Status: string;
+  'Factor Name': string;
+
   Address: string;
-  'Address Line 2'?: string;
+  'Address Line 2': string | null;
   City: string;
   State: string;
-  Country: string;
   Zip: string;
-  'Country Code': string;
-  'Phone Number': string;
-  Notes?: string;
+  Country: string;
+
+  'Primary Contact': string | null;
+  Telephone: string;
+  'Toll Free': string | null;
+  Email: string | null;
+  'Secondary Contact': string | null;
+  'Secondary Telephone': string;
+
+  Currency: string | null;
+  'Payment Terms': string | null;
+  'Tax ID#': string | null;
+  Notes: string | null;
 }
