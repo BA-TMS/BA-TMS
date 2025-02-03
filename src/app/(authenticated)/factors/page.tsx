@@ -1,16 +1,14 @@
-// Factoring Company Components Test
-
 'use client';
 
-import { ContextProvider } from '@/context/modalContext';
-import FactoringCompany from '@/components/Table/FactoringCompany';
+import React from 'react';
+import PageTitle from '@/components/Page/PageTitle';
 
-export default function Home() {
+const FactorPage: React.FC = () => {
   return (
     <>
-      <ContextProvider>
-        <FactoringCompany />
-      </ContextProvider>
+      <PageTitle pageTitle="Factoring Company" />
     </>
   );
-}
+};
+
+export default FactorPage;
