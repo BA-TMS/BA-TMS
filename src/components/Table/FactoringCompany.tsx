@@ -1,79 +1,133 @@
 'use client';
 
-import { useState, useEffect, useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 import { ModalContext } from '@/context/modalContext';
-import FormModal from '../Modals/FormModal';
-import FactoringCompanyForm from '../Forms/FactoringCompaniesForm';
-import { getFactor } from '@/lib/dbActions';
+import TableHeaderBlank from '../UI_Elements/Table/TableHeaderBlank';
 import Table from '../UI_Elements/Table/Table';
-
-type Factor = {
-  name: string;
-  address: string;
-  addressAddOn: string | null;
-  city: string;
-  state: string;
-  postCountry: string;
-  postCode: string;
-  telCountry: string;
-  telephone: string;
-};
+import TableSkeleton from '../UI_Elements/Table/TableSkeleton';
+import { TableSearch } from '../UI_Elements/Table/TableSearch';
+import Button from '@ui/Buttons/Button';
+import { FactorData } from '@/types/factorTypes';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 // this is passed to Table
 const columns = [
   { field: 'name', headerName: 'Name' },
-  { field: 'address', headerName: 'Name' },
-  { field: 'addressAddOn', headerName: 'Name' },
-  { field: 'city', headerName: 'Name' },
-  { field: 'state', headerName: 'Name' },
-  { field: 'postCountry', headerName: 'Name' },
-  { field: 'postCode', headerName: 'Name' },
-  { field: 'telCountry', headerName: 'Country Code' },
+  { field: 'address', headerName: 'Address' },
+  { field: 'city', headerName: 'City' },
+  { field: 'state', headerName: 'State' },
+  { field: 'postCode', headerName: 'Zip' },
   { field: 'telephone', headerName: 'Phone Number' },
 ];
 
 export default function FactoringCompany() {
-  const [factor, setFactor] = useState<Factor[]>([]);
-  const { toggleOpen } = useContext(ModalContext);
+  const [searchValue, setSearchValue] = useState<string>(''); // search value
+  const [searchField, setSearchField] = useState<string>('All'); // specific field if any
+  const [filteredValue, setFilteredValue] = useState<FactorData[]>([]);
 
-  const handleClick = () => {
-    toggleOpen();
-  };
+  const router = useRouter();
 
-  // data fetched and passed to Table
+  const {
+    items: factors,
+    status,
+    // error,
+  } = useSelector((state: RootState) => state.factors);
+
+  const { saveFormValues } = useContext(ModalContext);
+
+  // search
+  function handleSearch(factors: FactorData[], value: string, status: string) {
+    // status to uppercase
+    const factorStatus = status?.toUpperCase();
+
+    // Filter by status (if it's "Active" or "Inactive")
+    let filteredFactors = factors;
+
+    if (factorStatus === 'ACTIVE' || factorStatus === 'INACTIVE') {
+      filteredFactors = factors.filter(
+        (factor) => factor.status === factorStatus
+      );
+    }
+
+    // If no search value, return the filtered list by status
+    if (!value) {
+      return filteredFactors;
+    }
+
+    // search across all fields with the given value
+    if (status === 'All') {
+      return filteredFactors.filter((factor) =>
+        Object.values(factor).some((factorField) =>
+          factorField?.toString().toLowerCase().includes(value.toLowerCase())
+        )
+      );
+    }
+
+    // If status is specific (like "Active"), apply search value filtering
+    return filteredFactors.filter((factor) =>
+      Object.values(factor).some((factorField) =>
+        factorField?.toString().toLowerCase().includes(value.toLowerCase())
+      )
+    );
+  }
+
+  // update specific field to search
+  function updateField(field: string) {
+    setSearchField(field);
+  }
+
+  // update broker
+  // select from redux and pass to form values
+  // const updateBroker = async (id: string) => {
+  //   const data = brokers.find((broker) => broker.id === id);
+
+  //   if (data) {
+  //     saveFormValues(data);
+  //     router.push('/brokers/update-broker/details');
+  //   } else {
+  //     console.error('Customs Broker not found with ID:', id);
+  //   }
+  // };
+
+  // Update filtered factors
   useEffect(() => {
-    const fetchFactor = async () => {
-      const data = await getFactor();
-      setFactor(data);
-    };
-
-    fetchFactor();
-  }, []);
+    let updatedFactors = [...factors];
+    updatedFactors = handleSearch(updatedFactors, searchValue, searchField);
+    setFilteredValue(updatedFactors);
+  }, [factors, searchValue, searchField]);
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8">
-      <button
-        onClick={handleClick}
-        className="float-right rounded-md bg-primary py-3 px-9 font-medium text-white hover:bg-opacity-80"
-      >
-        Add Factoring Company
-      </button>
-      <div className="sm:flex sm:items-center">
-        <div className="sm:flex-auto">
-          <h1 className="text-base leading-6 text-gray-900">
-            Factoring Companies
-          </h1>
-          <p className="mt-2 text-md text-gray-700">
-            A list of Factoring Companies
-          </p>
-        </div>
-        <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-          <FormModal>
-            <FactoringCompanyForm />
-          </FormModal>
+    <>
+      <div className="relative flex justify-end mb-6">
+        <div className="absolute right-4 bottom-2">
+          <Link href="/factors/add-factor/details">
+            <Button>Add Factoring Co</Button>
+          </Link>
         </div>
       </div>
-      <Table columns={columns} data={factor}></Table>
-    </div>
+
+      <TableHeaderBlank />
+      <TableSearch
+        placeholder={'Search...'}
+        dropdownLabel="Status"
+        dropdownOptions={['Active', 'Inactive', 'All']}
+        search={setSearchValue}
+        updateField={updateField}
+      />
+
+      {status === 'loading' ? (
+        <TableSkeleton columns={columns} />
+      ) : (
+        <Table
+          columns={columns}
+          data={filteredValue}
+          // update={updateBroker}
+          view={'/factors/view/'}
+        />
+      )}
+    </>
   );
 }

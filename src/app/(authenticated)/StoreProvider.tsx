@@ -11,6 +11,7 @@ import { fetchCarriers } from '@/store/slices/carrierSlice';
 import { fetchCustomers } from '@/store/slices/customerSlice';
 import { fetchDrivers } from '@/store/slices/driverSlice';
 import { fetchTeam } from '@/store/slices/teamSlice';
+import { fetchFactors } from '@/store/slices/factorSlice';
 
 // client component to create store and share using provider
 
@@ -38,6 +39,7 @@ export default function StoreProvider({
       storeRef.current.dispatch(fetchCarriers());
       storeRef.current.dispatch(fetchCustomers());
       storeRef.current.dispatch(fetchDrivers(organization));
+      storeRef.current.dispatch(fetchFactors(organization));
       storeRef.current.dispatch(fetchTeam(organization));
 
       // prevent redundant dispatches

@@ -47,6 +47,10 @@ const DRIVER_RELATIONS = {
   driverTwo: true,
 };
 
+const FACTOR_RELATIONS = {
+  organization: { select: { orgName: true } },
+};
+
 // Generic type for Prisma model
 
 // Generic type for Prisma relations object
@@ -164,9 +168,21 @@ export async function getFactor(id: string) {
   return factor;
 }
 
-export async function getFactors() {
-  const factor = await prisma.factor.findMany();
-  return factor;
+export async function getFactors(organization: string) {
+  const factors = await prisma.factor.findMany({
+    where: {
+      organization: {
+        orgName: organization,
+      },
+    },
+    orderBy: [
+      {
+        name: 'asc',
+      },
+    ],
+    include: FACTOR_RELATIONS,
+  });
+  return factors;
 }
 
 export async function getLoad(id: string) {
