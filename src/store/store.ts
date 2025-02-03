@@ -4,6 +4,7 @@ import brokerReducer from './slices/brokerSlice';
 import carrierReducer from './slices/carrierSlice';
 import customerReducer from './slices/customerSlice';
 import driverReducer from './slices/driverSlice';
+import factorReducer from './slices/factorSlice';
 import teamReducer from './slices/teamSlice';
 
 // create a factory function that creates a store instance per request
@@ -15,6 +16,7 @@ export const makeStore = () => {
       carriers: carrierReducer,
       customers: customerReducer,
       drivers: driverReducer,
+      factors: factorReducer,
       team: teamReducer,
     },
   });
