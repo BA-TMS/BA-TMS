@@ -289,12 +289,13 @@ model Factor {
   postCountry  String
   postCode     String
 
-  primaryContact   String?
-  telephone        String
-  tollFree         String?
-  email            String?
-  secondaryContact String?
-  notes            String?
+  primaryContact     String?
+  telephone          String
+  tollFree           String?
+  email              String?
+  secondaryContact   String?
+  secondaryTelephone String?
+  notes              String?
 
   currency     String?
   paymentTerms String?
