@@ -119,7 +119,7 @@ export const FactoringCompanyForm: React.FC = () => {
   );
 
   return (
-    <div className="flex flex-col h-full">
+    <div>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col justify-between flex-grow"
@@ -237,7 +237,7 @@ export const FactoringCompanyForm: React.FC = () => {
           )}
         </div>
 
-        <div className="py-3.5 gap-2 border-t border-grey-300 dark:border-grey-700 flex justify-between bottom-0 bg-white dark:bg-grey-900 z-10">
+        <div className="py-3.5 gap-2 border-t border-grey-300 dark:border-grey-700 flex justify-between sticky bottom-0 bg-white dark:bg-grey-900 z-10">
           <Button
             type="button"
             variant="outline"
