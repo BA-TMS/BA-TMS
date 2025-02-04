@@ -10,7 +10,7 @@ import AddressDisplay from '@/components/UI_Elements/Display/AddressDisplay';
 import Button from '@/components/UI_Elements/Buttons/Button';
 import { useRouter } from 'next/navigation';
 import { FactorData, FactorFormData } from '@/types/factorTypes';
-import { createFactor } from '@/store/slices/factorSlice';
+import { createFactor, updateFactor } from '@/store/slices/factorSlice';
 
 export const FactoringCompanyReview: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -33,8 +33,6 @@ export const FactoringCompanyReview: React.FC = () => {
     setIsSubmitting(true);
     setError(''); // clear previous errors
 
-    console.log('submitting', factor);
-
     // if not an update
     if (!isUpdate) {
       try {
@@ -44,15 +42,14 @@ export const FactoringCompanyReview: React.FC = () => {
       }
     } else {
       try {
-        // await dispatch(
-        //   updatefactor({
-        //     id: formData['id'],
-        //     updatedfactor: factor as Partial<factorData>,
-        //   })
-        // ).unwrap();
-        console.log('try');
+        await dispatch(
+          updateFactor({
+            id: formData['id'],
+            updatedFactor: factor as Partial<FactorData>,
+          })
+        ).unwrap();
       } catch (error) {
-        setError(`Error updating carrier: ${error}`);
+        setError(`Error updating factoring company: ${error}`);
       }
     }
     setIsSubmitting(false);

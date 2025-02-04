@@ -1,10 +1,14 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { getFactors, addFactoringCo } from '@/lib/dbActions';
+import {
+  getFactors,
+  addFactoringCo,
+  updateFactor as apiUpdateFactor,
+} from '@/lib/dbActions';
 import { FactorData, FactorFormData } from '@/types/factorTypes';
 
 interface UpdatedFactorPayload {
   id: string;
-  updatedfactor: Partial<FactorData>;
+  updatedFactor: Partial<FactorData>;
 }
 
 interface FactorState {
@@ -33,7 +37,7 @@ export const fetchFactors = createAsyncThunk<FactorData[], string>(
 );
 
 export const createFactor = createAsyncThunk<FactorData, FactorFormData>(
-  'factors/createfactor',
+  'factors/createFactor',
   async (factor, { rejectWithValue }) => {
     try {
       const response = await addFactoringCo({ factor });
@@ -45,20 +49,20 @@ export const createFactor = createAsyncThunk<FactorData, FactorFormData>(
   }
 );
 
-// export const updatefactor = createAsyncThunk<FactorData, UpdatedfactorPayload>(
-//   'factors/updatefactor',
-//   async ({ id, updatedfactor }: UpdatedfactorPayload, { rejectWithValue }) => {
-//     try {
-//       const response = await apiUpdatefactor(id, {
-//         factor: updatedfactor as factorFormData,
-//       });
+export const updateFactor = createAsyncThunk<FactorData, UpdatedFactorPayload>(
+  'factors/updateFactor',
+  async ({ id, updatedFactor }: UpdatedFactorPayload, { rejectWithValue }) => {
+    try {
+      const response = await apiUpdateFactor(id, {
+        factor: updatedFactor as FactorFormData,
+      });
 
-//       return formatron(response as FactorData);
-//     } catch (error) {
-//       return rejectWithValue('Failed to update factor');
-//     }
-//   }
-// );
+      return formatron(response as FactorData);
+    } catch (error) {
+      return rejectWithValue('Failed to update factor');
+    }
+  }
+);
 
 const factorSlice = createSlice({
   name: 'factors',
@@ -89,23 +93,23 @@ const factorSlice = createSlice({
         const message = action.payload;
         state.status = 'failed';
         state.error = message as string;
+      })
+      .addCase(
+        updateFactor.fulfilled,
+        (state, action: PayloadAction<FactorData>) => {
+          const index = state.items.findIndex(
+            (factor) => factor.id === action.payload.id
+          );
+          if (index !== -1) {
+            state.items[index] = action.payload;
+          }
+        }
+      )
+      .addCase(updateFactor.rejected, (state, action) => {
+        const message = action.payload;
+        state.status = 'failed';
+        state.error = message as string;
       });
-    //   .addCase(
-    //     updatefactor.fulfilled,
-    //     (state, action: PayloadAction<FactorData>) => {
-    //       const index = state.items.findIndex(
-    //         (factor) => factor.id === action.payload.id
-    //       );
-    //       if (index !== -1) {
-    //         state.items[index] = action.payload;
-    //       }
-    //     }
-    //   )
-    //   .addCase(updatefactor.rejected, (state, action) => {
-    //     const message = action.payload;
-    //     state.status = 'failed';
-    //     state.error = message as string;
-    //   });
   },
 });
 

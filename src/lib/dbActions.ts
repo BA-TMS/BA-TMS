@@ -905,6 +905,53 @@ export async function updateDriver(
   return resp;
 }
 
+export async function updateFactor(
+  id: string,
+  { factor }: { factor: FactorFormData }
+) {
+  // find organization based on name
+  const organization = await getOrganization(factor.orgName);
+
+  // TODO: Better error handling
+  if (organization === null) {
+    throw 'can not update factoring company';
+  }
+
+  // TODO: Better error handling
+  if (organization === null) {
+    throw 'Can not update broker';
+  }
+
+  const resp = await prisma.factor.update({
+    where: { id: id },
+    data: {
+      status: factor['Status'] as Status,
+      name: factor['Factor Name'],
+      address: factor['Address'],
+      addressAddOn: factor['Address Line 2'],
+      city: factor['City'],
+      state: factor['State'],
+      postCode: factor['Zip'],
+      postCountry: factor['Country'],
+
+      primaryContact: factor['Primary Contact'],
+      telephone: factor['Telephone'],
+      tollFree: factor['Toll Free'],
+      email: factor['Email'],
+      secondaryContact: factor['Secondary Contact'],
+      secondaryTelephone: factor['Secondary Telephone'],
+
+      currency: factor['Currency'],
+      paymentTerms: factor['Payment Terms'],
+      taxId: factor['Tax ID#'],
+
+      notes: factor['Notes'],
+    },
+    include: FACTOR_RELATIONS,
+  });
+  return resp;
+}
+
 export async function updateLoad(
   id: string,
   { formData }: { formData: Partial<LoadFormData> }
