@@ -79,9 +79,8 @@ export default function FactoringCompany() {
     setSearchField(field);
   }
 
-  // update broker
-  // select from redux and pass to form values
-  // const updateBroker = async (id: string) => {
+  // update by selecting from redux and pass to form values
+  // const updateFactor = async (id: string) => {
   //   const data = brokers.find((broker) => broker.id === id);
 
   //   if (data) {
@@ -124,7 +123,7 @@ export default function FactoringCompany() {
         <Table
           columns={columns}
           data={filteredValue}
-          // update={updateBroker}
+          update={() => null}
           view={'/factors/view/'}
         />
       )}

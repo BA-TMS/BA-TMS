@@ -32,6 +32,7 @@ export interface FactorData {
 }
 
 export interface FactorFormData {
+  orgName: string;
   Status: string;
   'Factor Name': string;
 

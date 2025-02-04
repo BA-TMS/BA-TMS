@@ -1,7 +1,7 @@
 /* eslint-disable indent */
 'use server';
 
-import { DocketNumber, PrismaClient, DriverType } from '@prisma/client';
+import { DocketNumber, PrismaClient, DriverType, Status } from '@prisma/client';
 import { CustomerFormData } from '@/types/customerTypes';
 import { LoadFormData } from '@/types/loadTypes';
 import { CarrierFormData } from '@/types/carrierTypes';
@@ -197,6 +197,18 @@ export async function getLoad(id: string) {
 export async function getLoads() {
   const loads = await getter(prisma.load, LOAD_RELATIONS);
   return loads;
+}
+
+export async function getOrganization(orgName: string) {
+  const organization = await prisma.organization.findFirst({
+    where: {
+      orgName: orgName,
+    },
+    select: {
+      id: true,
+    },
+  });
+  return organization;
 }
 
 export async function getOrganizations() {
@@ -496,19 +508,40 @@ export async function addDriver({ driver }: { driver: DriverFormData }) {
 }
 
 export async function addFactoringCo({ factor }: { factor: FactorFormData }) {
+  // find organization based on name
+  const organization = await getOrganization(factor.orgName);
+
+  // TODO: Better error handling
+  if (organization === null) {
+    throw 'can not create factoring company';
+  }
+
   const resp = await prisma.factor.create({
     data: {
-      name: factor['Factoring Company Name'],
+      orgId: organization.id,
+      status: factor['Status'] as Status,
+      name: factor['Factor Name'],
       address: factor['Address'],
-      addressAddOn: factor['Address Line 2'] || null, // Optional field
+      addressAddOn: factor['Address Line 2'],
       city: factor['City'],
       state: factor['State'],
-      postCountry: factor['Country'],
       postCode: factor['Zip'],
-      telCountry: factor['Country Code'],
-      telephone: factor['Phone Number'],
-      // notes: factor['Notes'] || null, // optional field, notes not in db table yet
+      postCountry: factor['Country'],
+
+      primaryContact: factor['Primary Contact'],
+      telephone: factor['Telephone'],
+      tollFree: factor['Toll Free'],
+      email: factor['Email'],
+      secondaryContact: factor['Secondary Contact'],
+      secondaryTelephone: factor['Secondary Telephone'],
+
+      currency: factor['Currency'],
+      paymentTerms: factor['Payment Terms'],
+      taxId: factor['Tax ID#'],
+
+      notes: factor['Notes'],
     },
+    include: FACTOR_RELATIONS,
   });
   return resp;
 }

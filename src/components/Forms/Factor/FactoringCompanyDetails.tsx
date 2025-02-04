@@ -110,7 +110,6 @@ export const FactoringCompanyForm: React.FC = () => {
   // submit the values to the context
   const onSubmit = useCallback(
     (factor: FactoringCompany) => {
-      console.log('SUBMITTING FACTOR', factor);
       saveFormValues(factor);
       reset();
       router.push(`/factors/${segment}/review`);

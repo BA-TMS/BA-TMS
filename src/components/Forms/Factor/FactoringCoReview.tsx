@@ -10,6 +10,7 @@ import AddressDisplay from '@/components/UI_Elements/Display/AddressDisplay';
 import Button from '@/components/UI_Elements/Buttons/Button';
 import { useRouter } from 'next/navigation';
 import { FactorData, FactorFormData } from '@/types/factorTypes';
+import { createFactor } from '@/store/slices/factorSlice';
 
 export const FactoringCompanyReview: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -34,25 +35,26 @@ export const FactoringCompanyReview: React.FC = () => {
 
     console.log('submitting', factor);
 
-    // // if not an update
-    // if (!isUpdate) {
-    //   try {
-    //     await dispatch(createfactor(factor)).unwrap();
-    //   } catch (error) {
-    //     setError(`Error creating factor: ${error}`);
-    //   }
-    // } else {
-    //   try {
-    //     await dispatch(
-    //       updatefactor({
-    //         id: formData['id'],
-    //         updatedfactor: factor as Partial<factorData>,
-    //       })
-    //     ).unwrap();
-    //   } catch (error) {
-    //     setError(`Error updating carrier: ${error}`);
-    //   }
-    // }
+    // if not an update
+    if (!isUpdate) {
+      try {
+        await dispatch(createFactor(factor)).unwrap();
+      } catch (error) {
+        setError(`Error creating factor: ${error}`);
+      }
+    } else {
+      try {
+        // await dispatch(
+        //   updatefactor({
+        //     id: formData['id'],
+        //     updatedfactor: factor as Partial<factorData>,
+        //   })
+        // ).unwrap();
+        console.log('try');
+      } catch (error) {
+        setError(`Error updating carrier: ${error}`);
+      }
+    }
     setIsSubmitting(false);
   };
 

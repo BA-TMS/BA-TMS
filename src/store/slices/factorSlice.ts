@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { getFactors } from '@/lib/dbActions';
-import { FactorData } from '@/types/factorTypes';
+import { getFactors, addFactoringCo } from '@/lib/dbActions';
+import { FactorData, FactorFormData } from '@/types/factorTypes';
 
 interface UpdatedFactorPayload {
   id: string;
@@ -32,18 +32,18 @@ export const fetchFactors = createAsyncThunk<FactorData[], string>(
   }
 );
 
-// export const createfactor = createAsyncThunk<FactorData, factorFormData>(
-//   'factors/createfactor',
-//   async (factor, { rejectWithValue }) => {
-//     try {
-//       const response = await addfactor({ factor });
+export const createFactor = createAsyncThunk<FactorData, FactorFormData>(
+  'factors/createfactor',
+  async (factor, { rejectWithValue }) => {
+    try {
+      const response = await addFactoringCo({ factor });
 
-//       return formatron(response as FactorData);
-//     } catch (error) {
-//       return rejectWithValue('Failed to create factor');
-//     }
-//   }
-// );
+      return formatron(response as FactorData);
+    } catch (error) {
+      return rejectWithValue('Failed to create factoring company');
+    }
+  }
+);
 
 // export const updatefactor = createAsyncThunk<FactorData, UpdatedfactorPayload>(
 //   'factors/updatefactor',
@@ -81,15 +81,15 @@ const factorSlice = createSlice({
         state.status = 'failed';
         state.error =
           action.error.message || 'Failed to fetch factoring companies';
+      })
+      .addCase(createFactor.fulfilled, (state, action) => {
+        state.items.push(action.payload);
+      })
+      .addCase(createFactor.rejected, (state, action) => {
+        const message = action.payload;
+        state.status = 'failed';
+        state.error = message as string;
       });
-    //   .addCase(createfactor.fulfilled, (state, action) => {
-    //     state.items.push(action.payload);
-    //   })
-    //   .addCase(createfactor.rejected, (state, action) => {
-    //     const message = action.payload;
-    //     state.status = 'failed';
-    //     state.error = message as string;
-    //   })
     //   .addCase(
     //     updatefactor.fulfilled,
     //     (state, action: PayloadAction<FactorData>) => {
