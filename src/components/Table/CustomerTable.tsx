@@ -7,9 +7,8 @@ import Table from '../UI_Elements/Table/Table';
 import TableSkeleton from '../UI_Elements/Table/TableSkeleton';
 import { TableSearch } from '../UI_Elements/Table/TableSearch';
 import TableHeaderBlank from '../UI_Elements/Table/TableHeaderBlank';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@/store/store';
-import { fetchCustomers } from '@/store/slices/customerSlice';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 import { getCustomer } from '@/lib/dbActions';
 import { CustomerData } from '@/types/customerTypes';
 import Link from 'next/link';
@@ -63,8 +62,6 @@ const CustomerTable = (): JSX.Element => {
   const [searchValue, setSearchValue] = useState<string>(''); // search value
   const [searchField, setSearchField] = useState<string>('All'); // specific field if any
   const [filteredValue, setFilteredValue] = useState<CustomerData[]>([]);
-
-  const dispatch = useDispatch<AppDispatch>();
 
   const router = useRouter();
 
@@ -131,11 +128,6 @@ const CustomerTable = (): JSX.Element => {
       router.push('/customers/update-customer/details');
     }
   };
-
-  // Fetch customers from db
-  useEffect(() => {
-    dispatch(fetchCustomers());
-  }, [dispatch]);
 
   // Update filtered customers when customer or searchValue changes
   useEffect(() => {

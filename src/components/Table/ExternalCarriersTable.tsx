@@ -1,16 +1,15 @@
 'use client';
 
 import { useContext, useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { ModalContext } from '@/context/modalContext';
 import Table from '../UI_Elements/Table/Table';
 import TableSkeleton from '../UI_Elements/Table/TableSkeleton';
 import { TableSearch } from '../UI_Elements/Table/TableSearch';
 import TableHeaderBlank from '../UI_Elements/Table/TableHeaderBlank';
 import Button from '../UI_Elements/Buttons/Button';
-import { fetchCarriers } from '@/store/slices/carrierSlice';
 import { CarrierData } from '@/types/carrierTypes';
-import { AppDispatch, RootState } from '@/store/store';
+import { RootState } from '@/store/store';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { getCarrier } from '@/lib/dbActions';
@@ -28,8 +27,6 @@ export default function Carriers() {
   const [searchValue, setSearchValue] = useState<string>(''); // search value
   const [searchField, setSearchField] = useState<string>('All'); // specific field if any
   const [filteredValue, setFilteredValue] = useState<CarrierData[]>([]);
-
-  const dispatch = useDispatch<AppDispatch>();
 
   const router = useRouter();
 
@@ -95,10 +92,6 @@ export default function Carriers() {
       router.push('/carriers/update-carrier/details');
     }
   };
-
-  useEffect(() => {
-    dispatch(fetchCarriers());
-  }, [dispatch]);
 
   // Update filtered carriers when carrier or searchValue changes
   useEffect(() => {
