@@ -80,16 +80,16 @@ export default function FactoringCompany() {
   }
 
   // update by selecting from redux and pass to form values
-  // const updateFactor = async (id: string) => {
-  //   const data = brokers.find((broker) => broker.id === id);
+  const updateFactor = async (id: string) => {
+    const data = factors.find((factor) => factor.id === id);
 
-  //   if (data) {
-  //     saveFormValues(data);
-  //     router.push('/brokers/update-broker/details');
-  //   } else {
-  //     console.error('Customs Broker not found with ID:', id);
-  //   }
-  // };
+    if (data) {
+      saveFormValues(data);
+      router.push('/factors/update-factor/details');
+    } else {
+      console.error('Factoring Company not found with ID:', id);
+    }
+  };
 
   // Update filtered factors
   useEffect(() => {
@@ -123,7 +123,7 @@ export default function FactoringCompany() {
         <Table
           columns={columns}
           data={filteredValue}
-          update={() => null}
+          update={updateFactor}
           view={'/factors/view/'}
         />
       )}
