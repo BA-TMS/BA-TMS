@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 'use server';
 
 import { DocketNumber, PrismaClient, DriverType } from '@prisma/client';
@@ -24,6 +25,10 @@ const LOAD_RELATIONS = {
   customer: { select: { companyName: true } },
   shipper: { select: { name: true } },
   consignee: { select: { name: true } },
+};
+
+const BROKER_RELATIONS = {
+  organization: { select: { orgName: true } },
 };
 
 const CARRIER_RELATIONS = {
@@ -63,8 +68,20 @@ async function getter(
   return resp;
 }
 
-export async function getBrokers() {
-  const brokers = await prisma.broker.findMany();
+export async function getBrokers(organization: string) {
+  const brokers = await prisma.broker.findMany({
+    where: {
+      organization: {
+        orgName: organization,
+      },
+    },
+    orderBy: [
+      {
+        name: 'asc',
+      },
+    ],
+    include: BROKER_RELATIONS,
+  });
   return brokers;
 }
 
@@ -210,19 +227,28 @@ export async function getAccountPreferences() {
 /** Add new entries to tables. */
 
 export async function addBroker({ broker }: { broker: BrokerFormData }) {
+  // find organization based on name
+  const organization = await prisma.organization.findFirst({
+    where: {
+      orgName: broker.orgName,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  // TODO: Better error handling
+  if (organization === null) {
+    throw 'can not create broker';
+  }
   const resp = await prisma.broker.create({
     data: {
+      status: broker['Status'],
       name: broker['Broker Name'],
       crossing: broker['Crossing'],
-      address: broker['Address'],
-      addressAddOn: broker['Address Line 2'] || null, // Optional field
-      city: broker['City'],
-      state: broker['State'],
-      postCountry: broker['Country'],
-      postCode: broker['Zip'],
-      telCountry: broker['Country Code'],
-      telephone: broker['Phone Number'],
-      // notes: carrier['Notes'] || null, // optional field, notes not in table yet
+      telephone: broker['Telephone'],
+      tollFree: broker['Toll Free'] ? broker['Toll Free'] : null,
+      orgId: organization.id,
     },
   });
   return resp;
@@ -571,6 +597,38 @@ async function updater(
       id: targetId,
     },
     data: upateData,
+  });
+  return resp;
+}
+
+export async function updateBroker(
+  id: string,
+  { broker }: { broker: BrokerFormData }
+) {
+  // find organization based on name
+  const organization = await prisma.organization.findFirst({
+    where: {
+      orgName: broker.orgName,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  // TODO: Better error handling
+  if (organization === null) {
+    throw 'Can not update broker';
+  }
+  const resp = await prisma.broker.update({
+    where: { id: id },
+    data: {
+      status: broker['Status'],
+      name: broker['Broker Name'],
+      crossing: broker['Crossing'],
+      telephone: broker['Telephone'],
+      tollFree: broker['Toll Free'] ? broker['Toll Free'] : null,
+      orgId: organization.id,
+    },
   });
   return resp;
 }

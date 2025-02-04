@@ -18,16 +18,16 @@ model Organization {
   postCountry   String
   postCode      String
   telephone     String
-  docketNumType DocketNumber @default(FF)
-
-  docketNumber String   @unique
-  dotId        String?  @unique
-  fax          String?
-  orgName      String   @unique
-  tollFree     String?
-  loads        Load[]
-  users        User[]
-  Driver       Driver[]
+  docketNumType DocketNumber
+  docketNumber  String       @unique
+  dotId         String?      @unique
+  fax           String?
+  orgName       String       @unique
+  tollFree      String?
+  loads         Load[]
+  users         User[]
+  Driver        Driver[]
+  customsBroker Broker[]
 }
 
 model User {
@@ -316,19 +316,17 @@ model CoverageMatrix {
 }
 
 model Broker {
-  id           String   @id @default(uuid())
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  name         String
-  crossing     String
-  address      String
-  addressAddOn String?
-  city         String
-  state        String
-  postCountry  String
-  postCode     String
-  telCountry   String   @default("1")
-  telephone    String   @unique
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  status    Status   @default(ACTIVE)
+  name      String
+  crossing  String
+  telephone String
+  tollFree  String?
+
+  orgId        String
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
 }
 
 model Truck {

@@ -1,7 +1,6 @@
 import { createContext, useState, useEffect } from 'react';
 import { createClient } from '@util/supabase/client';
 import { User, Session } from '@supabase/supabase-js';
-import { Organization } from '@prisma/client';
 
 interface UserProviderProps {
   children: React.ReactNode;
@@ -10,14 +9,14 @@ interface UserProviderProps {
 interface UserContextProps {
   session: Session | null;
   user: User | null;
-  organization: Organization | null;
+  organization: string;
   signOut: () => void;
 }
 
 export const UserContext = createContext<UserContextProps>({
   session: null,
   user: null,
-  organization: null,
+  organization: '',
   signOut: () => {},
 });
 
@@ -28,7 +27,7 @@ export const UserContextProvider: React.FC<UserProviderProps> = ({
 
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
-  const [organization, setOrganization] = useState<Organization | null>(null);
+  const [organization, setOrganization] = useState<string>('');
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = useState<boolean>(true);
 
