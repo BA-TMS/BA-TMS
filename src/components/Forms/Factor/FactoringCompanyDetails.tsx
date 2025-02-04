@@ -11,6 +11,7 @@ import { paymentTerms, status } from '@/components/Forms/data/details';
 import { ModalContext } from '@/context/modalContext';
 import { useRouter, usePathname } from 'next/navigation';
 import { usStates } from '../data/states';
+import { factorDataMap } from '@/types/factorTypes';
 
 const factoringSchema = yup.object({
   Status: yup.string().required('Must enter Status'),
@@ -116,6 +117,29 @@ export const FactoringCompanyForm: React.FC = () => {
     },
     [saveFormValues, router, segment, reset]
   );
+
+  // if there's an update
+  useEffect(() => {
+    if (isUpdate) {
+      Object.keys(factorDataMap).forEach((formField) => {
+        setValue(
+          formField as keyof FactoringCompany,
+          formData[factorDataMap[formField]]
+            ? formData[factorDataMap[formField]]
+            : ''
+        );
+      });
+    }
+  }, [formData, setValue, isUpdate]);
+
+  // keep fields populated when going back
+  useEffect(() => {
+    if (formData) {
+      Object.keys(formData).forEach((formField) => {
+        setValue(formField as keyof FactoringCompany, formData[formField]);
+      });
+    }
+  }, [formData, setValue]);
 
   return (
     <div>

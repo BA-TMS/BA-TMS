@@ -55,3 +55,27 @@ export interface FactorFormData {
   'Tax ID#': string | null;
   Notes: string | null;
 }
+
+export const factorDataMap: Record<string, keyof FactorData> = {
+  Status: 'status',
+  'Factor Name': 'name',
+
+  Address: 'address',
+  'Address Line 2': 'addressAddOn',
+  City: 'city',
+  State: 'state',
+  Zip: 'postCode',
+  Country: 'postCountry',
+
+  'Primary Contact': 'primaryContact',
+  Telephone: 'telephone',
+  'Toll Free': 'tollFree',
+  Email: 'email',
+  'Secondary Contact': 'secondaryContact',
+  'Secondary Telephone': 'secondaryTelephone',
+
+  Currency: 'currency',
+  'Payment Terms': 'paymentTerms',
+  'Tax ID#': 'taxId',
+  Notes: 'notes',
+};

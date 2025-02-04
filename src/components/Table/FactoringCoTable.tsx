@@ -81,6 +81,7 @@ export default function FactoringCompany() {
 
   // update by selecting from redux and pass to form values
   const updateFactor = async (id: string) => {
+    console.log(id);
     const data = factors.find((factor) => factor.id === id);
 
     if (data) {
