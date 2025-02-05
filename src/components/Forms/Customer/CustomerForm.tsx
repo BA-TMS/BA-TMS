@@ -2,18 +2,16 @@ import React, { useContext, useState, useEffect } from 'react';
 import { ModalContext } from '@/context/modalContext';
 import * as yup from 'yup';
 import Button from '../../UI_Elements/Buttons/Button';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '@/store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/store/store';
 import { createCustomer, updateCustomer } from '@/store/slices/customerSlice';
 import { CustomerData, CustomerFormData } from '@/types/customerTypes';
 import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 import AddressDisplay from '@/components/UI_Elements/Display/AddressDisplay';
 import { useRouter } from 'next/navigation';
-import { getFactor } from '@/lib/dbActions';
+import { FactorData } from '@/types/factorTypes';
 
 // this component submits form data from the context to database using redux
-
-// TODO: refactor to use redux to get factor name instead of db call
 
 // Define the validation schema for customer data
 const customerSchema = yup.object({
@@ -69,25 +67,19 @@ const CustomerForm = () => {
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [factor, setFactor] = useState<string | undefined>(''); // factor name
 
   const dispatch = useDispatch<AppDispatch>();
 
   const { formData, saveFormValues } = useContext(ModalContext);
 
-  const factorId = formData['Factoring Company'];
-
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
 
-  // fetch factor name when component mounts
-  useEffect(() => {
-    const fetchFactor = async () => {
-      const fetchedFactor = await getFactor(factorId);
-      setFactor(fetchedFactor?.name);
-    };
-
-    fetchFactor();
-  }, [factorId]);
+  // use the id to pull factor name from redux
+  const factor = useSelector((state: RootState) =>
+    state.factors.items.find(
+      (factor: FactorData) => factor.id === formData['Factoring Company']
+    )
+  );
 
   useEffect(() => {
     if (formData !== null && formData['id']) {
@@ -169,11 +161,7 @@ const CustomerForm = () => {
             />
             <DataDisplay title="Toll Free" text={formData['Toll Free']} />
             <DataDisplay title="Fax" text={formData['Fax']} />
-            <DataDisplay
-              title="Factoring Company"
-              // text={formData['Factoring Company']}
-              text={factor}
-            />
+            <DataDisplay title="Factoring Company" text={factor?.name} />
           </div>
         </div>
 

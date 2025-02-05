@@ -1,15 +1,15 @@
 'use client';
 
 import React, { useEffect, useContext, useCallback, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 import { ModalContext } from '@/context/modalContext';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import TextInput from '../../UI_Elements/Form/TextInput';
 import SelectInput from '../../UI_Elements/Form/SelectInput';
-import DynamicSelect from '../../UI_Elements/Form/DynamicSelect';
 import { currency, paymentTerms } from '../data/details';
-import { getFactors } from '@/lib/dbActions';
 import Button from '@/components/UI_Elements/Buttons/Button';
 import { useRouter, usePathname } from 'next/navigation';
 
@@ -25,7 +25,6 @@ const customerSchema = yup.object({
     .typeError('Credit Limit be numeric value'),
   'Federal ID': yup.string().required('Must enter Federal ID'),
   'Factoring Company': yup.string().nullable(),
-  // 'Factoring Company ID': yup.string().nullable(), // do we need this?
 });
 
 type Customer = yup.InferType<typeof customerSchema>;
@@ -42,6 +41,11 @@ const AdvancedCustomerDetails: React.FC = () => {
     : 'update-customer';
 
   const { formData, saveFormValues } = useContext(ModalContext);
+
+  // access factors from redux to pass to select
+  const factors = useSelector((state: RootState) => state.factors.items).map(
+    (factor) => ({ [factor.name]: factor.id })
+  );
 
   const {
     setValue,
@@ -115,10 +119,10 @@ const AdvancedCustomerDetails: React.FC = () => {
 
               <TextInput control={control} name="Credit Limit" />
 
-              <DynamicSelect
+              <SelectInput
                 control={control}
                 name="Factoring Company"
-                dbaction={getFactors} // fix when creating factor page
+                options={factors}
               />
             </div>
           </div>
