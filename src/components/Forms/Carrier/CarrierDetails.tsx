@@ -1,14 +1,14 @@
 'use client';
 
 import React, { useEffect, useContext, useCallback } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 import { ModalContext } from '@/context/modalContext';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import TextInput from '../../UI_Elements/Form/TextInput';
 import SelectInput from '../../UI_Elements/Form/SelectInput';
-import DynamicSelect from '@/components/UI_Elements/Form/DynamicSelect';
-import { getFactors } from '@/lib/dbActions';
 import { usStates } from '@/components/Forms/data/states';
 import { paymentTerms } from '../data/details';
 import { status } from '../data/details';
@@ -69,6 +69,11 @@ const CarrierDetails: React.FC = () => {
   const { formData, saveFormValues } = useContext(ModalContext);
 
   const isUpdate = formData !== null && formData['id'];
+
+  // access factors from redux to pass to select
+  const factors = useSelector((state: RootState) => state.factors.items).map(
+    (factor) => ({ [factor.name]: factor.id })
+  );
 
   const {
     setValue, // set value of a form field
@@ -251,10 +256,10 @@ const CarrierDetails: React.FC = () => {
             </div>
           </div>
 
-          <DynamicSelect
+          <SelectInput
             control={control}
             name="Factoring Company"
-            dbaction={getFactors} // fix when creating factor page
+            options={factors}
           />
 
           <TextInput control={control} name="Notes" isTextArea={true} />

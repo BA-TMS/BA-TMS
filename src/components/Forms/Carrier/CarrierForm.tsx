@@ -10,11 +10,9 @@ import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 import AddressDisplay from '@/components/UI_Elements/Display/AddressDisplay';
 import { useRouter } from 'next/navigation';
 import { CarrierData, CarrierFormData } from '@/types/carrierTypes';
-import { getFactor } from '@/lib/dbActions';
+import { FactorData } from '@/types/factorTypes';
 
 // this component submits form data from the context to database using redux
-
-// TODO- maybe fetch factoring company name from redux rather than db once factor is made
 
 export const CarrierForm = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -28,19 +26,13 @@ export const CarrierForm = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
-  const [factor, setFactor] = useState<string | undefined>(''); // factor name
 
-  const factorId = formData['Factoring Company'];
-
-  // fetch factor name when component mounts
-  useEffect(() => {
-    const fetchFactor = async () => {
-      const fetchedFactor = await getFactor(factorId);
-      setFactor(fetchedFactor?.name);
-    };
-
-    fetchFactor();
-  }, [factorId]);
+  // use the id to pull factor name from redux
+  const factor = useSelector((state: RootState) =>
+    state.factors.items.find(
+      (factor: FactorData) => factor.id === formData['Factoring Company']
+    )
+  );
 
   const onSubmit = async (carrier: CarrierFormData) => {
     setIsSubmitting(true);
@@ -138,7 +130,7 @@ export const CarrierForm = () => {
             <DataDisplay title="URS #" text={formData['URS #']} />
             <DataDisplay title="Tax ID#" text={formData['Tax ID#']} />
 
-            <DataDisplay title="Factoring Company" text={factor} />
+            <DataDisplay title="Factoring Company" text={factor?.name} />
           </div>
         </div>
 
