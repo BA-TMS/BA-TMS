@@ -1,14 +1,13 @@
 /* eslint-disable indent */
 'use server';
 
-import { DocketNumber, PrismaClient, DriverType, Status } from '@prisma/client';
+import { DocketNumber, PrismaClient, DriverType } from '@prisma/client';
 import { CustomerFormData } from '@/types/customerTypes';
 import { LoadFormData } from '@/types/loadTypes';
 import { CarrierFormData } from '@/types/carrierTypes';
 import { BrokerFormData } from '@/types/brokerTypes';
 import { ConsigneeFormData } from '@/types/consigneeTypes';
 import { DriverFormData } from '@/types/driverTypes';
-import { FactorFormData } from '@/types/factorTypes';
 import { ShipperFormData } from '@/types/shipperTypes';
 import { BilleeFormData } from '@/types/billeeTypes';
 import { TrailerFormData } from '@/types/trailerTypes';
@@ -45,10 +44,6 @@ const DRIVER_RELATIONS = {
   // loads: { select: true }, // will need to handle load relations
   employer: { select: { carrierName: true } },
   driverTwo: true,
-};
-
-const FACTOR_RELATIONS = {
-  organization: { select: { orgName: true } },
 };
 
 // Generic type for Prisma model
@@ -156,33 +151,6 @@ export async function getDrivers(organization: string) {
     include: DRIVER_RELATIONS,
   });
   return drivers;
-}
-
-export async function getFactor(id: string) {
-  const factor = await prisma.factor.findUnique({
-    where: {
-      id: id,
-    },
-  });
-
-  return factor;
-}
-
-export async function getFactors(organization: string) {
-  const factors = await prisma.factor.findMany({
-    where: {
-      organization: {
-        orgName: organization,
-      },
-    },
-    orderBy: [
-      {
-        name: 'asc',
-      },
-    ],
-    include: FACTOR_RELATIONS,
-  });
-  return factors;
 }
 
 export async function getLoad(id: string) {
@@ -505,45 +473,6 @@ export async function addDriver({ driver }: { driver: DriverFormData }) {
     });
     return resp;
   }
-}
-
-export async function addFactoringCo({ factor }: { factor: FactorFormData }) {
-  // find organization based on name
-  const organization = await getOrganization(factor.orgName);
-
-  // TODO: Better error handling
-  if (organization === null) {
-    throw 'can not create factoring company';
-  }
-
-  const resp = await prisma.factor.create({
-    data: {
-      orgId: organization.id,
-      status: factor['Status'] as Status,
-      name: factor['Factor Name'],
-      address: factor['Address'],
-      addressAddOn: factor['Address Line 2'],
-      city: factor['City'],
-      state: factor['State'],
-      postCode: factor['Zip'],
-      postCountry: factor['Country'],
-
-      primaryContact: factor['Primary Contact'],
-      telephone: factor['Telephone'],
-      tollFree: factor['Toll Free'],
-      email: factor['Email'],
-      secondaryContact: factor['Secondary Contact'],
-      secondaryTelephone: factor['Secondary Telephone'],
-
-      currency: factor['Currency'],
-      paymentTerms: factor['Payment Terms'],
-      taxId: factor['Tax ID#'],
-
-      notes: factor['Notes'],
-    },
-    include: FACTOR_RELATIONS,
-  });
-  return resp;
 }
 
 export async function addLoad({ load }: { load: LoadFormData }) {
@@ -901,53 +830,6 @@ export async function updateDriver(
             },
     },
     include: DRIVER_RELATIONS,
-  });
-  return resp;
-}
-
-export async function updateFactor(
-  id: string,
-  { factor }: { factor: FactorFormData }
-) {
-  // find organization based on name
-  const organization = await getOrganization(factor.orgName);
-
-  // TODO: Better error handling
-  if (organization === null) {
-    throw 'can not update factoring company';
-  }
-
-  // TODO: Better error handling
-  if (organization === null) {
-    throw 'Can not update broker';
-  }
-
-  const resp = await prisma.factor.update({
-    where: { id: id },
-    data: {
-      status: factor['Status'] as Status,
-      name: factor['Factor Name'],
-      address: factor['Address'],
-      addressAddOn: factor['Address Line 2'],
-      city: factor['City'],
-      state: factor['State'],
-      postCode: factor['Zip'],
-      postCountry: factor['Country'],
-
-      primaryContact: factor['Primary Contact'],
-      telephone: factor['Telephone'],
-      tollFree: factor['Toll Free'],
-      email: factor['Email'],
-      secondaryContact: factor['Secondary Contact'],
-      secondaryTelephone: factor['Secondary Telephone'],
-
-      currency: factor['Currency'],
-      paymentTerms: factor['Payment Terms'],
-      taxId: factor['Tax ID#'],
-
-      notes: factor['Notes'],
-    },
-    include: FACTOR_RELATIONS,
   });
   return resp;
 }

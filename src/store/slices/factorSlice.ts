@@ -3,7 +3,7 @@ import {
   getFactors,
   addFactoringCo,
   updateFactor as apiUpdateFactor,
-} from '@/lib/dbActions';
+} from '@/lib/actions/factorActions';
 import { FactorData, FactorFormData } from '@/types/factorTypes';
 
 interface UpdatedFactorPayload {

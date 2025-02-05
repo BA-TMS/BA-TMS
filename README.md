@@ -79,6 +79,7 @@ This is a [Next.js App](https://nextjs.org/docs) using Next.js 14 App router
   - /src/context - React context
   - /src/hooks - Custom hooks
   - /src/lib - Specialized helper functions
+  - /src/lib/actions - Files containing specific server actions that can be used across the app
   - /src/store - Redux store and slices for async thunks
   - /src/types - Files with type declarations that can be used across the app
     <br>
