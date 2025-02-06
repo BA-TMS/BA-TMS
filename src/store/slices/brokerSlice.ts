@@ -3,7 +3,7 @@ import {
   getBrokers,
   addBroker,
   updateBroker as apiUpdateBroker,
-} from '@/lib/dbActions';
+} from '@/lib/actions/brokerActions';
 import { BrokerData, BrokerFormData } from '@/types/brokerTypes';
 
 interface UpdatedBrokerPayload {
