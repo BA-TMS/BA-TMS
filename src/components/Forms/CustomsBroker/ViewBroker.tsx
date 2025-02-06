@@ -44,7 +44,7 @@ export const ViewCustomsBroker = ({ data }: ViewBrokerProps) => {
     <div className="flex flex-col h-full">
       <div className="flex flex-col justify-between flex-grow">
         <p className="my-3.5 body2 text-grey-800 dark:text-white">
-          Confirm Customs Broker Details
+          View Custom Broker
         </p>
 
         <div className="flex-grow">
