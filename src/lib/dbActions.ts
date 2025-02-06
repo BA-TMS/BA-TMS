@@ -5,7 +5,6 @@ import { DocketNumber, PrismaClient, DriverType } from '@prisma/client';
 import { CustomerFormData } from '@/types/customerTypes';
 import { LoadFormData } from '@/types/loadTypes';
 import { CarrierFormData } from '@/types/carrierTypes';
-import { BrokerFormData } from '@/types/brokerTypes';
 import { ConsigneeFormData } from '@/types/consigneeTypes';
 import { DriverFormData } from '@/types/driverTypes';
 import { FactorFormData } from '@/types/factorTypes';
