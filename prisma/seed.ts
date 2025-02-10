@@ -20,7 +20,6 @@ async function main() {
   }
 
   for (const currUser of users) {
-    console.log('Upserting user:', currUser);
     const organization = await prisma.organization.findFirst({
       where: { orgName: currUser.organization },
     });
@@ -60,7 +59,6 @@ async function main() {
   }
 
   for (const currCarrier of carriers) {
-    console.log('Upserting carrier:', currCarrier);
     const carrierResp = await prisma.carrier.upsert({
       where: { dotId: currCarrier.dotId },
       create: {
@@ -117,8 +115,6 @@ async function main() {
   }
 
   for (const currDriver of drivers) {
-    console.log('Upserting driver:', currDriver);
-
     currDriver.orgId = orgIds[driverPos % orgIds.length];
     const resp = await prisma.driver.upsert({
       where: { id: currDriver.id },
@@ -139,7 +135,7 @@ async function main() {
 
   for (const currShipper of shippers) {
     const resp = await prisma.shipper.upsert({
-      where: { telephone: currShipper.telephone },
+      where: { id: currShipper.id },
       update: {},
       create: currShipper,
     });
@@ -258,7 +254,7 @@ const orgs = [
     docketNumber: '138963',
   },
   {
-    id: '103784cb-e739-446c-ba47-e92d92de648c',
+    id: 'e739-446c-ba47-e92d92de648c',
     orgName: 'BA Logistics',
     address: '26 Mill Circle',
     city: 'Long Beach',
@@ -411,6 +407,7 @@ const customers = [
 
 const shippers = [
   {
+    id: 'bd09-1be692fb5f07',
     name: 'Reylo',
     address: '73 Newbridge St',
     city: 'West Des Moines',
@@ -418,8 +415,10 @@ const shippers = [
     postCountry: 'USA',
     postCode: '50265',
     telephone: '9998887777',
+    orgId: '103784cb-e739-446c-ba47-e92d92de648a',
   },
   {
+    id: 'fg10-1be692fb5f07',
     name: 'Johnlock',
     address: '2 Lookout Dr',
     city: 'Perrysburg',
@@ -427,6 +426,7 @@ const shippers = [
     postCountry: 'USA',
     postCode: '43551',
     telephone: '6665554444',
+    orgId: 'e739-446c-ba47-e92d92de648c',
   },
 ];
 
@@ -461,7 +461,7 @@ const factors = [
     postCountry: 'USA',
     postCode: '11111',
     telephone: '4567891234',
-    orgId: '103784cb-e739-446c-ba47-e92d92de648c',
+    orgId: 'e739-446c-ba47-e92d92de648c',
   },
   {
     id: '1fhr74',
@@ -472,7 +472,7 @@ const factors = [
     postCountry: 'USA',
     postCode: '44444',
     telephone: '7778889999',
-    orgId: '103784cb-e739-446c-ba47-e92d92de648c',
+    orgId: 'e739-446c-ba47-e92d92de648c',
   },
 ];
 
@@ -504,7 +504,7 @@ const brokers = [
     name: 'Broker1',
     crossing: 'Millers',
     telephone: '9988776655',
-    orgId: '103784cb-e739-446c-ba47-e92d92de648c',
+    orgId: 'e739-446c-ba47-e92d92de648c',
   },
   {
     id: '14VHG73',
@@ -512,7 +512,7 @@ const brokers = [
     name: 'Broker2',
     crossing: 'Crossup',
     telephone: '1012023003',
-    orgId: '103784cb-e739-446c-ba47-e92d92de648c',
+    orgId: 'e739-446c-ba47-e92d92de648c',
   },
 ];
 
