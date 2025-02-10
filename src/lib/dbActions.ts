@@ -162,11 +162,6 @@ export async function getOrganizations() {
   return organizations;
 }
 
-export async function getShippers() {
-  const shippers = prisma.shipper.findMany();
-  return shippers;
-}
-
 export async function getThirdParty() {
   const thirdParty = await prisma.billee.findMany();
   return thirdParty;
