@@ -7,7 +7,6 @@ import { LoadFormData } from '@/types/loadTypes';
 import { CarrierFormData } from '@/types/carrierTypes';
 import { ConsigneeFormData } from '@/types/consigneeTypes';
 import { DriverFormData } from '@/types/driverTypes';
-import { ShipperFormData } from '@/types/shipperTypes';
 import { BilleeFormData } from '@/types/billeeTypes';
 import { TrailerFormData } from '@/types/trailerTypes';
 import { TruckFormData } from '@/types/truckTypes';
@@ -447,23 +446,6 @@ export async function addLoad({ load }: { load: LoadFormData }) {
   return resp;
 }
 
-export async function addShipper({ shipper }: { shipper: ShipperFormData }) {
-  const resp = await prisma.shipper.create({
-    data: {
-      name: shipper['Shipper Name'],
-      address: shipper['Address'],
-      addressAddOn: shipper['Address Line 2'],
-      city: shipper['City'],
-      state: shipper['State'],
-      postCountry: shipper['Country'],
-      postCode: shipper['Zip'],
-      telCountry: shipper['Country Code'],
-      telephone: shipper['Phone Number'],
-    },
-  });
-  return resp;
-}
-
 export async function addThirdParty({ billee }: { billee: BilleeFormData }) {
   const resp = await prisma.billee.create({
     data: {
@@ -788,14 +770,6 @@ export async function updateLoad(
     include: LOAD_RELATIONS,
   });
 
-  return resp;
-}
-
-export async function updateShipper(
-  id: number,
-  { formData }: { formData: Partial<ShipperFormData> }
-) {
-  const resp = updater(prisma.shipper, id, formData);
   return resp;
 }
 

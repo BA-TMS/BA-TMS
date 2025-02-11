@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { getOrganization } from '@/lib/dbActions';
+import { ShipperData, ShipperFormData } from '@/types/shipperTypes';
 
 // this file contains actions for interacting with the database Shipper table
 
@@ -27,4 +28,29 @@ export async function getShippers(organization: string) {
   });
   console.log(shippers);
   return shippers;
+}
+
+export async function addShipper({ shipper }: { shipper: ShipperFormData }) {
+  const resp = await prisma.shipper.create({
+    data: {
+      name: shipper['Shipper Name'],
+      address: shipper['Address'],
+      addressAddOn: shipper['Address Line 2'],
+      city: shipper['City'],
+      state: shipper['State'],
+      postCountry: shipper['Country'],
+      postCode: shipper['Zip'],
+      telCountry: shipper['Country Code'],
+      telephone: shipper['Phone Number'],
+    },
+  });
+  return resp;
+}
+
+export async function updateShipper(
+  id: number,
+  { formData }: { formData: Partial<ShipperFormData> }
+) {
+  const resp = updater(prisma.shipper, id, formData);
+  return resp;
 }
