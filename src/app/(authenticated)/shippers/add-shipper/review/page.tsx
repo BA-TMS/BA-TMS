@@ -1,14 +1,14 @@
 'use client';
 
 import FullPageFormContainer from '@/components/UI_Elements/Form/FullPageContainer';
-import FactoringCompanyReview from '@/components/Forms/Factor/FactoringCoReview';
+import ShipperReviewForm from '@/components/Forms/Shipper/ShipperReview';
 
 // this is an intercepting route that builds a modal
 
-export default function AddFactorReview() {
+export default function AddShipperReview() {
   return (
-    <FullPageFormContainer title={'Add Factoring Company'}>
-      <FactoringCompanyReview />
+    <FullPageFormContainer title={'Add Shipper'}>
+      <ShipperReviewForm />
     </FullPageFormContainer>
   );
 }

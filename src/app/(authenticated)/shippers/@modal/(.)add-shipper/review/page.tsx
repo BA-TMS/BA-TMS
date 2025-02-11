@@ -1,14 +1,14 @@
 'use client';
 
 import Modal from '@ui/Modal/Modal';
-import FactoringCompanyReview from '@/components/Forms/Factor/FactoringCoReview';
+import ShipperReviewForm from '@/components/Forms/Shipper/ShipperReview';
 
 // this is an intercepting route that builds a modal
 
-export default function AddFactorReviewModal() {
+export default function AddShipperReviewModal() {
   return (
-    <Modal title={'Add Factoring Company'}>
-      <FactoringCompanyReview />
+    <Modal title={'Add Shipper'}>
+      <ShipperReviewForm />
     </Modal>
   );
 }
