@@ -1,10 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import {
-  getShippers,
-  // addshipperingCo,
-  // updateshipper as apiUpdateshipper,
-} from '@/lib/actions/shipperActions';
-import { ShipperData } from '@/types/shipperTypes';
+import { getShippers, addShipper } from '@/lib/actions/shipperActions';
+import { ShipperData, ShipperFormData } from '@/types/shipperTypes';
 
 // interface UpdatedShipperPayload {
 //   id: string;
@@ -35,25 +31,27 @@ const formatron = function (shipper: ShipperData) {
 export const fetchShippers = createAsyncThunk<ShipperData[], string>(
   'shippers/fetchShippers',
   async (orgName) => {
+    console.log('fetching shippers');
     const data = await getShippers(orgName);
-    console.log(data);
+    console.log('returning shippers', data);
 
     return data.map((shipper: ShipperData) => formatron(shipper));
   }
 );
 
-// export const createshipper = createAsyncThunk<ShipperData, shipperFormData>(
-//   'shippers/createshipper',
-//   async (shipper, { rejectWithValue }) => {
-//     try {
-//       const response = await addshipperingCo({ shipper });
+export const createShipper = createAsyncThunk<ShipperData, ShipperFormData>(
+  'shippers/createShipper',
+  async (shipper, { rejectWithValue }) => {
+    try {
+      console.log('creating shipper', shipper);
+      const response = await addShipper({ shipper });
 
-//       return formatron(response as ShipperData);
-//     } catch (error) {
-//       return rejectWithValue('Failed to create shippering company');
-//     }
-//   }
-// );
+      return formatron(response as ShipperData);
+    } catch (error) {
+      return rejectWithValue('Failed to create shipper');
+    }
+  }
+);
 
 // export const updateshipper = createAsyncThunk<ShipperData, UpdatedShipperPayload>(
 //   'shippers/updateshipper',
@@ -90,15 +88,15 @@ const shipperSlice = createSlice({
       .addCase(fetchShippers.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message || 'Failed to fetch shippers';
+      })
+      .addCase(createShipper.fulfilled, (state, action) => {
+        state.items.push(action.payload);
+      })
+      .addCase(createShipper.rejected, (state, action) => {
+        const message = action.payload;
+        state.status = 'failed';
+        state.error = message as string;
       });
-    //   .addCase(createshipper.fulfilled, (state, action) => {
-    //     state.items.push(action.payload);
-    //   })
-    //   .addCase(createshipper.rejected, (state, action) => {
-    //     const message = action.payload;
-    //     state.status = 'failed';
-    //     state.error = message as string;
-    //   })
     //   .addCase(
     //     updateshipper.fulfilled,
     //     (state, action: PayloadAction<ShipperData>) => {

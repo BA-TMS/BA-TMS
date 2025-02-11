@@ -1,10 +1,11 @@
-import { PrismaClient } from '@prisma/client';
+'use server';
+
+import prisma from '@util/prisma/client';
 import { getOrganization } from '@/lib/dbActions';
-import { ShipperData, ShipperFormData } from '@/types/shipperTypes';
+import { ShipperFormData } from '@/types/shipperTypes';
+import { Status } from '@prisma/client';
 
 // this file contains actions for interacting with the database Shipper table
-
-const prisma = new PrismaClient(); // do we need to start a new prisma client every time?
 
 const SHIPPER_RELATIONS = {
   organization: { select: { orgName: true } },
@@ -31,17 +32,39 @@ export async function getShippers(organization: string) {
 }
 
 export async function addShipper({ shipper }: { shipper: ShipperFormData }) {
+  // find organization based on name
+  const organization = await getOrganization(shipper.orgName);
+
+  // TODO: Better error handling
+  if (organization === null) {
+    throw 'can not add shipper :(';
+  }
+
   const resp = await prisma.shipper.create({
     data: {
+      status: shipper['Status'] as Status,
+
       name: shipper['Shipper Name'],
       address: shipper['Address'],
-      addressAddOn: shipper['Address Line 2'],
+      addressField2: shipper['Address Line 2'],
+      addressField3: shipper['Address Line 3'],
       city: shipper['City'],
       state: shipper['State'],
-      postCountry: shipper['Country'],
       postCode: shipper['Zip'],
-      telCountry: shipper['Country Code'],
-      telephone: shipper['Phone Number'],
+      postCountry: shipper['Country'],
+
+      contactName: shipper['Contact'],
+      contactEmail: shipper['Email'],
+      telephone: shipper['Telephone'],
+      tollFree: shipper['Toll Free'],
+
+      shippingHours: shipper['Shipping Hours'],
+      appointments: shipper['Appointments'],
+      intersections: shipper['Intersections'],
+
+      notes: shipper['Notes'],
+
+      orgId: organization.id,
     },
   });
   return resp;
@@ -51,6 +74,6 @@ export async function updateShipper(
   id: number,
   { formData }: { formData: Partial<ShipperFormData> }
 ) {
-  const resp = updater(prisma.shipper, id, formData);
+  const resp = formData;
   return resp;
 }
