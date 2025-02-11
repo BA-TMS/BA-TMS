@@ -9,9 +9,9 @@ import Table from '../UI_Elements/Table/Table';
 import TableSkeleton from '../UI_Elements/Table/TableSkeleton';
 import { TableSearch } from '../UI_Elements/Table/TableSearch';
 import Button from '@ui/Buttons/Button';
-import { FactorData } from '@/types/factorTypes';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { ShipperData } from '@/types/shipperTypes';
 
 // this is passed to Table
 const columns = [
@@ -26,50 +26,54 @@ const columns = [
 export default function ShipperTable() {
   const [searchValue, setSearchValue] = useState<string>(''); // search value
   const [searchField, setSearchField] = useState<string>('All'); // specific field if any
-  const [filteredValue, setFilteredValue] = useState<FactorData[]>([]);
+  const [filteredValue, setFilteredValue] = useState<ShipperData[]>([]);
 
   const router = useRouter();
 
   const {
-    items: factors,
+    items: shippers,
     status,
     // error,
-  } = useSelector((state: RootState) => state.factors);
+  } = useSelector((state: RootState) => state.shippers);
 
   const { saveFormValues } = useContext(ModalContext);
 
   // search
-  function handleSearch(factors: FactorData[], value: string, status: string) {
+  function handleSearch(
+    shippers: ShipperData[],
+    value: string,
+    status: string
+  ) {
     // status to uppercase
-    const factorStatus = status?.toUpperCase();
+    const shipperStatus = status?.toUpperCase();
 
     // Filter by status (if it's "Active" or "Inactive")
-    let filteredFactors = factors;
+    let filteredShippers = shippers;
 
-    if (factorStatus === 'ACTIVE' || factorStatus === 'INACTIVE') {
-      filteredFactors = factors.filter(
-        (factor) => factor.status === factorStatus
+    if (shipperStatus === 'ACTIVE' || shipperStatus === 'INACTIVE') {
+      filteredShippers = shippers.filter(
+        (shipper) => shipper.status === shipperStatus
       );
     }
 
     // If no search value, return the filtered list by status
     if (!value) {
-      return filteredFactors;
+      return filteredShippers;
     }
 
     // search across all fields with the given value
     if (status === 'All') {
-      return filteredFactors.filter((factor) =>
-        Object.values(factor).some((factorField) =>
-          factorField?.toString().toLowerCase().includes(value.toLowerCase())
+      return filteredShippers.filter((shipper) =>
+        Object.values(shipper).some((shipperField) =>
+          shipperField?.toString().toLowerCase().includes(value.toLowerCase())
         )
       );
     }
 
     // If status is specific (like "Active"), apply search value filtering
-    return filteredFactors.filter((factor) =>
-      Object.values(factor).some((factorField) =>
-        factorField?.toString().toLowerCase().includes(value.toLowerCase())
+    return filteredShippers.filter((shipper) =>
+      Object.values(shipper).some((shipperField) =>
+        shipperField?.toString().toLowerCase().includes(value.toLowerCase())
       )
     );
   }
@@ -80,31 +84,31 @@ export default function ShipperTable() {
   }
 
   // update by selecting from redux and pass to form values
-  const updateFactor = async (id: string) => {
-    console.log(id);
-    const data = factors.find((factor) => factor.id === id);
+  // const updateFactor = async (id: string) => {
+  //   console.log(id);
+  //   const data = factors.find((factor) => factor.id === id);
 
-    if (data) {
-      saveFormValues(data);
-      router.push('/factors/update-factor/details');
-    } else {
-      console.error('Factoring Company not found with ID:', id);
-    }
-  };
+  //   if (data) {
+  //     saveFormValues(data);
+  //     router.push('/factors/update-factor/details');
+  //   } else {
+  //     console.error('Factoring Company not found with ID:', id);
+  //   }
+  // };
 
-  // Update filtered factors
+  // Update filtered shippers
   useEffect(() => {
-    let updatedFactors = [...factors];
-    updatedFactors = handleSearch(updatedFactors, searchValue, searchField);
-    setFilteredValue(updatedFactors);
-  }, [factors, searchValue, searchField]);
+    let updatedShippers = [...shippers];
+    updatedShippers = handleSearch(updatedShippers, searchValue, searchField);
+    setFilteredValue(updatedShippers);
+  }, [shippers, searchValue, searchField]);
 
   return (
     <>
       <div className="relative flex justify-end mb-6">
         <div className="absolute right-4 bottom-2">
-          <Link href="/factors/add-factor/details">
-            <Button>Add Factoring Co</Button>
+          <Link href="/shippers/add-shipper/details">
+            <Button>Add Shipper</Button>
           </Link>
         </div>
       </div>
@@ -124,8 +128,8 @@ export default function ShipperTable() {
         <Table
           columns={columns}
           data={filteredValue}
-          update={updateFactor}
-          view={'/factors/view/'}
+          update={() => {}}
+          view={'/shippers/view/'}
         />
       )}
     </>

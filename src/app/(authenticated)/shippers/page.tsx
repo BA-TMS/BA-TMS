@@ -8,7 +8,7 @@ const ShipperPage: React.FC = () => {
   return (
     <>
       <PageTitle pageTitle="Shippers" />
-      <ShipperTable data={{}} />
+      <ShipperTable />
     </>
   );
 };
