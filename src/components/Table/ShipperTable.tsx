@@ -84,17 +84,17 @@ export default function ShipperTable() {
   }
 
   // update by selecting from redux and pass to form values
-  // const updateFactor = async (id: string) => {
-  //   console.log(id);
-  //   const data = factors.find((factor) => factor.id === id);
+  const updateShipper = async (id: string) => {
+    console.log(id);
+    const data = shippers.find((shipper) => shipper.id === id);
 
-  //   if (data) {
-  //     saveFormValues(data);
-  //     router.push('/factors/update-factor/details');
-  //   } else {
-  //     console.error('Factoring Company not found with ID:', id);
-  //   }
-  // };
+    if (data) {
+      saveFormValues(data);
+      router.push('/shippers/update-shipper/details');
+    } else {
+      console.error('Shipper not found with ID:', id);
+    }
+  };
 
   // Update filtered shippers
   useEffect(() => {
@@ -128,7 +128,7 @@ export default function ShipperTable() {
         <Table
           columns={columns}
           data={filteredValue}
-          update={() => {}}
+          update={updateShipper}
           view={'/shippers/view/'}
         />
       )}

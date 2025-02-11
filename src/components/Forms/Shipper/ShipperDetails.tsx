@@ -11,6 +11,7 @@ import { status } from '@/components/Forms/data/details';
 import { ModalContext } from '@/context/modalContext';
 import { useRouter, usePathname } from 'next/navigation';
 import { usStates } from '../data/states';
+import { shipperDataMap } from '@/types/shipperTypes';
 
 // Define your schema outside the component to avoid re-creation on each render
 const shipperSchema = yup.object({
@@ -68,7 +69,7 @@ const ShipperDetailsForm: React.FC = () => {
 
   const { formData, saveFormValues } = useContext(ModalContext);
 
-  // const isUpdate = formData !== null && formData['id'];
+  const isUpdate = formData !== null && formData['id'];
 
   const {
     setValue,
@@ -111,18 +112,18 @@ const ShipperDetailsForm: React.FC = () => {
   );
 
   // if there's an update
-  // useEffect(() => {
-  //   if (isUpdate) {
-  //     Object.keys(factorDataMap).forEach((formField) => {
-  //       setValue(
-  //         formField as keyof FactoringCompany,
-  //         formData[factorDataMap[formField]]
-  //           ? formData[factorDataMap[formField]]
-  //           : ''
-  //       );
-  //     });
-  //   }
-  // }, [formData, setValue, isUpdate]);
+  useEffect(() => {
+    if (isUpdate) {
+      Object.keys(shipperDataMap).forEach((formField) => {
+        setValue(
+          formField as keyof Shipper,
+          formData[shipperDataMap[formField]]
+            ? formData[shipperDataMap[formField]]
+            : ''
+        );
+      });
+    }
+  }, [formData, setValue, isUpdate]);
 
   // keep fields populated when going back
   useEffect(() => {

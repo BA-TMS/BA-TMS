@@ -55,3 +55,27 @@ export interface ShipperFormData {
 
   Notes: string | null;
 }
+
+export const shipperDataMap: Record<string, keyof ShipperData> = {
+  Status: 'status',
+  'Shipper Name': 'name',
+
+  Address: 'address',
+  'Address Line 2': 'addressField2',
+  'Address Line 3': 'addressField3',
+  City: 'city',
+  State: 'state',
+  Zip: 'postCode',
+  Country: 'postCountry',
+
+  Contact: 'contactName',
+  Email: 'contactEmail',
+  Telephone: 'telephone',
+  'Toll Free': 'tollFree',
+
+  'Shipping Hours': 'shippingHours',
+  Appointments: 'appointments',
+  Intersections: 'intersections',
+
+  Notes: 'notes',
+};

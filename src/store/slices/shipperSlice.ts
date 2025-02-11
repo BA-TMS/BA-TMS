@@ -1,11 +1,15 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getShippers, addShipper } from '@/lib/actions/shipperActions';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import {
+  getShippers,
+  addShipper,
+  updateShipper as apiUpdateShipper,
+} from '@/lib/actions/shipperActions';
 import { ShipperData, ShipperFormData } from '@/types/shipperTypes';
 
-// interface UpdatedShipperPayload {
-//   id: string;
-//   updatedshipper: Partial<ShipperData>;
-// }
+interface UpdatedShipperPayload {
+  id: string;
+  updatedShipper: Partial<ShipperData>;
+}
 
 interface ShipperState {
   items: ShipperData[];
@@ -31,9 +35,7 @@ const formatron = function (shipper: ShipperData) {
 export const fetchShippers = createAsyncThunk<ShipperData[], string>(
   'shippers/fetchShippers',
   async (orgName) => {
-    console.log('fetching shippers');
     const data = await getShippers(orgName);
-    console.log('returning shippers', data);
 
     return data.map((shipper: ShipperData) => formatron(shipper));
   }
@@ -43,7 +45,6 @@ export const createShipper = createAsyncThunk<ShipperData, ShipperFormData>(
   'shippers/createShipper',
   async (shipper, { rejectWithValue }) => {
     try {
-      console.log('creating shipper', shipper);
       const response = await addShipper({ shipper });
 
       return formatron(response as ShipperData);
@@ -53,20 +54,27 @@ export const createShipper = createAsyncThunk<ShipperData, ShipperFormData>(
   }
 );
 
-// export const updateshipper = createAsyncThunk<ShipperData, UpdatedShipperPayload>(
-//   'shippers/updateshipper',
-//   async ({ id, updatedshipper }: UpdatedShipperPayload, { rejectWithValue }) => {
-//     try {
-//       const response = await apiUpdateshipper(id, {
-//         shipper: updatedshipper as shipperFormData,
-//       });
+export const updateShipper = createAsyncThunk<
+  ShipperData,
+  UpdatedShipperPayload
+>(
+  'shippers/updateShipper',
+  async (
+    { id, updatedShipper }: UpdatedShipperPayload,
+    { rejectWithValue }
+  ) => {
+    try {
+      console.log('updating shipper', updatedShipper);
+      const response = await apiUpdateShipper(id, {
+        shipper: updatedShipper as ShipperFormData,
+      });
 
-//       return formatron(response as ShipperData);
-//     } catch (error) {
-//       return rejectWithValue('Failed to update shipper');
-//     }
-//   }
-// );
+      return formatron(response as ShipperData);
+    } catch (error) {
+      return rejectWithValue('Failed to update shipper');
+    }
+  }
+);
 
 const shipperSlice = createSlice({
   name: 'shippers',
@@ -96,23 +104,23 @@ const shipperSlice = createSlice({
         const message = action.payload;
         state.status = 'failed';
         state.error = message as string;
+      })
+      .addCase(
+        updateShipper.fulfilled,
+        (state, action: PayloadAction<ShipperData>) => {
+          const index = state.items.findIndex(
+            (shipper) => shipper.id === action.payload.id
+          );
+          if (index !== -1) {
+            state.items[index] = action.payload;
+          }
+        }
+      )
+      .addCase(updateShipper.rejected, (state, action) => {
+        const message = action.payload;
+        state.status = 'failed';
+        state.error = message as string;
       });
-    //   .addCase(
-    //     updateshipper.fulfilled,
-    //     (state, action: PayloadAction<ShipperData>) => {
-    //       const index = state.items.findIndex(
-    //         (shipper) => shipper.id === action.payload.id
-    //       );
-    //       if (index !== -1) {
-    //         state.items[index] = action.payload;
-    //       }
-    //     }
-    //   )
-    //   .addCase(updateshipper.rejected, (state, action) => {
-    //     const message = action.payload;
-    //     state.status = 'failed';
-    //     state.error = message as string;
-    //   });
   },
 });
 

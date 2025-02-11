@@ -71,9 +71,44 @@ export async function addShipper({ shipper }: { shipper: ShipperFormData }) {
 }
 
 export async function updateShipper(
-  id: number,
-  { formData }: { formData: Partial<ShipperFormData> }
+  id: string,
+  { shipper }: { shipper: Partial<ShipperFormData> }
 ) {
-  const resp = formData;
+  // find organization based on name
+  const organization = await getOrganization(shipper.orgName as string); // come back to
+
+  // TODO: Better error handling
+  if (organization === null) {
+    throw 'can not update shipper :(';
+  }
+
+  const resp = await prisma.shipper.update({
+    where: { id: id },
+    data: {
+      status: shipper['Status'] as Status,
+
+      name: shipper['Shipper Name'],
+      address: shipper['Address'],
+      addressField2: shipper['Address Line 2'],
+      addressField3: shipper['Address Line 3'],
+      city: shipper['City'],
+      state: shipper['State'],
+      postCode: shipper['Zip'],
+      postCountry: shipper['Country'],
+
+      contactName: shipper['Contact'],
+      contactEmail: shipper['Email'],
+      telephone: shipper['Telephone'],
+      tollFree: shipper['Toll Free'],
+
+      shippingHours: shipper['Shipping Hours'],
+      appointments: shipper['Appointments'],
+      intersections: shipper['Intersections'],
+
+      notes: shipper['Notes'],
+
+      orgId: organization.id,
+    },
+  });
   return resp;
 }

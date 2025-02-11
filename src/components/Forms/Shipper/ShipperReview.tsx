@@ -9,8 +9,8 @@ import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 import AddressDisplay from '@/components/UI_Elements/Display/AddressDisplay';
 import Button from '@/components/UI_Elements/Buttons/Button';
 import { useRouter } from 'next/navigation';
-import { ShipperFormData } from '@/types/shipperTypes';
-import { createShipper } from '@/store/slices/shipperSlice';
+import { ShipperData, ShipperFormData } from '@/types/shipperTypes';
+import { createShipper, updateShipper } from '@/store/slices/shipperSlice';
 
 const ShipperReviewForm: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -42,16 +42,16 @@ const ShipperReviewForm: React.FC = () => {
       }
     } else {
       console.log('its an update');
-      //   try {
-      //     await dispatch(
-      //       updateFactor({
-      //         id: formData['id'],
-      //         updatedFactor: factor as Partial<FactorDataDisplay>,
-      //       })
-      //     ).unwrap();
-      //   } catch (error) {
-      //     setError(`Error updating factoring company: ${error}`);
-      //   }
+      try {
+        await dispatch(
+          updateShipper({
+            id: formData['id'],
+            updatedShipper: shipper as Partial<ShipperData>,
+          })
+        ).unwrap();
+      } catch (error) {
+        setError(`Error updating shipper: ${error}`);
+      }
     }
     setIsSubmitting(false);
   };
