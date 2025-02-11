@@ -28,17 +28,30 @@ export interface ShipperData {
   organization: { orgName: string };
 
   consigneeId: string | null;
-  consignee: { name: string }; // check this
+  consignee: { name: string } | null;
 }
 
 export interface ShipperFormData {
+  orgName: string;
+  Status: string;
   'Shipper Name': string;
-  Address: string;
-  'Address Line 2'?: string;
+
+  Address: string | null;
+  'Address Line 2': string | null;
+  'Address Line 3': string | null;
   City: string;
   State: string;
-  Country: string;
   Zip: string;
-  'Country Code': string;
-  'Phone Number': string;
+  Country: string;
+
+  Contact: string | null;
+  Email: string | null;
+  Telephone: string | null;
+  'Toll Free': string | null;
+
+  'Shipping Hours': string | null;
+  Appointments: string | null;
+  Intersections: string | null;
+
+  Notes: string | null;
 }
