@@ -1,12 +1,12 @@
 'use client';
 
 import FullPageFormContainer from '@/components/UI_Elements/Form/FullPageContainer';
-import FactoringCompanyDetailsForm from '@/components/Forms/Factor/FactoringCompanyDetails';
+import ShipperDetailsForm from '@/components/Forms/Shipper/ShipperDetails';
 
-export default function AddFactorDetails() {
+export default function AddShipperDetails() {
   return (
-    <FullPageFormContainer title="Add Factoring Company">
-      <FactoringCompanyDetailsForm />
+    <FullPageFormContainer title="Add Shipper">
+      <ShipperDetailsForm />
     </FullPageFormContainer>
   );
 }
