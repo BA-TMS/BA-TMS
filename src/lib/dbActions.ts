@@ -5,7 +5,6 @@ import { DocketNumber, PrismaClient, DriverType } from '@prisma/client';
 import { CustomerFormData } from '@/types/customerTypes';
 import { LoadFormData } from '@/types/loadTypes';
 import { CarrierFormData } from '@/types/carrierTypes';
-import { BrokerFormData } from '@/types/brokerTypes';
 import { ConsigneeFormData } from '@/types/consigneeTypes';
 import { DriverFormData } from '@/types/driverTypes';
 import { ShipperFormData } from '@/types/shipperTypes';
@@ -24,10 +23,6 @@ const LOAD_RELATIONS = {
   customer: { select: { companyName: true } },
   shipper: { select: { name: true } },
   consignee: { select: { name: true } },
-};
-
-const BROKER_RELATIONS = {
-  organization: { select: { orgName: true } },
 };
 
 const CARRIER_RELATIONS = {
@@ -65,23 +60,6 @@ async function getter(
     include: relations,
   });
   return resp;
-}
-
-export async function getBrokers(organization: string) {
-  const brokers = await prisma.broker.findMany({
-    where: {
-      organization: {
-        orgName: organization,
-      },
-    },
-    orderBy: [
-      {
-        name: 'asc',
-      },
-    ],
-    include: BROKER_RELATIONS,
-  });
-  return brokers;
 }
 
 export async function getCarrier(id: string) {
@@ -221,34 +199,6 @@ export async function getAccountPreferences() {
 }
 
 /** Add new entries to tables. */
-
-export async function addBroker({ broker }: { broker: BrokerFormData }) {
-  // find organization based on name
-  const organization = await prisma.organization.findFirst({
-    where: {
-      orgName: broker.orgName,
-    },
-    select: {
-      id: true,
-    },
-  });
-
-  // TODO: Better error handling
-  if (organization === null) {
-    throw 'can not create broker';
-  }
-  const resp = await prisma.broker.create({
-    data: {
-      status: broker['Status'],
-      name: broker['Broker Name'],
-      crossing: broker['Crossing'],
-      telephone: broker['Telephone'],
-      tollFree: broker['Toll Free'] ? broker['Toll Free'] : null,
-      orgId: organization.id,
-    },
-  });
-  return resp;
-}
 
 export async function addCarrier({ carrier }: { carrier: CarrierFormData }) {
   const resp = await prisma.carrier.create({
@@ -575,38 +525,6 @@ async function updater(
       id: targetId,
     },
     data: upateData,
-  });
-  return resp;
-}
-
-export async function updateBroker(
-  id: string,
-  { broker }: { broker: BrokerFormData }
-) {
-  // find organization based on name
-  const organization = await prisma.organization.findFirst({
-    where: {
-      orgName: broker.orgName,
-    },
-    select: {
-      id: true,
-    },
-  });
-
-  // TODO: Better error handling
-  if (organization === null) {
-    throw 'Can not update broker';
-  }
-  const resp = await prisma.broker.update({
-    where: { id: id },
-    data: {
-      status: broker['Status'],
-      name: broker['Broker Name'],
-      crossing: broker['Crossing'],
-      telephone: broker['Telephone'],
-      tollFree: broker['Toll Free'] ? broker['Toll Free'] : null,
-      orgId: organization.id,
-    },
   });
   return resp;
 }
