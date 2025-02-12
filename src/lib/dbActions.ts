@@ -8,7 +8,6 @@ import { CarrierFormData } from '@/types/carrierTypes';
 import { BrokerFormData } from '@/types/brokerTypes';
 import { ConsigneeFormData } from '@/types/consigneeTypes';
 import { DriverFormData } from '@/types/driverTypes';
-import { FactorFormData } from '@/types/factorTypes';
 import { ShipperFormData } from '@/types/shipperTypes';
 import { BilleeFormData } from '@/types/billeeTypes';
 import { TrailerFormData } from '@/types/trailerTypes';
@@ -154,21 +153,6 @@ export async function getDrivers(organization: string) {
   return drivers;
 }
 
-export async function getFactor(id: string) {
-  const factor = await prisma.factor.findUnique({
-    where: {
-      id: id,
-    },
-  });
-
-  return factor;
-}
-
-export async function getFactors() {
-  const factor = await prisma.factor.findMany();
-  return factor;
-}
-
 export async function getLoad(id: string) {
   const load = await prisma.load.findUnique({
     where: {
@@ -181,6 +165,18 @@ export async function getLoad(id: string) {
 export async function getLoads() {
   const loads = await getter(prisma.load, LOAD_RELATIONS);
   return loads;
+}
+
+export async function getOrganization(orgName: string) {
+  const organization = await prisma.organization.findFirst({
+    where: {
+      orgName: orgName,
+    },
+    select: {
+      id: true,
+    },
+  });
+  return organization;
 }
 
 export async function getOrganizations() {
@@ -477,24 +473,6 @@ export async function addDriver({ driver }: { driver: DriverFormData }) {
     });
     return resp;
   }
-}
-
-export async function addFactoringCo({ factor }: { factor: FactorFormData }) {
-  const resp = await prisma.factor.create({
-    data: {
-      name: factor['Factoring Company Name'],
-      address: factor['Address'],
-      addressAddOn: factor['Address Line 2'] || null, // Optional field
-      city: factor['City'],
-      state: factor['State'],
-      postCountry: factor['Country'],
-      postCode: factor['Zip'],
-      telCountry: factor['Country Code'],
-      telephone: factor['Phone Number'],
-      // notes: factor['Notes'] || null, // optional field, notes not in db table yet
-    },
-  });
-  return resp;
 }
 
 export async function addLoad({ load }: { load: LoadFormData }) {

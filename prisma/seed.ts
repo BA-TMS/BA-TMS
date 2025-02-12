@@ -172,7 +172,7 @@ async function main() {
 
   for (const currFactor of factors) {
     const resp = await prisma.factor.upsert({
-      where: { telephone: currFactor.telephone },
+      where: { id: currFactor.id },
       update: {},
       create: currFactor,
     });
@@ -453,6 +453,7 @@ const consignees = [
 
 const factors = [
   {
+    id: 'te74hf',
     name: 'Factor1',
     address: '11111 Main St',
     city: 'Allentown',
@@ -460,8 +461,10 @@ const factors = [
     postCountry: 'USA',
     postCode: '11111',
     telephone: '4567891234',
+    orgId: '103784cb-e739-446c-ba47-e92d92de648c',
   },
   {
+    id: '1fhr74',
     name: 'Factor2',
     address: '8900000 Rt 16',
     city: 'Springfield',
@@ -469,6 +472,7 @@ const factors = [
     postCountry: 'USA',
     postCode: '44444',
     telephone: '7778889999',
+    orgId: '103784cb-e739-446c-ba47-e92d92de648c',
   },
 ];
 

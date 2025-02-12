@@ -28,6 +28,7 @@ model Organization {
   users         User[]
   Driver        Driver[]
   customsBroker Broker[]
+  Factor        Factor[]
 }
 
 model User {
@@ -275,9 +276,11 @@ model Location {
 }
 
 model Factor {
-  id           String     @id @default(uuid())
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  status    Status   @default(ACTIVE)
+
   name         String
   address      String
   addressAddOn String?
@@ -285,10 +288,24 @@ model Factor {
   state        String
   postCountry  String
   postCode     String
-  telCountry   String     @default("1")
-  telephone    String     @unique
-  carriers     Carrier[]
-  customers    Customer[]
+
+  primaryContact     String?
+  telephone          String
+  tollFree           String?
+  email              String?
+  secondaryContact   String?
+  secondaryTelephone String?
+  notes              String?
+
+  currency     String?
+  paymentTerms String?
+  taxId        String?
+
+  carriers  Carrier[]
+  customers Customer[]
+
+  orgId        String
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
 }
 
 model Insurer {
