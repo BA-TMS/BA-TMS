@@ -63,13 +63,13 @@ const ShipperReviewForm: React.FC = () => {
   }, [formData]);
 
   return (
-    <div>
+    <div className="flex flex-col h-full">
       <div className="flex flex-col justify-between flex-grow">
         <p className="mt-3.5 mb-5 body2 text-grey-800 dark:text-white">
           Confirm Shipper Details
         </p>
 
-        <div className="flex-grow">
+        <div className="flex-grow overflow-auto">
           <div className="flex flex-col gap-4 md:flex-row">
             <div className="w-full md:w-1/4">
               <DataDisplay title="Status" text={formData['Status']} />
@@ -144,7 +144,7 @@ const ShipperReviewForm: React.FC = () => {
           </div>
         </div>
 
-        <div className="py-3.5 gap-2 border-t border-grey-300 dark:border-grey-700 flex justify-between sticky bottom-0 bg-white dark:bg-grey-900 z-10">
+        <div className="py-3.5 gap-2 border-t border-grey-300 dark:border-grey-700 flex justify-between bg-white dark:bg-grey-900">
           <Button
             id="cancel"
             type="button"
