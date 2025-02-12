@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
 
-export default function ViewFactor() {
-  return redirect('/factors');
+export default function ViewShipper() {
+  return redirect('/shippers');
 }
