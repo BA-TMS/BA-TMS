@@ -85,7 +85,6 @@ export default function ShipperTable() {
 
   // update by selecting from redux and pass to form values
   const updateShipper = async (id: string) => {
-    console.log(id);
     const data = shippers.find((shipper) => shipper.id === id);
 
     if (data) {

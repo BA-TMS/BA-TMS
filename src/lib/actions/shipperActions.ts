@@ -40,6 +40,9 @@ export async function addShipper({ shipper }: { shipper: ShipperFormData }) {
     throw 'can not add shipper :(';
   }
 
+  // see if it's a consignee as well
+  // if yes, create consignee
+
   const resp = await prisma.shipper.create({
     data: {
       status: shipper['Status'] as Status,
@@ -81,6 +84,9 @@ export async function updateShipper(
   if (organization === null) {
     throw 'can not update shipper :(';
   }
+
+  // see if it's a consignee as well
+  // if yes, create or update consignee
 
   const resp = await prisma.shipper.update({
     where: { id: id },

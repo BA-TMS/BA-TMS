@@ -64,7 +64,6 @@ export const updateShipper = createAsyncThunk<
     { rejectWithValue }
   ) => {
     try {
-      console.log('updating shipper', updatedShipper);
       const response = await apiUpdateShipper(id, {
         shipper: updatedShipper as ShipperFormData,
       });
