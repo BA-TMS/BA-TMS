@@ -2,15 +2,15 @@
 
 import React from 'react';
 import PageTitle from '@/components/Page/PageTitle';
-import ShipperTable from '@/components/Table/ShipperTable';
+import ConsigneeTable from '@/components/Table/ConsigneeTable';
 
-const ShipperPage: React.FC = () => {
+const ConsigneePage: React.FC = () => {
   return (
     <>
-      <PageTitle pageTitle="Shippers" />
-      <ShipperTable />
+      <PageTitle pageTitle="Consignees" />
+      <ConsigneeTable />
     </>
   );
 };
 
-export default ShipperPage;
+export default ConsigneePage;
