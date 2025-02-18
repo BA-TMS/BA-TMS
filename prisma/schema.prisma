@@ -285,6 +285,8 @@ model Consignee {
   appointments  String?
   intersections String?
 
+  notes String?
+
   loads        Load[]
   orgId        String
   organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
