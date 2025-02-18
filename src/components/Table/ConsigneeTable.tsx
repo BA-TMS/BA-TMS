@@ -83,16 +83,16 @@ export default function ConsigneeTable() {
   }
 
   // update by selecting from redux and pass to form values
-  const updateShipper = async (id: string) => {
-    const data = consignees.find((shipper) => shipper.id === id);
+  // const updateConsignee = async (id: string) => {
+  //   const data = consignees.find((consignee) => consignee.id === id);
 
-    if (data) {
-      saveFormValues(data);
-      router.push('/consignees/update-shipper/details');
-    } else {
-      console.error('Shipper not found with ID:', id);
-    }
-  };
+  //   if (data) {
+  //     saveFormValues(data);
+  //     router.push('/consignees/update-shipper/details');
+  //   } else {
+  //     console.error('Shipper not found with ID:', id);
+  //   }
+  // };
 
   // Update filtered consignees
   useEffect(() => {
@@ -109,8 +109,8 @@ export default function ConsigneeTable() {
     <>
       <div className="relative flex justify-end mb-6">
         <div className="absolute right-4 bottom-2">
-          <Link href="/consignees/add-shipper/details">
-            <Button>Add Shipper</Button>
+          <Link href="/consignees/add-consignee/details">
+            <Button>Add Consignee</Button>
           </Link>
         </div>
       </div>
@@ -130,7 +130,7 @@ export default function ConsigneeTable() {
         <Table
           columns={columns}
           data={filteredValue}
-          update={updateShipper}
+          update={() => {}}
           view={'/consignees/view/'}
         />
       )}

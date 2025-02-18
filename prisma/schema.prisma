@@ -281,7 +281,7 @@ model Consignee {
   telephone    String?
   tollFree     String?
 
-  shippingHours String?
+  recievingHours String?
   appointments  String?
   intersections String?
 

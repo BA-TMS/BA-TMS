@@ -1,28 +1,80 @@
-export interface ConsigneeFormData {
-  'Consignee Name': string;
-  Address: string;
-  'Address Line 2'?: string;
-  City: string;
-  State: string;
-  Country: string;
-  Zip: string;
-  'Country Code': string;
-  'Phone Number': string;
-  'Contact Name'?: string;
-  Notes?: string;
-}
-
 export interface ConsigneeData {
-  id: number;
-  createdAt: Date | null;
-  updatedAt: Date | null;
+  id: string;
+  createdAt: Date | string;
+  updatedAt: Date | string;
+  status: string;
+
   name: string;
-  address: string;
-  addressAddOn: string | null;
+  address: string | null;
+  addressField2: string | null;
+  addressField3: string | null;
   city: string;
   state: string;
-  postCountry: string;
   postCode: string;
-  telCountry: number;
-  telephone: string;
+  postCountry: string;
+
+  contactName: string | null;
+  contactEmail: string | null;
+  telephone: string | null;
+  tollFree: string | null;
+
+  recievingHours: string | null;
+  appointments: string | null;
+  intersections: string | null;
+
+  notes: string | null;
+
+  orgId: string;
+  organization: { orgName: string };
+
+  shipper: { name: string } | null;
 }
+
+export interface ConsigneeFormData {
+  orgName: string;
+  Status: string;
+  'Consignee Name': string;
+
+  Address: string | null;
+  'Address Line 2': string | null;
+  'Address Line 3': string | null;
+  City: string;
+  State: string;
+  Zip: string;
+  Country: string;
+
+  Contact: string | null;
+  Email: string | null;
+  Telephone: string | null;
+  'Toll Free': string | null;
+
+  'Recieving Hours': string | null;
+  Appointments: string | null;
+  Intersections: string | null;
+
+  Notes: string | null;
+}
+
+export const consigneeDataMap: Record<string, keyof ConsigneeData> = {
+  Status: 'status',
+  'Consignee Name': 'name',
+
+  Address: 'address',
+  'Address Line 2': 'addressField2',
+  'Address Line 3': 'addressField3',
+  City: 'city',
+  State: 'state',
+  Zip: 'postCode',
+  Country: 'postCountry',
+
+  Contact: 'contactName',
+  Email: 'contactEmail',
+  Telephone: 'telephone',
+  'Toll Free': 'tollFree',
+
+  'Recieving Hours': 'recievingHours',
+  Appointments: 'appointments',
+  Intersections: 'intersections',
+
+  Notes: 'notes',
+};
