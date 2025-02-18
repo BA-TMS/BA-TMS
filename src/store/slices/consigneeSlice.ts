@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-// import {
-//   getconsignees,
-//   addconsignee,
-//   updateconsignee as apiUpdateconsignee,
-// } from '@/lib/actions/consigneeActions';
+import {
+  getConsignees,
+  addConsignee,
+  updateConsignee as apiUpdateConsignee,
+} from '@/lib/actions/consigneeActions';
 import { ConsigneeData, ConsigneeFormData } from '@/types/consigneeTypes';
 
 interface UpdatedConsigneePayload {
@@ -35,7 +35,7 @@ const formatron = function (consignee: ConsigneeData) {
 export const fetchConsignees = createAsyncThunk<ConsigneeData[], string>(
   'consignees/fetchConsignees',
   async (orgName) => {
-    const data = await getconsignees(orgName);
+    const data = await getConsignees(orgName);
 
     return data.map((consignee: ConsigneeData) => formatron(consignee));
   }
@@ -46,7 +46,7 @@ export const createConsignee = createAsyncThunk<
   ConsigneeFormData
 >('consignees/createConsignee', async (consignee, { rejectWithValue }) => {
   try {
-    const response = await addconsignee({ consignee });
+    const response = await addConsignee({ consignee });
 
     return formatron(response as ConsigneeData);
   } catch (error) {
@@ -64,7 +64,7 @@ export const updateConsignee = createAsyncThunk<
     { rejectWithValue }
   ) => {
     try {
-      const response = await apiUpdateconsignee(id, {
+      const response = await apiUpdateConsignee(id, {
         consignee: updatedConsignee as ConsigneeFormData,
       });
 
