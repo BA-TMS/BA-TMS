@@ -30,6 +30,7 @@ model Organization {
   customsBroker Broker[]
   Factor        Factor[]
   Shipper       Shipper[]
+  Consignee     Consignee[]
 }
 
 model User {
@@ -284,7 +285,9 @@ model Consignee {
   appointments  String?
   intersections String?
 
-  loads Load[]
+  loads        Load[]
+  orgId        String
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
 
   shipper Shipper?
 }

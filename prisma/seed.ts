@@ -143,7 +143,7 @@ async function main() {
 
   for (const currConsignee of consignees) {
     const resp = await prisma.consignee.upsert({
-      where: { telephone: currConsignee.telephone },
+      where: { id: currConsignee.id },
       update: {},
       create: currConsignee,
     });
@@ -432,6 +432,7 @@ const shippers = [
 
 const consignees = [
   {
+    id: 'fg10-1be692fb5f18',
     name: 'Consignee1',
     address: '7524 Pine Road',
     city: 'Daphne',
@@ -439,8 +440,10 @@ const consignees = [
     postCountry: 'USA',
     postCode: '36526',
     telephone: '2923834774',
+    orgId: '103784cb-e739-446c-ba47-e92d92de648a',
   },
   {
+    id: 'ggg10-1be692fb5f07',
     name: 'Consignee2',
     address: '7352 Rosewood Street',
     city: 'Deerfield',
@@ -448,6 +451,7 @@ const consignees = [
     postCountry: 'USA',
     postCode: '60015',
     telephone: '9298387447',
+    orgId: 'e739-446c-ba47-e92d92de648c',
   },
 ];
 
