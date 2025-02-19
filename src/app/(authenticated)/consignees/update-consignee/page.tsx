@@ -2,6 +2,6 @@ import { redirect } from 'next/navigation';
 
 // we shouldn't see this page
 
-export default function UpdateFactor() {
-  return redirect('/factors');
+export default function UpdateConsignee() {
+  return redirect('/consignees');
 }
