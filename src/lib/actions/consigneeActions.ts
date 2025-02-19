@@ -27,7 +27,6 @@ export async function getConsignees(organization: string) {
     ],
     include: CONSIGNEE_RELATIONS,
   });
-  console.log(consignees);
   return consignees;
 }
 

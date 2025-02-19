@@ -1,14 +1,12 @@
 'use client';
 
 import FullPageFormContainer from '@/components/UI_Elements/Form/FullPageContainer';
-import ShipperReviewForm from '@/components/Forms/Shipper/ShipperReview';
+import ConsigneeReviewForm from '@/components/Forms/Consignee/ConsigneeReview';
 
-// this is an intercepting route that builds a modal
-
-export default function AddShipperReview() {
+export default function AddConsigneeReview() {
   return (
-    <FullPageFormContainer title={'Add Shipper'}>
-      <ShipperReviewForm />
+    <FullPageFormContainer title={'Add Consignee'}>
+      <ConsigneeReviewForm />
     </FullPageFormContainer>
   );
 }
