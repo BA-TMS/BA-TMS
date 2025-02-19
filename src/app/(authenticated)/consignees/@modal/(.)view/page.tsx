@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
 
-export default function ViewShipper() {
-  return redirect('/shippers');
+export default function ViewConsignee() {
+  return redirect('/consignees');
 }
