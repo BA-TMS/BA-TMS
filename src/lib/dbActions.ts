@@ -3,7 +3,6 @@
 
 import prisma from '@util/prisma/client';
 import { DocketNumber, PrismaClient, DriverType } from '@prisma/client';
-import prisma from '@util/prisma/client';
 import { CustomerFormData } from '@/types/customerTypes';
 import { LoadFormData } from '@/types/loadTypes';
 import { CarrierFormData } from '@/types/carrierTypes';
