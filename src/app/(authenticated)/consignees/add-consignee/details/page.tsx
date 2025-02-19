@@ -1,12 +1,12 @@
 'use client';
 
 import FullPageFormContainer from '@/components/UI_Elements/Form/FullPageContainer';
-import ShipperDetailsForm from '@/components/Forms/Shipper/ShipperDetails';
+import ConsigneeDetailsForm from '@/components/Forms/Consignee/ConsigneeDetails';
 
 export default function AddShipperDetails() {
   return (
-    <FullPageFormContainer title="Add Shipper">
-      <ShipperDetailsForm />
+    <FullPageFormContainer title="Add Consignee">
+      <ConsigneeDetailsForm />
     </FullPageFormContainer>
   );
 }
