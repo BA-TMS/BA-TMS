@@ -1,6 +1,7 @@
 /* eslint-disable indent */
 'use server';
 
+import prisma from '@util/prisma/client';
 import { DocketNumber, PrismaClient, DriverType } from '@prisma/client';
 import { CustomerFormData } from '@/types/customerTypes';
 import { LoadFormData } from '@/types/loadTypes';
@@ -14,8 +15,6 @@ import { TruckFormData } from '@/types/truckTypes';
 import { AccountPreferences } from '@/types/accountTypes';
 
 // This file contains different server actions for interracting with the database via Prisma client
-
-const prisma = new PrismaClient();
 
 const LOAD_RELATIONS = {
   carrier: { select: { carrierName: true } },

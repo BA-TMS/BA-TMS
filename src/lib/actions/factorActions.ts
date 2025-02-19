@@ -1,12 +1,11 @@
 'use server';
 
-import { PrismaClient, Status } from '@prisma/client';
+import prisma from '@util/prisma/client';
+import { Status } from '@prisma/client';
 import { FactorFormData } from '@/types/factorTypes';
 import { getOrganization } from '@/lib/dbActions';
 
 // this file contains actions for interacting with the database Factor table
-
-const prisma = new PrismaClient();
 
 const FACTOR_RELATIONS = {
   organization: { select: { orgName: true } },

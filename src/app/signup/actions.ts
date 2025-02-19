@@ -3,12 +3,11 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { DocketNumber, PrismaClient, Prisma } from '@prisma/client';
+import prisma from '@util/prisma/client';
+import { DocketNumber, Prisma } from '@prisma/client';
 import { createSupabaseServerClient } from '@util/supabase/server';
 import { headers } from 'next/headers';
 import { SupabaseClient } from '@supabase/supabase-js';
-
-const prisma = new PrismaClient();
 
 interface SignUpData {
   'First Name': string;

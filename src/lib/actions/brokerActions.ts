@@ -1,11 +1,9 @@
 'use server';
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '@util/prisma/client';
 import { BrokerFormData } from '@/types/brokerTypes';
 
 // This file contains server actions for interracting with the Customs Broker table in the database
-
-const prisma = new PrismaClient();
 
 const BROKER_RELATIONS = {
   organization: { select: { orgName: true } },
