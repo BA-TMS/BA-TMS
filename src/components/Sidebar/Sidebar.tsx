@@ -29,20 +29,19 @@ const userOptions = [
 ];
 
 const adminOptions = [
-  { name: 'Customers', href: '/customers' },
-  { name: 'Shippers', href: '#' },
   { name: 'Consignees', href: '#' },
-  { name: 'Drivers', href: '/drivers' },
-  { name: 'Trucks', href: '#' },
-  { name: 'Trailers', href: '#' },
-  { name: 'External Carriers', href: '/carriers' },
+  { name: 'Customers', href: '/customers' },
   { name: 'Customs Brokers', href: '/brokers' },
+  { name: 'Drivers', href: '/drivers' },
+  { name: 'External Carriers', href: '/carriers' },
   { name: 'Factoring Companies', href: '/factors' },
-  { name: 'Users', href: '#' },
   { name: 'Other Numbers', href: '#' },
-  { name: 'Third Party', href: '#' },
   { name: 'Preferences', href: '#' },
   { name: 'Private Labelling', href: '#' },
+  { name: 'Shippers', href: '/shippers' },
+  { name: 'Third Party', href: '#' },
+  { name: 'Trailers', href: '#' },
+  { name: 'Trucks', href: '#' },
 ];
 
 interface SidebarProps {

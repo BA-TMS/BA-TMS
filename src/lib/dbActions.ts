@@ -3,12 +3,12 @@
 
 import prisma from '@util/prisma/client';
 import { DocketNumber, PrismaClient, DriverType } from '@prisma/client';
+import prisma from '@util/prisma/client';
 import { CustomerFormData } from '@/types/customerTypes';
 import { LoadFormData } from '@/types/loadTypes';
 import { CarrierFormData } from '@/types/carrierTypes';
 import { ConsigneeFormData } from '@/types/consigneeTypes';
 import { DriverFormData } from '@/types/driverTypes';
-import { ShipperFormData } from '@/types/shipperTypes';
 import { BilleeFormData } from '@/types/billeeTypes';
 import { TrailerFormData } from '@/types/trailerTypes';
 import { TruckFormData } from '@/types/truckTypes';
@@ -159,11 +159,6 @@ export async function getOrganization(orgName: string) {
 export async function getOrganizations() {
   const organizations = await getter(prisma.organization, null);
   return organizations;
-}
-
-export async function getShippers() {
-  const shippers = prisma.shipper.findMany();
-  return shippers;
 }
 
 export async function getThirdParty() {
@@ -447,23 +442,6 @@ export async function addLoad({ load }: { load: LoadFormData }) {
       deliveryDate: load['Received Date'],
     },
     include: LOAD_RELATIONS,
-  });
-  return resp;
-}
-
-export async function addShipper({ shipper }: { shipper: ShipperFormData }) {
-  const resp = await prisma.shipper.create({
-    data: {
-      name: shipper['Shipper Name'],
-      address: shipper['Address'],
-      addressAddOn: shipper['Address Line 2'],
-      city: shipper['City'],
-      state: shipper['State'],
-      postCountry: shipper['Country'],
-      postCode: shipper['Zip'],
-      telCountry: shipper['Country Code'],
-      telephone: shipper['Phone Number'],
-    },
   });
   return resp;
 }
@@ -792,14 +770,6 @@ export async function updateLoad(
     include: LOAD_RELATIONS,
   });
 
-  return resp;
-}
-
-export async function updateShipper(
-  id: number,
-  { formData }: { formData: Partial<ShipperFormData> }
-) {
-  const resp = updater(prisma.shipper, id, formData);
   return resp;
 }
 
