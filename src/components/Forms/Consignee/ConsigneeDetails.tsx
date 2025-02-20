@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import TextInput from '@ui/Form/TextInput';
 import SelectInput from '@ui/Form/SelectInput';
+import CheckBox from '@/components/UI_Elements/Form/CheckBox';
 import Button from '@/components/UI_Elements/Buttons/Button';
 import { status } from '@/components/Forms/data/details';
 import { ModalContext } from '@/context/modalContext';
@@ -134,6 +135,14 @@ const ConsigneeDetailsForm: React.FC = () => {
     }
   }, [formData, setValue]);
 
+  const handleCheckbox = () => {
+    console.log('before check', formData.shipper);
+    formData.shipper === true
+      ? (formData.shipper = false)
+      : (formData.shipper = true);
+    console.log('AFTER check', formData.shipper);
+  };
+
   return (
     <div>
       <form
@@ -163,6 +172,13 @@ const ConsigneeDetailsForm: React.FC = () => {
               />
             </div>
           </div>
+
+          <CheckBox
+            id={'shipper'}
+            label={'Duplicate as Shipper?'}
+            onChange={handleCheckbox}
+            checked={formData.shipper} // check this
+          />
 
           <div className="w-full">
             <TextInput control={control} name="Address" />
