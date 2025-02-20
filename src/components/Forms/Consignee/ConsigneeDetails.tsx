@@ -104,7 +104,6 @@ const ConsigneeDetailsForm: React.FC = () => {
   // submit the values to the context
   const onSubmit = useCallback(
     (consignee: Consignee) => {
-      console.log('to context', consignee);
       saveFormValues(consignee);
       reset();
       router.push(`/consignees/${segment}/review`);

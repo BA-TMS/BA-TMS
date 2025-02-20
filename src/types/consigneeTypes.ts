@@ -53,6 +53,7 @@ export interface ConsigneeFormData {
   Intersections: string | null;
 
   Notes: string | null;
+  shipper?: boolean; // optional
 }
 
 export const consigneeDataMap: Record<string, keyof ConsigneeData> = {

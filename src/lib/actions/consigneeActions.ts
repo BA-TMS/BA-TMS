@@ -3,7 +3,7 @@
 import prisma from '@util/prisma/client';
 import { getOrganization } from '@/lib/dbActions';
 import { ConsigneeFormData } from '@/types/consigneeTypes';
-import { Status } from '@prisma/client';
+import { Prisma, Status } from '@prisma/client';
 
 // this file contains actions for interacting with the database consignee table
 
@@ -43,36 +43,69 @@ export async function addConsignee({
     throw 'can not add consignee :(';
   }
 
-  // see if it's a consignee as well
-  // if yes, create consignee
+  const data: Prisma.ConsigneeCreateInput = {
+    status: consignee['Status'] as Status,
 
-  const resp = await prisma.consignee.create({
-    data: {
-      status: consignee['Status'] as Status,
+    name: consignee['Consignee Name'],
+    address: consignee['Address'],
+    addressField2: consignee['Address Line 2'],
+    addressField3: consignee['Address Line 3'],
+    city: consignee['City'],
+    state: consignee['State'],
+    postCode: consignee['Zip'],
+    postCountry: consignee['Country'],
 
-      name: consignee['Consignee Name'],
-      address: consignee['Address'],
-      addressField2: consignee['Address Line 2'],
-      addressField3: consignee['Address Line 3'],
-      city: consignee['City'],
-      state: consignee['State'],
-      postCode: consignee['Zip'],
-      postCountry: consignee['Country'],
+    contactName: consignee['Contact'],
+    contactEmail: consignee['Email'],
+    telephone: consignee['Telephone'],
+    tollFree: consignee['Toll Free'],
 
-      contactName: consignee['Contact'],
-      contactEmail: consignee['Email'],
-      telephone: consignee['Telephone'],
-      tollFree: consignee['Toll Free'],
+    recievingHours: consignee['Recieving Hours'],
+    appointments: consignee['Appointments'],
+    intersections: consignee['Intersections'],
 
-      recievingHours: consignee['Recieving Hours'],
-      appointments: consignee['Appointments'],
-      intersections: consignee['Intersections'],
+    notes: consignee['Notes'],
 
-      notes: consignee['Notes'],
-
-      orgId: organization.id,
+    organization: {
+      connect: { id: organization.id },
     },
-  });
+  };
+
+  // Conditionally add the shipper relation
+  if (consignee.shipper) {
+    data.shipper = {
+      create: {
+        status: consignee['Status'] as Status,
+
+        name: consignee['Consignee Name'],
+        address: consignee['Address'],
+        addressField2: consignee['Address Line 2'],
+        addressField3: consignee['Address Line 3'],
+        city: consignee['City'],
+        state: consignee['State'],
+        postCode: consignee['Zip'],
+        postCountry: consignee['Country'],
+
+        contactName: consignee['Contact'],
+        contactEmail: consignee['Email'],
+        telephone: consignee['Telephone'],
+        tollFree: consignee['Toll Free'],
+
+        shippingHours: consignee['Recieving Hours'],
+        appointments: consignee['Appointments'],
+        intersections: consignee['Intersections'],
+
+        notes: consignee['Notes'],
+
+        organization: {
+          connect: { id: organization.id },
+        },
+      },
+    };
+  }
+
+  const resp = await prisma.consignee.create({ data });
+
   return resp;
 }
 
