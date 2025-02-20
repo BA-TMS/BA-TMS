@@ -78,4 +78,5 @@ export const consigneeDataMap: Record<string, keyof ConsigneeData> = {
   Intersections: 'intersections',
 
   Notes: 'notes',
+  shipper: 'shipper',
 };

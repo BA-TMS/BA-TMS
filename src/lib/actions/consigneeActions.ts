@@ -105,7 +105,6 @@ export async function addConsignee({
   }
 
   const resp = await prisma.consignee.create({ data });
-
   return resp;
 }
 
@@ -113,6 +112,7 @@ export async function updateConsignee(
   id: string,
   { consignee }: { consignee: Partial<ConsigneeFormData> }
 ) {
+  console.log('consignee.shipper', consignee.shipper);
   // find organization based on name
   const organization = await getOrganization(consignee.orgName as string); // come back to
 
@@ -121,36 +121,64 @@ export async function updateConsignee(
     throw 'can not update consignee :(';
   }
 
-  // see if it's a consignee as well
-  // if yes, create or update consignee
+  const data: Prisma.ConsigneeUpdateInput = {
+    status: consignee['Status'] as Status,
+    name: consignee['Consignee Name'],
+    address: consignee['Address'],
+    addressField2: consignee['Address Line 2'],
+    addressField3: consignee['Address Line 3'],
+    city: consignee['City'],
+    state: consignee['State'],
+    postCode: consignee['Zip'],
+    postCountry: consignee['Country'],
+    contactName: consignee['Contact'],
+    contactEmail: consignee['Email'],
+    telephone: consignee['Telephone'],
+    tollFree: consignee['Toll Free'],
+    recievingHours: consignee['Recieving Hours'],
+    appointments: consignee['Appointments'],
+    intersections: consignee['Intersections'],
+    notes: consignee['Notes'],
+
+    organization: {
+      connect: { id: organization.id },
+    },
+  };
+
+  // add shipper if not exist
+  // or do we only want to update too
+  if (consignee.shipper) {
+    data.shipper = {
+      connectOrCreate: {
+        where: { consigneeId: id }, // foreign key
+        create: {
+          status: consignee['Status'] as Status,
+          name: consignee['Consignee Name'] || '',
+          address: consignee['Address'],
+          addressField2: consignee['Address Line 2'],
+          addressField3: consignee['Address Line 3'],
+          city: consignee['City'] || '',
+          state: consignee['State'] || '',
+          postCode: consignee['Zip'] || '',
+          postCountry: consignee['Country'] || '',
+          contactName: consignee['Contact'],
+          contactEmail: consignee['Email'],
+          telephone: consignee['Telephone'],
+          tollFree: consignee['Toll Free'],
+          shippingHours: consignee['Recieving Hours'],
+          appointments: consignee['Appointments'],
+          intersections: consignee['Intersections'],
+          notes: consignee['Notes'],
+          organization: { connect: { id: organization.id } },
+        },
+      },
+    };
+  }
 
   const resp = await prisma.consignee.update({
     where: { id: id },
-    data: {
-      status: consignee['Status'] as Status,
-
-      name: consignee['Consignee Name'],
-      address: consignee['Address'],
-      addressField2: consignee['Address Line 2'],
-      addressField3: consignee['Address Line 3'],
-      city: consignee['City'],
-      state: consignee['State'],
-      postCode: consignee['Zip'],
-      postCountry: consignee['Country'],
-
-      contactName: consignee['Contact'],
-      contactEmail: consignee['Email'],
-      telephone: consignee['Telephone'],
-      tollFree: consignee['Toll Free'],
-
-      recievingHours: consignee['Recieving Hours'],
-      appointments: consignee['Appointments'],
-      intersections: consignee['Intersections'],
-
-      notes: consignee['Notes'],
-
-      orgId: organization.id,
-    },
+    data,
   });
+  console.log(resp);
   return resp;
 }

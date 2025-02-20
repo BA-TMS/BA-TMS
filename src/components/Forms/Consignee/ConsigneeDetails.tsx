@@ -69,6 +69,7 @@ const ConsigneeDetailsForm: React.FC = () => {
     : 'update-consignee';
 
   const { formData, saveFormValues } = useContext(ModalContext);
+  console.log(formData);
 
   const isUpdate = formData !== null && formData['id'];
 
@@ -136,6 +137,7 @@ const ConsigneeDetailsForm: React.FC = () => {
 
   const handleCheckbox = () => {
     console.log('before check', formData.shipper);
+    // shipper needs to exist
     formData.shipper === true
       ? (formData.shipper = false)
       : (formData.shipper = true);
