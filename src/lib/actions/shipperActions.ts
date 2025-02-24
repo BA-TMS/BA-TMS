@@ -115,36 +115,100 @@ export async function updateShipper(
     throw 'can not update shipper :(';
   }
 
-  // see if it's a consignee as well
-  // if yes, create or update consignee
+  const data: Prisma.ShipperUpdateInput = {
+    status: shipper['Status'] as Status,
 
+    name: shipper['Shipper Name'],
+    address: shipper['Address'],
+    addressField2: shipper['Address Line 2'],
+    addressField3: shipper['Address Line 3'],
+    city: shipper['City'],
+    state: shipper['State'],
+    postCode: shipper['Zip'],
+    postCountry: shipper['Country'],
+
+    contactName: shipper['Contact'],
+    contactEmail: shipper['Email'],
+    telephone: shipper['Telephone'],
+    tollFree: shipper['Toll Free'],
+
+    shippingHours: shipper['Shipping Hours'],
+    appointments: shipper['Appointments'],
+    intersections: shipper['Intersections'],
+
+    notes: shipper['Notes'],
+
+    organization: {
+      connect: { id: organization.id },
+    },
+  };
+
+  // add consignee if not exist
+  // or update
+  if (shipper.consignee) {
+    data.consignee = {
+      upsert: {
+        create: {
+          status: shipper['Status'] as Status,
+
+          name: shipper['Shipper Name'] || '',
+          address: shipper['Address'],
+          addressField2: shipper['Address Line 2'],
+          addressField3: shipper['Address Line 3'],
+          city: shipper['City'] || '',
+          state: shipper['State'] || '',
+          postCode: shipper['Zip'] || '',
+          postCountry: shipper['Country'] || '',
+
+          contactName: shipper['Contact'],
+          contactEmail: shipper['Email'],
+          telephone: shipper['Telephone'],
+          tollFree: shipper['Toll Free'],
+
+          recievingHours: shipper['Shipping Hours'],
+          appointments: shipper['Appointments'],
+          intersections: shipper['Intersections'],
+
+          notes: shipper['Notes'],
+
+          organization: {
+            connect: { id: organization.id },
+          },
+        },
+        update: {
+          status: shipper['Status'] as Status,
+
+          name: shipper['Shipper Name'],
+          address: shipper['Address'],
+          addressField2: shipper['Address Line 2'],
+          addressField3: shipper['Address Line 3'],
+          city: shipper['City'],
+          state: shipper['State'],
+          postCode: shipper['Zip'],
+          postCountry: shipper['Country'],
+
+          contactName: shipper['Contact'],
+          contactEmail: shipper['Email'],
+          telephone: shipper['Telephone'],
+          tollFree: shipper['Toll Free'],
+
+          recievingHours: shipper['Shipping Hours'],
+          appointments: shipper['Appointments'],
+          intersections: shipper['Intersections'],
+
+          notes: shipper['Notes'],
+
+          organization: {
+            connect: { id: organization.id },
+          },
+        },
+      },
+    };
+  }
   const resp = await prisma.shipper.update({
     where: { id: id },
-    data: {
-      status: shipper['Status'] as Status,
-
-      name: shipper['Shipper Name'],
-      address: shipper['Address'],
-      addressField2: shipper['Address Line 2'],
-      addressField3: shipper['Address Line 3'],
-      city: shipper['City'],
-      state: shipper['State'],
-      postCode: shipper['Zip'],
-      postCountry: shipper['Country'],
-
-      contactName: shipper['Contact'],
-      contactEmail: shipper['Email'],
-      telephone: shipper['Telephone'],
-      tollFree: shipper['Toll Free'],
-
-      shippingHours: shipper['Shipping Hours'],
-      appointments: shipper['Appointments'],
-      intersections: shipper['Intersections'],
-
-      notes: shipper['Notes'],
-
-      orgId: organization.id,
-    },
+    data,
   });
+
   return resp;
 }

@@ -199,6 +199,6 @@ export async function updateConsignee(
     where: { id: id },
     data,
   });
-  console.log('UPDATE RESPONSE', resp);
+
   return resp;
 }
