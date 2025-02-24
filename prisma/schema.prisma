@@ -258,7 +258,7 @@ model Shipper {
   orgId        String
   organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
   consigneeId  String?      @unique
-  consignee    Consignee?   @relation(fields: [consigneeId], references: [id], onDelete: SetNull)
+  consignee    Consignee?   @relation(fields: [consigneeId], references: [id], onDelete: Cascade)
 }
 
 model Consignee {
@@ -273,7 +273,7 @@ model Consignee {
   addressField3 String?
   city          String
   state         String
-  postCohttps://ryangriswold.com/assets/slideshow/Believe-02.jpguntry   String
+  postCountry   String
   postCode      String
 
   contactName  String?

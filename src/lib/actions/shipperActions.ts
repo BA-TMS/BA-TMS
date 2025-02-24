@@ -3,7 +3,7 @@
 import prisma from '@util/prisma/client';
 import { getOrganization } from '@/lib/dbActions';
 import { ShipperFormData } from '@/types/shipperTypes';
-import { Status } from '@prisma/client';
+import { Prisma, Status } from '@prisma/client';
 
 // this file contains actions for interacting with the database Shipper table
 
@@ -27,7 +27,6 @@ export async function getShippers(organization: string) {
     ],
     include: SHIPPER_RELATIONS,
   });
-  console.log(shippers);
   return shippers;
 }
 
@@ -40,36 +39,67 @@ export async function addShipper({ shipper }: { shipper: ShipperFormData }) {
     throw 'can not add shipper :(';
   }
 
-  // see if it's a consignee as well
-  // if yes, create consignee
+  const data: Prisma.ShipperCreateInput = {
+    status: shipper['Status'] as Status,
 
-  const resp = await prisma.shipper.create({
-    data: {
-      status: shipper['Status'] as Status,
+    name: shipper['Shipper Name'],
+    address: shipper['Address'],
+    addressField2: shipper['Address Line 2'],
+    addressField3: shipper['Address Line 3'],
+    city: shipper['City'],
+    state: shipper['State'],
+    postCode: shipper['Zip'],
+    postCountry: shipper['Country'],
 
-      name: shipper['Shipper Name'],
-      address: shipper['Address'],
-      addressField2: shipper['Address Line 2'],
-      addressField3: shipper['Address Line 3'],
-      city: shipper['City'],
-      state: shipper['State'],
-      postCode: shipper['Zip'],
-      postCountry: shipper['Country'],
+    contactName: shipper['Contact'],
+    contactEmail: shipper['Email'],
+    telephone: shipper['Telephone'],
+    tollFree: shipper['Toll Free'],
 
-      contactName: shipper['Contact'],
-      contactEmail: shipper['Email'],
-      telephone: shipper['Telephone'],
-      tollFree: shipper['Toll Free'],
+    shippingHours: shipper['Shipping Hours'],
+    appointments: shipper['Appointments'],
+    intersections: shipper['Intersections'],
 
-      shippingHours: shipper['Shipping Hours'],
-      appointments: shipper['Appointments'],
-      intersections: shipper['Intersections'],
+    notes: shipper['Notes'],
 
-      notes: shipper['Notes'],
-
-      orgId: organization.id,
+    organization: {
+      connect: { id: organization.id },
     },
-  });
+  };
+
+  // conditionally add consignee
+  if (shipper.consignee) {
+    data.consignee = {
+      create: {
+        status: shipper['Status'] as Status,
+
+        name: shipper['Shipper Name'],
+        address: shipper['Address'],
+        addressField2: shipper['Address Line 2'],
+        addressField3: shipper['Address Line 3'],
+        city: shipper['City'],
+        state: shipper['State'],
+        postCode: shipper['Zip'],
+        postCountry: shipper['Country'],
+
+        contactName: shipper['Contact'],
+        contactEmail: shipper['Email'],
+        telephone: shipper['Telephone'],
+        tollFree: shipper['Toll Free'],
+
+        recievingHours: shipper['Shipping Hours'],
+        appointments: shipper['Appointments'],
+        intersections: shipper['Intersections'],
+
+        notes: shipper['Notes'],
+
+        organization: {
+          connect: { id: organization.id },
+        },
+      },
+    };
+  }
+  const resp = await prisma.shipper.create({ data });
   return resp;
 }
 

@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import TextInput from '@ui/Form/TextInput';
 import SelectInput from '@ui/Form/SelectInput';
+import CheckBox from '@/components/UI_Elements/Form/CheckBox';
 import Button from '@/components/UI_Elements/Buttons/Button';
 import { status } from '@/components/Forms/data/details';
 import { ModalContext } from '@/context/modalContext';
@@ -103,7 +104,6 @@ const ShipperDetailsForm: React.FC = () => {
   // submit the values to the context
   const onSubmit = useCallback(
     (shipper: Shipper) => {
-      console.log('to context', shipper);
       saveFormValues(shipper);
       reset();
       router.push(`/shippers/${segment}/review`);
@@ -134,6 +134,17 @@ const ShipperDetailsForm: React.FC = () => {
     }
   }, [formData, setValue]);
 
+  const handleCheckbox = () => {
+    if (isUpdate) {
+      // we are copying a consignee during an update
+      saveFormValues({ ...formData, consignee: true });
+    } else {
+      formData.consignee === true
+        ? (formData.consignee = false)
+        : (formData.consignee = true);
+    }
+  };
+
   return (
     <div>
       <form
@@ -163,6 +174,13 @@ const ShipperDetailsForm: React.FC = () => {
               />
             </div>
           </div>
+
+          <CheckBox
+            id={'consignee'}
+            label={isUpdate ? 'Update as Consignee' : 'Duplicate as Consignee'}
+            onChange={handleCheckbox}
+            checked={formData.consignee === true}
+          />
 
           <div className="w-full">
             <TextInput control={control} name="Address" />
