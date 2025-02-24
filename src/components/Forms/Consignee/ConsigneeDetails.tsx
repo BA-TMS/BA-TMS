@@ -177,9 +177,9 @@ const ConsigneeDetailsForm: React.FC = () => {
 
           <CheckBox
             id={'shipper'}
-            label={'Duplicate as Shipper?'}
+            label={isUpdate ? 'Update as Shipper' : 'Duplicate as Shipper'}
             onChange={handleCheckbox}
-            checked={formData.shipper === true} // check this
+            checked={formData.shipper === true}
           />
 
           <div className="w-full">
