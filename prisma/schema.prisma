@@ -273,7 +273,7 @@ model Consignee {
   addressField3 String?
   city          String
   state         String
-  postCountry   String
+  postCohttps://ryangriswold.com/assets/slideshow/Believe-02.jpguntry   String
   postCode      String
 
   contactName  String?

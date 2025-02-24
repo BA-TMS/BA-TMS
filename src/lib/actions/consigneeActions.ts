@@ -146,12 +146,32 @@ export async function updateConsignee(
   };
 
   // add shipper if not exist
-  // or do we only want to update too
+  // or update
   if (consignee.shipper) {
     data.shipper = {
-      connectOrCreate: {
+      upsert: {
         where: { consigneeId: id }, // foreign key
         create: {
+          status: consignee['Status'] as Status,
+          name: consignee['Consignee Name'] || '',
+          address: consignee['Address'],
+          addressField2: consignee['Address Line 2'],
+          addressField3: consignee['Address Line 3'],
+          city: consignee['City'] || '',
+          state: consignee['State'] || '',
+          postCode: consignee['Zip'] || '',
+          postCountry: consignee['Country'] || '',
+          contactName: consignee['Contact'],
+          contactEmail: consignee['Email'],
+          telephone: consignee['Telephone'],
+          tollFree: consignee['Toll Free'],
+          shippingHours: consignee['Recieving Hours'],
+          appointments: consignee['Appointments'],
+          intersections: consignee['Intersections'],
+          notes: consignee['Notes'],
+          organization: { connect: { id: organization.id } },
+        },
+        update: {
           status: consignee['Status'] as Status,
           name: consignee['Consignee Name'] || '',
           address: consignee['Address'],
@@ -179,6 +199,6 @@ export async function updateConsignee(
     where: { id: id },
     data,
   });
-  console.log(resp);
+  console.log('UPDATE RESPONSE', resp);
   return resp;
 }

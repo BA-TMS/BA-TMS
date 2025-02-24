@@ -69,7 +69,6 @@ const ConsigneeDetailsForm: React.FC = () => {
     : 'update-consignee';
 
   const { formData, saveFormValues } = useContext(ModalContext);
-  console.log(formData);
 
   const isUpdate = formData !== null && formData['id'];
 
@@ -136,12 +135,14 @@ const ConsigneeDetailsForm: React.FC = () => {
   }, [formData, setValue]);
 
   const handleCheckbox = () => {
-    console.log('before check', formData.shipper);
-    // shipper needs to exist
-    formData.shipper === true
-      ? (formData.shipper = false)
-      : (formData.shipper = true);
-    console.log('AFTER check', formData.shipper);
+    if (isUpdate) {
+      // we are copying a consignee during an update
+      saveFormValues({ ...formData, shipper: true });
+    } else {
+      formData.shipper === true
+        ? (formData.shipper = false)
+        : (formData.shipper = true);
+    }
   };
 
   return (
@@ -178,7 +179,7 @@ const ConsigneeDetailsForm: React.FC = () => {
             id={'shipper'}
             label={'Duplicate as Shipper?'}
             onChange={handleCheckbox}
-            checked={formData.shipper} // check this
+            checked={formData.shipper === true} // check this
           />
 
           <div className="w-full">
