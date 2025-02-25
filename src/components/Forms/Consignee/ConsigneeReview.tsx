@@ -14,7 +14,6 @@ import {
   createConsignee,
   updateConsignee,
 } from '@/store/slices/consigneeSlice';
-// to fetch shippers
 import { fetchShippers } from '@/store/slices/shipperSlice';
 
 const ConsigneeReviewForm: React.FC = () => {
@@ -25,6 +24,7 @@ const ConsigneeReviewForm: React.FC = () => {
   const router = useRouter();
 
   const { formData, saveFormValues } = useContext(ModalContext);
+  console.log('is shipper?', formData.shipper);
 
   // adds organization information to consignee
   const { organization } = useContext(UserContext);
@@ -43,7 +43,11 @@ const ConsigneeReviewForm: React.FC = () => {
       try {
         await dispatch(createConsignee(consignee))
           .unwrap()
-          .then(() => dispatch(fetchShippers(organization))); // dispatch fetch shippers
+          // dispatch fetchShippers if this consignee is also a shipper
+          .then(() => {
+            if (formData.shipper === true)
+              dispatch(fetchShippers(organization));
+          });
       } catch (error) {
         setError(`Error creating consignee: ${error}`);
       }
@@ -56,7 +60,11 @@ const ConsigneeReviewForm: React.FC = () => {
           })
         )
           .unwrap()
-          .then(() => dispatch(fetchShippers(organization))); // dispatch fetch shippers
+          // dispatch fetchShippers if this consignee is also a shipper
+          .then(() => {
+            if (formData.shipper === true)
+              dispatch(fetchShippers(organization));
+          });
       } catch (error) {
         setError(`Error updating consignee: ${error}`);
       }
