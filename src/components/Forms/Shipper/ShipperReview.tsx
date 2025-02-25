@@ -21,7 +21,6 @@ const ShipperReviewForm: React.FC = () => {
   const router = useRouter();
 
   const { formData, saveFormValues } = useContext(ModalContext);
-  console.log('is consignee?', formData.consignee);
 
   // adds organization information to shipper
   const { organization } = useContext(UserContext);
