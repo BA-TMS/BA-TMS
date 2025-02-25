@@ -14,6 +14,8 @@ import {
   createConsignee,
   updateConsignee,
 } from '@/store/slices/consigneeSlice';
+// to fetch shippers
+import { fetchShippers } from '@/store/slices/shipperSlice';
 
 const ConsigneeReviewForm: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -39,7 +41,9 @@ const ConsigneeReviewForm: React.FC = () => {
     // if not an update
     if (!isUpdate) {
       try {
-        await dispatch(createConsignee(consignee)).unwrap();
+        await dispatch(createConsignee(consignee))
+          .unwrap()
+          .then(() => dispatch(fetchShippers(organization))); // dispatch fetch shippers
       } catch (error) {
         setError(`Error creating consignee: ${error}`);
       }
@@ -50,7 +54,9 @@ const ConsigneeReviewForm: React.FC = () => {
             id: formData['id'],
             updatedConsignee: consignee as Partial<ConsigneeData>,
           })
-        ).unwrap();
+        )
+          .unwrap()
+          .then(() => dispatch(fetchShippers(organization))); // dispatch fetch shippers
       } catch (error) {
         setError(`Error updating consignee: ${error}`);
       }
