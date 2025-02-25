@@ -11,6 +11,7 @@ import Button from '@/components/UI_Elements/Buttons/Button';
 import { useRouter } from 'next/navigation';
 import { ShipperData, ShipperFormData } from '@/types/shipperTypes';
 import { createShipper, updateShipper } from '@/store/slices/shipperSlice';
+import { fetchConsignees } from '@/store/slices/consigneeSlice';
 
 const ShipperReviewForm: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -20,6 +21,7 @@ const ShipperReviewForm: React.FC = () => {
   const router = useRouter();
 
   const { formData, saveFormValues } = useContext(ModalContext);
+  console.log('is consignee?', formData.consignee);
 
   // adds organization information to shipper
   const { organization } = useContext(UserContext);
@@ -36,19 +38,30 @@ const ShipperReviewForm: React.FC = () => {
     // if not an update
     if (!isUpdate) {
       try {
-        await dispatch(createShipper(shipper)).unwrap();
+        await dispatch(createShipper(shipper))
+          .unwrap()
+          // dispatch fetchConsignees if this shipper is also a consignee
+          .then(() => {
+            if (formData.consignee === true)
+              dispatch(fetchConsignees(organization));
+          });
       } catch (error) {
         setError(`Error creating shipper: ${error}`);
       }
     } else {
-      console.log('its an update');
       try {
         await dispatch(
           updateShipper({
             id: formData['id'],
             updatedShipper: shipper as Partial<ShipperData>,
           })
-        ).unwrap();
+        )
+          .unwrap()
+          // dispatch fetchConsignees if this shipper is also a consignee
+          .then(() => {
+            if (formData.consignee === true)
+              dispatch(fetchConsignees(organization));
+          });
       } catch (error) {
         setError(`Error updating shipper: ${error}`);
       }
