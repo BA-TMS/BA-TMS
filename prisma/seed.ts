@@ -152,15 +152,13 @@ async function main() {
   }
 
   for (const currLoad of loads) {
-    currLoad.ownerId = orgIds[loadPos % orgIds.length];
+    currLoad.orgId = orgIds[loadPos % orgIds.length];
     currLoad.carrierId = carrierIds[loadPos % carrierIds.length];
     currLoad.customerId = customerIds[loadPos % customerIds.length];
     const resp = await prisma.load.upsert({
       where: {
-        ownerId_loadNum: {
-          ownerId: currLoad.ownerId,
-          loadNum: currLoad.loadNum,
-        },
+        orgId: currLoad.orgId,
+        loadNum: currLoad.loadNum,
       },
       update: {},
       create: currLoad,
@@ -549,28 +547,28 @@ const billees = [
 
 const loads = [
   {
-    ownerId: null,
+    orgId: 'e739-446c-ba47-e92d92de648c',
     loadNum: '69',
     payOrderNum: '1111',
     carrierId: null,
     customerId: null,
   },
   {
-    ownerId: null,
+    orgId: 'e739-446c-ba47-e92d92de648c',
     loadNum: '420',
     payOrderNum: '0088',
     carrierId: null,
     customerId: null,
   },
   {
-    ownerId: null,
+    orgId: '103784cb-e739-446c-ba47-e92d92de648a',
     loadNum: '1111',
     payOrderNum: '3232',
     carrierId: null,
     customerId: null,
   },
   {
-    ownerId: null,
+    orgId: '103784cb-e739-446c-ba47-e92d92de648a',
     loadNum: '2222',
     payOrderNum: '1212',
     carrierId: null,

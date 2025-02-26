@@ -59,28 +59,29 @@ model Permissions {
 }
 
 model Load {
-  id           String       @id @default(uuid())
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
-  ownerId      String
+  id           String     @id @default(uuid())
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
   loadNum      String
   carrierId    String?
   driverId     String?
   customerId   String
   originId     String?
   destId       String?
-  status       LoadStatus   @default(OPEN)
+  status       LoadStatus @default(OPEN)
   deliveryDate DateTime?
   payOrderNum  String
-  shipDate     DateTime     @default(now())
-  carrier      Carrier?     @relation(fields: [carrierId], references: [id])
-  customer     Customer     @relation(fields: [customerId], references: [id])
-  consignee    Consignee?   @relation(fields: [destId], references: [id])
-  driver       Driver?      @relation(fields: [driverId], references: [id])
-  shipper      Shipper?     @relation(fields: [originId], references: [id])
-  owner        Organization @relation(fields: [ownerId], references: [id])
+  shipDate     DateTime   @default(now())
+  carrier      Carrier?   @relation(fields: [carrierId], references: [id])
+  customer     Customer   @relation(fields: [customerId], references: [id])
+  consignee    Consignee? @relation(fields: [destId], references: [id])
+  driver       Driver?    @relation(fields: [driverId], references: [id])
+  shipper      Shipper?   @relation(fields: [originId], references: [id])
 
-  @@unique([ownerId, loadNum])
+  orgId        String
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@unique([loadNum])
 }
 
 model Carrier {
