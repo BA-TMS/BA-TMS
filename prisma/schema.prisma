@@ -26,6 +26,7 @@ model Organization {
   tollFree      String?
   loads         Load[]
   users         User[]
+  carrier       Carrier[]
   Driver        Driver[]
   customsBroker Broker[]
   Factor        Factor[]
@@ -111,6 +112,8 @@ model Carrier {
   CarrierInsurance CarrierInsurance?
   drivers          Driver[]
   loads            Load[]
+  orgId            String
+  organization     Organization      @relation(fields: [orgId], references: [id], onDelete: Cascade)
 }
 
 model CarrierInsurance {
@@ -282,8 +285,8 @@ model Consignee {
   tollFree     String?
 
   recievingHours String?
-  appointments  String?
-  intersections String?
+  appointments   String?
+  intersections  String?
 
   notes String?
 

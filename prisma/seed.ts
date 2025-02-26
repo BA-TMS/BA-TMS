@@ -60,7 +60,7 @@ async function main() {
 
   for (const currCarrier of carriers) {
     const carrierResp = await prisma.carrier.upsert({
-      where: { dotId: currCarrier.dotId },
+      where: { id: currCarrier.id },
       create: {
         carrierName: currCarrier.carrierName,
         address: currCarrier.address,
@@ -74,6 +74,7 @@ async function main() {
         docketNumber: currCarrier.docketNumber,
         dotId: currCarrier.dotId,
         taxId: currCarrier.taxId,
+        orgId: currCarrier.orgId,
       },
       update: {
         carrierName: currCarrier.carrierName,
@@ -88,6 +89,7 @@ async function main() {
         docketNumber: currCarrier.docketNumber,
         dotId: currCarrier.dotId,
         taxId: currCarrier.taxId,
+        orgId: currCarrier.orgId,
       },
     });
 
@@ -313,6 +315,7 @@ const carriers = [
       fmcsaType: 'BPID',
       fmcsaCoverage: '40000',
     },
+    orgId: '103784cb-e739-446c-ba47-e92d92de648a',
   },
   {
     id: '3997ed89-8767-4020-b8e1-7011469af2e7',
@@ -334,6 +337,7 @@ const carriers = [
       fmcsaType: 'BPID',
       fmcsaCoverage: '40000',
     },
+    orgId: 'e739-446c-ba47-e92d92de648c',
   },
 ];
 
