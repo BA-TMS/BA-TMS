@@ -40,7 +40,7 @@ export default function StoreProvider({
       storeRef.current.dispatch(fetchBrokers(organization));
       storeRef.current.dispatch(fetchCarriers(organization));
       storeRef.current.dispatch(fetchConsignees(organization));
-      storeRef.current.dispatch(fetchCustomers());
+      storeRef.current.dispatch(fetchCustomers(organization));
       storeRef.current.dispatch(fetchDrivers(organization));
       storeRef.current.dispatch(fetchFactors(organization));
       storeRef.current.dispatch(fetchShippers(organization));

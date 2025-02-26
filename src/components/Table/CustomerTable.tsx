@@ -16,7 +16,6 @@ import { useRouter } from 'next/navigation';
 
 // columns for the table
 const columns = [
-  { field: 'id', headerName: 'Customer Id' },
   { field: 'companyName', headerName: 'Customer Name' },
   { field: 'salesRepName', headerName: 'Broker/ Rep' },
   { field: 'contactCity', headerName: 'City' },
