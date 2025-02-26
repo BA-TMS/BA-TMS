@@ -3,8 +3,10 @@
 import prisma from '@util/prisma/client';
 import { CarrierFormData } from '@/types/carrierTypes';
 import { DocketNumber } from '@prisma/client';
+import { getOrganization } from '../dbActions';
 
 const CARRIER_RELATIONS = {
+  organization: { select: { orgName: true } },
   factor: { select: { name: true } },
   CarrierInsurance: true,
 };
@@ -46,6 +48,14 @@ export async function getCarrierInsurance(id: string) {
 }
 
 export async function addCarrier({ carrier }: { carrier: CarrierFormData }) {
+  // find organization based on name
+  const organization = await getOrganization(carrier.orgName);
+
+  // TODO: Better error handling
+  if (organization === null) {
+    throw 'can not add carrier :(';
+  }
+
   const resp = await prisma.carrier.create({
     data: {
       status: carrier['Status'],
@@ -77,6 +87,8 @@ export async function addCarrier({ carrier }: { carrier: CarrierFormData }) {
           ? carrier['Factoring Company']
           : null,
       notes: carrier['Notes'],
+
+      orgId: organization.id,
 
       CarrierInsurance: {
         create: {
@@ -117,6 +129,13 @@ export async function updateCarrier(
   id: string,
   { carrier }: { carrier: CarrierFormData }
 ) {
+  // find organization based on name
+  const organization = await getOrganization(carrier.orgName);
+
+  // TODO: Better error handling
+  if (organization === null) {
+    throw 'can not update carrier :(';
+  }
   const resp = await prisma.carrier.update({
     where: { id: id },
     data: {
@@ -149,6 +168,8 @@ export async function updateCarrier(
           ? carrier['Factoring Company']
           : null,
       notes: carrier['Notes'],
+
+      orgId: organization.id,
 
       CarrierInsurance: {
         update: {

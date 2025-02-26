@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import Button from '../../UI_Elements/Buttons/Button';
 import { ModalContext } from '@/context/modalContext';
+import { UserContext } from '@/context/userContextProvider';
 import { createCarrier, updateCarrier } from '@/store/slices/carrierSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
@@ -22,6 +23,10 @@ export const CarrierForm = () => {
   const router = useRouter();
 
   const { formData, saveFormValues } = useContext(ModalContext);
+
+  // adds organization information to shipper
+  const { organization } = useContext(UserContext);
+  formData.orgName = organization;
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
