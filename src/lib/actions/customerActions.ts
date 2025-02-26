@@ -101,7 +101,7 @@ export async function updateCustomer(
   { customer }: { customer: Partial<CustomerFormData> }
 ) {
   // find organization based on name
-  const organization = await getOrganization(customer.orgName);
+  const organization = await getOrganization(customer.orgName as string);
 
   // TODO: Better error handling
   if (organization === null) {

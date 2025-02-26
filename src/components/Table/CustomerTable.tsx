@@ -9,7 +9,7 @@ import { TableSearch } from '../UI_Elements/Table/TableSearch';
 import TableHeaderBlank from '../UI_Elements/Table/TableHeaderBlank';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
-import { getCustomer } from '@/lib/dbActions';
+import { getCustomer } from '@/lib/actions/customerActions';
 import { CustomerData } from '@/types/customerTypes';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
