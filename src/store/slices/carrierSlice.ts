@@ -64,7 +64,7 @@ export const fetchCarriers = createAsyncThunk<CarrierData[], string>(
   async (orgName) => {
     const data = await getCarriers(orgName);
 
-    return data.map((carrier: CarrierData) => formatron(carrier));
+    return data.map((carrier) => formatron(carrier as CarrierData));
   }
 );
 
