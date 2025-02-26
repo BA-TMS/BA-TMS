@@ -3,7 +3,6 @@
 
 import prisma from '@util/prisma/client';
 import { PrismaClient, DriverType } from '@prisma/client';
-import { CustomerFormData } from '@/types/customerTypes';
 import { LoadFormData } from '@/types/loadTypes';
 import { DriverFormData } from '@/types/driverTypes';
 import { BilleeFormData } from '@/types/billeeTypes';
@@ -19,10 +18,6 @@ const LOAD_RELATIONS = {
   customer: { select: { companyName: true } },
   shipper: { select: { name: true } },
   consignee: { select: { name: true } },
-};
-
-const CUSTOMER_RELATIONS = {
-  factor: { select: { name: true } },
 };
 
 const DRIVER_RELATIONS = {
@@ -51,23 +46,6 @@ async function getter(
     include: relations,
   });
   return resp;
-}
-
-export async function getCustomer(id: string) {
-  const customer = await prisma.customer.findUnique({
-    where: {
-      id: id,
-    },
-  });
-  return customer;
-}
-
-export async function getCustomers() {
-  const relations = {
-    factor: { select: { name: true } },
-  };
-  const customers = await getter(prisma.customer, relations);
-  return customers;
 }
 
 export async function getDriver(id: string) {
@@ -155,57 +133,6 @@ export async function getAccountPreferences() {
 }
 
 /** Add new entries to tables. */
-
-export async function addCustomer({
-  customer,
-}: {
-  customer: CustomerFormData;
-}) {
-  const resp = await prisma.customer.create({
-    data: {
-      status: customer['Status'],
-      companyName: customer['Company Name'],
-      contactName: customer['Contact Name'],
-      secondaryContactName: customer['Secondary Contact Name'],
-      contactEmail: customer['Contact Email'],
-      contactTelephone: customer['Telephone'],
-      contactTollFree: customer['Toll Free'],
-      contactFax: customer['Fax'],
-
-      contactAddress: customer['Address'],
-      contactAddressField2: customer['Address Line 2'],
-      contactAddressField3: customer['Address Line 3'],
-      contactCity: customer['City'],
-      contactState: customer['State'],
-      contactPostCode: customer['Zip'],
-      contactCountry: customer['Country'],
-
-      billingAddress: customer['Billing Address'],
-      billingAddressField2: customer['Billing Address Line 2'],
-      billingAddressField3: customer['Billing Address Line 3'],
-      billingCity: customer['Billing City'],
-      billingState: customer['Billing State'],
-      billingPostCode: customer['Billing Zip'],
-      billingCountry: customer['Billing Country'],
-      billingEmail: customer['Billing Email'],
-      billingTelephone: customer['Billing Telephone'],
-
-      // advanced options
-      salesRepName: customer['Sales Rep'],
-      currency: customer['Currency'],
-      paymentTerms: customer['Payment Terms'],
-      creditLimit: customer['Credit Limit'],
-      federalID: customer['Federal ID'],
-      // empty string will throw an error as the fields must be null
-      factorId:
-        customer['Factoring Company'] !== ''
-          ? customer['Factoring Company']
-          : null,
-    },
-    include: CUSTOMER_RELATIONS, // gives us factor: {name: ___}
-  });
-  return resp;
-}
 
 export async function addDriver({ driver }: { driver: DriverFormData }) {
   // find organization based on name
@@ -362,71 +289,6 @@ export async function addTruck({ truck }: { truck: TruckFormData }) {
 }
 
 /** Update row */
-
-export async function updateCustomer(
-  id: string,
-  { formData }: { formData: CustomerFormData }
-) {
-  // map to convert formData keys to database keys
-  const mapData = (customer: CustomerFormData) => {
-    if (!customer) {
-      throw new Error('Customer data is undefined or null');
-    }
-
-    return {
-      status: customer['Status'],
-      companyName: customer['Company Name'],
-      contactName: customer['Contact Name'],
-      secondaryContactName: customer['Secondary Contact Name'],
-      contactEmail: customer['Contact Email'],
-      contactTelephone: customer['Telephone'],
-      contactTollFree: customer['Toll Free'],
-      contactFax: customer['Fax'],
-
-      contactAddress: customer['Address'],
-      contactAddressField2: customer['Address Line 2'],
-      contactAddressField3: customer['Address Line 3'],
-      contactCity: customer['City'],
-      contactState: customer['State'],
-      contactPostCode: customer['Zip'],
-      contactCountry: customer['Country'],
-
-      billingAddress: customer['Billing Address'],
-      billingAddressField2: customer['Billing Address Line 2'],
-      billingAddressField3: customer['Billing Address Line 3'],
-      billingCity: customer['Billing City'],
-      billingState: customer['Billing State'],
-      billingPostCode: customer['Billing Zip'],
-      billingCountry: customer['Billing Country'],
-      billingEmail: customer['Billing Email'],
-      billingTelephone: customer['Billing Telephone'],
-
-      // advanced options
-      salesRepName: customer['Sales Rep'],
-      currency: customer['Currency'],
-      paymentTerms: customer['Payment Terms'],
-      creditLimit: customer['Credit Limit'],
-      federalID: customer['Federal ID'],
-      // empty string will throw an error as the fields must be null
-      factorId:
-        customer['Factoring Company'] !== ''
-          ? customer['Factoring Company']
-          : null,
-    };
-  };
-
-  const mappedCustomer = mapData(formData);
-
-  const resp = await prisma.customer.update({
-    where: { id },
-    data: {
-      ...mappedCustomer,
-    },
-    include: CUSTOMER_RELATIONS, // gives us factor: {name: ___}
-  });
-
-  return resp;
-}
 
 export async function updateDriver(
   id: string,
