@@ -12,12 +12,12 @@ import { status } from '@/components/Forms/data/details';
 import { ModalContext } from '@/context/modalContext';
 import { useRouter, usePathname } from 'next/navigation';
 import { usStates } from '../data/states';
-import { shipperDataMap } from '@/types/shipperTypes';
+import { consigneeDataMap } from '@/types/consigneeTypes';
 
 // Define your schema outside the component to avoid re-creation on each render
-const shipperSchema = yup.object({
+const consigneeSchema = yup.object({
   Status: yup.string().required('Must enter Status'),
-  'Shipper Name': yup.string().required('Shipper Name is required'),
+  'Consignee Name': yup.string().required('Consignee Name is required'),
 
   Address: yup.string(),
   'Address Line 2': yup.string(),
@@ -51,22 +51,22 @@ const shipperSchema = yup.object({
       excludeEmptyString: true,
     }),
 
-  'Shipping Hours': yup.string(),
+  'Recieving Hours': yup.string(),
   Appointments: yup.string(),
   Intersections: yup.string(),
 
   Notes: yup.string().max(250, 'Must be under 250 characters'),
 });
 
-type Shipper = yup.InferType<typeof shipperSchema>;
+type Consignee = yup.InferType<typeof consigneeSchema>;
 
-const ShipperDetailsForm: React.FC = () => {
+const ConsigneeDetailsForm: React.FC = () => {
   const router = useRouter();
 
   const pathname = usePathname();
-  const segment = pathname.includes('add-shipper')
-    ? 'add-shipper'
-    : 'update-shipper';
+  const segment = pathname.includes('add-consignee')
+    ? 'add-consignee'
+    : 'update-consignee';
 
   const { formData, saveFormValues } = useContext(ModalContext);
 
@@ -78,10 +78,10 @@ const ShipperDetailsForm: React.FC = () => {
     reset,
     control,
     formState: { errors, isSubmitting },
-  } = useForm<Shipper>({
+  } = useForm<Consignee>({
     defaultValues: {
       Status: '',
-      'Shipper Name': '',
+      'Consignee Name': '',
       Address: '',
       'Address Line 2': '',
       'Address Line 3': '',
@@ -93,20 +93,20 @@ const ShipperDetailsForm: React.FC = () => {
       Email: '',
       Telephone: '',
       'Toll Free': '',
-      'Shipping Hours': '',
+      'Recieving Hours': '',
       Appointments: '',
       Intersections: '',
       Notes: '',
     },
-    resolver: yupResolver(shipperSchema),
+    resolver: yupResolver(consigneeSchema),
   });
 
   // submit the values to the context
   const onSubmit = useCallback(
-    (shipper: Shipper) => {
-      saveFormValues(shipper);
+    (consignee: Consignee) => {
+      saveFormValues(consignee);
       reset();
-      router.push(`/shippers/${segment}/review`);
+      router.push(`/consignees/${segment}/review`);
     },
     [saveFormValues, router, segment, reset]
   );
@@ -114,11 +114,11 @@ const ShipperDetailsForm: React.FC = () => {
   // if there's an update
   useEffect(() => {
     if (isUpdate) {
-      Object.keys(shipperDataMap).forEach((formField) => {
+      Object.keys(consigneeDataMap).forEach((formField) => {
         setValue(
-          formField as keyof Shipper,
-          formData[shipperDataMap[formField]]
-            ? formData[shipperDataMap[formField]]
+          formField as keyof Consignee,
+          formData[consigneeDataMap[formField]]
+            ? formData[consigneeDataMap[formField]]
             : ''
         );
       });
@@ -129,7 +129,7 @@ const ShipperDetailsForm: React.FC = () => {
   useEffect(() => {
     if (formData) {
       Object.keys(formData).forEach((formField) => {
-        setValue(formField as keyof Shipper, formData[formField]);
+        setValue(formField as keyof Consignee, formData[formField]);
       });
     }
   }, [formData, setValue]);
@@ -137,11 +137,11 @@ const ShipperDetailsForm: React.FC = () => {
   const handleCheckbox = () => {
     if (isUpdate) {
       // we are copying a consignee during an update
-      saveFormValues({ ...formData, consignee: true });
+      saveFormValues({ ...formData, shipper: true });
     } else {
-      formData.consignee === true
-        ? (formData.consignee = false)
-        : (formData.consignee = true);
+      formData.shipper === true
+        ? (formData.shipper = false)
+        : (formData.shipper = true);
     }
   };
 
@@ -152,7 +152,7 @@ const ShipperDetailsForm: React.FC = () => {
         className="flex flex-col justify-between flex-grow"
       >
         <p className="mt-3.5 mb-5 body2 text-grey-800 dark:text-white">
-          Set Shipper Details
+          Set Consignee Details
         </p>
 
         <div className="flex-grow">
@@ -169,17 +169,17 @@ const ShipperDetailsForm: React.FC = () => {
             <div className="flex flex-col w-full">
               <TextInput
                 control={control}
-                name="Shipper Name"
+                name="Consignee Name"
                 required={true}
               />
             </div>
           </div>
 
           <CheckBox
-            id={'consignee'}
-            label={isUpdate ? 'Update as Consignee' : 'Duplicate as Consignee'}
+            id={'shipper'}
+            label={isUpdate ? 'Update as Shipper' : 'Duplicate as Shipper'}
             onChange={handleCheckbox}
-            checked={formData.consignee === true}
+            checked={formData.shipper === true}
           />
 
           <div className="w-full">
@@ -236,7 +236,7 @@ const ShipperDetailsForm: React.FC = () => {
 
           <div className="flex flex-col gap-5 xl:flex-row">
             <div className="flex flex-col w-full xl:w-1/3">
-              <TextInput control={control} name="Shipping Hours" />
+              <TextInput control={control} name="Recieving Hours" />
             </div>
 
             <div className="flex flex-col w-full xl:w-1/3">
@@ -271,7 +271,7 @@ const ShipperDetailsForm: React.FC = () => {
               const cancel = confirm('Cancel this entry?');
               if (cancel) {
                 saveFormValues({}, true); // clears context values
-                router.push('/shippers');
+                router.push('/consignees');
               } else return;
             }}
           >
@@ -286,4 +286,4 @@ const ShipperDetailsForm: React.FC = () => {
   );
 };
 
-export default ShipperDetailsForm;
+export default ConsigneeDetailsForm;

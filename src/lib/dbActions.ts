@@ -3,11 +3,9 @@
 
 import prisma from '@util/prisma/client';
 import { DocketNumber, PrismaClient, DriverType } from '@prisma/client';
-import prisma from '@util/prisma/client';
 import { CustomerFormData } from '@/types/customerTypes';
 import { LoadFormData } from '@/types/loadTypes';
 import { CarrierFormData } from '@/types/carrierTypes';
-import { ConsigneeFormData } from '@/types/consigneeTypes';
 import { DriverFormData } from '@/types/driverTypes';
 import { BilleeFormData } from '@/types/billeeTypes';
 import { TrailerFormData } from '@/types/trailerTypes';
@@ -84,11 +82,6 @@ export async function getCarrierInsurance(id: string) {
     },
   });
   return insurance;
-}
-
-export async function getConsignees() {
-  const consignees = await getter(prisma.consignee, null);
-  return consignees;
 }
 
 export async function getCustomer(id: string) {
@@ -258,29 +251,6 @@ export async function addCarrier({ carrier }: { carrier: CarrierFormData }) {
       },
     },
     include: CARRIER_RELATIONS,
-  });
-  return resp;
-}
-
-export async function addConsignee({
-  consignee,
-}: {
-  consignee: ConsigneeFormData;
-}) {
-  const resp = await prisma.consignee.create({
-    data: {
-      name: consignee['Consignee Name'],
-      address: consignee['Address'],
-      addressAddOn: consignee['Address Line 2'] || null, // Optional field
-      city: consignee['City'],
-      state: consignee['State'],
-      postCountry: consignee['Country'],
-      postCode: consignee['Zip'],
-      telCountry: consignee['Country Code'],
-      telephone: consignee['Phone Number'],
-      // contact: consignee['Contact Name'], //n not in db table yet
-      // notes: consignee['Notes'] || null, // optional field, notes not in db table yet
-    },
   });
   return resp;
 }
@@ -491,20 +461,6 @@ export async function addTruck({ truck }: { truck: TruckFormData }) {
 }
 
 /** Update row */
-async function updater(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  table: any, // same issue as in the getter, not sure how to type this
-  targetId: number,
-  upateData: unknown
-) {
-  const resp = table.update({
-    where: {
-      id: targetId,
-    },
-    data: upateData,
-  });
-  return resp;
-}
 
 export async function updateCarrier(
   id: string,
@@ -575,14 +531,6 @@ export async function updateCarrier(
     },
     include: CARRIER_RELATIONS,
   });
-  return resp;
-}
-
-export async function updateConsignee(
-  id: number,
-  { formData }: { formData: ConsigneeFormData }
-) {
-  const resp = updater(prisma.consignee, id, formData);
   return resp;
 }
 

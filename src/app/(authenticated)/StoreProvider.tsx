@@ -8,6 +8,7 @@ import Loader from '@/components/UI_Elements/PageLoader';
 import { fetchLoads } from '@/store/slices/loadSlice';
 import { fetchBrokers } from '@/store/slices/brokerSlice';
 import { fetchCarriers } from '@/store/slices/carrierSlice';
+import { fetchConsignees } from '@/store/slices/consigneeSlice';
 import { fetchCustomers } from '@/store/slices/customerSlice';
 import { fetchDrivers } from '@/store/slices/driverSlice';
 import { fetchTeam } from '@/store/slices/teamSlice';
@@ -38,6 +39,7 @@ export default function StoreProvider({
       storeRef.current.dispatch(fetchLoads());
       storeRef.current.dispatch(fetchBrokers(organization));
       storeRef.current.dispatch(fetchCarriers());
+      storeRef.current.dispatch(fetchConsignees(organization));
       storeRef.current.dispatch(fetchCustomers());
       storeRef.current.dispatch(fetchDrivers(organization));
       storeRef.current.dispatch(fetchFactors(organization));

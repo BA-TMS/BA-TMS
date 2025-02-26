@@ -30,6 +30,7 @@ model Organization {
   customsBroker Broker[]
   Factor        Factor[]
   Shipper       Shipper[]
+  Consignee     Consignee[]
 }
 
 model User {
@@ -257,24 +258,40 @@ model Shipper {
   orgId        String
   organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
   consigneeId  String?      @unique
-  consignee    Consignee?   @relation(fields: [consigneeId], references: [id], onDelete: SetNull)
+  consignee    Consignee?   @relation(fields: [consigneeId], references: [id], onDelete: Cascade)
 }
 
 model Consignee {
-  id           String   @id @default(uuid())
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  name         String
-  address      String
-  addressAddOn String?
-  city         String
-  state        String
-  postCountry  String
-  postCode     String
-  telCountry   String   @default("1")
-  telephone    String   @unique
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  status    Status   @default(ACTIVE)
+
+  name          String
+  address       String?
+  addressField2 String?
+  addressField3 String?
+  city          String
+  state         String
+  postCountry   String
+  postCode      String
+
+  contactName  String?
+  contactEmail String?
+  telephone    String?
+  tollFree     String?
+
+  recievingHours String?
+  appointments  String?
+  intersections String?
+
+  notes String?
+
   loads        Load[]
-  shipper      Shipper?
+  orgId        String
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  shipper Shipper?
 }
 
 model Location {

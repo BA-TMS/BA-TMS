@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import loadReducer from './slices/loadSlice';
 import brokerReducer from './slices/brokerSlice';
 import carrierReducer from './slices/carrierSlice';
+import consigneeReducer from './slices/consigneeSlice';
 import customerReducer from './slices/customerSlice';
 import driverReducer from './slices/driverSlice';
 import factorReducer from './slices/factorSlice';
@@ -15,6 +16,7 @@ export const makeStore = () => {
       loads: loadReducer,
       brokers: brokerReducer,
       carriers: carrierReducer,
+      consignees: consigneeReducer,
       customers: customerReducer,
       drivers: driverReducer,
       factors: factorReducer,

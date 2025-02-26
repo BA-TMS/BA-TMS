@@ -9,20 +9,23 @@ import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 import AddressDisplay from '@/components/UI_Elements/Display/AddressDisplay';
 import Button from '@/components/UI_Elements/Buttons/Button';
 import { useRouter } from 'next/navigation';
-import { ShipperData, ShipperFormData } from '@/types/shipperTypes';
-import { createShipper, updateShipper } from '@/store/slices/shipperSlice';
-import { fetchConsignees } from '@/store/slices/consigneeSlice';
+import { ConsigneeData, ConsigneeFormData } from '@/types/consigneeTypes';
+import {
+  createConsignee,
+  updateConsignee,
+} from '@/store/slices/consigneeSlice';
+import { fetchShippers } from '@/store/slices/shipperSlice';
 
-const ShipperReviewForm: React.FC = () => {
+const ConsigneeReviewForm: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const errorState = useSelector((state: RootState) => state.shippers.error);
+  const errorState = useSelector((state: RootState) => state.consignees.error);
 
   const router = useRouter();
 
   const { formData, saveFormValues } = useContext(ModalContext);
 
-  // adds organization information to shipper
+  // adds organization information to consignee
   const { organization } = useContext(UserContext);
   formData.orgName = organization;
 
@@ -30,39 +33,39 @@ const ShipperReviewForm: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
 
-  const onSubmit = async (shipper: ShipperFormData) => {
+  const onSubmit = async (consignee: ConsigneeFormData) => {
     setIsSubmitting(true);
     setError(''); // clear previous errors
 
     // if not an update
     if (!isUpdate) {
       try {
-        await dispatch(createShipper(shipper))
+        await dispatch(createConsignee(consignee))
           .unwrap()
-          // dispatch fetchConsignees if this shipper is also a consignee
+          // dispatch fetchShippers if this consignee is also a shipper
           .then(() => {
-            if (formData.consignee === true)
-              dispatch(fetchConsignees(organization));
+            if (formData.shipper === true)
+              dispatch(fetchShippers(organization));
           });
       } catch (error) {
-        setError(`Error creating shipper: ${error}`);
+        setError(`Error creating consignee: ${error}`);
       }
     } else {
       try {
         await dispatch(
-          updateShipper({
+          updateConsignee({
             id: formData['id'],
-            updatedShipper: shipper as Partial<ShipperData>,
+            updatedConsignee: consignee as Partial<ConsigneeData>,
           })
         )
           .unwrap()
-          // dispatch fetchConsignees if this shipper is also a consignee
+          // dispatch fetchShippers if this consignee is also a shipper
           .then(() => {
-            if (formData.consignee === true)
-              dispatch(fetchConsignees(organization));
+            if (formData.shipper === true)
+              dispatch(fetchShippers(organization));
           });
       } catch (error) {
-        setError(`Error updating shipper: ${error}`);
+        setError(`Error updating consignee: ${error}`);
       }
     }
     setIsSubmitting(false);
@@ -78,7 +81,7 @@ const ShipperReviewForm: React.FC = () => {
     <div className="flex flex-col h-full">
       <div className="flex flex-col justify-between flex-grow">
         <p className="mt-3.5 mb-5 body2 text-grey-800 dark:text-white">
-          Confirm Shipper Details
+          Confirm Consignee Details
         </p>
 
         <div className="flex-grow overflow-auto">
@@ -89,8 +92,8 @@ const ShipperReviewForm: React.FC = () => {
 
             <div className="flex flex-col w-full">
               <DataDisplay
-                title="Shipper Name"
-                text={formData['Shipper Name']}
+                title="consignee Name"
+                text={formData['Consignee Name']}
               />
             </div>
           </div>
@@ -131,8 +134,8 @@ const ShipperReviewForm: React.FC = () => {
           <div className="flex flex-col gap-5 xl:flex-row">
             <div className="flex flex-col w-full xl:w-1/3">
               <DataDisplay
-                title="Shipping Hours"
-                text={formData['Shipping Hours']}
+                title="Recieving Hours"
+                text={formData['Recieving Hours']}
               />
             </div>
 
@@ -165,7 +168,7 @@ const ShipperReviewForm: React.FC = () => {
               const cancel = confirm('Cancel this entry?');
               if (cancel) {
                 saveFormValues({}, true); // clears context values
-                router.push('/shippers');
+                router.push('/consignees');
               } else return;
             }}
             variant="outline"
@@ -201,9 +204,9 @@ const ShipperReviewForm: React.FC = () => {
               type="submit"
               disabled={isSubmitting}
               onClick={() => {
-                onSubmit(formData as ShipperFormData);
+                onSubmit(formData as ConsigneeFormData);
                 saveFormValues({}, true); // Reset form DataDisplay after submission
-                router.push('/shippers');
+                router.push('/consignees');
               }}
             >
               {isSubmitting ? 'Submitting...' : isUpdate ? 'Update' : 'Add'}
@@ -215,4 +218,4 @@ const ShipperReviewForm: React.FC = () => {
   );
 };
 
-export default ShipperReviewForm;
+export default ConsigneeReviewForm;

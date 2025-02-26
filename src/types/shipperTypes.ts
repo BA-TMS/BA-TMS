@@ -54,6 +54,7 @@ export interface ShipperFormData {
   Intersections: string | null;
 
   Notes: string | null;
+  consignee?: boolean; // optional
 }
 
 export const shipperDataMap: Record<string, keyof ShipperData> = {
@@ -78,4 +79,5 @@ export const shipperDataMap: Record<string, keyof ShipperData> = {
   Intersections: 'intersections',
 
   Notes: 'notes',
+  consignee: 'consignee',
 };
