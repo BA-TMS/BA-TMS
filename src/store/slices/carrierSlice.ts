@@ -3,7 +3,7 @@ import {
   getCarriers,
   addCarrier,
   updateCarrier as apiUpdatecarrier,
-} from '@/lib/dbActions';
+} from '@/lib/actions/carrierActions';
 import { CarrierData, CarrierFormData } from '@/types/carrierTypes';
 
 interface UpdatedCarrierPayload {
@@ -59,10 +59,10 @@ const formatron = function (carrier: CarrierData) {
   } as unknown as CarrierData;
 };
 
-export const fetchCarriers = createAsyncThunk<CarrierData[]>(
+export const fetchCarriers = createAsyncThunk<CarrierData[], string>(
   'carriers/fetchCarriers',
-  async () => {
-    const data = await getCarriers();
+  async (orgName) => {
+    const data = await getCarriers(orgName);
 
     return data.map((carrier: CarrierData) => formatron(carrier));
   }

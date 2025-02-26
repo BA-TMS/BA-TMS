@@ -29,7 +29,7 @@ export interface CarrierData {
   factor: { name: string } | null;
   factorId: string | null;
 
-  CarrierInsurance?: CarrierInsuranceData;
+  CarrierInsurance: CarrierInsuranceData;
 
   notes: string | null;
 
@@ -39,9 +39,8 @@ export interface CarrierData {
 
 export interface CarrierInsuranceData {
   id: string;
-  // carrier   Carrier  @relation(fields: [carrierId], references: [id])
+
   carrier: { name: string };
-  // carrierId String   @unique
   carrierId: string | null;
   createdAt: Date | string;
   updatedAt: Date | string;
