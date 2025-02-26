@@ -112,7 +112,6 @@ export async function updateConsignee(
   id: string,
   { consignee }: { consignee: Partial<ConsigneeFormData> }
 ) {
-  console.log('consignee.shipper', consignee.shipper);
   // find organization based on name
   const organization = await getOrganization(consignee.orgName as string); // come back to
 
