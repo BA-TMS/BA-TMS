@@ -32,6 +32,9 @@ export interface CarrierData {
   CarrierInsurance?: CarrierInsuranceData;
 
   notes: string | null;
+
+  orgId: string;
+  organization: { orgName: string };
 }
 
 export interface CarrierInsuranceData {
