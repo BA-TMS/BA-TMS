@@ -386,6 +386,7 @@ const customers = [
     billingPostCode: '38655',
     paymentTerms: 'Prompt',
     federalID: '55-9386763',
+    orgId: '103784cb-e739-446c-ba47-e92d92de648a',
   },
   {
     companyName: 'Customer2',
@@ -406,6 +407,7 @@ const customers = [
     billingPostCode: '03060',
     paymentTerms: 'Prompt',
     federalID: '21-4094358',
+    orgId: 'e739-446c-ba47-e92d92de648c',
   },
 ];
 
