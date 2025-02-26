@@ -100,6 +100,8 @@ export interface CarrierFormData {
 
   Notes: string | null;
 
+  orgName: string;
+
   'Liability Insurance Company': string | null;
   'Liability Policy #': string | null;
   'Liability Expiration Date': Date | null;

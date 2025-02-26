@@ -12,7 +12,7 @@ import { CarrierData } from '@/types/carrierTypes';
 import { RootState } from '@/store/store';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { getCarrier } from '@/lib/dbActions';
+import { getCarrier } from '@/lib/actions/carrierActions';
 
 // what fields do we want in the table?
 const columns = [

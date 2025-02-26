@@ -2,10 +2,9 @@
 'use server';
 
 import prisma from '@util/prisma/client';
-import { DocketNumber, PrismaClient, DriverType } from '@prisma/client';
+import { PrismaClient, DriverType } from '@prisma/client';
 import { CustomerFormData } from '@/types/customerTypes';
 import { LoadFormData } from '@/types/loadTypes';
-import { CarrierFormData } from '@/types/carrierTypes';
 import { DriverFormData } from '@/types/driverTypes';
 import { BilleeFormData } from '@/types/billeeTypes';
 import { TrailerFormData } from '@/types/trailerTypes';
@@ -20,11 +19,6 @@ const LOAD_RELATIONS = {
   customer: { select: { companyName: true } },
   shipper: { select: { name: true } },
   consignee: { select: { name: true } },
-};
-
-const CARRIER_RELATIONS = {
-  factor: { select: { name: true } },
-  CarrierInsurance: true,
 };
 
 const CUSTOMER_RELATIONS = {
@@ -57,31 +51,6 @@ async function getter(
     include: relations,
   });
   return resp;
-}
-
-export async function getCarrier(id: string) {
-  const carrier = await prisma.carrier.findUnique({
-    where: {
-      id: id,
-    },
-    include: { CarrierInsurance: true },
-  });
-  return carrier;
-}
-
-export async function getCarriers() {
-  const relations = CARRIER_RELATIONS;
-  const carriers = await getter(prisma.carrier, relations);
-  return carriers;
-}
-
-export async function getCarrierInsurance(id: string) {
-  const insurance = await prisma.carrierInsurance.findUnique({
-    where: {
-      carrierId: id,
-    },
-  });
-  return insurance;
 }
 
 export async function getCustomer(id: string) {
@@ -186,74 +155,6 @@ export async function getAccountPreferences() {
 }
 
 /** Add new entries to tables. */
-
-export async function addCarrier({ carrier }: { carrier: CarrierFormData }) {
-  const resp = await prisma.carrier.create({
-    data: {
-      status: carrier['Status'],
-
-      carrierName: carrier['Carrier Name'],
-      address: carrier['Address'],
-      addressField2: carrier['Address Line 2'],
-      addressField3: carrier['Address Line 3'],
-      city: carrier['City'],
-      state: carrier['State'],
-      postCountry: carrier['Country'],
-      postCode: carrier['Zip'],
-
-      contactName: carrier['Contact Name'],
-      contactEmail: carrier['Contact Email'],
-      contactTelephone: carrier['Telephone'],
-      contactTollFree: carrier['Toll Free'],
-      contactFax: carrier['Fax'],
-
-      paymentTerms: carrier['Payment Terms'],
-      taxId: carrier['Tax ID#'] !== '' ? carrier['Tax ID#'] : null,
-      docketNumType: carrier['Docket Number Type'] as DocketNumber,
-      docketNumber: carrier['Docket Number'],
-      ursNumber: carrier['URS #'] !== '' ? carrier['URS #'] : null,
-      dotId: carrier['DOT ID#'],
-
-      factorId:
-        carrier['Factoring Company'] !== ''
-          ? carrier['Factoring Company']
-          : null,
-      notes: carrier['Notes'],
-
-      CarrierInsurance: {
-        create: {
-          liabilityCompany: carrier['Liability Insurance Company'],
-          liabilityPolicy: carrier['Liability Policy #'],
-          liabilityExpiration: carrier['Liability Expiration Date'],
-          liabilityTelephone: carrier['Liability Telephone'],
-          liabilityContact: carrier['Liability Contact'],
-
-          autoInsCompany: carrier['Auto Insurance Company'],
-          autoInsPolicy: carrier['Auto Policy #'],
-          autoInsExpiration: carrier['Auto Expiration Date'],
-          autoInsTelephone: carrier['Auto Telephone'],
-          autoInsContact: carrier['Auto Contact'],
-
-          cargoCompany: carrier['Cargo Company'],
-          cargoPolicy: carrier['Cargo Policy #'],
-          cargoExpiration: carrier['Cargo Expiration Date'],
-          cargoTelephone: carrier['Cargo Telephone'],
-          cargoContact: carrier['Cargo Contact'],
-          cargoWSIB: carrier['Cargo WSIB #'],
-
-          fmcsaInsCompany: carrier['FMCSA Insurance Company'],
-          fmcsaInsPolicy: carrier['FMCSA Policy #'],
-          fmcsaInsExpiration: carrier['FMCSA Expiration Date'],
-          fmcsaType: carrier['FMCSA Type'],
-          fmcsaCoverage: carrier['FMCSA Coverage $'],
-          fmcsaTelephone: carrier['FMCSA Telephone'],
-        },
-      },
-    },
-    include: CARRIER_RELATIONS,
-  });
-  return resp;
-}
 
 export async function addCustomer({
   customer,
@@ -461,78 +362,6 @@ export async function addTruck({ truck }: { truck: TruckFormData }) {
 }
 
 /** Update row */
-
-export async function updateCarrier(
-  id: string,
-  { carrier }: { carrier: CarrierFormData }
-) {
-  const resp = await prisma.carrier.update({
-    where: { id: id },
-    data: {
-      status: carrier['Status'],
-
-      carrierName: carrier['Carrier Name'],
-      address: carrier['Address'],
-      addressField2: carrier['Address Line 2'],
-      addressField3: carrier['Address Line 3'],
-      city: carrier['City'],
-      state: carrier['State'],
-      postCountry: carrier['Country'],
-      postCode: carrier['Zip'],
-
-      contactName: carrier['Contact Name'],
-      contactEmail: carrier['Contact Email'],
-      contactTelephone: carrier['Telephone'],
-      contactTollFree: carrier['Toll Free'],
-      contactFax: carrier['Fax'],
-
-      paymentTerms: carrier['Payment Terms'],
-      taxId: carrier['Tax ID#'] !== '' ? carrier['Tax ID#'] : null,
-      docketNumType: carrier['Docket Number Type'] as DocketNumber,
-      docketNumber: carrier['Docket Number'],
-      ursNumber: carrier['URS #'] !== '' ? carrier['URS #'] : null,
-      dotId: carrier['DOT ID#'],
-
-      factorId:
-        carrier['Factoring Company'] !== ''
-          ? carrier['Factoring Company']
-          : null,
-      notes: carrier['Notes'],
-
-      CarrierInsurance: {
-        update: {
-          liabilityCompany: carrier['Liability Insurance Company'],
-          liabilityPolicy: carrier['Liability Policy #'],
-          liabilityExpiration: carrier['Liability Expiration Date'],
-          liabilityTelephone: carrier['Liability Telephone'],
-          liabilityContact: carrier['Liability Contact'],
-
-          autoInsCompany: carrier['Auto Insurance Company'],
-          autoInsPolicy: carrier['Auto Policy #'],
-          autoInsExpiration: carrier['Auto Expiration Date'],
-          autoInsTelephone: carrier['Auto Telephone'],
-          autoInsContact: carrier['Auto Contact'],
-
-          cargoCompany: carrier['Cargo Company'],
-          cargoPolicy: carrier['Cargo Policy #'],
-          cargoExpiration: carrier['Cargo Expiration Date'],
-          cargoTelephone: carrier['Cargo Telephone'],
-          cargoContact: carrier['Cargo Contact'],
-          cargoWSIB: carrier['Cargo WSIB #'],
-
-          fmcsaInsCompany: carrier['FMCSA Insurance Company'],
-          fmcsaInsPolicy: carrier['FMCSA Policy #'],
-          fmcsaInsExpiration: carrier['FMCSA Expiration Date'],
-          fmcsaType: carrier['FMCSA Type'],
-          fmcsaCoverage: carrier['FMCSA Coverage $'],
-          fmcsaTelephone: carrier['FMCSA Telephone'],
-        },
-      },
-    },
-    include: CARRIER_RELATIONS,
-  });
-  return resp;
-}
 
 export async function updateCustomer(
   id: string,

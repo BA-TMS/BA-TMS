@@ -38,7 +38,7 @@ export default function StoreProvider({
     if (storeRef.current && organization && !isStoreReady) {
       storeRef.current.dispatch(fetchLoads());
       storeRef.current.dispatch(fetchBrokers(organization));
-      storeRef.current.dispatch(fetchCarriers());
+      storeRef.current.dispatch(fetchCarriers(organization));
       storeRef.current.dispatch(fetchConsignees(organization));
       storeRef.current.dispatch(fetchCustomers());
       storeRef.current.dispatch(fetchDrivers(organization));
