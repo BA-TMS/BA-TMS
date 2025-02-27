@@ -54,7 +54,7 @@ export const createLoad = createAsyncThunk<LoadData, LoadFormData>(
     try {
       const newLoad = await apiAddLoad({ load });
 
-      return formatron(newLoad);
+      return formatron(newLoad as LoadData);
     } catch (error) {
       let message = 'Failed to Create Load';
       if (error instanceof Error) message = error.message;

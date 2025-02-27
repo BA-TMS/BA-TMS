@@ -46,9 +46,16 @@ export async function addLoad({ load }: { load: LoadFormData }) {
     );
   }
 
+  // find organization based on name
+  const organization = await getOrganization(load.orgName);
+
+  // TODO: Better error handling
+  if (organization === null) {
+    throw 'can not add load :(';
+  }
+
   const resp = await prisma.load.create({
     data: {
-      orgId: load['Owner'],
       loadNum: load['Load Number'],
       payOrderNum: load['Pay Order Number'],
       carrierId: load['Carrier'],
@@ -59,6 +66,8 @@ export async function addLoad({ load }: { load: LoadFormData }) {
       status: load['Status'],
       shipDate: load['Ship Date'],
       deliveryDate: load['Received Date'],
+
+      orgId: organization.id,
     },
     include: LOAD_RELATIONS,
   });
