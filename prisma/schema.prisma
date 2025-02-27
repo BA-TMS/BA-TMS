@@ -24,13 +24,15 @@ model Organization {
   fax           String?
   orgName       String       @unique
   tollFree      String?
-  loads         Load[]
-  users         User[]
-  Driver        Driver[]
   customsBroker Broker[]
-  Factor        Factor[]
-  Shipper       Shipper[]
+  Carrier       Carrier[]
   Consignee     Consignee[]
+  Customer      Customer[]
+  Driver        Driver[]
+  Factor        Factor[]
+  Load          Load[]
+  Shipper       Shipper[]
+  users         User[]
 }
 
 model User {
@@ -60,8 +62,7 @@ model Load {
   id           String       @id @default(uuid())
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
-  ownerId      String
-  loadNum      String
+  loadNum      String       @unique
   carrierId    String?
   driverId     String?
   customerId   String
@@ -71,14 +72,13 @@ model Load {
   deliveryDate DateTime?
   payOrderNum  String
   shipDate     DateTime     @default(now())
+  orgId        String
   carrier      Carrier?     @relation(fields: [carrierId], references: [id])
   customer     Customer     @relation(fields: [customerId], references: [id])
   consignee    Consignee?   @relation(fields: [destId], references: [id])
   driver       Driver?      @relation(fields: [driverId], references: [id])
+  Organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
   shipper      Shipper?     @relation(fields: [originId], references: [id])
-  owner        Organization @relation(fields: [ownerId], references: [id])
-
-  @@unique([ownerId, loadNum])
 }
 
 model Carrier {
@@ -107,7 +107,9 @@ model Carrier {
   paymentTerms     String
   status           Status            @default(ACTIVE)
   ursNumber        String?           @unique
+  orgId            String
   factor           Factor?           @relation(fields: [factorId], references: [id])
+  Organization     Organization      @relation(fields: [orgId], references: [id], onDelete: Cascade)
   CarrierInsurance CarrierInsurance?
   drivers          Driver[]
   loads            Load[]
@@ -144,38 +146,33 @@ model CarrierInsurance {
 }
 
 model Driver {
-  id        String     @id @default(uuid())
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  status    Status     @default(ACTIVE)
-  type      DriverType @default(SINGLE)
-
-  name      String
-  telephone String
-  email     String?
-  address   String?
-  country   String
-  state     String
-  city      String
-  zip       String?
-  license   String?
-
-  notes String?
-
-  driverTwo TeamDriver?
-
+  id           String       @id @default(uuid())
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  name         String
+  license      String?
+  telephone    String
   employerId   String?
-  employer     Carrier?     @relation(fields: [employerId], references: [id])
-  loads        Load[]
+  address      String?
+  city         String
+  country      String
+  email        String?
+  notes        String?
   orgId        String
+  state        String
+  status       Status       @default(ACTIVE)
+  type         DriverType   @default(SINGLE)
+  zip          String?
+  employer     Carrier?     @relation(fields: [employerId], references: [id])
   organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  loads        Load[]
+  driverTwo    TeamDriver?
 }
 
 model TeamDriver {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
   name      String
   telephone String
   email     String?
@@ -185,15 +182,14 @@ model TeamDriver {
   city      String
   zip       String?
   license   String?
-
-  driverId String? @unique // One-to-one relation with Driver
-  driver   Driver? @relation(fields: [driverId], references: [id], onDelete: Cascade)
+  driverId  String?  @unique
+  driver    Driver?  @relation(fields: [driverId], references: [id], onDelete: Cascade)
 }
 
 model Customer {
-  id                   String         @id @default(uuid())
-  createdAt            DateTime       @default(now())
-  updatedAt            DateTime       @updatedAt
+  id                   String       @id @default(uuid())
+  createdAt            DateTime     @default(now())
+  updatedAt            DateTime     @updatedAt
   billingAddress       String
   billingAddressField2 String?
   billingAddressField3 String?
@@ -203,7 +199,7 @@ model Customer {
   billingPostCode      String
   billingState         String
   billingTelephone     String
-  companyName          String         @unique
+  companyName          String       @unique
   contactAddress       String
   contactAddressField2 String?
   contactAddressField3 String?
@@ -216,82 +212,73 @@ model Customer {
   contactState         String
   contactTelephone     String
   contactTollFree      String?
-  creditLimit          Decimal        @default(5000)
-  currency             String         @default("USD")
+  creditLimit          Decimal      @default(5000)
+  currency             String       @default("USD")
   factorId             String?
   federalID            String
   paymentTerms         String
   salesRepName         String?
   secondaryContactName String?
-  status               CustomerStatus @default(ACTIVE)
-  factor               Factor?        @relation(fields: [factorId], references: [id])
+  orgId                String
+  status               Status       @default(ACTIVE)
+  factor               Factor?      @relation(fields: [factorId], references: [id])
+  Organization         Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
   loads                Load[]
 }
 
 model Shipper {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  status    Status   @default(ACTIVE)
-
+  id            String       @id @default(uuid())
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
   name          String
   address       String?
-  addressField2 String?
-  addressField3 String?
   city          String
   state         String
   postCountry   String
   postCode      String
-
-  contactName  String?
-  contactEmail String?
-  telephone    String?
-  tollFree     String?
-
-  shippingHours String?
+  telephone     String?
+  addressField2 String?
+  addressField3 String?
   appointments  String?
+  consigneeId   String?      @unique
+  contactEmail  String?
+  contactName   String?
   intersections String?
-
-  notes String?
-
-  loads        Load[]
-  orgId        String
-  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
-  consigneeId  String?      @unique
-  consignee    Consignee?   @relation(fields: [consigneeId], references: [id], onDelete: Cascade)
+  notes         String?
+  orgId         String
+  shippingHours String?
+  status        Status       @default(ACTIVE)
+  tollFree      String?
+  loads         Load[]
+  consignee     Consignee?   @relation(fields: [consigneeId], references: [id], onDelete: Cascade)
+  organization  Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
 }
 
 model Consignee {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  status    Status   @default(ACTIVE)
-
-  name          String
-  address       String?
-  addressField2 String?
-  addressField3 String?
-  city          String
-  state         String
-  postCountry   String
-  postCode      String
-
-  contactName  String?
-  contactEmail String?
-  telephone    String?
-  tollFree     String?
-
+  id             String       @id @default(uuid())
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  name           String
+  address        String?
+  city           String
+  state          String
+  postCountry    String
+  postCode       String
+  telephone      String?
+  addressField2  String?
+  addressField3  String?
+  appointments   String?
+  contactEmail   String?
+  contactName    String?
+  intersections  String?
+  notes          String?
+  orgId          String
   recievingHours String?
-  appointments  String?
-  intersections String?
-
-  notes String?
-
-  loads        Load[]
-  orgId        String
-  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
-
-  shipper Shipper?
+  status         Status       @default(ACTIVE)
+  tollFree       String?
+  organization   Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  loads          Load[]
+  shipper        Shipper?
 }
 
 model Location {
@@ -312,36 +299,31 @@ model Location {
 }
 
 model Factor {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  status    Status   @default(ACTIVE)
-
-  name         String
-  address      String
-  addressAddOn String?
-  city         String
-  state        String
-  postCountry  String
-  postCode     String
-
-  primaryContact     String?
+  id                 String       @id @default(uuid())
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+  name               String
+  address            String
+  addressAddOn       String?
+  city               String
+  state              String
+  postCountry        String
+  postCode           String
   telephone          String
-  tollFree           String?
+  currency           String?
   email              String?
+  notes              String?
+  orgId              String
+  paymentTerms       String?
+  primaryContact     String?
   secondaryContact   String?
   secondaryTelephone String?
-  notes              String?
-
-  currency     String?
-  paymentTerms String?
-  taxId        String?
-
-  carriers  Carrier[]
-  customers Customer[]
-
-  orgId        String
-  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  status             Status       @default(ACTIVE)
+  taxId              String?
+  tollFree           String?
+  carriers           Carrier[]
+  customers          Customer[]
+  organization       Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
 }
 
 model Insurer {
@@ -369,15 +351,14 @@ model CoverageMatrix {
 }
 
 model Broker {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  status    Status   @default(ACTIVE)
-  name      String
-  crossing  String
-  telephone String
-  tollFree  String?
-
+  id           String       @id @default(uuid())
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  name         String
+  crossing     String
+  telephone    String
+  status       Status       @default(ACTIVE)
+  tollFree     String?
   orgId        String
   organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
 }
@@ -450,8 +431,8 @@ enum UserRole {
   ADMIN
   DEVELOPER
   OWNER
-  DISPATCHER
   SALES_REP
+  DISPATCHER
 }
 
 enum LoadStatus {
@@ -464,11 +445,6 @@ enum LoadStatus {
   DELIVERED
   NEEDS_REVIEW
   CLAIM
-}
-
-enum CustomerStatus {
-  ACTIVE
-  INACTIVE
 }
 
 enum TrailerStatus {
