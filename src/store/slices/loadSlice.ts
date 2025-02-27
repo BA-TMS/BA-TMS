@@ -5,7 +5,7 @@ import {
   addLoad as apiAddLoad,
   updateLoad as apiUpdateLoad,
   deleteLoad as apiDeleteLoad,
-} from '@/lib/dbActions';
+} from '@/lib/actions/loadActions';
 import { LoadData, LoadFormData } from '@/types/loadTypes';
 
 interface UpdateLoadPayload {
@@ -40,10 +40,10 @@ const formatron = function (rawLoad: LoadData) {
 };
 
 // Define Async Thunks
-export const fetchLoads = createAsyncThunk<LoadData[]>(
+export const fetchLoads = createAsyncThunk<LoadData[], string>(
   'loads/fetchLoads',
-  async () => {
-    const data = await getLoads();
+  async (orgName) => {
+    const data = await getLoads(orgName);
     return data.map((currLoad: LoadData) => formatron(currLoad));
   }
 );

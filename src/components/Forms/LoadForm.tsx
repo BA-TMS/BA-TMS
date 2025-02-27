@@ -26,6 +26,8 @@ import { useRouter } from 'next/navigation';
 
 // this component handles form validation and submission with react-hook-form and yup
 
+//TODO : Use redux rather than API calls in the select options
+
 const status = [
   { Open: 'OPEN' },
   { Covered: 'COVERED' },
