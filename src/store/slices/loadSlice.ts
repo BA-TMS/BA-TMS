@@ -36,6 +36,8 @@ const formatron = function (rawLoad: LoadData) {
     consignee: rawLoad.consignee ? rawLoad.consignee.name : null,
     createdAt: rawLoad.createdAt ? rawLoad.createdAt.toISOString() : null,
     updatedAt: rawLoad.updatedAt ? rawLoad.updatedAt.toISOString() : null,
+
+    organization: rawLoad.organization ? rawLoad.organization.orgName : null,
   } as unknown as LoadData; // it does not like date to string conversion when returning formatron;
 };
 
@@ -44,7 +46,7 @@ export const fetchLoads = createAsyncThunk<LoadData[], string>(
   'loads/fetchLoads',
   async (orgName) => {
     const data = await getLoads(orgName);
-    return data.map((currLoad: LoadData) => formatron(currLoad));
+    return data.map((currLoad) => formatron(currLoad as LoadData));
   }
 );
 
