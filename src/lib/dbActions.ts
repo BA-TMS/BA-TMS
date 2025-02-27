@@ -326,13 +326,3 @@ export async function updateAccountPreferences(prefs: AccountPreferences) {
     data: prefs,
   });
 }
-
-/** Delete rows */
-
-export async function deleteLoad(id: string) {
-  return prisma.load.delete({
-    where: {
-      id: id,
-    },
-  });
-}

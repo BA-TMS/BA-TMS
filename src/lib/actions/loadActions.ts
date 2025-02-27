@@ -108,3 +108,11 @@ export async function updateLoad(
 
   return resp;
 }
+
+export async function deleteLoad(id: string) {
+  return prisma.load.delete({
+    where: {
+      id: id,
+    },
+  });
+}
