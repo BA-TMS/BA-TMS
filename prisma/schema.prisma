@@ -33,6 +33,7 @@ model Organization {
   Load          Load[]
   Shipper       Shipper[]
   users         User[]
+  Truck         Truck[]
 }
 
 model User {
@@ -364,15 +365,31 @@ model Broker {
 }
 
 model Truck {
-  id               String   @id @default(uuid())
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  id        String   @id @default(uuid())
+  status    Status   @default(ACTIVE)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   truckNum         String
-  licensePlate     String   @unique
-  plateExpiry      DateTime
-  inspectionExpiry DateTime
-  type             String
-  iftaLicensed     Boolean  @default(false)
+  licensePlate     String?
+  plateExpiry      DateTime?
+  inspectionExpiry DateTime?
+  type             String?
+  ownership        String?
+
+  orgId        String
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  mileage          String?
+  axels            String?
+  fuelType         String?
+  year             String?
+  startDate        DateTime?
+  deactivationDate DateTime?
+  registeredState  String?
+  weight           String?
+  vin              String?
+  dotExpiry        DateTime?
 }
 
 model Trailer {
