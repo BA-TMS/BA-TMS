@@ -76,22 +76,26 @@ export async function addLoad({ load }: { load: LoadFormData }) {
 
 export async function updateLoad(
   id: string,
-  { formData }: { formData: Partial<LoadFormData> }
+  { load }: { load: Partial<LoadFormData> }
 ) {
   // do not change to dispatched without a carrier
-  if (formData['Status'] === 'DISPATCHED' && !formData['Carrier']) {
+  if (load['Status'] === 'DISPATCHED' && !load['Carrier']) {
     throw new Error(
       'Cannot update a load status to "Dispatched" without a carrier.'
     );
   }
-  // map to convert formData keys to database keys
-  const mapLoadData = (load: Partial<LoadFormData>) => {
-    if (!load) {
-      throw new Error('Load data is undefined or null');
-    }
 
-    return {
-      orgId: load['Owner'],
+  // find organization based on name
+  const organization = await getOrganization(load.orgName as string);
+
+  // TODO: Better error handling
+  if (organization === null) {
+    throw 'can not add load :(';
+  }
+
+  const resp = await prisma.load.update({
+    where: { id: id },
+    data: {
       loadNum: load['Load Number'],
       payOrderNum: load['Pay Order Number'],
       carrierId: load['Carrier'] ? load['Carrier'] : null,
@@ -102,15 +106,7 @@ export async function updateLoad(
       status: load['Status'],
       shipDate: load['Ship Date'],
       deliveryDate: load['Received Date'],
-    };
-  };
-
-  const mappedLoad = mapLoadData(formData);
-
-  const resp = await prisma.load.update({
-    where: { id },
-    data: {
-      ...mappedLoad,
+      orgId: organization.id,
     },
     include: LOAD_RELATIONS,
   });

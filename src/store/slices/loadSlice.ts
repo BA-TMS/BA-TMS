@@ -67,9 +67,9 @@ export const updateLoad = createAsyncThunk<LoadData, UpdateLoadPayload>(
   'loads/updateLoad',
   async ({ id, updatedLoad }: UpdateLoadPayload, { rejectWithValue }) => {
     try {
-      const load = await apiUpdateLoad(id, { formData: updatedLoad });
+      const load = await apiUpdateLoad(id, { load: updatedLoad });
 
-      return formatron(load);
+      return formatron(load as LoadData);
     } catch (error) {
       let message = 'Failed to Update Load';
       if (error instanceof Error) message = error.message;
