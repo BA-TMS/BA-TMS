@@ -60,7 +60,7 @@ async function main() {
 
   for (const currCarrier of carriers) {
     const carrierResp = await prisma.carrier.upsert({
-      where: { dotId: currCarrier.dotId },
+      where: { id: currCarrier.id },
       create: {
         carrierName: currCarrier.carrierName,
         address: currCarrier.address,
@@ -74,6 +74,7 @@ async function main() {
         docketNumber: currCarrier.docketNumber,
         dotId: currCarrier.dotId,
         taxId: currCarrier.taxId,
+        orgId: currCarrier.orgId,
       },
       update: {
         carrierName: currCarrier.carrierName,
@@ -88,6 +89,7 @@ async function main() {
         docketNumber: currCarrier.docketNumber,
         dotId: currCarrier.dotId,
         taxId: currCarrier.taxId,
+        orgId: currCarrier.orgId,
       },
     });
 
@@ -150,15 +152,13 @@ async function main() {
   }
 
   for (const currLoad of loads) {
-    currLoad.ownerId = orgIds[loadPos % orgIds.length];
+    currLoad.orgId = orgIds[loadPos % orgIds.length];
     currLoad.carrierId = carrierIds[loadPos % carrierIds.length];
     currLoad.customerId = customerIds[loadPos % customerIds.length];
     const resp = await prisma.load.upsert({
       where: {
-        ownerId_loadNum: {
-          ownerId: currLoad.ownerId,
-          loadNum: currLoad.loadNum,
-        },
+        orgId: currLoad.orgId,
+        loadNum: currLoad.loadNum,
       },
       update: {},
       create: currLoad,
@@ -200,7 +200,7 @@ async function main() {
 
   for (const currTruck of trucks) {
     const resp = await prisma.truck.upsert({
-      where: { licensePlate: currTruck.licensePlate },
+      where: { id: currTruck.id },
       update: {},
       create: currTruck,
     });
@@ -313,6 +313,7 @@ const carriers = [
       fmcsaType: 'BPID',
       fmcsaCoverage: '40000',
     },
+    orgId: '103784cb-e739-446c-ba47-e92d92de648a',
   },
   {
     id: '3997ed89-8767-4020-b8e1-7011469af2e7',
@@ -334,6 +335,7 @@ const carriers = [
       fmcsaType: 'BPID',
       fmcsaCoverage: '40000',
     },
+    orgId: 'e739-446c-ba47-e92d92de648c',
   },
 ];
 
@@ -382,6 +384,7 @@ const customers = [
     billingPostCode: '38655',
     paymentTerms: 'Prompt',
     federalID: '55-9386763',
+    orgId: '103784cb-e739-446c-ba47-e92d92de648a',
   },
   {
     companyName: 'Customer2',
@@ -402,6 +405,7 @@ const customers = [
     billingPostCode: '03060',
     paymentTerms: 'Prompt',
     federalID: '21-4094358',
+    orgId: 'e739-446c-ba47-e92d92de648c',
   },
 ];
 
@@ -543,28 +547,28 @@ const billees = [
 
 const loads = [
   {
-    ownerId: null,
+    orgId: 'e739-446c-ba47-e92d92de648c',
     loadNum: '69',
     payOrderNum: '1111',
     carrierId: null,
     customerId: null,
   },
   {
-    ownerId: null,
+    orgId: 'e739-446c-ba47-e92d92de648c',
     loadNum: '420',
     payOrderNum: '0088',
     carrierId: null,
     customerId: null,
   },
   {
-    ownerId: null,
+    orgId: '103784cb-e739-446c-ba47-e92d92de648a',
     loadNum: '1111',
     payOrderNum: '3232',
     carrierId: null,
     customerId: null,
   },
   {
-    ownerId: null,
+    orgId: '103784cb-e739-446c-ba47-e92d92de648a',
     loadNum: '2222',
     payOrderNum: '1212',
     carrierId: null,
@@ -574,18 +578,22 @@ const loads = [
 
 const trucks = [
   {
+    id: 'fgh739',
     truckNum: 'AA000',
     licensePlate: '88BB000',
     plateExpiry: new Date(2027, 9, 4),
     inspectionExpiry: new Date(2027, 9, 4),
     type: 'Big',
+    orgId: 'e739-446c-ba47-e92d92de648c',
   },
   {
+    id: 'fgh73940',
     truckNum: 'A1B2C3D4',
     licensePlate: '89RM99',
     plateExpiry: new Date(2027, 9, 4),
     inspectionExpiry: new Date(2027, 9, 4),
     type: 'Also Big',
+    orgId: '103784cb-e739-446c-ba47-e92d92de648a',
   },
 ];
 
