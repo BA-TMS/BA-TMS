@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import {
-  gettrucks,
-  addtruck,
-  updatetruck as apiUpdatetruck,
-} from '@/lib/actions/truckActions';
+// import {
+//   gettrucks,
+//   addtruck,
+//   updatetruck as apiUpdatetruck,
+// } from '@/lib/actions/truckActions';
 import { TruckData, TruckFormData } from '@/types/truckTypes';
 
 interface UpdatedTruckPayload {

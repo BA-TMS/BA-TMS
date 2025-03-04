@@ -23,7 +23,7 @@ export const makeStore = () => {
       factors: factorReducer,
       shippers: shipperReducer,
       team: teamReducer,
-      truck: truckReducer,
+      trucks: truckReducer,
     },
   });
 };
