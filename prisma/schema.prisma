@@ -390,6 +390,8 @@ model Truck {
   weight           String?
   vin              String?
   dotExpiry        DateTime?
+
+  notes String?
 }
 
 model Trailer {
