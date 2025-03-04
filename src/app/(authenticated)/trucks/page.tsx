@@ -2,15 +2,15 @@
 
 import React from 'react';
 import PageTitle from '@/components/Page/PageTitle';
-import Broker from '@/components/Table/Broker';
+import Truck from '@/components/Table/Truck';
 
-const CustomsBrokerPage: React.FC = () => {
+const TruckPage: React.FC = () => {
   return (
     <>
-      <PageTitle pageTitle="Customs Broker" />
-      <Broker />
+      <PageTitle pageTitle="Trucks" />
+      <Truck />
     </>
   );
 };
 
-export default CustomsBrokerPage;
+export default TruckPage;

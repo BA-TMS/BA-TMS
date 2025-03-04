@@ -41,7 +41,7 @@ const adminOptions = [
   { name: 'Shippers', href: '/shippers' },
   { name: 'Third Party', href: '#' },
   { name: 'Trailers', href: '#' },
-  { name: 'Trucks', href: '#' },
+  { name: 'Trucks', href: '/trucks' },
 ];
 
 interface SidebarProps {
