@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-// import {
-//   gettrucks,
-//   addtruck,
-//   updatetruck as apiUpdatetruck,
-// } from '@/lib/actions/truckActions';
+import {
+  getTrucks,
+  // addtruck,
+  // updatetruck as apiUpdatetruck,
+} from '@/lib/actions/truckActions';
 import { TruckData, TruckFormData } from '@/types/truckTypes';
 
 interface UpdatedTruckPayload {
@@ -30,7 +30,7 @@ const formatron = function (truck: TruckData) {
 export const fetchTrucks = createAsyncThunk<TruckData[], string>(
   'trucks/fetchTrucks',
   async (orgName) => {
-    const data = await gettrucks(orgName);
+    const data = await getTrucks(orgName);
 
     return data.map((truck: TruckData) => formatron(truck));
   }
