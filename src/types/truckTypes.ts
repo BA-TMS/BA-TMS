@@ -6,3 +6,5 @@ export interface TruckFormData {
   'Inspection Expiry': string;
   'IFTA Licensed': boolean | undefined;
 }
+
+export interface TruckData {}
