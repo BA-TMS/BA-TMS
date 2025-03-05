@@ -380,6 +380,7 @@ model Truck {
   orgId        String
   organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
 
+  ifta             Boolean?
   mileage          String?
   axels            String?
   fuelType         String?
