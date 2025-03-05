@@ -23,7 +23,7 @@ const columns = [
 export default function TruckTable() {
   const [searchValue, setSearchValue] = useState<string>(''); // search value
   const [searchField, setSearchField] = useState<string>('All'); // specific field if any
-  const [filteredValue, setFilteredValue] = useState<TruckTableData[]>([]);
+  const [filteredValue, setFilteredValue] = useState<TruckData[]>([]);
 
   const router = useRouter();
 

@@ -1,14 +1,14 @@
 'use client';
 
 import Modal from '@ui/Modal/Modal';
-import CustomsBrokerForm from '@/components/Forms/CustomsBroker/CustomsBrokerForm';
+import TruckDetails from '@/components/Forms/Truck/TruckDetails';
 
 // this is an intercepting route that builds a modal
 
-export default function AddBrokerDetailsModal() {
+export default function AddTruckDetailsModal() {
   return (
-    <Modal title={'Add Customs Broker'}>
-      <CustomsBrokerForm />
+    <Modal title={'Add Truck'}>
+      <TruckDetails />
     </Modal>
   );
 }
