@@ -8,7 +8,7 @@ import TextInput from '@ui/Form/TextInput';
 import SelectInput from '@ui/Form/SelectInput';
 import DateSelect from '@/components/UI_Elements/Form/DateSelect';
 import Button from '@/components/UI_Elements/Buttons/Button';
-import { status } from '@/components/Forms/data/details';
+import { status, truckTypes } from '@/components/Forms/data/details';
 import { ModalContext } from '@/context/modalContext';
 import { useRouter, usePathname } from 'next/navigation';
 
@@ -140,14 +140,21 @@ export const TruckDetails = () => {
             </div>
           </div>
 
-          <SelectInput
-            control={control}
-            name="Ownership"
-            options={[
-              { 'Company Truck': 'Company Truck' },
-              { 'Owner/ Operator': 'Owner/ Operator' },
-            ]}
-          />
+          <div className="flex flex-col gap-4 md:flex-row">
+            <div className="w-full md:w-1/2">
+              <SelectInput control={control} name="Type" options={truckTypes} />
+            </div>
+            <div className="w-full md:w-1/2">
+              <SelectInput
+                control={control}
+                name="Ownership"
+                options={[
+                  { 'Company Truck': 'Company Truck' },
+                  { 'Owner/ Operator': 'Owner/ Operator' },
+                ]}
+              />
+            </div>
+          </div>
 
           <TextInput control={control} name="Notes" isTextArea={true} />
         </div>
