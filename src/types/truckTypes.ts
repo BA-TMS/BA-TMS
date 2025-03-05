@@ -1,10 +1,26 @@
 export interface TruckFormData {
+  orgName: string;
+  Status: string;
+
   'Truck Number': string;
-  'License Plate': string;
-  'Truck Type': string;
-  'Plate Expiry': string;
-  'Inspection Expiry': string;
-  'IFTA Licensed': boolean | undefined;
+  'License Plate': string | null;
+  'Plate Expiry': Date | null;
+  'Inspection Expiry': Date | null;
+  Type: string | null;
+  Ownership: string | null;
+  Notes: string | null;
+
+  Mileage: string | null;
+  Axels: string | null;
+  'Fuel Type': string | null;
+  Year: string | null;
+  'Start Date': Date | null;
+  'Deactivation Date': Date | null;
+  IFTA: boolean;
+  'Registered State': string | null;
+  Weight: string | null;
+  VIN: string | null;
+  'DOT Expiry': Date | null;
 }
 
 export interface TruckData {
@@ -19,6 +35,7 @@ export interface TruckData {
   inspectionExpiry: Date | null;
   type: string | null;
   ownership: string | null;
+  notes: string | null;
 
   orgId: string;
   organization: { orgName: string };
