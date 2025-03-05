@@ -75,16 +75,16 @@ export default function TruckTable() {
   }
 
   // update by selecting from redux and pass to form values
-  // const updateConsignee = async (id: string) => {
-  //   const data = consignees.find((consignee) => consignee.id === id);
+  const updateTruck = async (id: string) => {
+    const data = trucks.find((truck) => truck.id === id);
 
-  //   if (data) {
-  //     saveFormValues(data);
-  //     router.push('/consignees/update-consignee/details');
-  //   } else {
-  //     console.error('Consignee not found with ID:', id);
-  //   }
-  // };
+    if (data) {
+      saveFormValues(data);
+      router.push('/trucks/update-truck/details');
+    } else {
+      console.error('Truck not found with ID:', id);
+    }
+  };
 
   // Update filtered trucks
   useEffect(() => {
@@ -118,7 +118,7 @@ export default function TruckTable() {
         <Table
           columns={columns}
           data={filteredValue}
-          update={() => {}}
+          update={updateTruck}
           view={'/trucks/view/'}
         />
       )}

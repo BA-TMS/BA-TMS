@@ -46,8 +46,33 @@ export interface TruckData {
   year: string | null;
   startDate: Date | null;
   deactivationDate: Date | null;
+  ifta: boolean | null;
   registeredState: string | null;
   weight: string | null;
   vin: string | null;
   dotExpiry: Date | null;
 }
+
+export const truckDataMap: Record<string, keyof TruckData> = {
+  Status: 'status',
+
+  'Truck Number': 'truckNum',
+  'License Plate': 'licensePlate',
+  'Plate Expiry': 'plateExpiry',
+  'Inspection Expiry': 'inspectionExpiry',
+  Type: 'type',
+  Ownership: 'ownership',
+  Notes: 'notes',
+
+  Mileage: 'mileage',
+  Axels: 'axels',
+  'Fuel Type': 'fuelType',
+  Year: 'year',
+  'Start Date': 'startDate',
+  'Deactivation Date': 'deactivationDate',
+  IFTA: 'ifta',
+  'Registered State': 'registeredState',
+  Weight: 'weight',
+  VIN: 'vin',
+  'DOT Expiry': 'dotExpiry',
+};
