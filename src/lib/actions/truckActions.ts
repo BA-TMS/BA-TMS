@@ -65,3 +65,44 @@ export async function addTruck({ truck }: { truck: TruckFormData }) {
   });
   return resp;
 }
+
+export async function updateTruck(
+  id: string,
+  { truck }: { truck: Partial<TruckFormData> }
+) {
+  // find organization based on name
+  const organization = await getOrganization(truck.orgName as string);
+
+  // TODO: Better error handling
+  if (organization === null) {
+    throw 'can not update truck :(';
+  }
+  const resp = await prisma.truck.update({
+    where: { id: id },
+    data: {
+      status: truck['Status'] as Status,
+
+      truckNum: truck['Truck Number'],
+      licensePlate: truck['License Plate'],
+      plateExpiry: truck['Plate Expiry'],
+      inspectionExpiry: truck['Inspection Expiry'],
+      type: truck['Type'],
+      ownership: truck['Ownership'],
+      notes: truck['Notes'],
+
+      mileage: truck['Mileage'],
+      axels: truck['Axels'],
+      fuelType: truck['Fuel Type'],
+      year: truck['Year'],
+      startDate: truck['Start Date'],
+      deactivationDate: truck['Deactivation Date'],
+      registeredState: truck['Registered State'],
+      weight: truck['Weight'],
+      vin: truck['VIN'],
+      dotExpiry: truck['DOT Expiry'],
+
+      orgId: organization.id,
+    },
+  });
+  return resp;
+}

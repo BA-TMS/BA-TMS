@@ -20,7 +20,9 @@ const truckSchema = yup.object({
   'Fuel Type': yup.string().nullable(),
   Year: yup.string().nullable(),
   'Start Date': yup.date().nullable(),
+
   'Deactivation Date': yup.date().nullable(),
+
   IFTA: yup.boolean().nullable(),
   'Registered State': yup.string().nullable(),
   Weight: yup.string().nullable(),

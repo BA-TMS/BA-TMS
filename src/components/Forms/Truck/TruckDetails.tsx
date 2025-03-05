@@ -35,6 +35,7 @@ export const TruckDetails = () => {
   const segment = pathname.includes('add-truck') ? 'add-truck' : 'update-truck';
 
   const { formData, saveFormValues } = useContext(ModalContext);
+  console.log('Truck form data', formData);
 
   const isUpdate = formData !== null && formData['id'];
 

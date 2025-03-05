@@ -8,8 +8,8 @@ import { UserContext } from '@/context/userContextProvider';
 import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 import Button from '@/components/UI_Elements/Buttons/Button';
 import { useRouter } from 'next/navigation';
-import { TruckFormData } from '@/types/truckTypes';
-import { createTruck } from '@/store/slices/truckSlice';
+import { TruckData, TruckFormData } from '@/types/truckTypes';
+import { createTruck, updateTruck } from '@/store/slices/truckSlice';
 
 // this component submits form data from the context to database using redux
 
@@ -41,17 +41,17 @@ export const TruckReview: React.FC = () => {
       } catch (error) {
         setError(`Error creating truck: ${error}`);
       }
-      // } else {
-      //   try {
-      //     await dispatch(
-      //       updateBroker({
-      //         id: formData['id'],
-      //         updatedBroker: broker as Partial<BrokerData>,
-      //       })
-      //     ).unwrap();
-      //   } catch (error) {
-      //     setError(`Error updating carrier: ${error}`);
-      //   }
+    } else {
+      try {
+        await dispatch(
+          updateTruck({
+            id: formData['id'],
+            updatedTruck: truck as Partial<TruckData>,
+          })
+        ).unwrap();
+      } catch (error) {
+        setError(`Error updating truck: ${error}`);
+      }
     }
     setIsSubmitting(false);
   };

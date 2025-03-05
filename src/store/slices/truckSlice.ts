@@ -8,7 +8,7 @@ import { TruckData, TruckFormData } from '@/types/truckTypes';
 
 interface UpdatedTruckPayload {
   id: string;
-  updatedtruck: Partial<TruckData>;
+  updatedTruck: Partial<TruckData>;
 }
 
 interface TruckState {
@@ -24,6 +24,22 @@ const formatron = function (truck: TruckData) {
       truck.createdAt instanceof Date ? truck.createdAt.toDateString() : null,
     updatedAt:
       truck.updatedAt instanceof Date ? truck.updatedAt.toDateString() : null,
+    plateExpiry:
+      truck.plateExpiry instanceof Date
+        ? truck.plateExpiry.toDateString()
+        : null,
+    inspectionExpiry:
+      truck.inspectionExpiry instanceof Date
+        ? truck.inspectionExpiry.toDateString()
+        : null,
+    startDate:
+      truck.startDate instanceof Date ? truck.startDate.toDateString() : null,
+    deactivationDate:
+      truck.deactivationDate instanceof Date
+        ? truck.deactivationDate.toDateString()
+        : null,
+    dotExpiry:
+      truck.dotExpiry instanceof Date ? truck.dotExpiry.toDateString() : null,
   } as unknown as TruckData;
 };
 
@@ -51,10 +67,10 @@ export const createTruck = createAsyncThunk<TruckData, TruckFormData>(
 
 export const updateTruck = createAsyncThunk<TruckData, UpdatedTruckPayload>(
   'trucks/updateTruck',
-  async ({ id, updatedtruck }: UpdatedTruckPayload, { rejectWithValue }) => {
+  async ({ id, updatedTruck }: UpdatedTruckPayload, { rejectWithValue }) => {
     try {
       const response = await apiUpdateTruck(id, {
-        truck: updatedtruck as TruckFormData,
+        truck: updatedTruck as TruckFormData,
       });
 
       return formatron(response as TruckData);
