@@ -1,12 +1,12 @@
 'use client';
 
 import FullPageFormContainer from '@/components/UI_Elements/Form/FullPageContainer';
-import TruckDetails from '@/components/Forms/Truck/TruckDetails';
+import TruckIFTAForm from '@/components/Forms/Truck/TruckIFTA';
 
-export default function AddTruckDetails() {
+export default function AddTruckIFTA() {
   return (
     <FullPageFormContainer title="Add Truck">
-      <TruckDetails />
+      <TruckIFTAForm />
     </FullPageFormContainer>
   );
 }

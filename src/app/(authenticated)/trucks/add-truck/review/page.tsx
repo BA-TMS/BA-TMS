@@ -1,12 +1,12 @@
 'use client';
 
-import CustomsBrokerReview from '@/components/Forms/CustomsBroker/CustomsBrokerReview';
 import FullPageFormContainer from '@/components/UI_Elements/Form/FullPageContainer';
+import TruckReview from '@/components/Forms/Truck/TruckReview';
 
-export default function AddBrokerReview() {
+export default function AddTruckReview() {
   return (
-    <FullPageFormContainer title={'Add Customs Broker'}>
-      <CustomsBrokerReview />
+    <FullPageFormContainer title={'Add Truck'}>
+      <TruckReview />
     </FullPageFormContainer>
   );
 }
