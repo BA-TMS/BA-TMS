@@ -2,7 +2,7 @@
 
 import prisma from '@util/prisma/client';
 import { getOrganization } from '@/lib/dbActions';
-import { Prisma, Status } from '@prisma/client';
+import { Status } from '@prisma/client';
 import { TruckFormData } from '@/types/truckTypes';
 
 // this file contains actions for interacting with the database truck table
@@ -30,14 +30,37 @@ export async function getTrucks(organization: string) {
 }
 
 export async function addTruck({ truck }: { truck: TruckFormData }) {
+  // find organization based on name
+  const organization = await getOrganization(truck.orgName);
+
+  // TODO: Better error handling
+  if (organization === null) {
+    throw 'can not add truck :(';
+  }
   const resp = await prisma.truck.create({
     data: {
+      status: truck['Status'] as Status,
+
       truckNum: truck['Truck Number'],
-      licensePlate: truck['License Plate'], // should be optional?
-      type: truck['Truck Type'],
+      licensePlate: truck['License Plate'],
       plateExpiry: truck['Plate Expiry'],
       inspectionExpiry: truck['Inspection Expiry'],
-      iftaLicensed: truck['IFTA Licensed'],
+      type: truck['Type'],
+      ownership: truck['Ownership'],
+      notes: truck['Notes'],
+
+      mileage: truck['Mileage'],
+      axels: truck['Axels'],
+      fuelType: truck['Fuel Type'],
+      year: truck['Year'],
+      startDate: truck['Start Date'],
+      deactivationDate: truck['Deactivation Date'],
+      registeredState: truck['Registered State'],
+      weight: truck['Weight'],
+      vin: truck['VIN'],
+      dotExpiry: truck['DOT Expiry'],
+
+      orgId: organization.id,
     },
   });
   return resp;

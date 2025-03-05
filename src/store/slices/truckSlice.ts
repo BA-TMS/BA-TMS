@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import {
   getTrucks,
-  // addtruck,
-  // updatetruck as apiUpdatetruck,
+  addTruck,
+  updateTruck as apiUpdateTruck,
 } from '@/lib/actions/truckActions';
 import { TruckData, TruckFormData } from '@/types/truckTypes';
 
@@ -40,7 +40,7 @@ export const createTruck = createAsyncThunk<TruckData, TruckFormData>(
   'trucks/createTruck',
   async (truck, { rejectWithValue }) => {
     try {
-      const response = await addtruck({ truck });
+      const response = await addTruck({ truck });
 
       return formatron(response as TruckData);
     } catch (error) {
@@ -53,7 +53,7 @@ export const updateTruck = createAsyncThunk<TruckData, UpdatedTruckPayload>(
   'trucks/updateTruck',
   async ({ id, updatedtruck }: UpdatedTruckPayload, { rejectWithValue }) => {
     try {
-      const response = await apiUpdatetruck(id, {
+      const response = await apiUpdateTruck(id, {
         truck: updatedtruck as TruckFormData,
       });
 
