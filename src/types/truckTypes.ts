@@ -46,7 +46,7 @@ export interface TruckData {
   year: string | null;
   startDate: Date | null;
   deactivationDate: Date | null;
-  ifta: boolean | null;
+  ifta?: boolean | null;
   registeredState: string | null;
   weight: string | null;
   vin: string | null;
