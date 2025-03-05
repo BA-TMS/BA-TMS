@@ -91,13 +91,21 @@ export const TruckReview: React.FC = () => {
             <div className="w-full md:w-1/3">
               <DataDisplay
                 title="Plate Expiry"
-                text={formData['Plate Expiry']}
+                text={
+                  formData['Plate Expiry']
+                    ? formData['Plate Expiry'].toDateString()
+                    : ''
+                }
               />
             </div>
             <div className="w-full md:w-1/3">
               <DataDisplay
                 title="Inspection Expiry"
-                text={formData['Inspection Expiry']}
+                text={
+                  formData['Inspection Expiry']
+                    ? formData['Inspection Expiry'].toDateString()
+                    : ''
+                }
               />
             </div>
             <div className="w-full md:w-1/3">
@@ -122,12 +130,23 @@ export const TruckReview: React.FC = () => {
 
           <div className="flex flex-col gap-4 md:flex-row">
             <div className="w-full md:w-1/2">
-              <DataDisplay title="Start Date" text={formData['Start Date']} />
+              <DataDisplay
+                title="Start Date"
+                text={
+                  formData['Start Date']
+                    ? formData['Start Date'].toDateString()
+                    : ''
+                }
+              />
             </div>
             <div className="w-full md:w-1/2">
               <DataDisplay
                 title="Deactivation Date"
-                text={formData['Deactivation Date']}
+                text={
+                  formData['Deactivation Date']
+                    ? formData['Deactivation Date'].toDateString()
+                    : ''
+                }
               />
             </div>
           </div>
@@ -146,7 +165,14 @@ export const TruckReview: React.FC = () => {
               <DataDisplay title="VIN" text={formData['VIN']} />
             </div>
             <div className="w-full md:w-1/4">
-              <DataDisplay title="DOT Expiry" text={formData['DOT Expiry']} />
+              <DataDisplay
+                title="DOT Expiry"
+                text={
+                  formData['DOT Expiry']
+                    ? formData['DOT Expiry'].toDateString()
+                    : ''
+                }
+              />
             </div>
           </div>
 
@@ -200,7 +226,7 @@ export const TruckReview: React.FC = () => {
               onClick={() => {
                 onSubmit(formData as TruckFormData);
                 saveFormValues({}, true); // Reset form data after submission
-                router.push('/brokers');
+                router.push('/trucks');
               }}
             >
               {isSubmitting ? 'Submitting...' : isUpdate ? 'Update' : 'Add'}
