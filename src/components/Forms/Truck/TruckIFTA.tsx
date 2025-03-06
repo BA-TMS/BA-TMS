@@ -20,9 +20,7 @@ const truckSchema = yup.object({
   'Fuel Type': yup.string().nullable(),
   Year: yup.string().nullable(),
   'Start Date': yup.date().nullable(),
-
   'Deactivation Date': yup.date().nullable(),
-
   IFTA: yup.boolean().nullable(),
   'Registered State': yup.string().nullable(),
   Weight: yup.string().nullable(),
@@ -68,7 +66,6 @@ export const TruckIFTAForm = () => {
   // submit the values to the context
   const onSubmit = useCallback(
     (truck: Truck) => {
-      console.log('SUBMITTING IFTA', truck);
       saveFormValues(truck);
       reset();
       router.push(`/trucks/${segment}/review`);
@@ -100,12 +97,12 @@ export const TruckIFTAForm = () => {
   }, [formData, setValue]);
 
   const handleCheckbox = () => {
-    // if (isUpdate) {
-    //   // we are copying a consignee during an update
-    //   saveFormValues({ ...formData, shipper: true });
-    // } else {
-    formData.IFTA === true ? (formData.IFTA = false) : (formData.IFTA = true);
-    // }
+    if (isUpdate) {
+      // we are copying a consignee during an update
+      saveFormValues({ ...formData, IFTA: true });
+    } else {
+      formData.IFTA === true ? (formData.IFTA = false) : (formData.IFTA = true);
+    }
   };
 
   return (

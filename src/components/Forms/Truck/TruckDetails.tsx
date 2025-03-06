@@ -23,7 +23,7 @@ const truckSchema = yup.object({
   Type: yup.string().nullable(),
   Ownership: yup.string().nullable(),
 
-  Notes: yup.string().max(250, 'Must be under 250 characters'),
+  Notes: yup.string().max(250, 'Must be under 250 characters').nullable(),
 });
 
 type Truck = yup.InferType<typeof truckSchema>;
@@ -35,7 +35,6 @@ export const TruckDetails = () => {
   const segment = pathname.includes('add-truck') ? 'add-truck' : 'update-truck';
 
   const { formData, saveFormValues } = useContext(ModalContext);
-  console.log('Truck form data', formData);
 
   const isUpdate = formData !== null && formData['id'];
 
@@ -62,7 +61,6 @@ export const TruckDetails = () => {
   // submit the values to the context
   const onSubmit = useCallback(
     (truck: Truck) => {
-      console.log('SUBMITTING', truck);
       saveFormValues(truck);
       reset();
       router.push(`/trucks/${segment}/ifta`);
