@@ -33,6 +33,7 @@ model Organization {
   Load          Load[]
   Shipper       Shipper[]
   users         User[]
+  Trailer       Trailer[]
   Truck         Truck[]
 }
 
@@ -408,14 +409,20 @@ model Truck {
 }
 
 model Trailer {
-  id               String        @id @default(uuid())
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
-  licensePlate     String        @unique
+  id        String        @id @default(uuid())
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  status    TrailerStatus @default(ACTIVE)
+
+  licensePlate     String
   plateExpiry      DateTime
   inspectionExpiry DateTime
   type             String
-  status           TrailerStatus @default(ACTIVE)
+
+  notes String?
+
+  orgId        String
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
 }
 
 model Billee {
