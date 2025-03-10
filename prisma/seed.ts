@@ -208,7 +208,7 @@ async function main() {
 
   for (const currTrailer of trailers) {
     const resp = await prisma.trailer.upsert({
-      where: { licensePlate: currTrailer.licensePlate },
+      where: { id: currTrailer.id },
       update: {},
       create: currTrailer,
     });
