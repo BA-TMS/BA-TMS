@@ -2,15 +2,15 @@
 
 import React from 'react';
 import PageTitle from '@/components/Page/PageTitle';
-import TruckTable from '@/components/Table/Truck';
+import TrailerTable from '@/components/Table/TrailerTable';
 
-const TruckPage: React.FC = () => {
+const TrailerPage: React.FC = () => {
   return (
     <>
-      <PageTitle pageTitle="Trucks" />
-      <TruckTable />
+      <PageTitle pageTitle="Trailers" />
+      <TrailerTable />
     </>
   );
 };
 
-export default TruckPage;
+export default TrailerPage;

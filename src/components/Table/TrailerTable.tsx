@@ -24,7 +24,7 @@ const columns = [
   { field: 'status', headerName: 'Status' },
 ];
 
-export default function Trailer() {
+export default function TrailerTable() {
   const [trailers, setTrailers] = useState<Trailer[]>([]);
   const { toggleOpen } = useContext(ModalContext);
 

@@ -40,7 +40,7 @@ const adminOptions = [
   { name: 'Private Labelling', href: '#' },
   { name: 'Shippers', href: '/shippers' },
   { name: 'Third Party', href: '#' },
-  { name: 'Trailers', href: '#' },
+  { name: 'Trailers', href: '#trailers' },
   { name: 'Trucks', href: '/trucks' },
 ];
 
