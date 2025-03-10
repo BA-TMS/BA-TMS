@@ -7,6 +7,7 @@ import customerReducer from './slices/customerSlice';
 import driverReducer from './slices/driverSlice';
 import factorReducer from './slices/factorSlice';
 import shipperReducer from './slices/shipperSlice';
+import trailerReducer from './slices/trailerSlice';
 import truckReducer from './slices/truckSlice';
 import teamReducer from './slices/teamSlice';
 
@@ -23,6 +24,7 @@ export const makeStore = () => {
       factors: factorReducer,
       shippers: shipperReducer,
       team: teamReducer,
+      trailers: trailerReducer,
       trucks: truckReducer,
     },
   });
