@@ -1,12 +1,12 @@
 'use client';
 
 import FullPageFormContainer from '@/components/UI_Elements/Form/FullPageContainer';
-import TruckReview from '@/components/Forms/Truck/TruckReview';
+import TrailerReview from '@/components/Forms/Trailer/TrailerReview';
 
-export default function UpdateTruckReview() {
+export default function UpdateTrailerReview() {
   return (
-    <FullPageFormContainer title={'Update Truck'}>
-      <TruckReview />
+    <FullPageFormContainer title={'Update Trailer'}>
+      <TrailerReview />
     </FullPageFormContainer>
   );
 }

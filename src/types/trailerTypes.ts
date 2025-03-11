@@ -24,3 +24,12 @@ export interface TrailerData {
   orgId: string;
   organization: { orgName: string };
 }
+
+export const trailerDataMap: Record<string, keyof TrailerData> = {
+  Status: 'status',
+  Type: 'type',
+  'License Plate': 'licensePlate',
+  'Plate Expiry': 'plateExpiry',
+  'Inspection Expiry': 'inspectionExpiry',
+  Notes: 'notes',
+};

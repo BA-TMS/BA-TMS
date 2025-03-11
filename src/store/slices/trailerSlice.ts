@@ -2,13 +2,13 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import {
   getTrailers,
   addTrailer,
-  // updateTruck as apiUpdateTruck,
+  updateTrailer as apiUpdateTrailer,
 } from '@/lib/actions/trailerActions';
 import { TrailerData, TrailerFormData } from '@/types/trailerTypes';
 
 interface UpdatedTrailerPayload {
   id: string;
-  updatedTruck: Partial<TrailerData>;
+  updatedTrailer: Partial<TrailerData>;
 }
 
 interface TrailerState {
@@ -17,20 +17,24 @@ interface TrailerState {
   error: string | null;
 }
 
-const formatron = function (truck: TrailerData) {
+const formatron = function (trailer: TrailerData) {
   return {
-    ...truck,
+    ...trailer,
     createdAt:
-      truck.createdAt instanceof Date ? truck.createdAt.toDateString() : null,
+      trailer.createdAt instanceof Date
+        ? trailer.createdAt.toDateString()
+        : null,
     updatedAt:
-      truck.updatedAt instanceof Date ? truck.updatedAt.toDateString() : null,
+      trailer.updatedAt instanceof Date
+        ? trailer.updatedAt.toDateString()
+        : null,
     plateExpiry:
-      truck.plateExpiry instanceof Date
-        ? truck.plateExpiry.toDateString()
+      trailer.plateExpiry instanceof Date
+        ? trailer.plateExpiry.toDateString()
         : null,
     inspectionExpiry:
-      truck.inspectionExpiry instanceof Date
-        ? truck.inspectionExpiry.toDateString()
+      trailer.inspectionExpiry instanceof Date
+        ? trailer.inspectionExpiry.toDateString()
         : null,
   } as unknown as TrailerData;
 };
@@ -57,20 +61,26 @@ export const createTrailer = createAsyncThunk<TrailerData, TrailerFormData>(
   }
 );
 
-// export const updateTruck = createAsyncThunk<TrailerData, UpdatedTrailerPayload>(
-//   'trucks/updateTruck',
-//   async ({ id, updatedTruck }: UpdatedTrailerPayload, { rejectWithValue }) => {
-//     try {
-//       const response = await apiUpdateTruck(id, {
-//         truck: updatedTruck as TrailerFormData,
-//       });
+export const updateTrailer = createAsyncThunk<
+  TrailerData,
+  UpdatedTrailerPayload
+>(
+  'trailers/updateTrailer',
+  async (
+    { id, updatedTrailer }: UpdatedTrailerPayload,
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await apiUpdateTrailer(id, {
+        trailer: updatedTrailer as TrailerFormData,
+      });
 
-//       return formatron(response as TrailerData);
-//     } catch (error) {
-//       return rejectWithValue('Failed to update truck');
-//     }
-//   }
-// );
+      return formatron(response as TrailerData);
+    } catch (error) {
+      return rejectWithValue('Failed to update trailer');
+    }
+  }
+);
 
 const trailerSlice = createSlice({
   name: 'trailers',
@@ -100,23 +110,23 @@ const trailerSlice = createSlice({
         const message = action.payload;
         state.status = 'failed';
         state.error = message as string;
+      })
+      .addCase(
+        updateTrailer.fulfilled,
+        (state, action: PayloadAction<TrailerData>) => {
+          const index = state.items.findIndex(
+            (trailer) => trailer.id === action.payload.id
+          );
+          if (index !== -1) {
+            state.items[index] = action.payload;
+          }
+        }
+      )
+      .addCase(updateTrailer.rejected, (state, action) => {
+        const message = action.payload;
+        state.status = 'failed';
+        state.error = message as string;
       });
-    //   .addCase(
-    //     updateTruck.fulfilled,
-    //     (state, action: PayloadAction<TrailerData>) => {
-    //       const index = state.items.findIndex(
-    //         (truck) => truck.id === action.payload.id
-    //       );
-    //       if (index !== -1) {
-    //         state.items[index] = action.payload;
-    //       }
-    //     }
-    //   )
-    //   .addCase(updateTruck.rejected, (state, action) => {
-    //     const message = action.payload;
-    //     state.status = 'failed';
-    //     state.error = message as string;
-    //   });
   },
 });
 

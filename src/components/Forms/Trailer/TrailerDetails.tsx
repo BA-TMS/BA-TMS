@@ -11,6 +11,7 @@ import Button from '@/components/UI_Elements/Buttons/Button';
 import { trailerStatus, trailers } from '@/components/Forms/data/details';
 import { ModalContext } from '@/context/modalContext';
 import { useRouter, usePathname } from 'next/navigation';
+import { trailerDataMap } from '@/types/trailerTypes';
 
 const trailerSchema = yup.object({
   'Trailer Type': yup.string(),
@@ -41,7 +42,7 @@ export const TrailerDetails = () => {
 
   const { formData, saveFormValues } = useContext(ModalContext);
 
-  // const isUpdate = formData !== null && formData['id'];
+  const isUpdate = formData !== null && formData['id'];
 
   const {
     setValue,
@@ -72,18 +73,18 @@ export const TrailerDetails = () => {
   );
 
   // if there's an update
-  // useEffect(() => {
-  //   if (isUpdate) {
-  //     Object.keys(truckDataMap).forEach((formField) => {
-  //       setValue(
-  //         formField as keyof Truck,
-  //         formData[truckDataMap[formField]]
-  //           ? formData[truckDataMap[formField]]
-  //           : ''
-  //       );
-  //     });
-  //   }
-  // }, [formData, setValue, isUpdate]);
+  useEffect(() => {
+    if (isUpdate) {
+      Object.keys(trailerDataMap).forEach((formField) => {
+        setValue(
+          formField as keyof Trailer,
+          formData[trailerDataMap[formField]]
+            ? formData[trailerDataMap[formField]]
+            : ''
+        );
+      });
+    }
+  }, [formData, setValue, isUpdate]);
 
   // keep fields populated when going back
   useEffect(() => {

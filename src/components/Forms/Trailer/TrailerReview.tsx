@@ -9,7 +9,7 @@ import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 import Button from '@/components/UI_Elements/Buttons/Button';
 import { useRouter } from 'next/navigation';
 import { TrailerData, TrailerFormData } from '@/types/trailerTypes';
-import { createTrailer } from '@/store/slices/trailerSlice';
+import { createTrailer, updateTrailer } from '@/store/slices/trailerSlice';
 
 // this component submits form data from the context to database using redux
 
@@ -41,17 +41,17 @@ export const TrailerReview: React.FC = () => {
       } catch (error) {
         setError(`Error creating trailer: ${error}`);
       }
-      // } else {
-      //   try {
-      //     await dispatch(
-      //       updateTruck({
-      //         id: formData['id'],
-      //         updatedTruck: truck as Partial<TrailerData>,
-      //       })
-      //     ).unwrap();
-      //   } catch (error) {
-      //     setError(`Error updating truck: ${error}`);
-      //   }
+    } else {
+      try {
+        await dispatch(
+          updateTrailer({
+            id: formData['id'],
+            updatedTrailer: trailer as Partial<TrailerData>,
+          })
+        ).unwrap();
+      } catch (error) {
+        setError(`Error updating trailer: ${error}`);
+      }
     }
     setIsSubmitting(false);
   };

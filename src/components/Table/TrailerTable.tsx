@@ -17,6 +17,7 @@ import { TrailerData } from '@/types/trailerTypes';
 const columns = [
   { field: 'type', headerName: 'Trailer Type' },
   { field: 'licensePlate', headerName: 'License Plate' },
+  { field: 'plateExpiry', headerName: 'Plate Expiry' },
 ];
 
 export default function TrailerTable() {

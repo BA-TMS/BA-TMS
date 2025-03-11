@@ -53,43 +53,30 @@ export async function addTrailer({ trailer }: { trailer: TrailerFormData }) {
   return resp;
 }
 
-// export async function updatetrailer(
-//   id: string,
-//   { trailer }: { trailer: Partial<trailerFormData> }
-// ) {
-//   // find organization based on name
-//   const organization = await getOrganization(trailer.orgName as string);
+export async function updateTrailer(
+  id: string,
+  { trailer }: { trailer: Partial<TrailerFormData> }
+) {
+  // find organization based on name
+  const organization = await getOrganization(trailer.orgName as string);
 
-//   // TODO: Better error handling
-//   if (organization === null) {
-//     throw 'can not update trailer :(';
-//   }
-//   const resp = await prisma.trailer.update({
-//     where: { id: id },
-//     data: {
-//       status: trailer['Status'] as Status,
+  // TODO: Better error handling
+  if (organization === null) {
+    throw 'can not update trailer :(';
+  }
+  const resp = await prisma.trailer.update({
+    where: { id: id },
+    data: {
+      status: trailer['Status'] as TrailerStatus,
 
-//       trailerNum: trailer['trailer Number'],
-//       licensePlate: trailer['License Plate'],
-//       plateExpiry: trailer['Plate Expiry'],
-//       inspectionExpiry: trailer['Inspection Expiry'],
-//       type: trailer['Type'],
-//       ownership: trailer['Ownership'],
-//       notes: trailer['Notes'],
+      type: trailer['Type'],
+      licensePlate: trailer['License Plate'],
+      plateExpiry: trailer['Plate Expiry'],
+      inspectionExpiry: trailer['Inspection Expiry'],
+      notes: trailer['Notes'],
 
-//       mileage: trailer['Mileage'],
-//       axels: trailer['Axels'],
-//       fuelType: trailer['Fuel Type'],
-//       year: trailer['Year'],
-//       startDate: trailer['Start Date'],
-//       deactivationDate: trailer['Deactivation Date'],
-//       registeredState: trailer['Registered State'],
-//       weight: trailer['Weight'],
-//       vin: trailer['VIN'],
-//       dotExpiry: trailer['DOT Expiry'],
-
-//       orgId: organization.id,
-//     },
-//   });
-//   return resp;
-// }
+      orgId: organization.id,
+    },
+  });
+  return resp;
+}
