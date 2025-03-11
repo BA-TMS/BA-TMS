@@ -32,14 +32,6 @@ const formatron = function (truck: TrailerData) {
       truck.inspectionExpiry instanceof Date
         ? truck.inspectionExpiry.toDateString()
         : null,
-    startDate:
-      truck.startDate instanceof Date ? truck.startDate.toDateString() : null,
-    deactivationDate:
-      truck.deactivationDate instanceof Date
-        ? truck.deactivationDate.toDateString()
-        : null,
-    dotExpiry:
-      truck.dotExpiry instanceof Date ? truck.dotExpiry.toDateString() : null,
   } as unknown as TrailerData;
 };
 
