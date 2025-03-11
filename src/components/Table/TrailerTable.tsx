@@ -41,13 +41,16 @@ export default function TrailerTable() {
     value: string,
     status: string
   ) {
-    // status to uppercase
-    const trailerStatus = status?.toUpperCase();
+    // status to uppercase and remove spaces in case of 'Not Available'
+    const trailerStatus = status?.toUpperCase().replaceAll(' ', '');
 
-    // Filter by status (if it's "Active" or "Inactive")
     let filteredTrailers = trailers;
 
-    if (trailerStatus === 'ACTIVE' || trailerStatus === 'INACTIVE') {
+    if (
+      trailerStatus === 'ACTIVE' ||
+      trailerStatus === 'INACTIVE' ||
+      trailerStatus === 'NOTAVAILABLE'
+    ) {
       filteredTrailers = trailers.filter(
         (trailers) => trailers.status === trailerStatus
       );
