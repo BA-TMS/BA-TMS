@@ -8,7 +8,7 @@ import TextInput from '@ui/Form/TextInput';
 import SelectInput from '@ui/Form/SelectInput';
 import DateSelect from '@/components/UI_Elements/Form/DateSelect';
 import Button from '@/components/UI_Elements/Buttons/Button';
-import { status } from '@/components/Forms/data/details';
+import { trailerStatus, trailers } from '@/components/Forms/data/details';
 import { ModalContext } from '@/context/modalContext';
 import { useRouter, usePathname } from 'next/navigation';
 
@@ -105,7 +105,12 @@ export const TrailerDetails = () => {
         <div className="flex-grow">
           <div className="flex flex-col gap-4 md:flex-row">
             <div className="w-full md:w-1/3">
-              <TextInput control={control} name="Type" required={true} />
+              <SelectInput
+                control={control}
+                name="Type"
+                options={trailers}
+                required={true}
+              />
             </div>
             <div className="w-full md:w-1/3">
               <TextInput control={control} name="License Plate" />
@@ -114,7 +119,7 @@ export const TrailerDetails = () => {
               <SelectInput
                 control={control}
                 name="Status"
-                options={status}
+                options={trailerStatus}
                 required={true}
               />
             </div>
