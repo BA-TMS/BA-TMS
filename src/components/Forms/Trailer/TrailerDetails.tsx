@@ -35,7 +35,9 @@ export const TrailerDetails = () => {
   const router = useRouter();
 
   const pathname = usePathname();
-  const segment = pathname.includes('add-truck') ? 'add-truck' : 'update-truck';
+  const segment = pathname.includes('add-trailer')
+    ? 'add-trailer'
+    : 'update-trailer';
 
   const { formData, saveFormValues } = useContext(ModalContext);
 

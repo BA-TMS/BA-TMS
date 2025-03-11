@@ -2,10 +2,10 @@ export interface TrailerFormData {
   orgName: string;
   Status: string;
 
+  Type: string;
   'License Plate': string;
   'Plate Expiry': string;
   'Inspection Expiry': string;
-  Type: string | null;
   Notes: string | null;
 }
 

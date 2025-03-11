@@ -2,10 +2,10 @@
 
 import prisma from '@util/prisma/client';
 import { getOrganization } from '@/lib/dbActions';
-import { Status } from '@prisma/client';
+import { TrailerStatus } from '@prisma/client';
 import { TrailerFormData } from '@/types/trailerTypes';
 
-// this file contains actions for interacting with the database truck table
+// this file contains actions for interacting with the database trailer table
 
 const TRAILER_RELATIONS = {
   organization: { select: { orgName: true } },
@@ -29,77 +29,64 @@ export async function getTrailers(organization: string) {
   return trailers;
 }
 
-// export async function addTruck({ truck }: { truck: TruckFormData }) {
-//   // find organization based on name
-//   const organization = await getOrganization(truck.orgName);
+export async function addTrailer({ trailer }: { trailer: TrailerFormData }) {
+  // find organization based on name
+  const organization = await getOrganization(trailer.orgName);
 
-//   // TODO: Better error handling
-//   if (organization === null) {
-//     throw 'can not add truck :(';
-//   }
-//   const resp = await prisma.truck.create({
-//     data: {
-//       status: truck['Status'] as Status,
+  // TODO: Better error handling
+  if (organization === null) {
+    throw 'can not add trailer :(';
+  }
+  const resp = await prisma.trailer.create({
+    data: {
+      status: trailer['Status'] as TrailerStatus,
 
-//       truckNum: truck['Truck Number'],
-//       licensePlate: truck['License Plate'],
-//       plateExpiry: truck['Plate Expiry'],
-//       inspectionExpiry: truck['Inspection Expiry'],
-//       type: truck['Type'],
-//       ownership: truck['Ownership'],
-//       notes: truck['Notes'],
+      type: trailer['Type'],
+      licensePlate: trailer['License Plate'],
+      plateExpiry: trailer['Plate Expiry'],
+      inspectionExpiry: trailer['Inspection Expiry'],
 
-//       mileage: truck['Mileage'],
-//       axels: truck['Axels'],
-//       fuelType: truck['Fuel Type'],
-//       year: truck['Year'],
-//       startDate: truck['Start Date'],
-//       deactivationDate: truck['Deactivation Date'],
-//       registeredState: truck['Registered State'],
-//       weight: truck['Weight'],
-//       vin: truck['VIN'],
-//       dotExpiry: truck['DOT Expiry'],
+      notes: trailer['Notes'],
+      orgId: organization.id,
+    },
+  });
+  return resp;
+}
 
-//       orgId: organization.id,
-//     },
-//   });
-//   return resp;
-// }
-
-// export async function updateTruck(
+// export async function updatetrailer(
 //   id: string,
-//   { truck }: { truck: Partial<TruckFormData> }
+//   { trailer }: { trailer: Partial<trailerFormData> }
 // ) {
 //   // find organization based on name
-//   const organization = await getOrganization(truck.orgName as string);
+//   const organization = await getOrganization(trailer.orgName as string);
 
 //   // TODO: Better error handling
 //   if (organization === null) {
-//     throw 'can not update truck :(';
+//     throw 'can not update trailer :(';
 //   }
-//   const resp = await prisma.truck.update({
+//   const resp = await prisma.trailer.update({
 //     where: { id: id },
 //     data: {
-//       status: truck['Status'] as Status,
+//       status: trailer['Status'] as Status,
 
-//       truckNum: truck['Truck Number'],
-//       licensePlate: truck['License Plate'],
-//       plateExpiry: truck['Plate Expiry'],
-//       inspectionExpiry: truck['Inspection Expiry'],
-//       type: truck['Type'],
-//       ownership: truck['Ownership'],
-//       notes: truck['Notes'],
+//       trailerNum: trailer['trailer Number'],
+//       licensePlate: trailer['License Plate'],
+//       plateExpiry: trailer['Plate Expiry'],
+//       inspectionExpiry: trailer['Inspection Expiry'],
+//       type: trailer['Type'],
+//       ownership: trailer['Ownership'],
+//       notes: trailer['Notes'],
 
-//       mileage: truck['Mileage'],
-//       axels: truck['Axels'],
-//       fuelType: truck['Fuel Type'],
-//       year: truck['Year'],
-//       startDate: truck['Start Date'],
-//       deactivationDate: truck['Deactivation Date'],
-//       registeredState: truck['Registered State'],
-//       weight: truck['Weight'],
-//       vin: truck['VIN'],
-//       dotExpiry: truck['DOT Expiry'],
+//       mileage: trailer['Mileage'],
+//       axels: trailer['Axels'],
+//       fuelType: trailer['Fuel Type'],
+//       year: trailer['Year'],
+//       startDate: trailer['Start Date'],
+//       deactivationDate: trailer['Deactivation Date'],
+//       registeredState: trailer['Registered State'],
+//       weight: trailer['Weight'],
+//       vin: trailer['VIN'],
+//       dotExpiry: trailer['DOT Expiry'],
 
 //       orgId: organization.id,
 //     },

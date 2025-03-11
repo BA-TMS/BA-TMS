@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import {
   getTrailers,
-  addTruck,
-  updateTruck as apiUpdateTruck,
+  addTrailer,
+  // updateTruck as apiUpdateTruck,
 } from '@/lib/actions/trailerActions';
 import { TrailerData, TrailerFormData } from '@/types/trailerTypes';
 
@@ -44,18 +44,18 @@ export const fetchTrailers = createAsyncThunk<TrailerData[], string>(
   }
 );
 
-// export const createTruck = createAsyncThunk<TrailerData, TrailerFormData>(
-//   'trucks/createTruck',
-//   async (truck, { rejectWithValue }) => {
-//     try {
-//       const response = await addTruck({ truck });
+export const createTrailer = createAsyncThunk<TrailerData, TrailerFormData>(
+  'trailers/createTrailer',
+  async (trailer, { rejectWithValue }) => {
+    try {
+      const response = await addTrailer({ trailer });
 
-//       return formatron(response as TrailerData);
-//     } catch (error) {
-//       return rejectWithValue('Failed to create truck');
-//     }
-//   }
-// );
+      return formatron(response as TrailerData);
+    } catch (error) {
+      return rejectWithValue('Failed to create trailer');
+    }
+  }
+);
 
 // export const updateTruck = createAsyncThunk<TrailerData, UpdatedTrailerPayload>(
 //   'trucks/updateTruck',
@@ -91,16 +91,16 @@ const trailerSlice = createSlice({
       })
       .addCase(fetchTrailers.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message || 'Failed to fetch trucks';
+        state.error = action.error.message || 'Failed to fetch trailers';
+      })
+      .addCase(createTrailer.fulfilled, (state, action) => {
+        state.items.push(action.payload);
+      })
+      .addCase(createTrailer.rejected, (state, action) => {
+        const message = action.payload;
+        state.status = 'failed';
+        state.error = message as string;
       });
-    //   .addCase(createTruck.fulfilled, (state, action) => {
-    //     state.items.push(action.payload);
-    //   })
-    //   .addCase(createTruck.rejected, (state, action) => {
-    //     const message = action.payload;
-    //     state.status = 'failed';
-    //     state.error = message as string;
-    //   })
     //   .addCase(
     //     updateTruck.fulfilled,
     //     (state, action: PayloadAction<TrailerData>) => {
