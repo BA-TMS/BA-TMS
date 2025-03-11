@@ -13,6 +13,15 @@ import { createTrailer, updateTrailer } from '@/store/slices/trailerSlice';
 
 // this component submits form data from the context to database using redux
 
+const statusMap = {
+  ACTIVE: 'Active',
+  INACTIVE: 'Inactive',
+  NOTAVAILABLE: 'Not Available',
+} as const;
+
+type StatusMap = typeof statusMap;
+type StatusKey = keyof StatusMap;
+
 export const TrailerReview: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -81,7 +90,10 @@ export const TrailerReview: React.FC = () => {
               />
             </div>
             <div className="w-full md:w-1/3">
-              <DataDisplay title="Status" text={formData['Status']} />
+              <DataDisplay
+                title="Status"
+                text={statusMap[formData['Status'] as StatusKey]}
+              />
             </div>
           </div>
           <div className="flex flex-col gap-4 md:flex-row">
