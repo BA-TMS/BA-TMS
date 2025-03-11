@@ -102,7 +102,7 @@ export default function TrailerTable() {
     <>
       <div className="relative flex justify-end mb-6">
         <div className="absolute right-4 bottom-2">
-          <Link href="/trailer/add-trailer/details">
+          <Link href="/trailers/add-trailer/details">
             <Button>Add Trailer</Button>
           </Link>
         </div>
