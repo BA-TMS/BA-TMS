@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
 
-export default function ViewTruck() {
-  return redirect('/trucks');
+export default function ViewTrailer() {
+  return redirect('/trailers');
 }
