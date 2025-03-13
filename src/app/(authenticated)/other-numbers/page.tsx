@@ -1,14 +1,16 @@
 'use client';
 
-import { ContextProvider } from '@/context/modalContext';
-import OtherNumbersForm from '@/components/Forms/OtherNumbersForm';
+import React from 'react';
+import PageTitle from '@/components/Page/PageTitle';
+import Broker from '@/components/Table/Broker';
 
-const OtherNumbersPage = () => {
+const CustomsBrokerPage: React.FC = () => {
   return (
-    <ContextProvider>
-      <OtherNumbersForm></OtherNumbersForm>
-    </ContextProvider>
+    <>
+      <PageTitle pageTitle="Customs Broker" />
+      <Broker />
+    </>
   );
 };
 
-export default OtherNumbersPage;
+export default CustomsBrokerPage;
