@@ -200,7 +200,7 @@ async function main() {
 
   for (const currTruck of trucks) {
     const resp = await prisma.truck.upsert({
-      where: { licensePlate: currTruck.licensePlate },
+      where: { id: currTruck.id },
       update: {},
       create: currTruck,
     });
@@ -578,18 +578,22 @@ const loads = [
 
 const trucks = [
   {
+    id: 'fgh739',
     truckNum: 'AA000',
     licensePlate: '88BB000',
     plateExpiry: new Date(2027, 9, 4),
     inspectionExpiry: new Date(2027, 9, 4),
     type: 'Big',
+    orgId: 'e739-446c-ba47-e92d92de648c',
   },
   {
+    id: 'fgh73940',
     truckNum: 'A1B2C3D4',
     licensePlate: '89RM99',
     plateExpiry: new Date(2027, 9, 4),
     inspectionExpiry: new Date(2027, 9, 4),
     type: 'Also Big',
+    orgId: '103784cb-e739-446c-ba47-e92d92de648a',
   },
 ];
 

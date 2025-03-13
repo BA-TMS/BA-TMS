@@ -7,10 +7,6 @@ export const status = [{ Active: 'ACTIVE' }, { Inactive: 'INACTIVE' }];
 
 export const currency = [{ USD: 'USD' }, { CAD: 'CAD' }];
 
-type Owner = 'Company Truck' | 'Owner/ Operator';
-
-export const owner: Owner[] = ['Company Truck', 'Owner/ Operator'];
-
 export const paymentTerms = [
   { '.5/10 Net 30': '.5/10 Net 30' },
   { '1.5/2 Net 30': '1.5/2 Net 30' },
@@ -128,6 +124,12 @@ export const paymentTerms = [
   { 'Quick Pay Com Check': 'Quick Pay Com Check' },
   { 'Quick Pay EFS': 'Quick Pay EFS' },
   { 'Wire Transfer': 'Wire Transfer' },
+];
+
+export const truckTypes = [
+  { Light: 'Light' },
+  { Medium: 'Medium' },
+  { Heavy: 'Heavy' },
 ];
 
 export const trailers: string[] = [

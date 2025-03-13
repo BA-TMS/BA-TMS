@@ -6,7 +6,6 @@ import { PrismaClient, DriverType } from '@prisma/client';
 import { DriverFormData } from '@/types/driverTypes';
 import { BilleeFormData } from '@/types/billeeTypes';
 import { TrailerFormData } from '@/types/trailerTypes';
-import { TruckFormData } from '@/types/truckTypes';
 import { AccountPreferences } from '@/types/accountTypes';
 
 // This file contains different server actions for interracting with the database via Prisma client
@@ -86,11 +85,6 @@ export async function getThirdParty() {
 export async function getTrailers() {
   const trailers = prisma.trailer.findMany();
   return trailers;
-}
-
-export async function getTrucks() {
-  const trucks = prisma.truck.findMany();
-  return trucks;
 }
 
 export async function getUsers(parentOrg: string) {
@@ -219,20 +213,6 @@ export async function addTrailer({ trailer }: { trailer: TrailerFormData }) {
       inspectionExpiry: trailer['Inspection Expiry'],
       type: trailer['Trailer Type'],
       status: trailer['Status'],
-    },
-  });
-  return resp;
-}
-
-export async function addTruck({ truck }: { truck: TruckFormData }) {
-  const resp = await prisma.truck.create({
-    data: {
-      truckNum: truck['Truck Number'],
-      licensePlate: truck['License Plate'], // should be optional?
-      type: truck['Truck Type'],
-      plateExpiry: truck['Plate Expiry'],
-      inspectionExpiry: truck['Inspection Expiry'],
-      iftaLicensed: truck['IFTA Licensed'],
     },
   });
   return resp;
