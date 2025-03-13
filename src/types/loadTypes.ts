@@ -10,10 +10,10 @@ export type LoadStatus =
   | 'CLAIM';
 
 export interface LoadData {
-  id?: string;
+  id: string;
   createdAt: Date;
   updatedAt: Date;
-  ownerId: string;
+
   loadNum: string;
   payOrderNum: string;
   shipDate: Date | null;
@@ -29,10 +29,13 @@ export interface LoadData {
   customer: { companyName: string } | null;
   shipper: { name: string } | null;
   consignee: { name: string } | null;
+
+  orgId: string;
+  organization: { orgName: string };
 }
 
 export interface LoadFormData {
-  Owner: string;
+  orgName: string;
   Status?: LoadStatus;
   'Load Number': string;
   'Pay Order Number': string;
@@ -47,7 +50,6 @@ export interface LoadFormData {
 
 // map load types when needed
 export const loadFieldMap: Record<string, keyof LoadData> = {
-  Owner: 'ownerId',
   Status: 'status',
   'Load Number': 'loadNum',
   'Pay Order Number': 'payOrderNum',

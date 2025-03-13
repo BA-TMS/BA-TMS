@@ -37,11 +37,11 @@ export default function StoreProvider({
   // dispatch actions when the store is created AND organization is available
   useEffect(() => {
     if (storeRef.current && organization && !isStoreReady) {
-      storeRef.current.dispatch(fetchLoads());
+      storeRef.current.dispatch(fetchLoads(organization));
       storeRef.current.dispatch(fetchBrokers(organization));
-      storeRef.current.dispatch(fetchCarriers());
+      storeRef.current.dispatch(fetchCarriers(organization));
       storeRef.current.dispatch(fetchConsignees(organization));
-      storeRef.current.dispatch(fetchCustomers());
+      storeRef.current.dispatch(fetchCustomers(organization));
       storeRef.current.dispatch(fetchDrivers(organization));
       storeRef.current.dispatch(fetchFactors(organization));
       storeRef.current.dispatch(fetchShippers(organization));

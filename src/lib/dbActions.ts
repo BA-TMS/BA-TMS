@@ -2,33 +2,13 @@
 'use server';
 
 import prisma from '@util/prisma/client';
-import { DocketNumber, PrismaClient, DriverType } from '@prisma/client';
-import { CustomerFormData } from '@/types/customerTypes';
-import { LoadFormData } from '@/types/loadTypes';
-import { CarrierFormData } from '@/types/carrierTypes';
+import { PrismaClient, DriverType } from '@prisma/client';
 import { DriverFormData } from '@/types/driverTypes';
 import { BilleeFormData } from '@/types/billeeTypes';
 import { TrailerFormData } from '@/types/trailerTypes';
 import { AccountPreferences } from '@/types/accountTypes';
 
 // This file contains different server actions for interracting with the database via Prisma client
-
-const LOAD_RELATIONS = {
-  carrier: { select: { carrierName: true } },
-  driver: { select: { name: true } },
-  customer: { select: { companyName: true } },
-  shipper: { select: { name: true } },
-  consignee: { select: { name: true } },
-};
-
-const CARRIER_RELATIONS = {
-  factor: { select: { name: true } },
-  CarrierInsurance: true,
-};
-
-const CUSTOMER_RELATIONS = {
-  factor: { select: { name: true } },
-};
 
 const DRIVER_RELATIONS = {
   organization: { select: { orgName: true } },
@@ -58,48 +38,6 @@ async function getter(
   return resp;
 }
 
-export async function getCarrier(id: string) {
-  const carrier = await prisma.carrier.findUnique({
-    where: {
-      id: id,
-    },
-    include: { CarrierInsurance: true },
-  });
-  return carrier;
-}
-
-export async function getCarriers() {
-  const relations = CARRIER_RELATIONS;
-  const carriers = await getter(prisma.carrier, relations);
-  return carriers;
-}
-
-export async function getCarrierInsurance(id: string) {
-  const insurance = await prisma.carrierInsurance.findUnique({
-    where: {
-      carrierId: id,
-    },
-  });
-  return insurance;
-}
-
-export async function getCustomer(id: string) {
-  const customer = await prisma.customer.findUnique({
-    where: {
-      id: id,
-    },
-  });
-  return customer;
-}
-
-export async function getCustomers() {
-  const relations = {
-    factor: { select: { name: true } },
-  };
-  const customers = await getter(prisma.customer, relations);
-  return customers;
-}
-
 export async function getDriver(id: string) {
   const driver = await prisma.driver.findUnique({
     where: {
@@ -120,20 +58,6 @@ export async function getDrivers(organization: string) {
     include: DRIVER_RELATIONS,
   });
   return drivers;
-}
-
-export async function getLoad(id: string) {
-  const load = await prisma.load.findUnique({
-    where: {
-      id: id,
-    },
-  });
-  return load;
-}
-
-export async function getLoads() {
-  const loads = await getter(prisma.load, LOAD_RELATIONS);
-  return loads;
 }
 
 export async function getOrganization(orgName: string) {
@@ -180,125 +104,6 @@ export async function getAccountPreferences() {
 }
 
 /** Add new entries to tables. */
-
-export async function addCarrier({ carrier }: { carrier: CarrierFormData }) {
-  const resp = await prisma.carrier.create({
-    data: {
-      status: carrier['Status'],
-
-      carrierName: carrier['Carrier Name'],
-      address: carrier['Address'],
-      addressField2: carrier['Address Line 2'],
-      addressField3: carrier['Address Line 3'],
-      city: carrier['City'],
-      state: carrier['State'],
-      postCountry: carrier['Country'],
-      postCode: carrier['Zip'],
-
-      contactName: carrier['Contact Name'],
-      contactEmail: carrier['Contact Email'],
-      contactTelephone: carrier['Telephone'],
-      contactTollFree: carrier['Toll Free'],
-      contactFax: carrier['Fax'],
-
-      paymentTerms: carrier['Payment Terms'],
-      taxId: carrier['Tax ID#'] !== '' ? carrier['Tax ID#'] : null,
-      docketNumType: carrier['Docket Number Type'] as DocketNumber,
-      docketNumber: carrier['Docket Number'],
-      ursNumber: carrier['URS #'] !== '' ? carrier['URS #'] : null,
-      dotId: carrier['DOT ID#'],
-
-      factorId:
-        carrier['Factoring Company'] !== ''
-          ? carrier['Factoring Company']
-          : null,
-      notes: carrier['Notes'],
-
-      CarrierInsurance: {
-        create: {
-          liabilityCompany: carrier['Liability Insurance Company'],
-          liabilityPolicy: carrier['Liability Policy #'],
-          liabilityExpiration: carrier['Liability Expiration Date'],
-          liabilityTelephone: carrier['Liability Telephone'],
-          liabilityContact: carrier['Liability Contact'],
-
-          autoInsCompany: carrier['Auto Insurance Company'],
-          autoInsPolicy: carrier['Auto Policy #'],
-          autoInsExpiration: carrier['Auto Expiration Date'],
-          autoInsTelephone: carrier['Auto Telephone'],
-          autoInsContact: carrier['Auto Contact'],
-
-          cargoCompany: carrier['Cargo Company'],
-          cargoPolicy: carrier['Cargo Policy #'],
-          cargoExpiration: carrier['Cargo Expiration Date'],
-          cargoTelephone: carrier['Cargo Telephone'],
-          cargoContact: carrier['Cargo Contact'],
-          cargoWSIB: carrier['Cargo WSIB #'],
-
-          fmcsaInsCompany: carrier['FMCSA Insurance Company'],
-          fmcsaInsPolicy: carrier['FMCSA Policy #'],
-          fmcsaInsExpiration: carrier['FMCSA Expiration Date'],
-          fmcsaType: carrier['FMCSA Type'],
-          fmcsaCoverage: carrier['FMCSA Coverage $'],
-          fmcsaTelephone: carrier['FMCSA Telephone'],
-        },
-      },
-    },
-    include: CARRIER_RELATIONS,
-  });
-  return resp;
-}
-
-export async function addCustomer({
-  customer,
-}: {
-  customer: CustomerFormData;
-}) {
-  const resp = await prisma.customer.create({
-    data: {
-      status: customer['Status'],
-      companyName: customer['Company Name'],
-      contactName: customer['Contact Name'],
-      secondaryContactName: customer['Secondary Contact Name'],
-      contactEmail: customer['Contact Email'],
-      contactTelephone: customer['Telephone'],
-      contactTollFree: customer['Toll Free'],
-      contactFax: customer['Fax'],
-
-      contactAddress: customer['Address'],
-      contactAddressField2: customer['Address Line 2'],
-      contactAddressField3: customer['Address Line 3'],
-      contactCity: customer['City'],
-      contactState: customer['State'],
-      contactPostCode: customer['Zip'],
-      contactCountry: customer['Country'],
-
-      billingAddress: customer['Billing Address'],
-      billingAddressField2: customer['Billing Address Line 2'],
-      billingAddressField3: customer['Billing Address Line 3'],
-      billingCity: customer['Billing City'],
-      billingState: customer['Billing State'],
-      billingPostCode: customer['Billing Zip'],
-      billingCountry: customer['Billing Country'],
-      billingEmail: customer['Billing Email'],
-      billingTelephone: customer['Billing Telephone'],
-
-      // advanced options
-      salesRepName: customer['Sales Rep'],
-      currency: customer['Currency'],
-      paymentTerms: customer['Payment Terms'],
-      creditLimit: customer['Credit Limit'],
-      federalID: customer['Federal ID'],
-      // empty string will throw an error as the fields must be null
-      factorId:
-        customer['Factoring Company'] !== ''
-          ? customer['Factoring Company']
-          : null,
-    },
-    include: CUSTOMER_RELATIONS, // gives us factor: {name: ___}
-  });
-  return resp;
-}
 
 export async function addDriver({ driver }: { driver: DriverFormData }) {
   // find organization based on name
@@ -383,33 +188,6 @@ export async function addDriver({ driver }: { driver: DriverFormData }) {
   }
 }
 
-export async function addLoad({ load }: { load: LoadFormData }) {
-  // do not change to dispatched without a carrier
-  if (load['Status'] === 'DISPATCHED' && !load['Carrier']) {
-    throw new Error(
-      'Cannot create a load with status of "Dispatched" without a carrier.'
-    );
-  }
-
-  const resp = await prisma.load.create({
-    data: {
-      ownerId: load['Owner'],
-      loadNum: load['Load Number'],
-      payOrderNum: load['Pay Order Number'],
-      carrierId: load['Carrier'],
-      driverId: load['Driver'],
-      customerId: load['Customer'],
-      originId: load['Shipper'],
-      destId: load['Consignee'],
-      status: load['Status'],
-      shipDate: load['Ship Date'],
-      deliveryDate: load['Received Date'],
-    },
-    include: LOAD_RELATIONS,
-  });
-  return resp;
-}
-
 export async function addThirdParty({ billee }: { billee: BilleeFormData }) {
   const resp = await prisma.billee.create({
     data: {
@@ -441,143 +219,6 @@ export async function addTrailer({ trailer }: { trailer: TrailerFormData }) {
 }
 
 /** Update row */
-
-export async function updateCarrier(
-  id: string,
-  { carrier }: { carrier: CarrierFormData }
-) {
-  const resp = await prisma.carrier.update({
-    where: { id: id },
-    data: {
-      status: carrier['Status'],
-
-      carrierName: carrier['Carrier Name'],
-      address: carrier['Address'],
-      addressField2: carrier['Address Line 2'],
-      addressField3: carrier['Address Line 3'],
-      city: carrier['City'],
-      state: carrier['State'],
-      postCountry: carrier['Country'],
-      postCode: carrier['Zip'],
-
-      contactName: carrier['Contact Name'],
-      contactEmail: carrier['Contact Email'],
-      contactTelephone: carrier['Telephone'],
-      contactTollFree: carrier['Toll Free'],
-      contactFax: carrier['Fax'],
-
-      paymentTerms: carrier['Payment Terms'],
-      taxId: carrier['Tax ID#'] !== '' ? carrier['Tax ID#'] : null,
-      docketNumType: carrier['Docket Number Type'] as DocketNumber,
-      docketNumber: carrier['Docket Number'],
-      ursNumber: carrier['URS #'] !== '' ? carrier['URS #'] : null,
-      dotId: carrier['DOT ID#'],
-
-      factorId:
-        carrier['Factoring Company'] !== ''
-          ? carrier['Factoring Company']
-          : null,
-      notes: carrier['Notes'],
-
-      CarrierInsurance: {
-        update: {
-          liabilityCompany: carrier['Liability Insurance Company'],
-          liabilityPolicy: carrier['Liability Policy #'],
-          liabilityExpiration: carrier['Liability Expiration Date'],
-          liabilityTelephone: carrier['Liability Telephone'],
-          liabilityContact: carrier['Liability Contact'],
-
-          autoInsCompany: carrier['Auto Insurance Company'],
-          autoInsPolicy: carrier['Auto Policy #'],
-          autoInsExpiration: carrier['Auto Expiration Date'],
-          autoInsTelephone: carrier['Auto Telephone'],
-          autoInsContact: carrier['Auto Contact'],
-
-          cargoCompany: carrier['Cargo Company'],
-          cargoPolicy: carrier['Cargo Policy #'],
-          cargoExpiration: carrier['Cargo Expiration Date'],
-          cargoTelephone: carrier['Cargo Telephone'],
-          cargoContact: carrier['Cargo Contact'],
-          cargoWSIB: carrier['Cargo WSIB #'],
-
-          fmcsaInsCompany: carrier['FMCSA Insurance Company'],
-          fmcsaInsPolicy: carrier['FMCSA Policy #'],
-          fmcsaInsExpiration: carrier['FMCSA Expiration Date'],
-          fmcsaType: carrier['FMCSA Type'],
-          fmcsaCoverage: carrier['FMCSA Coverage $'],
-          fmcsaTelephone: carrier['FMCSA Telephone'],
-        },
-      },
-    },
-    include: CARRIER_RELATIONS,
-  });
-  return resp;
-}
-
-export async function updateCustomer(
-  id: string,
-  { formData }: { formData: CustomerFormData }
-) {
-  // map to convert formData keys to database keys
-  const mapData = (customer: CustomerFormData) => {
-    if (!customer) {
-      throw new Error('Customer data is undefined or null');
-    }
-
-    return {
-      status: customer['Status'],
-      companyName: customer['Company Name'],
-      contactName: customer['Contact Name'],
-      secondaryContactName: customer['Secondary Contact Name'],
-      contactEmail: customer['Contact Email'],
-      contactTelephone: customer['Telephone'],
-      contactTollFree: customer['Toll Free'],
-      contactFax: customer['Fax'],
-
-      contactAddress: customer['Address'],
-      contactAddressField2: customer['Address Line 2'],
-      contactAddressField3: customer['Address Line 3'],
-      contactCity: customer['City'],
-      contactState: customer['State'],
-      contactPostCode: customer['Zip'],
-      contactCountry: customer['Country'],
-
-      billingAddress: customer['Billing Address'],
-      billingAddressField2: customer['Billing Address Line 2'],
-      billingAddressField3: customer['Billing Address Line 3'],
-      billingCity: customer['Billing City'],
-      billingState: customer['Billing State'],
-      billingPostCode: customer['Billing Zip'],
-      billingCountry: customer['Billing Country'],
-      billingEmail: customer['Billing Email'],
-      billingTelephone: customer['Billing Telephone'],
-
-      // advanced options
-      salesRepName: customer['Sales Rep'],
-      currency: customer['Currency'],
-      paymentTerms: customer['Payment Terms'],
-      creditLimit: customer['Credit Limit'],
-      federalID: customer['Federal ID'],
-      // empty string will throw an error as the fields must be null
-      factorId:
-        customer['Factoring Company'] !== ''
-          ? customer['Factoring Company']
-          : null,
-    };
-  };
-
-  const mappedCustomer = mapData(formData);
-
-  const resp = await prisma.customer.update({
-    where: { id },
-    data: {
-      ...mappedCustomer,
-    },
-    include: CUSTOMER_RELATIONS, // gives us factor: {name: ___}
-  });
-
-  return resp;
-}
 
 export async function updateDriver(
   id: string,
@@ -657,65 +298,11 @@ export async function updateDriver(
   return resp;
 }
 
-export async function updateLoad(
-  id: string,
-  { formData }: { formData: Partial<LoadFormData> }
-) {
-  // do not change to dispatched without a carrier
-  if (formData['Status'] === 'DISPATCHED' && !formData['Carrier']) {
-    throw new Error(
-      'Cannot update a load status to "Dispatched" without a carrier.'
-    );
-  }
-  // map to convert formData keys to database keys
-  const mapLoadData = (load: Partial<LoadFormData>) => {
-    if (!load) {
-      throw new Error('Load data is undefined or null');
-    }
-
-    return {
-      ownerId: load['Owner'],
-      loadNum: load['Load Number'],
-      payOrderNum: load['Pay Order Number'],
-      carrierId: load['Carrier'] ? load['Carrier'] : null,
-      driverId: load['Driver'] ? load['Driver'] : null,
-      customerId: load['Customer'],
-      originId: load['Shipper'] ? load['Shipper'] : null,
-      destId: load['Consignee'] ? load['Consignee'] : null,
-      status: load['Status'],
-      shipDate: load['Ship Date'],
-      deliveryDate: load['Received Date'],
-    };
-  };
-
-  const mappedLoad = mapLoadData(formData);
-
-  const resp = await prisma.load.update({
-    where: { id },
-    data: {
-      ...mappedLoad,
-    },
-    include: LOAD_RELATIONS,
-  });
-
-  return resp;
-}
-
 export async function updateAccountPreferences(prefs: AccountPreferences) {
   await prisma.accountPreferences.update({
     where: {
       id: '0',
     },
     data: prefs,
-  });
-}
-
-/** Delete rows */
-
-export async function deleteLoad(id: string) {
-  return prisma.load.delete({
-    where: {
-      id: id,
-    },
   });
 }

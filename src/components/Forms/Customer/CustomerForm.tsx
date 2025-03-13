@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { ModalContext } from '@/context/modalContext';
+import { UserContext } from '@/context/userContextProvider';
 import * as yup from 'yup';
 import Button from '../../UI_Elements/Buttons/Button';
 import { useDispatch, useSelector } from 'react-redux';
@@ -71,6 +72,9 @@ const CustomerForm = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { formData, saveFormValues } = useContext(ModalContext);
+
+  const { organization } = useContext(UserContext);
+  formData.orgName = organization;
 
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
 

@@ -29,16 +29,18 @@ export interface CarrierData {
   factor: { name: string } | null;
   factorId: string | null;
 
-  CarrierInsurance?: CarrierInsuranceData;
+  CarrierInsurance: CarrierInsuranceData;
 
   notes: string | null;
+
+  orgId: string;
+  organization: { orgName: string };
 }
 
 export interface CarrierInsuranceData {
   id: string;
-  // carrier   Carrier  @relation(fields: [carrierId], references: [id])
+
   carrier: { name: string };
-  // carrierId String   @unique
   carrierId: string | null;
   createdAt: Date | string;
   updatedAt: Date | string;
@@ -96,6 +98,8 @@ export interface CarrierFormData {
   'Factoring Company': string | null;
 
   Notes: string | null;
+
+  orgName: string;
 
   'Liability Insurance Company': string | null;
   'Liability Policy #': string | null;
