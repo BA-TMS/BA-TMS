@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { UseControllerProps, useController } from 'react-hook-form';
+import { UserContext } from '@/context/userContextProvider';
 
 // for use when we need to fetch from database to populate options
 // pass this component a database action as a prop
@@ -15,8 +17,7 @@ interface Option {
 }
 
 interface SelectInputProps<T> extends UseControllerProps {
-  dbaction: () => Promise<T[]>;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  dbaction: (org: string) => any;
   control?: any; // this is from external library
   required?: boolean;
   nameKey?: keyof T; // in case the data returned from dbaction does not have a "name" key but instead the "name" is something else, like "companyName"
@@ -35,13 +36,15 @@ const DynamicSelect = <T extends Option>({
     rules: { required },
   });
 
+  const { organization } = useContext(UserContext);
+
   const [options, setOptions] = useState<T[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async (org: string) => {
       try {
-        const data = await dbaction();
+        const data = await dbaction(org);
         setOptions(data);
         setLoading(false);
       } catch (error) {
@@ -49,8 +52,8 @@ const DynamicSelect = <T extends Option>({
       }
     };
 
-    fetchData();
-  }, [dbaction]);
+    fetchData(organization);
+  }, [dbaction, organization]);
 
   return (
     <div className="mb-1.5">

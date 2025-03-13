@@ -3,7 +3,7 @@ import {
   getCustomers,
   addCustomer,
   updateCustomer as apiUpdateCustomer,
-} from '@/lib/dbActions';
+} from '@/lib/actions/customerActions';
 import { CustomerData, CustomerFormData } from '@/types/customerTypes';
 
 interface UpdatedCustomerPayload {
@@ -34,10 +34,10 @@ const formatron = function (customer: CustomerData) {
 };
 
 // Define Async Thunks
-export const fetchCustomers = createAsyncThunk<CustomerData[]>(
+export const fetchCustomers = createAsyncThunk<CustomerData[], string>(
   'customers/fetchCustomers',
-  async () => {
-    const data = await getCustomers();
+  async (orgName) => {
+    const data = await getCustomers(orgName);
 
     return data.map((customer: CustomerData) => formatron(customer));
   }
@@ -67,7 +67,7 @@ export const updateCustomer = createAsyncThunk<
   ) => {
     try {
       const customer = await apiUpdateCustomer(id, {
-        formData: updatedCustomer as CustomerFormData,
+        customer: updatedCustomer as CustomerFormData,
       });
 
       return formatron(customer);

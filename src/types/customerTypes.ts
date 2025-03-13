@@ -33,13 +33,16 @@ export type CustomerData = {
   paymentTerms: string;
   creditLimit: number | Decimal | string;
   federalID: string;
-  // factor: string | null;
+
   factor: { name: string } | null;
   factorId: string | null;
+  orgId: string;
+  organization: { orgName: string };
 };
 
 // keys correspond to form input names
 export interface CustomerFormData {
+  orgName: string;
   Status: 'ACTIVE' | 'INACTIVE';
   'Company Name': string;
   'Contact Name': string;

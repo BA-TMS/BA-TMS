@@ -7,14 +7,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import TextInput from '../UI_Elements/Form/TextInput';
 import DynamicSelect from '../UI_Elements/Form/DynamicSelect';
 import { ModalContext } from '@/context/modalContext';
-import {
-  getCarriers,
-  getConsignees,
-  getCustomers,
-  getDrivers,
-  getOrganizations,
-  getShippers,
-} from '@/lib/dbActions';
+import { UserContext } from '@/context/userContextProvider';
+import { getDrivers } from '@/lib/dbActions'; // this can be redux
 import DateSelect from '../UI_Elements/Form/DateSelect';
 import Button from '../UI_Elements/Buttons/Button';
 import SelectInput from '../UI_Elements/Form/SelectInput';
@@ -23,8 +17,14 @@ import { AppDispatch, RootState } from '@/store/store';
 import { createLoad, updateLoad, setError } from '@/store/slices/loadSlice';
 import { LoadFormData } from '@/types/loadTypes';
 import { useRouter } from 'next/navigation';
+import { getCustomers } from '@/lib/actions/customerActions'; // this can be redux
+import { getCarriers } from '@/lib/actions/carrierActions'; // this can be redux
+import { getShippers } from '@/lib/actions/shipperActions'; // this can be redux
+import { getConsignees } from '@/lib/actions/consigneeActions'; // this can be redux
 
 // this component handles form validation and submission with react-hook-form and yup
+
+// TODO : Replace dynamic select inputs with select from redux store
 
 const status = [
   { Open: 'OPEN' },
@@ -39,7 +39,6 @@ const status = [
 ];
 
 const loadSchema = yup.object({
-  Owner: yup.string().required('Enter owner for this load'),
   Status: yup.string(),
   'Load Number': yup.string().required('Enter load number for your records'), // do we need a max number of characters?
   'Pay Order Number': yup.string().required('Enter PO number for your records'), // do we need a max number of characters?
@@ -63,6 +62,9 @@ export const LoadForm = () => {
   const errorState = useSelector((state: RootState) => state.loads.error);
 
   const { formData, saveFormValues } = useContext(ModalContext);
+
+  const { organization } = useContext(UserContext);
+  formData.orgName = organization; // add organization
 
   const isUpdate = formData !== null && formData['id'];
 
@@ -90,7 +92,6 @@ export const LoadForm = () => {
   // populate with existing data when updating
   useEffect(() => {
     if (isUpdate) {
-      setValue('Owner', formData['ownerId']);
       setValue('Status', formData['status']);
       setValue('Load Number', formData['loadNum']);
       setValue('Pay Order Number', formData['payOrderNum']);
@@ -106,13 +107,11 @@ export const LoadForm = () => {
 
   // Form submission handler
   // react-hook-form submission handler expects a type of Load as determined by yup schema
-  // casting type in the dispatch actions because dispatch actions expects different types
-  // this data becomes different type at other points in the process so this should be safe
 
   const onSubmit = async (load: Load) => {
     if (!isUpdate) {
       try {
-        await dispatch(createLoad(load as unknown as LoadFormData)).unwrap();
+        await dispatch(createLoad(load as LoadFormData)).unwrap();
         reset(); // update form to default values
         router.push('/dispatch');
       } catch (error) {
@@ -123,7 +122,7 @@ export const LoadForm = () => {
         await dispatch(
           updateLoad({
             id: formData['id'],
-            updatedLoad: load as unknown as LoadFormData,
+            updatedLoad: load as Partial<LoadFormData>,
           })
         ).unwrap();
         saveFormValues({}, true); // clear context
@@ -144,14 +143,6 @@ export const LoadForm = () => {
         Set load details
       </p>
       <div>
-        <DynamicSelect
-          control={control}
-          name="Owner"
-          required={true}
-          dbaction={getOrganizations}
-          nameKey="orgName"
-        />
-
         <div className="flex flex-col gap-5 xl:flex-row">
           <div className="flex flex-col w-full xl:w-1/2">
             <SelectInput control={control} name="Status" options={status} />
@@ -181,6 +172,7 @@ export const LoadForm = () => {
               name="Carrier"
               required={false}
               dbaction={getCarriers}
+              nameKey={'carrierName'}
             />
 
             <DynamicSelect

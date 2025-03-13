@@ -5,7 +5,7 @@ import {
   addLoad as apiAddLoad,
   updateLoad as apiUpdateLoad,
   deleteLoad as apiDeleteLoad,
-} from '@/lib/dbActions';
+} from '@/lib/actions/loadActions';
 import { LoadData, LoadFormData } from '@/types/loadTypes';
 
 interface UpdateLoadPayload {
@@ -36,15 +36,17 @@ const formatron = function (rawLoad: LoadData) {
     consignee: rawLoad.consignee ? rawLoad.consignee.name : null,
     createdAt: rawLoad.createdAt ? rawLoad.createdAt.toISOString() : null,
     updatedAt: rawLoad.updatedAt ? rawLoad.updatedAt.toISOString() : null,
+
+    organization: rawLoad.organization ? rawLoad.organization.orgName : null,
   } as unknown as LoadData; // it does not like date to string conversion when returning formatron;
 };
 
 // Define Async Thunks
-export const fetchLoads = createAsyncThunk<LoadData[]>(
+export const fetchLoads = createAsyncThunk<LoadData[], string>(
   'loads/fetchLoads',
-  async () => {
-    const data = await getLoads();
-    return data.map((currLoad: LoadData) => formatron(currLoad));
+  async (orgName) => {
+    const data = await getLoads(orgName);
+    return data.map((currLoad) => formatron(currLoad as LoadData));
   }
 );
 
@@ -54,7 +56,7 @@ export const createLoad = createAsyncThunk<LoadData, LoadFormData>(
     try {
       const newLoad = await apiAddLoad({ load });
 
-      return formatron(newLoad);
+      return formatron(newLoad as LoadData);
     } catch (error) {
       let message = 'Failed to Create Load';
       if (error instanceof Error) message = error.message;
@@ -67,9 +69,9 @@ export const updateLoad = createAsyncThunk<LoadData, UpdateLoadPayload>(
   'loads/updateLoad',
   async ({ id, updatedLoad }: UpdateLoadPayload, { rejectWithValue }) => {
     try {
-      const load = await apiUpdateLoad(id, { formData: updatedLoad });
+      const load = await apiUpdateLoad(id, { load: updatedLoad });
 
-      return formatron(load);
+      return formatron(load as LoadData);
     } catch (error) {
       let message = 'Failed to Update Load';
       if (error instanceof Error) message = error.message;

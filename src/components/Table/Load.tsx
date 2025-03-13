@@ -13,7 +13,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import { AppDispatch, RootState } from '@/store/store';
-import { getLoad } from '@/lib/dbActions';
+import { getLoad } from '@/lib/actions/loadActions';
 import { deleteLoad } from '@/store/slices/loadSlice';
 import { LoadData, loadFieldMap } from '@/types/loadTypes';
 import Link from 'next/link';
