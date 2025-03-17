@@ -3,7 +3,7 @@ export interface NumFormData {
   Status: string;
 
   Name: string;
-  'Dispatch Board': boolean;
+  dispatch: boolean;
 }
 
 export interface NumData {

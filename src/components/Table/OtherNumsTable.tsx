@@ -11,60 +11,59 @@ import { TableSearch } from '../UI_Elements/Table/TableSearch';
 import Button from '@ui/Buttons/Button';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { TruckData } from '@/types/truckTypes';
+import { NumData } from '@/types/otherNumTypes';
 
 // this is passed to Table
 const columns = [
-  { field: 'truckNum', headerName: 'Truck Number' },
-  { field: 'type', headerName: 'Truck Type' },
-  { field: 'licensePlate', headerName: 'License Plate' },
+  { field: 'name', headerName: 'Other Name' },
+  { field: 'dispatch', headerName: 'On Dispatch Board' },
 ];
 
 export default function OtherNumsTable() {
   const [searchValue, setSearchValue] = useState<string>(''); // search value
   const [searchField, setSearchField] = useState<string>('All'); // specific field if any
-  const [filteredValue, setFilteredValue] = useState<TruckData[]>([]);
+  const [filteredValue, setFilteredValue] = useState<NumData[]>([]);
 
   const router = useRouter();
 
   const {
-    items: trucks,
+    items: otherNumbers,
     status,
     // error,
-  } = useSelector((state: RootState) => state.trucks);
+  } = useSelector((state: RootState) => state.otherNumbers);
 
   const { saveFormValues } = useContext(ModalContext);
 
   // search
-  function handleSearch(trucks: TruckData[], value: string, status: string) {
+  function handleSearch(numbers: NumData[], value: string, status: string) {
     // status to uppercase
-    const truckStatus = status?.toUpperCase();
+    const numStatus = status?.toUpperCase();
 
     // Filter by status (if it's "Active" or "Inactive")
-    let filteredTrucks = trucks;
+    let filteredNums = numbers;
 
-    if (truckStatus === 'ACTIVE' || truckStatus === 'INACTIVE') {
-      filteredTrucks = trucks.filter((trucks) => trucks.status === truckStatus);
+    if (numStatus === 'ACTIVE' || numStatus === 'INACTIVE') {
+      filteredNums = numbers.filter((numbers) => numbers.status === numStatus);
     }
 
     // If no search value, return the filtered list by status
     if (!value) {
-      return filteredTrucks;
+      return filteredNums;
     }
 
     // search across all fields with the given value
     if (status === 'All') {
-      return filteredTrucks.filter((trucks) =>
-        Object.values(trucks).some((truckField) =>
-          truckField?.toString().toLowerCase().includes(value.toLowerCase())
+      return filteredNums.filter((numbers) =>
+        Object.values(numbers).some((numField) =>
+          numField?.toString().toLowerCase().includes(value.toLowerCase())
         )
       );
     }
 
     // If status is specific (like "Active"), apply search value filtering
-    return filteredTrucks.filter((trucks) =>
-      Object.values(trucks).some((truckField) =>
-        truckField?.toString().toLowerCase().includes(value.toLowerCase())
+    return filteredNums.filter((numbers) =>
+      Object.values(numbers).some((numField) =>
+        numField?.toString().toLowerCase().includes(value.toLowerCase())
       )
     );
   }
@@ -75,30 +74,30 @@ export default function OtherNumsTable() {
   }
 
   // update by selecting from redux and pass to form values
-  const updateTruck = async (id: string) => {
-    const data = trucks.find((truck) => truck.id === id);
+  //   const updateTruck = async (id: string) => {
+  //     const data = trucks.find((truck) => truck.id === id);
 
-    if (data) {
-      saveFormValues(data);
-      router.push('/trucks/update-truck/details');
-    } else {
-      console.error('Truck not found with ID:', id);
-    }
-  };
+  //     if (data) {
+  //       saveFormValues(data);
+  //       router.push('/trucks/update-truck/details');
+  //     } else {
+  //       console.error('Truck not found with ID:', id);
+  //     }
+  //   };
 
   // Update filtered trucks
   useEffect(() => {
-    let updatedTrucks = [...trucks];
-    updatedTrucks = handleSearch(updatedTrucks, searchValue, searchField);
-    setFilteredValue(updatedTrucks);
-  }, [trucks, searchValue, searchField]);
+    let updatedNums = [...otherNumbers];
+    updatedNums = handleSearch(updatedNums, searchValue, searchField);
+    setFilteredValue(updatedNums);
+  }, [otherNumbers, searchValue, searchField]);
 
   return (
     <>
       <div className="relative flex justify-end mb-6">
         <div className="absolute right-4 bottom-2">
-          <Link href="/trucks/add-truck/details">
-            <Button>Add Truck</Button>
+          <Link href="/other-numbers/add-number/details">
+            <Button>Add Other Number</Button>
           </Link>
         </div>
       </div>
@@ -118,8 +117,8 @@ export default function OtherNumsTable() {
         <Table
           columns={columns}
           data={filteredValue}
-          update={updateTruck}
-          view={'/trucks/view/'}
+          update={() => {}}
+          view={'/other-numbers/view/'}
         />
       )}
     </>
