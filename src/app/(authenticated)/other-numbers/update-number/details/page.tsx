@@ -1,12 +1,12 @@
 'use client';
 
 import FullPageFormContainer from '@/components/UI_Elements/Form/FullPageContainer';
-import CustomsBrokerForm from '@/components/Forms/CustomsBroker/CustomsBrokerForm';
+import OtherNumbersForm from '@/components/Forms/OtherNumbers/OtherNumbersForm';
 
-export default function UpdateBrokerDetails() {
+export default function UpdateNumDetails() {
   return (
-    <FullPageFormContainer title="Update Customs Broker">
-      <CustomsBrokerForm />
+    <FullPageFormContainer title="Update Other Number">
+      <OtherNumbersForm />
     </FullPageFormContainer>
   );
 }
