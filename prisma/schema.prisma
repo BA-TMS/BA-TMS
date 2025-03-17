@@ -430,6 +430,7 @@ model Numbers {
   id           String       @id @default(uuid())
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
+  status       Status       @default(ACTIVE)
   name         String
   dispatch     Boolean      @default(false)
   orgId        String
