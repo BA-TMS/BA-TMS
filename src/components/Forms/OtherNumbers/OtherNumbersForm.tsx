@@ -11,6 +11,7 @@ import { status } from '@/components/Forms/data/details';
 import { ModalContext } from '@/context/modalContext';
 import { useRouter, usePathname } from 'next/navigation';
 import CheckBox from '@/components/UI_Elements/Form/CheckBox';
+import { otherNumDataMap } from '@/types/otherNumTypes';
 
 const otherNumsSchema = yup.object({
   Status: yup.string(),
@@ -29,6 +30,7 @@ export const OtherNumbersForm = () => {
     : 'update-number';
 
   const { formData, saveFormValues } = useContext(ModalContext);
+  console.log('form data', formData);
 
   const isUpdate = formData !== null && formData['id'];
 
@@ -69,18 +71,18 @@ export const OtherNumbersForm = () => {
   );
 
   // if there's an update
-  // useEffect(() => {
-  //   if (isUpdate) {
-  //     Object.keys(truckDataMap).forEach((formField) => {
-  //       setValue(
-  //         formField as keyof OtherNums,
-  //         formData[truckDataMap[formField]]
-  //           ? formData[truckDataMap[formField]]
-  //           : ''
-  //       );
-  //     });
-  //   }
-  // }, [formData, setValue, isUpdate]);
+  useEffect(() => {
+    if (isUpdate) {
+      Object.keys(otherNumDataMap).forEach((formField) => {
+        setValue(
+          formField as keyof OtherNums,
+          formData[otherNumDataMap[formField]]
+            ? formData[otherNumDataMap[formField]]
+            : ''
+        );
+      });
+    }
+  }, [formData, setValue, isUpdate]);
 
   // keep fields populated when going back
   useEffect(() => {
@@ -116,7 +118,7 @@ export const OtherNumbersForm = () => {
             id={'dispatch'}
             onChange={handleCheckbox}
             label="Add to Dispatch Board"
-            // checked={isUpdate ? same : false}
+            checked={isUpdate ? formData.dispatch : false}
           />
         </div>
 
