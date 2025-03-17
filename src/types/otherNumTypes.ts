@@ -18,3 +18,9 @@ export interface NumData {
   orgId: string;
   organization: { orgName: string };
 }
+
+export const otherNumDataMap: Record<string, keyof NumData> = {
+  Status: 'status',
+  Name: 'name',
+  dispatch: 'dispatch',
+};

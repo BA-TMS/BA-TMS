@@ -9,7 +9,7 @@ import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 import Button from '@/components/UI_Elements/Buttons/Button';
 import { useRouter } from 'next/navigation';
 import { NumData, NumFormData } from '@/types/otherNumTypes';
-import { createOtherNum } from '@/store/slices/otherNumSlice';
+import { createOtherNum, updateOtherNum } from '@/store/slices/otherNumSlice';
 import CheckBox from '@/components/UI_Elements/Form/CheckBox';
 
 // this component submits form data from the context to database using redux
@@ -38,25 +38,25 @@ export const OtherNumReview: React.FC = () => {
     setError(''); // clear previous errors
 
     // if not an update
-    // if (!isUpdate) {
-    try {
-      await dispatch(createOtherNum(otherNum)).unwrap();
-    } catch (error) {
-      setError(`Error creating other number: ${error}`);
+    if (!isUpdate) {
+      try {
+        await dispatch(createOtherNum(otherNum)).unwrap();
+      } catch (error) {
+        setError(`Error creating other number: ${error}`);
+      }
+    } else {
+      try {
+        await dispatch(
+          updateOtherNum({
+            id: formData['id'],
+            updatedNum: otherNum as Partial<NumData>,
+          })
+        ).unwrap();
+      } catch (error) {
+        setError(`Error updating other number: ${error}`);
+      }
     }
-    // } else {
-    //   try {
-    //     await dispatch(
-    //       updateTruck({
-    //         id: formData['id'],
-    //         updatedTruck: otherNum as Partial<NumData>,
-    //       })
-    //     ).unwrap();
-    //   } catch (error) {
-    //     setError(`Error updating truck: ${error}`);
-    //   }
-    // }
-    // setIsSubmitting(false);
+    setIsSubmitting(false);
   };
 
   useEffect(() => {

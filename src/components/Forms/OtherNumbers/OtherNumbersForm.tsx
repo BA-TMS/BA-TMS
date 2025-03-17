@@ -51,13 +51,13 @@ export const OtherNumbersForm = () => {
 
   const handleCheckbox = () => {
     if (isUpdate) {
-      saveFormValues({ ...formData, dispatch: true });
+      const value = !formData.dispatch;
+      saveFormValues({ ...formData, dispatch: value });
     } else {
       formData.dispatch === true
         ? (formData.dispatch = false)
         : (formData.dispatch = true);
     }
-    console.log('checkbox', formData.dispatch);
   };
 
   // submit the values to the context

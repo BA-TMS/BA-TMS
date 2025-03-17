@@ -1,10 +1,14 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { getOtherNums, addOtherNum } from '@/lib/actions/otherNumActions';
+import {
+  getOtherNums,
+  addOtherNum,
+  updateOtherNum as apiUpdateOtherNum,
+} from '@/lib/actions/otherNumActions';
 import { NumData, NumFormData } from '@/types/otherNumTypes';
 
 interface UpdatedNumPayload {
   id: string;
-  updatedTruck: Partial<NumData>;
+  updatedNum: Partial<NumData>;
 }
 
 interface OtherNumState {
@@ -49,20 +53,20 @@ export const createOtherNum = createAsyncThunk<NumData, NumFormData>(
   }
 );
 
-// export const updateTruck = createAsyncThunk<NumData, UpdatedTruckPayload>(
-//   'trucks/updateTruck',
-//   async ({ id, updatedTruck }: UpdatedTruckPayload, { rejectWithValue }) => {
-//     try {
-//       const response = await apiUpdateTruck(id, {
-//         truck: updatedTruck as TruckFormData,
-//       });
+export const updateOtherNum = createAsyncThunk<NumData, UpdatedNumPayload>(
+  'other-numbers/updateOtherNum',
+  async ({ id, updatedNum }: UpdatedNumPayload, { rejectWithValue }) => {
+    try {
+      const response = await apiUpdateOtherNum(id, {
+        otherNum: updatedNum as NumFormData,
+      });
 
-//       return formatron(response as NumData);
-//     } catch (error) {
-//       return rejectWithValue('Failed to update truck');
-//     }
-//   }
-// );
+      return formatron(response as NumData);
+    } catch (error) {
+      return rejectWithValue('Failed to update number');
+    }
+  }
+);
 
 const otherNumSlice = createSlice({
   name: 'numbers',
@@ -92,23 +96,23 @@ const otherNumSlice = createSlice({
         const message = action.payload;
         state.status = 'failed';
         state.error = message as string;
+      })
+      .addCase(
+        updateOtherNum.fulfilled,
+        (state, action: PayloadAction<NumData>) => {
+          const index = state.items.findIndex(
+            (otherNum) => otherNum.id === action.payload.id
+          );
+          if (index !== -1) {
+            state.items[index] = action.payload;
+          }
+        }
+      )
+      .addCase(updateOtherNum.rejected, (state, action) => {
+        const message = action.payload;
+        state.status = 'failed';
+        state.error = message as string;
       });
-    // .addCase(
-    //   updateTruck.fulfilled,
-    //   (state, action: PayloadAction<NumData>) => {
-    //     const index = state.items.findIndex(
-    //       (truck) => truck.id === action.payload.id
-    //     );
-    //     if (index !== -1) {
-    //       state.items[index] = action.payload;
-    //     }
-    //   }
-    // )
-    //   .addCase(updateTruck.rejected, (state, action) => {
-    //     const message = action.payload;
-    //     state.status = 'failed';
-    //     state.error = message as string;
-    //   });
   },
 });
 

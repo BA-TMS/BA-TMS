@@ -74,18 +74,17 @@ export default function OtherNumsTable() {
   }
 
   // update by selecting from redux and pass to form values
-  //   const updateTruck = async (id: string) => {
-  //     const data = trucks.find((truck) => truck.id === id);
+  const updateNumber = async (id: string) => {
+    const data = otherNumbers.find((otherNum) => otherNum.id === id);
 
-  //     if (data) {
-  //       saveFormValues(data);
-  //       router.push('/trucks/update-truck/details');
-  //     } else {
-  //       console.error('Truck not found with ID:', id);
-  //     }
-  //   };
+    if (data) {
+      saveFormValues(data);
+      router.push('/other-numbers/update-number/details');
+    } else {
+      console.error('Other Number not found with ID:', id);
+    }
+  };
 
-  // Update filtered trucks
   useEffect(() => {
     let updatedNums = [...otherNumbers];
     updatedNums = handleSearch(updatedNums, searchValue, searchField);
@@ -117,7 +116,7 @@ export default function OtherNumsTable() {
         <Table
           columns={columns}
           data={filteredValue}
-          update={() => {}}
+          update={updateNumber}
           view={'/other-numbers/view/'}
         />
       )}
