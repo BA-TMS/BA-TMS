@@ -2,15 +2,15 @@
 
 import React from 'react';
 import PageTitle from '@/components/Page/PageTitle';
-import Broker from '@/components/Table/Broker';
+import OtherNumbersForm from '@/components/Forms/OtherNumbersForm';
 
-const CustomsBrokerPage: React.FC = () => {
+const OtherNumsPage: React.FC = () => {
   return (
     <>
-      <PageTitle pageTitle="Customs Broker" />
-      <Broker />
+      <PageTitle pageTitle="Other Numbers" />
+      <OtherNumbersForm />
     </>
   );
 };
 
-export default CustomsBrokerPage;
+export default OtherNumsPage;
