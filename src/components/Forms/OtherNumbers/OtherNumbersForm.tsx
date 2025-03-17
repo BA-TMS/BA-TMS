@@ -40,7 +40,7 @@ export const OtherNumbersForm = () => {
     formState: { errors, isSubmitting },
   } = useForm<OtherNums>({
     defaultValues: {
-      Status: '',
+      Status: undefined,
       Name: '',
       dispatch: undefined, // check this?
     },

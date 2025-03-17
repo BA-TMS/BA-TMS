@@ -9,7 +9,8 @@ import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 import Button from '@/components/UI_Elements/Buttons/Button';
 import { useRouter } from 'next/navigation';
 import { NumData, NumFormData } from '@/types/otherNumTypes';
-import {createNu}
+import { createOtherNum } from '@/store/slices/otherNumSlice';
+import CheckBox from '@/components/UI_Elements/Form/CheckBox';
 
 // this component submits form data from the context to database using redux
 
@@ -39,7 +40,7 @@ export const OtherNumReview: React.FC = () => {
     // if not an update
     // if (!isUpdate) {
     try {
-      await dispatch(createTruck(otherNum)).unwrap();
+      await dispatch(createOtherNum(otherNum)).unwrap();
     } catch (error) {
       setError(`Error creating other number: ${error}`);
     }
@@ -73,49 +74,21 @@ export const OtherNumReview: React.FC = () => {
 
         <div className="flex-grow">
           <div className="flex flex-col gap-4 md:flex-row">
-            <div className="w-full md:w-1/3">
-              <DataDisplay
-                title="Truck Number"
-                text={formData['Truck Number']}
-              />
+            <div className="w-full md:w-1/2">
+              <DataDisplay title="Other Number" text={formData['Name']} />
             </div>
-            <div className="w-full md:w-1/3">
-              <DataDisplay
-                title="License Plate"
-                text={formData['License Plate']}
-              />
-            </div>
-            <div className="w-full md:w-1/3">
+
+            <div className="w-full md:w-1/2">
               <DataDisplay title="Status" text={formData['Status']} />
             </div>
           </div>
-          <div className="flex flex-col gap-4 md:flex-row">
-            <div className="w-full md:w-1/3">
-              <DataDisplay
-                title="Plate Expiry"
-                text={
-                  formData['Plate Expiry']
-                    ? formData['Plate Expiry'].toDateString()
-                    : ''
-                }
-              />
-            </div>
-            <div className="w-full md:w-1/3">
-              <DataDisplay
-                title="Inspection Expiry"
-                text={
-                  formData['Inspection Expiry']
-                    ? formData['Inspection Expiry'].toDateString()
-                    : ''
-                }
-              />
-            </div>
-            <div className="w-full md:w-1/3">
-              <DataDisplay title="Ownership" text={formData['Ownership']} />
-            </div>
-          </div>
 
-          <DataDisplay title="Notes" text={formData['Notes']} />
+          <CheckBox
+            id={'dispatch'}
+            onChange={null}
+            label="Add to Dispatch Board"
+            checked={formData.dispatch}
+          />
         </div>
 
         <div className="py-3.5 gap-2 border-t border-grey-300 dark:border-grey-700 flex justify-between sticky bottom-0 bg-white dark:bg-grey-900 z-10">

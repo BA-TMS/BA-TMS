@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { getOtherNums } from '@/lib/actions/otherNumActions';
+import { getOtherNums, addOtherNum } from '@/lib/actions/otherNumActions';
 import { NumData, NumFormData } from '@/types/otherNumTypes';
 
 interface UpdatedNumPayload {
@@ -36,18 +36,18 @@ export const fetchOtherNums = createAsyncThunk<NumData[], string>(
   }
 );
 
-// export const createTruck = createAsyncThunk<NumData, TruckFormData>(
-//   'trucks/createTruck',
-//   async (truck, { rejectWithValue }) => {
-//     try {
-//       const response = await addTruck({ truck });
+export const createOtherNum = createAsyncThunk<NumData, NumFormData>(
+  'other-numbers/createOtherNum',
+  async (otherNum, { rejectWithValue }) => {
+    try {
+      const response = await addOtherNum({ otherNum });
 
-//       return formatron(response as NumData);
-//     } catch (error) {
-//       return rejectWithValue('Failed to create truck');
-//     }
-//   }
-// );
+      return formatron(response as NumData);
+    } catch (error) {
+      return rejectWithValue('Failed to create other number');
+    }
+  }
+);
 
 // export const updateTruck = createAsyncThunk<NumData, UpdatedTruckPayload>(
 //   'trucks/updateTruck',
@@ -84,26 +84,26 @@ const otherNumSlice = createSlice({
       .addCase(fetchOtherNums.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message || 'Failed to fetch trucks';
+      })
+      .addCase(createOtherNum.fulfilled, (state, action) => {
+        state.items.push(action.payload);
+      })
+      .addCase(createOtherNum.rejected, (state, action) => {
+        const message = action.payload;
+        state.status = 'failed';
+        state.error = message as string;
       });
-    //   .addCase(createTruck.fulfilled, (state, action) => {
-    //     state.items.push(action.payload);
-    //   })
-    //   .addCase(createTruck.rejected, (state, action) => {
-    //     const message = action.payload;
-    //     state.status = 'failed';
-    //     state.error = message as string;
-    //   })
-    //   .addCase(
-    //     updateTruck.fulfilled,
-    //     (state, action: PayloadAction<NumData>) => {
-    //       const index = state.items.findIndex(
-    //         (truck) => truck.id === action.payload.id
-    //       );
-    //       if (index !== -1) {
-    //         state.items[index] = action.payload;
-    //       }
+    // .addCase(
+    //   updateTruck.fulfilled,
+    //   (state, action: PayloadAction<NumData>) => {
+    //     const index = state.items.findIndex(
+    //       (truck) => truck.id === action.payload.id
+    //     );
+    //     if (index !== -1) {
+    //       state.items[index] = action.payload;
     //     }
-    //   )
+    //   }
+    // )
     //   .addCase(updateTruck.rejected, (state, action) => {
     //     const message = action.payload;
     //     state.status = 'failed';

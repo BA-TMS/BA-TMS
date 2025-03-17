@@ -5,7 +5,7 @@ import { getOrganization } from '@/lib/dbActions';
 import { Status } from '@prisma/client';
 import { NumFormData } from '@/types/otherNumTypes';
 
-// this file contains actions for interacting with the database truck table
+// this file contains actions for interacting with the database otherNum table
 
 const NUMBER_RELATIONS = {
   organization: { select: { orgName: true } },
@@ -29,77 +29,59 @@ export async function getOtherNums(organization: string) {
   return numbers;
 }
 
-// export async function addTruck({ truck }: { truck: TruckFormData }) {
-//   // find organization based on name
-//   const organization = await getOrganization(truck.orgName);
+export async function addOtherNum({ otherNum }: { otherNum: NumFormData }) {
+  // find organization based on name
+  const organization = await getOrganization(otherNum.orgName);
 
-//   // TODO: Better error handling
-//   if (organization === null) {
-//     throw 'can not add truck :(';
-//   }
-//   const resp = await prisma.truck.create({
-//     data: {
-//       status: truck['Status'] as Status,
+  // TODO: Better error handling
+  if (organization === null) {
+    throw 'can not add otherNum :(';
+  }
+  const resp = await prisma.numbers.create({
+    data: {
+      status: otherNum['Status'] as Status,
+      name: otherNum['Name'],
+      dispatch: otherNum['dispatch'],
+      orgId: organization.id,
+    },
+  });
+  return resp;
+}
 
-//       truckNum: truck['Truck Number'],
-//       licensePlate: truck['License Plate'],
-//       plateExpiry: truck['Plate Expiry'],
-//       inspectionExpiry: truck['Inspection Expiry'],
-//       type: truck['Type'],
-//       ownership: truck['Ownership'],
-//       notes: truck['Notes'],
-
-//       mileage: truck['Mileage'],
-//       axels: truck['Axels'],
-//       fuelType: truck['Fuel Type'],
-//       year: truck['Year'],
-//       startDate: truck['Start Date'],
-//       deactivationDate: truck['Deactivation Date'],
-//       registeredState: truck['Registered State'],
-//       weight: truck['Weight'],
-//       vin: truck['VIN'],
-//       dotExpiry: truck['DOT Expiry'],
-
-//       orgId: organization.id,
-//     },
-//   });
-//   return resp;
-// }
-
-// export async function updateTruck(
+// export async function updateotherNum(
 //   id: string,
-//   { truck }: { truck: Partial<TruckFormData> }
+//   { otherNum }: { otherNum: Partial<otherNumFormData> }
 // ) {
 //   // find organization based on name
-//   const organization = await getOrganization(truck.orgName as string);
+//   const organization = await getOrganization(otherNum.orgName as string);
 
 //   // TODO: Better error handling
 //   if (organization === null) {
-//     throw 'can not update truck :(';
+//     throw 'can not update otherNum :(';
 //   }
-//   const resp = await prisma.truck.update({
+//   const resp = await prisma.otherNum.update({
 //     where: { id: id },
 //     data: {
-//       status: truck['Status'] as Status,
+//       status: otherNum['Status'] as Status,
 
-//       truckNum: truck['Truck Number'],
-//       licensePlate: truck['License Plate'],
-//       plateExpiry: truck['Plate Expiry'],
-//       inspectionExpiry: truck['Inspection Expiry'],
-//       type: truck['Type'],
-//       ownership: truck['Ownership'],
-//       notes: truck['Notes'],
+//       otherNumNum: otherNum['otherNum Number'],
+//       licensePlate: otherNum['License Plate'],
+//       plateExpiry: otherNum['Plate Expiry'],
+//       inspectionExpiry: otherNum['Inspection Expiry'],
+//       type: otherNum['Type'],
+//       ownership: otherNum['Ownership'],
+//       notes: otherNum['Notes'],
 
-//       mileage: truck['Mileage'],
-//       axels: truck['Axels'],
-//       fuelType: truck['Fuel Type'],
-//       year: truck['Year'],
-//       startDate: truck['Start Date'],
-//       deactivationDate: truck['Deactivation Date'],
-//       registeredState: truck['Registered State'],
-//       weight: truck['Weight'],
-//       vin: truck['VIN'],
-//       dotExpiry: truck['DOT Expiry'],
+//       mileage: otherNum['Mileage'],
+//       axels: otherNum['Axels'],
+//       fuelType: otherNum['Fuel Type'],
+//       year: otherNum['Year'],
+//       startDate: otherNum['Start Date'],
+//       deactivationDate: otherNum['Deactivation Date'],
+//       registeredState: otherNum['Registered State'],
+//       weight: otherNum['Weight'],
+//       vin: otherNum['VIN'],
+//       dotExpiry: otherNum['DOT Expiry'],
 
 //       orgId: organization.id,
 //     },
