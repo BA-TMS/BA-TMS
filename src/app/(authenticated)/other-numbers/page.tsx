@@ -2,13 +2,13 @@
 
 import React from 'react';
 import PageTitle from '@/components/Page/PageTitle';
-import OtherNumbersForm from '@/components/Forms/OtherNumbersForm';
+import OtherNumsTable from '@/components/Table/OtherNumsTable';
 
 const OtherNumsPage: React.FC = () => {
   return (
     <>
       <PageTitle pageTitle="Other Numbers" />
-      <OtherNumbersForm />
+      <OtherNumsTable />
     </>
   );
 };

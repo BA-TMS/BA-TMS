@@ -35,7 +35,7 @@ const adminOptions = [
   { name: 'Drivers', href: '/drivers' },
   { name: 'External Carriers', href: '/carriers' },
   { name: 'Factoring Companies', href: '/factors' },
-  { name: 'Other Numbers', href: '#' },
+  { name: 'Other Numbers', href: '/other-numbers' },
   { name: 'Preferences', href: '#' },
   { name: 'Private Labelling', href: '#' },
   { name: 'Shippers', href: '/shippers' },
