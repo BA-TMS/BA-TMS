@@ -10,7 +10,9 @@ import Button from '@/components/UI_Elements/Buttons/Button';
 import { useRouter } from 'next/navigation';
 import { NumData, NumFormData } from '@/types/otherNumTypes';
 import { createOtherNum, updateOtherNum } from '@/store/slices/otherNumSlice';
-import CheckBox from '@/components/UI_Elements/Form/CheckBox';
+import IconDisplay from '@/components/UI_Elements/Display/IconDisplay';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 
 // this component submits form data from the context to database using redux
 
@@ -83,11 +85,13 @@ export const OtherNumReview: React.FC = () => {
             </div>
           </div>
 
-          <CheckBox
-            id={'dispatch'}
-            onChange={null}
-            label="Add to Dispatch Board"
-            checked={formData.dispatch}
+          <IconDisplay
+            title="Added to Dispatch"
+            Icon={
+              formData.dispatch === true
+                ? CheckBoxIcon
+                : CheckBoxOutlineBlankIcon
+            }
           />
         </div>
 
