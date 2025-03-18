@@ -30,7 +30,6 @@ export const OtherNumbersForm = () => {
     : 'update-number';
 
   const { formData, saveFormValues } = useContext(ModalContext);
-  console.log('form data', formData);
 
   const isUpdate = formData !== null && formData['id'];
 
