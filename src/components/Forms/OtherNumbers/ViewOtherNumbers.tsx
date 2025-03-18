@@ -6,7 +6,9 @@ import { useRouter } from 'next/navigation';
 import { NumData } from '@/types/otherNumTypes';
 import Button from '@/components/UI_Elements/Buttons/Button';
 import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
-import CheckBox from '@/components/UI_Elements/Form/CheckBox';
+import IconDisplay from '@/components/UI_Elements/Display/IconDisplay';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 
 // this component displays information about a specific other number
 
@@ -59,11 +61,11 @@ export const ViewOtherNumbers = ({ data }: ViewNumProps) => {
             </div>
           </div>
 
-          <CheckBox
-            id={'dispatch'}
-            onChange={null}
-            label="Added to Dispatch Board"
-            checked={data.dispatch}
+          <IconDisplay
+            title="Added to Dispatch"
+            Icon={
+              data.dispatch === true ? CheckBoxIcon : CheckBoxOutlineBlankIcon
+            }
           />
         </div>
 
@@ -75,7 +77,7 @@ export const ViewOtherNumbers = ({ data }: ViewNumProps) => {
             onClick={() => {
               // send data to context
               saveFormValues(data);
-              router.push('/other-numbers/update-numbers/details');
+              router.push('/other-numbers/update-number/details');
             }}
           >
             Edit
