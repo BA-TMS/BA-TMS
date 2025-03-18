@@ -1,13 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { SvgIconComponent } from '@mui/icons-material';
 
-// this component displays information
+// this component displays text with an icon
 
 interface DisplayProps {
   title: string;
-
   Icon: SvgIconComponent; // accepts an MUI icon as a prop
 }
 
