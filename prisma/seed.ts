@@ -208,7 +208,7 @@ async function main() {
 
   for (const currTrailer of trailers) {
     const resp = await prisma.trailer.upsert({
-      where: { licensePlate: currTrailer.licensePlate },
+      where: { id: currTrailer.id },
       update: {},
       create: currTrailer,
     });
@@ -599,16 +599,20 @@ const trucks = [
 
 const trailers = [
   {
+    id: '123-12389',
     licensePlate: 'EE66RR9900',
     plateExpiry: new Date(2027, 9, 4),
     inspectionExpiry: new Date(2027, 9, 4),
     type: 'Container',
+    orgId: '103784cb-e739-446c-ba47-e92d92de648a',
   },
   {
+    id: '127-12004',
     licensePlate: '00MM11WW7896',
     plateExpiry: new Date(2027, 9, 4),
     inspectionExpiry: new Date(2027, 9, 4),
     type: 'Flatbed',
+    orgId: 'e739-446c-ba47-e92d92de648c',
   },
 ];
 

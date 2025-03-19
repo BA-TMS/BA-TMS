@@ -132,16 +132,22 @@ export const truckTypes = [
   { Heavy: 'Heavy' },
 ];
 
-export const trailers: string[] = [
-  'Dry Van',
-  'Reefer',
-  'Flatbed',
-  'Step Deck (Drop Deck)',
-  'Lowboy',
-  'Intermodal Containers',
-  'Tanker',
-  'Livestock',
-  'Curtain Side',
-  'Car Hauler',
-  'Hazardous Material',
+export const trailers = [
+  { 'Dry Van': 'Dry Van' },
+  { Reefer: 'Reefer' },
+  { Flatbed: 'Flatbed' },
+  { 'Step Deck (Drop Deck)': 'Step Deck (Drop Deck)' },
+  { Lowboy: 'Lowboy' },
+  { 'Intermodal Containers': 'Intermodal Containers' },
+  { Tanker: 'Tanker' },
+  { Livestock: 'Livestock' },
+  { 'Curtain Side': 'Curtain Side' },
+  { 'Car Hauler': 'Car Hauler' },
+  { 'Hazardous Material': 'Hazardous Material' },
+];
+
+export const trailerStatus = [
+  { Active: 'ACTIVE' },
+  { Inactive: 'INACTIVE' },
+  { 'Not Available': 'NOTAVAILABLE' },
 ];
