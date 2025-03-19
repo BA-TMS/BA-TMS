@@ -382,7 +382,6 @@ model Truck {
   ifta             Boolean?
   mileage          String?
   notes            String?
-  orgId            String
   ownership        String?
   registeredState  String?
   startDate        DateTime?
@@ -390,6 +389,8 @@ model Truck {
   vin              String?
   weight           String?
   year             String?
+  
+  orgId            String
   organization     Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
 }
 
