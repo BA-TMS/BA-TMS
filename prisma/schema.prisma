@@ -35,7 +35,6 @@ model Organization {
   users         User[]
   Trailer       Trailer[]
   Truck         Truck[]
-  users         User[]
   Numbers       Numbers[]
 }
 
