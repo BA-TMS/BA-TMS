@@ -13,6 +13,7 @@ import { fetchCustomers } from '@/store/slices/customerSlice';
 import { fetchDrivers } from '@/store/slices/driverSlice';
 import { fetchTeam } from '@/store/slices/teamSlice';
 import { fetchFactors } from '@/store/slices/factorSlice';
+import { fetchOtherNums } from '@/store/slices/otherNumSlice';
 import { fetchShippers } from '@/store/slices/shipperSlice';
 import { fetchTrailers } from '@/store/slices/trailerSlice';
 import { fetchTrucks } from '@/store/slices/truckSlice';
@@ -45,6 +46,7 @@ export default function StoreProvider({
       storeRef.current.dispatch(fetchCustomers(organization));
       storeRef.current.dispatch(fetchDrivers(organization));
       storeRef.current.dispatch(fetchFactors(organization));
+      storeRef.current.dispatch(fetchOtherNums(organization));
       storeRef.current.dispatch(fetchShippers(organization));
       storeRef.current.dispatch(fetchTeam(organization));
       storeRef.current.dispatch(fetchTrailers(organization));

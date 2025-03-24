@@ -6,6 +6,7 @@ import consigneeReducer from './slices/consigneeSlice';
 import customerReducer from './slices/customerSlice';
 import driverReducer from './slices/driverSlice';
 import factorReducer from './slices/factorSlice';
+import otherNumReducer from './slices/otherNumSlice';
 import shipperReducer from './slices/shipperSlice';
 import trailerReducer from './slices/trailerSlice';
 import truckReducer from './slices/truckSlice';
@@ -22,6 +23,7 @@ export const makeStore = () => {
       customers: customerReducer,
       drivers: driverReducer,
       factors: factorReducer,
+      otherNumbers: otherNumReducer,
       shippers: shipperReducer,
       team: teamReducer,
       trailers: trailerReducer,
