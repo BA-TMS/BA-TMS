@@ -21,7 +21,7 @@ export const ViewTruckForm = ({ data }: ViewTruckProps) => {
   if (!data) {
     return (
       <div className="flex flex-col h-full">
-        <div className="py-5 flex-grow">
+        <div className="py-5 grow">
           <p className="body2 text-error-dark text-center">
             Oops! Something went wrong- Could not find Truck.
           </p>
@@ -42,10 +42,10 @@ export const ViewTruckForm = ({ data }: ViewTruckProps) => {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex flex-col justify-between flex-grow">
+      <div className="flex flex-col justify-between grow">
         <p className="my-3.5 body2 text-grey-800 dark:text-white">View Truck</p>
 
-        <div className="flex-grow">
+        <div className="grow">
           <div className="flex flex-col gap-4 md:flex-row">
             <div className="w-full md:w-1/3">
               <DataDisplay title="Truck Number" text={data['truckNum']} />

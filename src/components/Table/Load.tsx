@@ -135,7 +135,7 @@ const tabsData: TabData[] = [
 // pass this to table
 function rowClass(row: Record<string, string>) {
   return row.status === 'NEEDS_REVIEW'
-    ? '!text-bold bg-error-dark bg-opacity-16'
+    ? 'text-bold! bg-error-dark bg-opacity-16'
     : '';
 }
 

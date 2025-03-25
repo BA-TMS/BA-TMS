@@ -80,7 +80,7 @@ const TableActionsPopover: React.FC<TableActionsProps> = ({
           popoversOpen === true ? 'block' : 'hidden'
         }`}
       >
-        <span className="absolute -right-1.5 top-2 -z-10 h-2 w-2 rotate-45 rounded-sm bg-white dark:bg-grey-900 border-r-2 border-t border-grey-300 dark:border-grey-700"></span>
+        <span className="absolute -right-1.5 top-2 -z-10 h-2 w-2 rotate-45 rounded-xs bg-white dark:bg-grey-900 border-r-2 border-t border-grey-300 dark:border-grey-700"></span>
 
         {view && (
           <div className="flex flex-wrap">

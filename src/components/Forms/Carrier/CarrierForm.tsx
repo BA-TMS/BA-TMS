@@ -73,7 +73,7 @@ export const CarrierForm = () => {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex-grow">
+      <div className="grow">
         <p className="my-3.5 body2 text-grey-800 dark:text-white">
           Confirm Carrier Details
         </p>

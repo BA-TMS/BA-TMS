@@ -54,7 +54,7 @@ export default function Dropdown({
   return (
     <div ref={dropdownRef}>
       <button
-        className="w-full min-w-40 body1 h-14 p-4 text-grey-500 border border-grey-300 rounded-lg dark:bg-grey-800 dark:border-grey-700 focus:outline-none text-center inline-flex items-center box-border"
+        className="w-full min-w-40 body1 h-14 p-4 text-grey-500 border border-grey-300 rounded-lg dark:bg-grey-800 dark:border-grey-700 focus:outline-hidden text-center inline-flex items-center box-border"
         type="button"
         role="button"
         onClick={handleDropDown}

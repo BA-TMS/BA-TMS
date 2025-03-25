@@ -23,7 +23,7 @@ const CheckBox = ({
     <div className="flex items-center gap-2 mb-1.5 ml-3 relative">
       <input
         className="appearance-none w-5 h-5 border border-grey-600 dark:border-grey-400 rounded-sm bg-white dark:bg-grey-900 shrink-0 checked:bg-primary dark:checked:bg-primary checked:border-0 peer
-        focus:outline-none focus:ring-offset-0 focus:ring-2 focus:ring-primary
+        focus:outline-hidden focus:ring-offset-0 focus:ring-2 focus:ring-primary
          disabled:bg-grey-500"
         type="checkbox"
         id={id}

@@ -21,7 +21,7 @@ export default function Searchbar({ placeholder, onChange }: SearchbarProps) {
         <input
           type="search"
           id="default-search"
-          className="block w-full h-full p-0 ps-12 pe-4 body1 text-grey-900 placeholder-grey-500 border border-grey-300 rounded-lg dark:bg-grey-800 dark:border-grey-700 dark:text-white box-border focus:outline-none"
+          className="block w-full h-full p-0 ps-12 pe-4 body1 text-grey-900 placeholder-grey-500 border border-grey-300 rounded-lg dark:bg-grey-800 dark:border-grey-700 dark:text-white box-border focus:outline-hidden"
           placeholder={placeholder}
           onChange={onChange}
         />

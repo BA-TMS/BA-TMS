@@ -17,7 +17,7 @@ const ViewTeamMember = ({ data }: ViewMemberProps) => {
   if (!data) {
     return (
       <div className="flex flex-col h-full">
-        <div className="py-5 flex-grow">
+        <div className="py-5 grow">
           <p className="body2 text-error-dark text-center">
             Oops! Something went wrong- Could not find team member.
           </p>

@@ -35,7 +35,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
                 />
 
                 <main>
-                  <div className="mx-auto max-w-screen-2xl">
+                  <div className="mx-auto max-w-(--breakpoint-2xl)">
                     <div className="px-10 py-11.5 bg-grey-100 dark:bg-grey-800">
                       {children}
                     </div>
