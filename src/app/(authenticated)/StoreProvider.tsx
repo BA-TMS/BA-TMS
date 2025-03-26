@@ -17,6 +17,7 @@ import { fetchOtherNums } from '@/store/slices/otherNumSlice';
 import { fetchShippers } from '@/store/slices/shipperSlice';
 import { fetchTrailers } from '@/store/slices/trailerSlice';
 import { fetchTrucks } from '@/store/slices/truckSlice';
+import { redirect } from 'next/navigation';
 
 // client component to create store and share using provider
 
@@ -28,6 +29,11 @@ export default function StoreProvider({
   const storeRef = useRef<AppStore | null>(null);
   const [isStoreReady, setIsStoreReady] = useState(false);
   const { organization } = useContext(UserContext);
+
+  // if organization is undefined, sign user out and redirect to error page
+  if (organization === undefined) {
+    redirect('login/error?message=No Organization Found');
+  }
 
   // create store instance the first time this component renders
   useEffect(() => {
