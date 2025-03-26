@@ -1,10 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Loader from '@/components/common/Loader';
+import Loader from '@/components/UI_Elements/PageLoader';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import Header from '@/components/Header/Header';
-import { UserContextProvider } from '@/Context/userContextProvider';
+import { UserContextProvider } from '@/context/userContextProvider';
+import StoreProvider from './StoreProvider';
 
 export default function Template({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -16,8 +17,8 @@ export default function Template({ children }: { children: React.ReactNode }) {
 
   return (
     <UserContextProvider>
-      <div className="bg-white text-black dark:bg-boxdark-2 dark:text-bodydark">
-        <div className="dark:bg-boxdark-2 dark:text-bodydark">
+      <StoreProvider>
+        <div className="text-black dark:text-grey-200 bg-grey-100 dark:bg-grey-800">
           {loading ? (
             <Loader />
           ) : (
@@ -34,15 +35,17 @@ export default function Template({ children }: { children: React.ReactNode }) {
                 />
 
                 <main>
-                  <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-                    {children}
+                  <div className="mx-auto max-w-screen-2xl">
+                    <div className="px-10 py-11.5 bg-grey-100 dark:bg-grey-800">
+                      {children}
+                    </div>
                   </div>
                 </main>
               </div>
             </div>
           )}
         </div>
-      </div>
+      </StoreProvider>
     </UserContextProvider>
   );
 }

@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,276 +7,434 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Organization { // This is a collection of TMS users
-  id            String    @id @default(uuid())
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  name          String    @unique
+model Organization {
+  id            String       @id @default(uuid())
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
   address       String
   addressAddOn  String?
   city          String
   state         String
   postCountry   String
   postCode      String
-  telCountry    String    @default("1") // By default, use US code
   telephone     String
-  loads         Load[]
+  docketNumType DocketNumber
+  docketNumber  String       @unique
+  dotId         String?      @unique
+  fax           String?
+  orgName       String       @unique
+  tollFree      String?
+  customsBroker Broker[]
+  Carrier       Carrier[]
+  Consignee     Consignee[]
+  Customer      Customer[]
+  Driver        Driver[]
+  Factor        Factor[]
+  Load          Load[]
+  Shipper       Shipper[]
   users         User[]
+  Trailer       Trailer[]
+  Truck         Truck[]
+  Numbers       Numbers[]
 }
 
-model User { // Individual users at an organization
-  id            String        @id @default(uuid())
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  email         String        @unique
-  password      String
-  organization  Organization  @relation(fields: [orgId], references: [id])
-  orgId         String
-  role          UserRole      @default(USER)
+model User {
+  id           String       @id @default(uuid())
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  email        String       @unique
+  orgId        String
+  firstName    String
+  lastName     String
+  telephone    String?
+  Permissions  Permissions?
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
 }
 
-enum UserRole {
-  USER
-  ADMIN
-  DEVELOPER
-  OWNER
+model Permissions {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  role      UserRole
+  status    Status
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Load {
-  id            String        @id @default(uuid())
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  owner         Organization  @relation(fields: [ownerId], references: [id])
-  ownerId       String     
-  loadNum       String        
-  payOrderNum   String        
-  shipDate      DateTime      @default(now())
-  deliveryDate  DateTime?
-  carrier       Carrier       @relation(fields: [carrierId], references: [id])
-  carrierId     String
-  driver        Driver?       @relation(fields: [driverId], references: [id])
-  driverId      String?          // If blank, display only carrier info
-  customer      Customer      @relation(fields: [customerId], references: [id])
-  customerId    String
-  // Can shippers and consigness be in a single table with fields indicating if they fill each role?
-  shipper       Shipper?      @relation(fields: [originId], references: [id])
-  originId      String?
-  consignee     Consignee?    @relation(fields: [destId], references: [id])
-  destId        String?
-  status        LoadStatus    @default(OPENED)
-  @@unique([ownerId, loadNum])  // Loads can be numbered by user, but a user can't have two loads with the same number
-}
-
-enum LoadStatus {
-  OPENED
-  ASSIGNED
-  IN_TRANSIT
-  DELIVERED
-  PAID
+  id           String       @id @default(uuid())
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  loadNum      String       @unique
+  carrierId    String?
+  driverId     String?
+  customerId   String
+  originId     String?
+  destId       String?
+  status       LoadStatus   @default(OPEN)
+  deliveryDate DateTime?
+  payOrderNum  String
+  shipDate     DateTime     @default(now())
+  orgId        String
+  carrier      Carrier?     @relation(fields: [carrierId], references: [id])
+  customer     Customer     @relation(fields: [customerId], references: [id])
+  consignee    Consignee?   @relation(fields: [destId], references: [id])
+  driver       Driver?      @relation(fields: [driverId], references: [id])
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  shipper      Shipper?     @relation(fields: [originId], references: [id])
 }
 
 model Carrier {
-  id            String    @id @default(uuid())
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  name          String    
-  address       String
-  addressAddOn  String?   // E.g. suite or floor
-  city          String
-  state         String
-  postCountry   String
-  postCode      String    // Cram all digits together and format based on country
-  telCountry    String    @default("1")
-  telephone     String    // Cram all digits together and format based on country
-  dotId         String    @unique
-  taxId         String
-  factor        Factor?   @relation(fields: [factorId], references: [id])
-  factorId      String?
-  loads         Load[]
-  drivers       Driver[]
+  id               String            @id @default(uuid())
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  address          String
+  city             String
+  state            String
+  postCountry      String
+  postCode         String
+  dotId            String            @unique
+  factorId         String?
+  taxId            String?           @unique
+  addressField2    String?
+  addressField3    String?
+  carrierName      String
+  contactEmail     String?
+  contactFax       String?
+  contactName      String?
+  contactTelephone String
+  contactTollFree  String?
+  docketNumType    DocketNumber
+  docketNumber     String            @unique
+  notes            String?
+  paymentTerms     String
+  status           Status            @default(ACTIVE)
+  ursNumber        String?           @unique
+  orgId            String
+  factor           Factor?           @relation(fields: [factorId], references: [id])
+  organization     Organization      @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  CarrierInsurance CarrierInsurance?
+  drivers          Driver[]
+  loads            Load[]
+}
+
+model CarrierInsurance {
+  id                  String    @id @default(uuid())
+  carrierId           String    @unique
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  liabilityCompany    String?
+  liabilityPolicy     String?
+  liabilityExpiration DateTime?
+  liabilityTelephone  String?
+  liabilityContact    String?
+  autoInsCompany      String?
+  autoInsPolicy       String?
+  autoInsExpiration   DateTime?
+  autoInsTelephone    String?
+  autoInsContact      String?
+  cargoCompany        String?
+  cargoPolicy         String?
+  cargoExpiration     DateTime?
+  cargoTelephone      String?
+  cargoContact        String?
+  cargoWSIB           String?
+  fmcsaInsCompany     String
+  fmcsaInsPolicy      String
+  fmcsaInsExpiration  DateTime?
+  fmcsaType           String
+  fmcsaCoverage       String
+  fmcsaTelephone      String?
+  carrier             Carrier   @relation(fields: [carrierId], references: [id], onDelete: Cascade)
 }
 
 model Driver {
-  // Do drivers need their own insurance info, or is that attached to carriers?
-  id          String    @id @default(uuid())
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  name        String 
-  license     String    @unique
-  telCountry  String    @default("1")
-  telephone   String
-  employer    Carrier   @relation(fields: [employerId], references: [id])
-  employerId  String    // Are drivers always associated with a carrier?
-  loads       Load[]
+  id           String       @id @default(uuid())
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  name         String
+  license      String?
+  telephone    String
+  employerId   String?
+  address      String?
+  city         String
+  country      String
+  email        String?
+  notes        String?
+  orgId        String
+  state        String
+  status       Status       @default(ACTIVE)
+  type         DriverType   @default(SINGLE)
+  zip          String?
+  employer     Carrier?     @relation(fields: [employerId], references: [id])
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  loads        Load[]
+  driverTwo    TeamDriver?
+}
+
+model TeamDriver {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  telephone String
+  email     String?
+  address   String?
+  country   String
+  state     String
+  city      String
+  zip       String?
+  license   String?
+  driverId  String?  @unique
+  driver    Driver?  @relation(fields: [driverId], references: [id], onDelete: Cascade)
 }
 
 model Customer {
-  id            String    @id @default(uuid())
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  name          String    @unique
-  address       String
-  addressAddOn  String?
-  city          String
-  state         String
-  postCountry   String
-  postCode      String
-  telCountry    String    @default("1")
-  telephone     String
-  loads         Load[]
+  id                   String       @id @default(uuid())
+  createdAt            DateTime     @default(now())
+  updatedAt            DateTime     @updatedAt
+  billingAddress       String
+  billingAddressField2 String?
+  billingAddressField3 String?
+  billingCity          String
+  billingCountry       String
+  billingEmail         String
+  billingPostCode      String
+  billingState         String
+  billingTelephone     String
+  companyName          String       @unique
+  contactAddress       String
+  contactAddressField2 String?
+  contactAddressField3 String?
+  contactCity          String
+  contactCountry       String
+  contactEmail         String
+  contactFax           String?
+  contactName          String
+  contactPostCode      String
+  contactState         String
+  contactTelephone     String
+  contactTollFree      String?
+  creditLimit          Decimal      @default(5000)
+  currency             String       @default("USD")
+  factorId             String?
+  federalID            String
+  paymentTerms         String
+  salesRepName         String?
+  secondaryContactName String?
+  orgId                String
+  status               Status       @default(ACTIVE)
+  factor               Factor?      @relation(fields: [factorId], references: [id])
+  organization         Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  loads                Load[]
 }
 
 model Shipper {
-  id            String    @id @default(uuid())
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id            String       @id @default(uuid())
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
   name          String
-  address       String
-  addressAddOn  String?
+  address       String?
   city          String
   state         String
   postCountry   String
   postCode      String
-  telCountry    String    @default("1")
-  telephone     String    @unique
+  telephone     String?
+  addressField2 String?
+  addressField3 String?
+  appointments  String?
+  consigneeId   String?      @unique
+  contactEmail  String?
+  contactName   String?
+  intersections String?
+  notes         String?
+  orgId         String
+  shippingHours String?
+  status        Status       @default(ACTIVE)
+  tollFree      String?
   loads         Load[]
+  consignee     Consignee?   @relation(fields: [consigneeId], references: [id], onDelete: Cascade)
+  organization  Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
 }
 
 model Consignee {
-  id            String    @id @default(uuid())
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  name          String 
-  address       String
-  addressAddOn  String?
-  city          String
-  state         String
-  postCountry   String
-  postCode      String
-  telCountry    String    @default("1")
-  telephone     String    @unique
-  loads         Load[]
+  id             String       @id @default(uuid())
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  name           String
+  address        String?
+  city           String
+  state          String
+  postCountry    String
+  postCode       String
+  telephone      String?
+  addressField2  String?
+  addressField3  String?
+  appointments   String?
+  contactEmail   String?
+  contactName    String?
+  intersections  String?
+  notes          String?
+  orgId          String
+  recievingHours String?
+  status         Status       @default(ACTIVE)
+  tollFree       String?
+  organization   Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  loads          Load[]
+  shipper        Shipper?
 }
 
-// If, as noted in Load table, shippers and consigness can be combined, it
-// might look like this.
 model Location {
-  id            String    @id @default(uuid())
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  name          String
-  address       String
-  addressAddOn  String?
-  city          String
-  state         String
-  postCountry   String
-  postCode      String
-  telCountry    String    @default("1")
-  telephone     String
-  isShipper     Boolean
-  isConsignee   Boolean
-  // loads         Load[]
+  id           String   @id @default(uuid())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  name         String
+  address      String
+  addressAddOn String?
+  city         String
+  state        String
+  postCountry  String
+  postCode     String
+  telCountry   String   @default("1")
+  telephone    String
+  isShipper    Boolean
+  isConsignee  Boolean
 }
 
 model Factor {
-  id            String    @id @default(uuid())
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  name          String
-  address       String
-  addressAddOn  String?
-  city          String
-  state         String
-  postCountry   String
-  postCode      String
-  telCountry    String    @default("1")
-  telephone     String    @unique
-  carriers      Carrier[]
+  id                 String       @id @default(uuid())
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+  name               String
+  address            String
+  addressAddOn       String?
+  city               String
+  state              String
+  postCountry        String
+  postCode           String
+  telephone          String
+  currency           String?
+  email              String?
+  notes              String?
+  orgId              String
+  paymentTerms       String?
+  primaryContact     String?
+  secondaryContact   String?
+  secondaryTelephone String?
+  status             Status       @default(ACTIVE)
+  taxId              String?
+  tollFree           String?
+  carriers           Carrier[]
+  customers          Customer[]
+  organization       Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
 }
 
 model Insurer {
-  id            String    @id @default(uuid())
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  name          String
-  address       String
-  addressAddOn  String?
-  city          String
-  state         String
-  postCountry   String
-  postCode      String
-  telCountry    String    @default("1")
-  telephone     String    @unique
+  id           String   @id @default(uuid())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  name         String
+  address      String
+  addressAddOn String?
+  city         String
+  state        String
+  postCountry  String
+  postCode     String
+  telCountry   String   @default("1")
+  telephone    String   @unique
 }
 
 model CoverageMatrix {
-  id                String    @id @default(uuid())
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-  carrierId         String
-  insurerId         String
-  // How many categories of insurance need noting? Is this an enum of a table of categories?
-  coverageCategory  Int       // TODO: this should be an enum (I think)
+  id               String   @id @default(uuid())
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  carrierId        String
+  insurerId        String
+  coverageCategory Int
 }
 
 model Broker {
-  id            String    @id @default(uuid())
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  name          String
-  crossing      String
-  address       String
-  addressAddOn  String?
-  city          String
-  state         String
-  postCountry   String
-  postCode      String
-  telCountry    String    @default("1")
-  telephone     String    @unique
+  id           String       @id @default(uuid())
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  name         String
+  crossing     String
+  telephone    String
+  status       Status       @default(ACTIVE)
+  tollFree     String?
+  orgId        String
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
 }
 
 model Truck {
-  id                String    @id @default(uuid())
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-  truckNum          String
-  licensePlate      String    @unique
-  plateExpiry       DateTime
-  inspectionExpiry  DateTime
-  type              String    // TODO: This should be an enum
-  iftaLicensed      Boolean   @default(false)
+  id               String       @id @default(uuid())
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  truckNum         String
+  licensePlate     String?
+  plateExpiry      DateTime?
+  inspectionExpiry DateTime?
+  type             String?
+  axels            String?
+  deactivationDate DateTime?
+  dotExpiry        DateTime?
+  fuelType         String?
+  ifta             Boolean?
+  mileage          String?
+  notes            String?
+  ownership        String?
+  registeredState  String?
+  startDate        DateTime?
+  status           Status       @default(ACTIVE)
+  vin              String?
+  weight           String?
+  year             String?
+  
+  orgId            String
+  organization     Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
 }
 
 model Trailer {
-  id                String        @id @default(uuid())
-  createdAt         DateTime      @default(now())
-  updatedAt         DateTime      @updatedAt
-  licensePlate      String        @unique
-  plateExpiry       DateTime
-  inspectionExpiry  DateTime
-  type              String        // 1) Make an enum 2) The names of these often start w/ numbers (b/c they're trailers) so we need to have a naming scheme.
-  status            TrailerStatus @default(ACTIVE)
-}
+  id        String        @id @default(uuid())
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  status    TrailerStatus @default(ACTIVE)
 
-enum TrailerStatus {
-  ACTIVE
-  NOTAVAILABLE
-  INACTIVE
+  licensePlate     String
+  plateExpiry      DateTime
+  inspectionExpiry DateTime
+  type             String
+
+  notes String?
+
+  orgId        String
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
 }
 
 model Billee {
-  id            String    @id @default(uuid())
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  name          String
-  address       String
-  addressAddOn  String?
-  city          String
-  state         String
-  postCountry   String
-  postCode      String
-  telCountry    String    @default("1")
-  telephone     String    @unique
+  id           String   @id @default(uuid())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  name         String
+  address      String
+  addressAddOn String?
+  city         String
+  state        String
+  postCountry  String
+  postCode     String
+  telCountry   String   @default("1")
+  telephone    String   @unique
+}
+
+model Numbers {
+  id           String       @id @default(uuid())
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  status       Status       @default(ACTIVE)
+  name         String
+  dispatch     Boolean      @default(false)
+  orgId        String
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
 }
 
 model AccountPreferences {
@@ -295,4 +450,46 @@ model AccountPreferences {
   calendarFormat     String
   mileageSystem      String
   printSetting       String
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+}
+
+enum DocketNumber {
+  FF
+  MC
+}
+
+enum UserRole {
+  USER
+  ADMIN
+  DEVELOPER
+  OWNER
+  SALES_REP
+  DISPATCHER
+}
+
+enum LoadStatus {
+  OPEN
+  COVERED
+  DISPATCHED
+  LOADING
+  ON_ROUTE
+  UNLOADING
+  DELIVERED
+  NEEDS_REVIEW
+  CLAIM
+}
+
+enum TrailerStatus {
+  ACTIVE
+  NOTAVAILABLE
+  INACTIVE
+}
+
+enum DriverType {
+  SINGLE
+  TEAM
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { ContextProvider } from '@/Context/modalContext';
+import { ContextProvider } from '@/context/modalContext';
 import ThirdParty from '@/components/Table/ThirdParty';
 
 const ThirdPartyPage = () => {

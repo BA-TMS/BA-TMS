@@ -2,52 +2,83 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { createClient } from '@/util/supabase/server';
+import { createSupabaseServerClient } from '@util/supabase/server';
 import { headers } from 'next/headers';
 
-export const signIn = async (formData: FormData) => {
+export async function login(formData: FormData) {
+  const supabase = createSupabaseServerClient();
+
+  const data = {
+    email: formData.get('email') as string,
+    password: formData.get('password') as string,
+  };
+
+  const { error } = await supabase.auth.signInWithPassword(data);
+
+  console.log('login error', error?.message);
+
+  if (error?.message === 'Email not confirmed') {
+    return redirect(
+      '/login/confirm?message=Could not authenticate user, please confirm your email.'
+    );
+  } else if (error === null) {
+    redirect('/dispatch');
+  } else {
+    redirect('/login?message=Invalid Login Credentials');
+  }
+}
+
+export const signOut = async () => {
   'use server';
 
-  const email = formData.get('email') as string;
-  const password = formData.get('password') as string;
-  const supabase = createClient();
-
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
-
-  if (error) {
-    return redirect('/login?message=Could not authenticate user');
-    // could make a separate error page if we wanted
-  }
-  // purge cached data for specific path - what does this do?
-  revalidatePath('/', 'layout');
-  return redirect('/protected'); // update this to homepage we want user to see
+  const supabase = createSupabaseServerClient();
+  await supabase.auth.signOut();
+  revalidatePath('/login', 'layout');
+  return redirect('/login');
 };
 
-export const signUp = async (formData: FormData) => {
-  'use server';
-
+export async function forgotPassword(formData: FormData) {
   const origin = headers().get('origin');
   const email = formData.get('email') as string;
-  const password = formData.get('password') as string;
-  const supabase = createClient();
+  const supabase = createSupabaseServerClient();
 
-  const { error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      emailRedirectTo: `${origin}/auth/callback`,
-    },
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${origin}/login/reset-password`,
   });
 
   if (error) {
-    return redirect('/login?message=Could not authenticate user');
+    redirect('/login?message=Could Not Reset Password');
   }
 
-  revalidatePath('/', 'layout');
-  // could make notification page if we wanted
-  // will eventually need a way to send email again
-  return redirect('/login?message=Check email to continue sign in process');
+  return redirect(
+    '/login?message=Check email to reset password. Do not change browsers.'
+  );
+}
+
+export const resetPassword = async (code: string, password: string) => {
+  'use server';
+
+  const supabase = createSupabaseServerClient();
+
+  if (code) {
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
+
+    if (error) {
+      // should handle errors better for user experience
+
+      console.log('link expired error', error);
+      return;
+    }
+  }
+
+  const { error } = await supabase.auth.updateUser({
+    password: password,
+  });
+
+  if (error) {
+    // once again should handle errors better for user experience
+    console.log('unable to reset password error', error);
+    return;
+  }
+  redirect('/');
 };

@@ -6,7 +6,7 @@ const nextConfig = {
       // redirect / to dashboard
       {
         source: '/',
-        destination: '/dashboard',
+        destination: '/dispatch',
         permanent: true,
       },
     ];

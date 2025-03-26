@@ -2,63 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 
-.box {
-  float: left;
-  height: 20px;
-  width: 20px;
-  margin-bottom: 15px;
-  border: 1px solid black;
-  clear: both;
+/* default base styles for specific HTML elements */
+@layer base {
+  h1 {
+    @apply font-public font-extrabold text-title-xxl text-black dark:text-white;
+  }
+  h2 {
+    @apply font-public font-extrabold text-title-xl text-black dark:text-white;
+  }
+  h3 {
+    @apply font-public font-bold text-title-lg text-black dark:text-white;
+  }
+  h4 {
+    @apply font-public font-bold text-title-md text-black dark:text-white;
+  }
+  h5 {
+    @apply font-public font-bold text-title-sm text-black dark:text-white;
+  }
+  h6 {
+    @apply font-public font-bold text-title-xsm text-black dark:text-white;
+  }
 }
 
-.yellow {
-  background-color: yellow;
+/* typographic styles */
+.subtitle1 {
+  @apply font-public font-semibold text-text-lg;
 }
 
-.red {
-  background-color: red;
+.subtitle2 {
+  @apply font-public font-semibold text-text-sm;
 }
 
-.purple {
-  background-color: purple;
+.body1 {
+  @apply font-public font-normal text-text-lg;
 }
 
-.blue {
-  background-color: #007fff;
+.body2 {
+  @apply font-public font-normal text-text-sm;
 }
 
-.wine {
-  background-color: #4e0707;
+.caption {
+  @apply font-public font-normal text-text-xsm;
 }
 
-.green {
-  background-color: green;
+.overline {
+  @apply font-public font-bold text-text-xsm no-underline uppercase;
 }
 
-.gray {
-  background-color: gray;
-}
-
-.hotpink {
-  background-color: hotpink;
-}
-
-.effect1 {
-  transition: transform 0.3s, background-color 0.3s, color 0.3s;
-}
-.effect1:hover {
-  transform: scale(1.1);
-  background-color: #4caf50;
-  color: white;
-}
-
-.custom-input-date::-webkit-calendar-picker-indicator {
-  background: transparent;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 20px;
-}
-
-.custom-input-date-1::-webkit-calendar-picker-indicator {
-  background-image: url('../../public/assets/icons/calendar.svg');
+.pagetitle {
+  @apply font-public font-semibold text-text-xl text-black dark:text-white;
 }

@@ -1,21 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { NotificationIcon } from '@/assets/SVGs';
+import { NotificationIcon } from '@/assets/Icons/Layout';
 
 const DropdownNotification = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [notifying, setNotifying] = useState(true);
+  const [notifying, setNotifying] = useState(true); // if there is a notification
 
-  const trigger = useRef<any>(null);
-  const dropdown = useRef<any>(null);
+  const trigger = useRef<HTMLAnchorElement>(null);
+  const dropdown = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
-      if (!dropdown.current) return;
+      if (!dropdown.current || !trigger.current) return;
       if (
         !dropdownOpen ||
-        dropdown.current.contains(target) ||
-        trigger.current.contains(target)
+        dropdown.current.contains(target as Node) ||
+        trigger.current.contains(target as Node)
       )
         return;
       setDropdownOpen(false);
@@ -35,7 +35,7 @@ const DropdownNotification = () => {
   });
 
   return (
-    <li className="relative">
+    <div className="relative w-10 ">
       <Link
         ref={trigger}
         onClick={() => {
@@ -43,96 +43,51 @@ const DropdownNotification = () => {
           setDropdownOpen(!dropdownOpen);
         }}
         href="#"
-        className="relative flex h-8.5 w-8.5 items-center justify-center rounded-full border-[0.5px] border-stroke bg-gray hover:text-primary dark:border-strokedark dark:bg-meta-4 dark:text-white"
+        className="relative flex h-8.5 w-8.5 items-center justify-center"
       >
-        <span
-          className={`absolute -top-0.5 right-0 z-1 h-2 w-2 rounded-full bg-meta-1 ${
-            notifying === false ? 'hidden' : 'inline'
-          }`}
-        >
-          <span className="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-meta-1 opacity-75"></span>
-        </span>
+        {NotificationIcon}
+        {/* will need to add functionality here for the notification number */}
+        {notifying && (
+          <span className="absolute -top-1 -right-1 z-1 h-5 w-5 rounded-full bg-error flex items-center justify-center">
+            <span className="text-white caption">{8}</span>
+            {/* <span className="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-error opacity-75"></span> */}
+          </span>
+        )}
       </Link>
-      {NotificationIcon}
+
+      {/* Dropdown Start */}
+      {/* probably make a component for notification items */}
       <div
         ref={dropdown}
         onFocus={() => setDropdownOpen(true)}
         onBlur={() => setDropdownOpen(false)}
-        className={`absolute -right-27 mt-2.5 flex h-90 w-75 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark sm:right-0 sm:w-80 ${
-          dropdownOpen === true ? 'block' : 'hidden'
+        className={`absolute right-0 mt-4 flex w-90 flex-col rounded-lg border text-grey-600 dark:text-white bg-white dark:bg-grey-900 border-grey-200 dark:border-grey-700 ${
+          dropdownOpen ? 'block' : 'hidden'
         }`}
       >
-        <div className="px-4.5 py-3">
-          <h5 className="text-sm font-medium text-bodydark2">Notification</h5>
+        <div className="px-4 py-3">
+          <h5 className="body1 text-grey-600 dark:text-white">Notifications</h5>
         </div>
 
         <ul className="flex h-auto flex-col overflow-y-auto">
           <li>
             <Link
-              className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
+              className="flex flex-col gap-2 border-t border-grey-200 px-4 py-3 hover:bg-grey-200 dark:border-grey-700 dark:hover:bg-grey-700"
               href="#"
             >
-              <p className="text-sm">
-                <span className="text-black dark:text-white">
-                  Edit your information in a swipe
-                </span>{' '}
+              <p className="body2 text-grey-600 dark:text-white">
                 Sint occaecat cupidatat non proident, sunt in culpa qui officia
                 deserunt mollit anim.
               </p>
 
-              <p className="text-xs">12 May, 2025</p>
-            </Link>
-          </li>
-          <li>
-            <Link
-              className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-              href="#"
-            >
-              <p className="text-sm">
-                <span className="text-black dark:text-white">
-                  It is a long established fact
-                </span>{' '}
-                that a reader will be distracted by the readable.
+              <p className="caption text-grey-600 dark:text-white">
+                12 May, 2025
               </p>
-
-              <p className="text-xs">24 Feb, 2025</p>
-            </Link>
-          </li>
-          <li>
-            <Link
-              className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-              href="#"
-            >
-              <p className="text-sm">
-                <span className="text-black dark:text-white">
-                  There are many variations
-                </span>{' '}
-                of passages of Lorem Ipsum available, but the majority have
-                suffered
-              </p>
-
-              <p className="text-xs">04 Jan, 2025</p>
-            </Link>
-          </li>
-          <li>
-            <Link
-              className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-              href="#"
-            >
-              <p className="text-sm">
-                <span className="text-black dark:text-white">
-                  There are many variations
-                </span>{' '}
-                of passages of Lorem Ipsum available, but the majority have
-                suffered
-              </p>
-
-              <p className="text-xs">01 Dec, 2024</p>
             </Link>
           </li>
         </ul>
       </div>
-    </li>
+    </div>
   );
 };
 

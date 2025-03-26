@@ -1,6 +1,6 @@
 'use client';
 
-import { ContextProvider } from '@/Context/modalContext';
+import { ContextProvider } from '@/context/modalContext';
 import AccountForm from '@/components/Forms/Preferences/AccountForm';
 
 export default () => {
@@ -10,4 +10,3 @@ export default () => {
     </ContextProvider>
   );
 };
-

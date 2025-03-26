@@ -6,7 +6,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import TextInput from '@/components/UI_Elements/Form/TextInput';
 import SelectInput from '@/components/UI_Elements/Form/SelectInput';
-import { ModalContext } from '@/Context/modalContext';
+import { ModalContext } from '@/context/modalContext';
 import {
   getAccountPreferences,
   updateAccountPreferences,
@@ -30,7 +30,7 @@ const schema = yup.object({
 
 type AccountPreferences = yup.InferType<typeof schema>;
 
-export default () => {
+const AccountForm = () => {
   const {
     handleSubmit,
     setError,
@@ -175,3 +175,5 @@ export default () => {
     </div>
   );
 };
+
+export default AccountForm;

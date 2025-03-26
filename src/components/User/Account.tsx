@@ -1,209 +1,148 @@
 'use client';
 
 import Image from 'next/image';
+import countryList from 'react-select-country-list';
+import { BsTelephone } from 'react-icons/bs';
+import { FaRegAddressBook, FaCity } from 'react-icons/fa';
+import { MdOutlineEmail } from 'react-icons/md';
+import { IoMdGlobe } from 'react-icons/io';
 
-const secondaryNavigation = [
-  { name: 'Account', href: '#', current: true },
-  { name: 'Notifications', href: '#', current: false },
-  { name: 'Billing', href: '#', current: false },
-  { name: 'Teams', href: '../user/settings/team', current: false },
-];
+import React, { useState, useEffect } from 'react';
+import Select from 'react-select';
+//import { getCountries, getStatesOfCountry } from 'country-state-city';
+import { Country, State } from 'country-state-city';
+import * as Yup from 'yup';
 
 export default function Account() {
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [selectedState, setSelectedState] = useState(null);
+  const [statesOptions, setStatesOptions] = useState<
+    { value: string; label: string }[]
+  >([]);
+
+  const [formData, setFormData] = useState({
+    fullName: '',
+    emailAddress: '',
+    phoneNumber: '',
+    address: '',
+    country: null,
+    state: null,
+    city: '',
+    postalCode: '',
+    bio: '',
+  });
+
+  const accountSchema = Yup.object().shape({
+    fullName: Yup.string(),
+    emailAddress: Yup.string().email(),
+    phoneNumber: Yup.string(),
+    address: Yup.string(),
+    country: Yup.object().shape({
+      label: Yup.string().required(),
+      value: Yup.string().required(),
+    }),
+    state: Yup.object().shape({
+      label: Yup.string().required(),
+      value: Yup.string().required(),
+    }),
+    city: Yup.string(),
+    postalCode: Yup.string(),
+    bio: Yup.string(),
+  });
+
+  const countriesOptions = Country.getAllCountries().map((country) => ({
+    value: country.isoCode,
+    label: country.name,
+  }));
+
+  const handleCountryChange = (option) => {
+    setSelectedCountry(option);
+    setFormData((prev) => ({ ...prev, country: option }));
+    const states = State.getStatesOfCountry(option.value);
+    const stateOptions = states.map((state) => ({
+      value: state.isoCode,
+      label: state.name,
+    }));
+    setStatesOptions(stateOptions);
+    setSelectedState(null); // Reset state selection when country changes
+    setFormData((prev) => ({ ...prev, state: null })); // Also reset state in formData.
+  };
+
+  const handleStateChange = (option) => {
+    setSelectedState(option);
+    setFormData((prev) => ({ ...prev, state: option }));
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData((prev) => {
+      const updatedFormData = { ...prev, [field]: value };
+      // Save updated form data to local storage
+      localStorage.setItem('formData', JSON.stringify(updatedFormData));
+      console.log('Saved to local storage:', updatedFormData);
+      return updatedFormData;
+    });
+  };
+
+  useEffect(() => {
+    const savedFormData = localStorage.getItem('formData');
+    console.log('Loaded from storage:', savedFormData);
+    if (savedFormData) {
+      const parsedData = JSON.parse(savedFormData);
+      //console.log('Loading form data from local storage');
+      setFormData(parsedData);
+    }
+  }, []);
+
+  // Use formData to handle form submission and validation with Yup
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await accountSchema.validate(formData, { abortEarly: false });
+      // Save the form data to local storage
+      localStorage.setItem('formData', JSON.stringify(formData));
+      console.log('Form data submitted and saved to local storage:', formData);
+      // Proceed with form submission logic
+    } catch (error) {
+      // Handle validation errors
+      console.error('Validation error:', error);
+      if (error instanceof Yup.ValidationError) {
+        // Here you can handle errors, for example by setting state
+        console.error('Validation errors:', error.errors);
+      }
+    }
+  };
+
+  // This code is to test if we're saving the data.
+  function PrintData() {
+    console.log('Account Schema Properties:');
+    console.log('Full Name:', accountSchema.fields.fullName.describe());
+    console.log('Email Address:', accountSchema.fields.emailAddress.describe());
+    console.log('Phone Number:', accountSchema.fields.phoneNumber.describe());
+    console.log('Address:', accountSchema.fields.address.describe());
+    console.log('Country:', accountSchema.fields.country.describe());
+    console.log('State:', accountSchema.fields.state.describe());
+    console.log('City:', accountSchema.fields.city.describe());
+    console.log('Postal Code:', accountSchema.fields.postalCode.describe());
+    console.log('Bio', accountSchema.fields.bio.describe());
+  }
+
   return (
     <>
-      {/* Tabs */}
-      <div>
-        {/* removed dlassName="border-b border-white/5" */}
-        <div>
-          {/* Secondary navigation */}
-          <nav className="flex overflow-x-auto py-4">
-            <ul
-              role="list"
-              className="flex min-w-full flex-none gap-x-6 px-4 text-sm font-semibold leading-6 text-gray-400 sm:px-6 lg:px-8"
-            >
-              {secondaryNavigation.map((item) => (
-                <li key={item.name}>
-                  <a
-                    href={item.href}
-                    className={item.current ? 'text-indigo-400' : ''}
-                  >
-                    {item.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
-      </div>
-
       {/* Start of Info form */}
-      <div className="max-w-270 ">
+      <div className="max-w-350 ">
         {/* <Breadcrumb pageName="Settings" /> */}
 
         <div className="grid grid-cols-5 gap-8">
-          <div className="col-span-5 xl:col-span-3">
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
-                <h3 className="font-medium text-black dark:text-white">
-                  Personal Information
-                </h3>
-              </div>
-              <div className="p-7">
-                <form action="#">
-                  <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                    <div className="w-full sm:w-1/2">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="fullName"
-                      >
-                        Full Name
-                      </label>
-                      <div className="relative">
-                        <span className="absolute left-4.5 top-4">
-                          <svg
-                            className="fill-current"
-                            width="20"
-                            height="20"
-                            viewBox="0 0 20 20"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <g opacity="0.8">
-                              <path
-                                fillRule="evenodd"
-                                clipRule="evenodd"
-                                d="M3.72039 12.887C4.50179 12.1056 5.5616 11.6666 6.66667 11.6666H13.3333C14.4384 11.6666 15.4982 12.1056 16.2796 12.887C17.061 13.6684 17.5 14.7282 17.5 15.8333V17.5C17.5 17.9602 17.1269 18.3333 16.6667 18.3333C16.2064 18.3333 15.8333 17.9602 15.8333 17.5V15.8333C15.8333 15.1703 15.5699 14.5344 15.1011 14.0655C14.6323 13.5967 13.9964 13.3333 13.3333 13.3333H6.66667C6.00363 13.3333 5.36774 13.5967 4.8989 14.0655C4.43006 14.5344 4.16667 15.1703 4.16667 15.8333V17.5C4.16667 17.9602 3.79357 18.3333 3.33333 18.3333C2.8731 18.3333 2.5 17.9602 2.5 17.5V15.8333C2.5 14.7282 2.93899 13.6684 3.72039 12.887Z"
-                                fill=""
-                              />
-                              <path
-                                fillRule="evenodd"
-                                clipRule="evenodd"
-                                d="M9.99967 3.33329C8.61896 3.33329 7.49967 4.45258 7.49967 5.83329C7.49967 7.214 8.61896 8.33329 9.99967 8.33329C11.3804 8.33329 12.4997 7.214 12.4997 5.83329C12.4997 4.45258 11.3804 3.33329 9.99967 3.33329ZM5.83301 5.83329C5.83301 3.53211 7.69849 1.66663 9.99967 1.66663C12.3009 1.66663 14.1663 3.53211 14.1663 5.83329C14.1663 8.13448 12.3009 9.99996 9.99967 9.99996C7.69849 9.99996 5.83301 8.13448 5.83301 5.83329Z"
-                                fill=""
-                              />
-                            </g>
-                          </svg>
-                        </span>
-                        <input
-                          className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                          type="text"
-                          name="fullName"
-                          id="fullName"
-                          placeholder="Devid Jhon"
-                          defaultValue="Devid Jhon"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="w-full sm:w-1/2">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="phoneNumber"
-                      >
-                        Phone Number
-                      </label>
-                      <input
-                        className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name="phoneNumber"
-                        id="phoneNumber"
-                        placeholder="+990 3343 7865"
-                        defaultValue="+990 3343 7865"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="mb-5.5">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="emailAddress"
-                    >
-                      Email Address
-                    </label>
-                    <div className="relative">
-                      <span className="absolute left-4.5 top-4">
-                        <svg
-                          className="fill-current"
-                          width="20"
-                          height="20"
-                          viewBox="0 0 20 20"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <g opacity="0.8">
-                            <path
-                              fillRule="evenodd"
-                              clipRule="evenodd"
-                              d="M3.33301 4.16667C2.87658 4.16667 2.49967 4.54357 2.49967 5V15C2.49967 15.4564 2.87658 15.8333 3.33301 15.8333H16.6663C17.1228 15.8333 17.4997 15.4564 17.4997 15V5C17.4997 4.54357 17.1228 4.16667 16.6663 4.16667H3.33301ZM0.833008 5C0.833008 3.6231 1.9561 2.5 3.33301 2.5H16.6663C18.0432 2.5 19.1663 3.6231 19.1663 5V15C19.1663 16.3769 18.0432 17.5 16.6663 17.5H3.33301C1.9561 17.5 0.833008 16.3769 0.833008 15V5Z"
-                              fill=""
-                            />
-                            <path
-                              fillRule="evenodd"
-                              clipRule="evenodd"
-                              d="M0.983719 4.52215C1.24765 4.1451 1.76726 4.05341 2.1443 4.31734L9.99975 9.81615L17.8552 4.31734C18.2322 4.05341 18.7518 4.1451 19.0158 4.52215C19.2797 4.89919 19.188 5.4188 18.811 5.68272L10.4776 11.5161C10.1907 11.7169 9.80879 11.7169 9.52186 11.5161L1.18853 5.68272C0.811486 5.4188 0.719791 4.89919 0.983719 4.52215Z"
-                              fill=""
-                            />
-                          </g>
-                        </svg>
-                      </span>
-                      <input
-                        className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="email"
-                        name="emailAddress"
-                        id="emailAddress"
-                        placeholder="devidjond45@gmail.com"
-                        defaultValue="devidjond45@gmail.com"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="mb-5.5">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="Username"
-                    >
-                      Username
-                    </label>
-                    <input
-                      className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                      type="text"
-                      name="Username"
-                      id="Username"
-                      placeholder="devidjhon24"
-                      defaultValue="devidjhon24"
-                    />
-                  </div>
-
-                  <div className="flex justify-end gap-4.5">
-                    <button
-                      className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                      type="submit"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-95"
-                      type="submit"
-                    >
-                      Save
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-
           <div className="col-span-5 xl:col-span-2">
-            <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
+            <div className="rounded-box-large border border-stroke bg-white shadow-default dark:border-gray-800 dark:bg-black">
+              <div className="border-b border-stroke py-4 px-7 dark:border-gray-800">
                 <h3 className="font-medium text-black dark:text-white">
                   Your Photo
                 </h3>
               </div>
 
               <div className="p-7">
-                <form action="#">
+                <form action="#" onSubmit={handleSubmit}>
                   <div className="mb-4 flex items-center gap-3">
                     <div className="h-14 w-14 rounded-full">
                       <Image
@@ -286,6 +225,331 @@ export default function Account() {
                     <button
                       className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-95"
                       type="submit"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-span-5 xl:col-span-3">
+            <div className="rounded-box-large border border-stroke bg-white shadow-default dark:border-gray-800 dark:bg-black">
+              <div className="border-b border-stroke py-4 px-7 dark:border-gray-800">
+                <h3 className="font-medium text-black dark:text-white">
+                  Personal Information
+                </h3>
+              </div>
+              <div className="p-7">
+                <form action="#" onSubmit={handleSubmit}>
+                  {/* NAME AND EMAIL */}
+                  <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                    <div className="w-full sm:w-1/2">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="fullName"
+                      >
+                        Full Name
+                      </label>
+                      <div className="relative">
+                        <span className="absolute left-4.5 top-4">
+                          <svg
+                            className="fill-current"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <g opacity="0.8">
+                              <path
+                                fillRule="evenodd"
+                                clipRule="evenodd"
+                                d="M3.72039 12.887C4.50179 12.1056 5.5616 11.6666 6.66667 11.6666H13.3333C14.4384 11.6666 15.4982 12.1056 16.2796 12.887C17.061 13.6684 17.5 14.7282 17.5 15.8333V17.5C17.5 17.9602 17.1269 18.3333 16.6667 18.3333C16.2064 18.3333 15.8333 17.9602 15.8333 17.5V15.8333C15.8333 15.1703 15.5699 14.5344 15.1011 14.0655C14.6323 13.5967 13.9964 13.3333 13.3333 13.3333H6.66667C6.00363 13.3333 5.36774 13.5967 4.8989 14.0655C4.43006 14.5344 4.16667 15.1703 4.16667 15.8333V17.5C4.16667 17.9602 3.79357 18.3333 3.33333 18.3333C2.8731 18.3333 2.5 17.9602 2.5 17.5V15.8333C2.5 14.7282 2.93899 13.6684 3.72039 12.887Z"
+                                fill=""
+                              />
+                              <path
+                                fillRule="evenodd"
+                                clipRule="evenodd"
+                                d="M9.99967 3.33329C8.61896 3.33329 7.49967 4.45258 7.49967 5.83329C7.49967 7.214 8.61896 8.33329 9.99967 8.33329C11.3804 8.33329 12.4997 7.214 12.4997 5.83329C12.4997 4.45258 11.3804 3.33329 9.99967 3.33329ZM5.83301 5.83329C5.83301 3.53211 7.69849 1.66663 9.99967 1.66663C12.3009 1.66663 14.1663 3.53211 14.1663 5.83329C14.1663 8.13448 12.3009 9.99996 9.99967 9.99996C7.69849 9.99996 5.83301 8.13448 5.83301 5.83329Z"
+                                fill=""
+                              />
+                            </g>
+                          </svg>
+                        </span>
+                        <input
+                          className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                          type="text"
+                          name="fullName"
+                          id="fullName"
+                          placeholder="Devid Jhon"
+                          value={formData.fullName}
+                          onChange={(e) =>
+                            handleInputChange('fullName', e.target.value)
+                          }
+                        />
+                      </div>
+                    </div>
+
+                    <div className="w-full sm:w-1/2">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="emailAddress"
+                      >
+                        Email Address
+                      </label>
+                      <div className="relative">
+                        <span className="absolute left-4.5 top-4">
+                          <MdOutlineEmail />
+                        </span>
+                        <input
+                          className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                          type="email"
+                          name="emailAddress"
+                          id="emailAddress"
+                          placeholder="devidjond45@gmail.com"
+                          value={formData.emailAddress}
+                          onChange={(e) =>
+                            handleInputChange('emailAddress', e.target.value)
+                          }
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* PHONE NUMBER AND ADDRESS */}
+                  <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                    <div className="w-full sm:w-1/2">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="phoneNumber"
+                      >
+                        Phone Number
+                      </label>
+                      <div className="relative">
+                        <span className="absolute left-4.5 top-4">
+                          <BsTelephone />
+                        </span>
+                        <input
+                          className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                          type="text"
+                          name="phoneNumber"
+                          id="phoneNumber"
+                          placeholder="+990 3343 7865"
+                          value={formData.phoneNumber}
+                          onChange={(e) =>
+                            handleInputChange('phoneNumber', e.target.value)
+                          }
+                        />
+                      </div>
+                    </div>
+
+                    <div className="w-full sm:w-1/2">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="address"
+                      >
+                        Address
+                      </label>
+                      <div className="relative">
+                        <span className="absolute left-4.5 top-4">
+                          <FaRegAddressBook />
+                        </span>
+                        <input
+                          className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                          type="text"
+                          name="address"
+                          id="address"
+                          placeholder="123 Sesame Street"
+                          value={formData.address}
+                          onChange={(e) =>
+                            handleInputChange('address', e.target.value)
+                          }
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  {/* END PHONE NUMBER AND ADDRESS */}
+
+                  {/* COUNTRY AND STATE/REGION */}
+                  <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                    <div className="w-full sm:w-1/2">
+                      <label
+                        className="mb-3 block text-sm font-medium text-gray-900 dark:text-gray-100"
+                        htmlFor="country"
+                      >
+                        Country
+                      </label>
+                      <Select
+                        classNames={{
+                          menu: () => 'bg-white dark:bg-black p-4',
+                          menuList: () => 'body2',
+                        }}
+                        classNamePrefix="select"
+                        options={countriesOptions}
+                        value={formData.country}
+                        onChange={(e) => {
+                          handleCountryChange(e);
+                        }}
+                        placeholder="Select Country"
+                        theme={(theme) => ({
+                          ...theme,
+                          borderRadius: 0.375,
+                          colors: {
+                            ...theme.colors,
+                            primary25: 'green-100',
+                            primary: 'green-500',
+                            neutral0: 'white dark:bg-gray-700',
+                            neutral80: 'gray-900 dark:text-gray-100',
+                          },
+                        })}
+                      />
+                    </div>
+                    <div className="w-full sm:w-1/2">
+                      <label
+                        className="mb-3 block text-sm font-medium text-gray-900 dark:text-gray-100"
+                        htmlFor="stateRegion"
+                      >
+                        State/Region
+                      </label>
+                      <Select
+                        classNames={{
+                          menu: () => 'bg-white dark:bg-black p-4',
+                          menuList: () => 'body2',
+                        }}
+                        classNamePrefix="select"
+                        options={statesOptions}
+                        value={formData.state}
+                        onChange={(e) => {
+                          handleStateChange(e);
+                        }}
+                        placeholder="Select State/Region"
+                        isDisabled={!selectedCountry} // Disable until a country is selected
+                        theme={(theme) => ({
+                          ...theme,
+                          borderRadius: 0.375,
+                          colors: {
+                            ...theme.colors,
+                            primary25: 'green-100',
+                            primary: 'green-500',
+                            neutral0: 'white dark:bg-gray-700',
+                            neutral80: 'gray-900 dark:text-gray-100',
+                          },
+                        })}
+                      />
+                    </div>
+                  </div>
+                  {/* END COUNTRY AND STATE/REGION */}
+
+                  {/* CITY AND POSTAL CODE */}
+                  <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                    <div className="w-full sm:w-1/2">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="city"
+                      >
+                        City
+                      </label>
+                      <div className="relative">
+                        <span className="absolute left-4.5 top-4">
+                          <FaCity />
+                        </span>
+                        <input
+                          className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                          type="text"
+                          name="city"
+                          id="city"
+                          placeholder=" "
+                          value={formData.city}
+                          onChange={(e) =>
+                            handleInputChange('city', e.target.value)
+                          }
+                        />
+                      </div>
+                    </div>
+
+                    <div className="w-full sm:w-1/2">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="postalCode"
+                      >
+                        Postal Code
+                      </label>
+                      <input
+                        className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        type="text"
+                        name="postalCode"
+                        id="postalCode"
+                        placeholder=" "
+                        value={formData.postalCode}
+                        onChange={(e) =>
+                          handleInputChange('postalCode', e.target.value)
+                        }
+                      />
+                    </div>
+                  </div>
+                  {/* END CITY AND POSTAL CODE */}
+
+                  <div className="mb-5.5">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="bio"
+                    >
+                      About
+                    </label>
+                    <div className="relative">
+                      <span className="absolute left-4.5 top-4">
+                        <svg
+                          className="fill-current"
+                          width="20"
+                          height="20"
+                          viewBox="0 0 20 20"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <g opacity="0.8">
+                            <path
+                              fillRule="evenodd"
+                              clipRule="evenodd"
+                              d="M3.33301 4.16667C2.87658 4.16667 2.49967 4.54357 2.49967 5V15C2.49967 15.4564 2.87658 15.8333 3.33301 15.8333H16.6663C17.1228 15.8333 17.4997 15.4564 17.4997 15V5C17.4997 4.54357 17.1228 4.16667 16.6663 4.16667H3.33301ZM0.833008 5C0.833008 3.6231 1.9561 2.5 3.33301 2.5H16.6663C18.0432 2.5 19.1663 3.6231 19.1663 5V15C19.1663 16.3769 18.0432 17.5 16.6663 17.5H3.33301C1.9561 17.5 0.833008 16.3769 0.833008 15V5Z"
+                              fill=""
+                            />
+                            <path
+                              fillRule="evenodd"
+                              clipRule="evenodd"
+                              d="M0.983719 4.52215C1.24765 4.1451 1.76726 4.05341 2.1443 4.31734L9.99975 9.81615L17.8552 4.31734C18.2322 4.05341 18.7518 4.1451 19.0158 4.52215C19.2797 4.89919 19.188 5.4188 18.811 5.68272L10.4776 11.5161C10.1907 11.7169 9.80879 11.7169 9.52186 11.5161L1.18853 5.68272C0.811486 5.4188 0.719791 4.89919 0.983719 4.52215Z"
+                              fill=""
+                            />
+                          </g>
+                        </svg>
+                      </span>
+                      <textarea
+                        className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        rows={5}
+                        cols={35}
+                        wrap="on"
+                        placeholder={'Bio here'}
+                        value={formData.bio}
+                        onChange={(e) =>
+                          handleInputChange('bio', e.target.value)
+                        }
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end gap-4.5">
+                    <button
+                      className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                      type="submit"
+                      onClick={() => PrintData()}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-95"
+                      type="submit"
+                      onClick={() => PrintData()}
                     >
                       Save
                     </button>

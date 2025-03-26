@@ -1,8 +1,59 @@
-import { type NextRequest } from 'next/server';
-import { updateSession } from './util/supabase/middleware';
+import { NextRequest, NextResponse } from 'next/server';
+import { updateSession } from '@util/supabase/middleware';
+import { createSupabaseServerClient } from '@util/supabase/server';
 
-export async function middleware(request: NextRequest) {
-  return await updateSession(request);
+// Specify protected and public routes
+// NOTE: some pages may move or be renamed
+
+const protectedRoutes = [
+  '/',
+  '/carriers',
+  '/customers',
+  '/dashboard',
+  '/dispatch',
+  '/drayage',
+  '/drivers',
+  '/other-numbers',
+  '/preferences',
+  '/settings',
+  '/third-party',
+];
+const publicRoutes = ['/login', '/signup'];
+
+export default async function middleware(request: NextRequest) {
+  // check if the current route is protected or public
+  const path = request.nextUrl.pathname;
+
+  const pathSegment = `/${path.split('/')[1]}`;
+
+  // handle nested routes
+  const isProtectedRoute = protectedRoutes.includes(pathSegment);
+
+  // handle public routes
+  const isPublicRoute = publicRoutes.includes(pathSegment);
+
+  // update session using supabase middleware
+  await updateSession(request);
+
+  // checking for a user
+  const supabase = createSupabaseServerClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  // Redirect to /login if the user is not authenticated
+  if (isProtectedRoute && !user) {
+    return NextResponse.redirect(new URL('/login', request.nextUrl));
+  }
+
+  // Redirect to / if the user is authenticated
+  // / will redirect (see next.config)
+  if (isPublicRoute && user && !request.nextUrl.pathname.startsWith('/')) {
+    return NextResponse.redirect(new URL('/', request.nextUrl));
+  }
+
+  return NextResponse.next();
 }
 
 export const config = {

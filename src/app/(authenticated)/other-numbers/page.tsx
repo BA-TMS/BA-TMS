@@ -1,14 +1,16 @@
 'use client';
 
-import { ContextProvider } from '@/Context/modalContext';
-import OtherNumbersForm from '@/components/Forms/OtherNumbersForm';
+import React from 'react';
+import PageTitle from '@/components/Page/PageTitle';
+import OtherNumsTable from '@/components/Table/OtherNumsTable';
 
-const OtherNumbersPage = () => {
+const OtherNumsPage: React.FC = () => {
   return (
-    <ContextProvider>
-      <OtherNumbersForm></OtherNumbersForm>
-    </ContextProvider>
+    <>
+      <PageTitle pageTitle="Other Numbers" />
+      <OtherNumsTable />
+    </>
   );
 };
 
-export default OtherNumbersPage;
+export default OtherNumsPage;

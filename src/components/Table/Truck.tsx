@@ -1,73 +1,127 @@
 'use client';
 
 import { useContext, useState, useEffect } from 'react';
-import { ModalContext } from '@/Context/modalContext';
-import FormModal from '../Modals/FormModal';
-import TruckForm from '../Forms/TruckForm';
-import Table from '../UI_Elements/Table';
-import { getTrucks } from '@/lib/dbActions';
-
-type Truck = {
-  truckNum: string;
-  licensePlate: string;
-  plateExpiry: Date;
-  inspectionExpiry: Date;
-  type: string;
-  iftaLicensed: boolean;
-};
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
+import { ModalContext } from '@/context/modalContext';
+import TableHeaderBlank from '../UI_Elements/Table/TableHeaderBlank';
+import Table from '../UI_Elements/Table/Table';
+import TableSkeleton from '../UI_Elements/Table/TableSkeleton';
+import { TableSearch } from '../UI_Elements/Table/TableSearch';
+import Button from '@ui/Buttons/Button';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { TruckData } from '@/types/truckTypes';
 
 // this is passed to Table
 const columns = [
   { field: 'truckNum', headerName: 'Truck Number' },
-  { field: 'licensePlate', headerName: 'License Plate' },
   { field: 'type', headerName: 'Truck Type' },
-  { field: 'plateExpiry', headerName: 'Plate Expiry' },
-  { field: 'inspectionExpiry', headerName: 'Inspection Expiry' },
-  { field: 'iftaLicensed', headerName: 'IFTA Licensed?' },
+  { field: 'licensePlate', headerName: 'License Plate' },
 ];
 
-export default function Truck() {
-  const [trucks, setTrucks] = useState<Truck[]>([]);
+export default function TruckTable() {
+  const [searchValue, setSearchValue] = useState<string>(''); // search value
+  const [searchField, setSearchField] = useState<string>('All'); // specific field if any
+  const [filteredValue, setFilteredValue] = useState<TruckData[]>([]);
 
-  const { toggleOpen } = useContext(ModalContext);
+  const router = useRouter();
 
-  const handleClick = () => {
-    toggleOpen();
+  const {
+    items: trucks,
+    status,
+    // error,
+  } = useSelector((state: RootState) => state.trucks);
+
+  const { saveFormValues } = useContext(ModalContext);
+
+  // search
+  function handleSearch(trucks: TruckData[], value: string, status: string) {
+    // status to uppercase
+    const truckStatus = status?.toUpperCase();
+
+    // Filter by status (if it's "Active" or "Inactive")
+    let filteredTrucks = trucks;
+
+    if (truckStatus === 'ACTIVE' || truckStatus === 'INACTIVE') {
+      filteredTrucks = trucks.filter((trucks) => trucks.status === truckStatus);
+    }
+
+    // If no search value, return the filtered list by status
+    if (!value) {
+      return filteredTrucks;
+    }
+
+    // search across all fields with the given value
+    if (status === 'All') {
+      return filteredTrucks.filter((trucks) =>
+        Object.values(trucks).some((truckField) =>
+          truckField?.toString().toLowerCase().includes(value.toLowerCase())
+        )
+      );
+    }
+
+    // If status is specific (like "Active"), apply search value filtering
+    return filteredTrucks.filter((trucks) =>
+      Object.values(trucks).some((truckField) =>
+        truckField?.toString().toLowerCase().includes(value.toLowerCase())
+      )
+    );
+  }
+
+  // update specific field to search
+  function updateField(field: string) {
+    setSearchField(field);
+  }
+
+  // update by selecting from redux and pass to form values
+  const updateTruck = async (id: string) => {
+    const data = trucks.find((truck) => truck.id === id);
+
+    if (data) {
+      saveFormValues(data);
+      router.push('/trucks/update-truck/details');
+    } else {
+      console.error('Truck not found with ID:', id);
+    }
   };
 
-  // data fetched and passed to Table
+  // Update filtered trucks
   useEffect(() => {
-    const fetchTrucks = async () => {
-      const data = await getTrucks();
-      console.log('trucks', data);
-      setTrucks(data);
-    };
-
-    fetchTrucks();
-  }, []);
+    let updatedTrucks = [...trucks];
+    updatedTrucks = handleSearch(updatedTrucks, searchValue, searchField);
+    setFilteredValue(updatedTrucks);
+  }, [trucks, searchValue, searchField]);
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8">
-      <button
-        onClick={handleClick}
-        className="float-right rounded-md bg-primary py-3 px-9 font-medium text-white hover:bg-opacity-80"
-      >
-        Add Truck
-      </button>
-      <div className="sm:flex sm:items-center">
-        <div className="sm:flex-auto">
-          <h1 className="text-base leading-6 text-gray-900">Trucks</h1>
-          <p className="mt-2 text-md text-gray-700">
-            A list of all the truck information.
-          </p>
-        </div>
-        <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-          <FormModal>
-            <TruckForm />
-          </FormModal>
+    <>
+      <div className="relative flex justify-end mb-6">
+        <div className="absolute right-4 bottom-2">
+          <Link href="/trucks/add-truck/details">
+            <Button>Add Truck</Button>
+          </Link>
         </div>
       </div>
-      <Table columns={columns} data={trucks}></Table>
-    </div>
+
+      <TableHeaderBlank />
+      <TableSearch
+        placeholder={'Search...'}
+        dropdownLabel="Status"
+        dropdownOptions={['Active', 'Inactive', 'All']}
+        search={setSearchValue}
+        updateField={updateField}
+      />
+
+      {status === 'loading' ? (
+        <TableSkeleton columns={columns} />
+      ) : (
+        <Table
+          columns={columns}
+          data={filteredValue}
+          update={updateTruck}
+          view={'/trucks/view/'}
+        />
+      )}
+    </>
   );
 }

@@ -1,14 +1,14 @@
 'use client';
 
-import { ContextProvider } from '@/Context/modalContext';
-import Load from '@/components/Table/Load';
+import PageTitle from '@/components/Page/PageTitle';
 
-const DashboardHome = () => {
+const Dashboard: React.FC = () => {
   return (
-    <ContextProvider>
-      <Load />
-    </ContextProvider>
+    <>
+      <PageTitle pageTitle="Dashboard" />
+      <h2>Coming Soon</h2>
+    </>
   );
 };
 
-export default DashboardHome;
+export default Dashboard;
