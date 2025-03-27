@@ -18,7 +18,7 @@ const protectedRoutes = [
   '/settings',
   '/third-party',
 ];
-const publicRoutes = ['/login', '/signup'];
+const publicRoutes = ['/docs', '/login', '/signup'];
 
 export default async function middleware(request: NextRequest) {
   // check if the current route is protected or public
