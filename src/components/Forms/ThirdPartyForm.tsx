@@ -87,7 +87,7 @@ export const ThirdPartyForm = () => {
 
   return (
     <div className="flex flex-col gap-9">
-      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark w-full max-w-xl mx-auto overflow-y-auto max-h-screen">
+      <div className="rounded-xs border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark w-full max-w-xl mx-auto overflow-y-auto max-h-screen">
         <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
           <h3 className="font-medium text-black dark:text-white">
             Add Third Party
@@ -135,7 +135,7 @@ export const ThirdPartyForm = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-1/4 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-80"
+                className="w-1/4 rounded-sm bg-primary p-3 font-medium text-gray hover:bg-opacity-80"
               >
                 {isSubmitting ? 'Submitting' : 'Add'}
               </button>
@@ -146,7 +146,7 @@ export const ThirdPartyForm = () => {
                   toggleOpen();
                 }}
                 disabled={isSubmitting}
-                className="rounded bg-red p-3 font-medium text-gray ml-2 hover:bg-opacity-80"
+                className="rounded-sm bg-red p-3 font-medium text-gray ml-2 hover:bg-opacity-80"
               >
                 Cancel
               </button>

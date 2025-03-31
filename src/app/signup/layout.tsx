@@ -19,7 +19,7 @@ export default function SignUpLayout({
             {Logo}
             <h2 className="text-title-md mt-6">Sign Up</h2>
           </header>
-          <div className="overflow-y-auto flex-grow">{children}</div>
+          <div className="overflow-y-auto grow">{children}</div>
         </div>
         <div className="mt-5 relative block mx-auto">
           <p className="inline-block body2 mr-3">Already have an account?</p>

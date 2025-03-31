@@ -1,6 +1,291 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-*: initial;
+  --font-public: var(--font-publicsans), sans-serif;
+
+  --color-*: initial;
+  --color-current: currentColor;
+  --color-transparent: transparent;
+  --color-white: #ffffff;
+  --color-black: #212b36;
+  --color-primary: #01c37a;
+  --color-primary-light: #80debc;
+  --color-primary-dark: #1b806a;
+  --color-secondary: #3366ff;
+  --color-secondary-dark: #1939b7;
+  --color-grey-100: #f9fafb;
+  --color-grey-200: #f4f6f8;
+  --color-grey-300: #dfe3e8;
+  --color-grey-400: #c4cdd5;
+  --color-grey-500: #919eab;
+  --color-grey-600: #637381;
+  --color-grey-700: #454f5b;
+  --color-grey-800: #212b36;
+  --color-grey-900: #161c24;
+  --color-info-lighter: #cafdf5;
+  --color-info-light: #61f3f3;
+  --color-info: #00b8d9;
+  --color-info-dark: #006c9c;
+  --color-info-darker: #003768;
+  --color-success-lighter: #d8fbde;
+  --color-success-light: #86e8ab;
+  --color-success: #36b37e;
+  --color-success-dark: #1b806a;
+  --color-success-darker: #0a5554;
+  --color-warning-lighter: #fff5cc;
+  --color-warning-light: #ffd666;
+  --color-warning: #ffab00;
+  --color-warning-dark: #b76e00;
+  --color-warning-darker: #7a4100;
+  --color-error-lighter: #ffe9d5;
+  --color-error-light: #ffac82;
+  --color-error: #ff5630;
+  --color-error-dark: #b71d18;
+  --color-error-darker: #7a0916;
+
+  --breakpoint-*: initial;
+  --breakpoint-2xsm: 375px;
+  --breakpoint-xsm: 425px;
+  --breakpoint-3xl: 2000px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
+  --text-title-xxl: 64px, 80px;
+  --text-title-xl: 48px, 64px;
+  --text-title-lg: 32px, 48px;
+  --text-title-md: 24px, 36px;
+  --text-title-sm: 20px, 30px;
+  --text-title-xsm: 18px, 28px;
+  --text-text-xl: 24px, 22px;
+  --text-text-lg: 16px, 24px;
+  --text-text-sm: 14px, 22px;
+  --text-text-xsm: 12px, 18px;
+  --text-text-xxsm: 10px, 10px;
+  --text-button-lg: 15px, 26px;
+  --text-button-md: 14px, 24px;
+  --text-button-sm: 13px, 22px;
+  --text-table-title: 13px, 24px;
+  --text-tab-label: 12px, 20px;
+
+  --container-3: 0.75rem;
+  --container-4: 1rem;
+  --container-7: 1.75rem;
+  --container-9: 2.25rem;
+  --container-10: 2.5rem;
+  --container-11: 2.75rem;
+  --container-13: 3.25rem;
+  --container-14: 3.5rem;
+  --container-15: 3.75rem;
+  --container-16: 4rem;
+  --container-25: 6.25rem;
+  --container-30: 7.5rem;
+  --container-34: 8.5rem;
+  --container-35: 8.75rem;
+  --container-40: 10rem;
+  --container-44: 11rem;
+  --container-45: 11.25rem;
+  --container-60: 15rem;
+  --container-70: 17.5rem;
+  --container-90: 22.5rem;
+  --container-94: 23.5rem;
+  --container-125: 31.25rem;
+  --container-150: 37.5rem;
+  --container-180: 45rem;
+  --container-203: 50.75rem;
+  --container-230: 57.5rem;
+  --container-270: 67.5rem;
+  --container-280: 70rem;
+  --container-2_5: 0.625rem;
+  --container-10_5: 2.625rem;
+  --container-22_5: 5.625rem;
+  --container-42_5: 10.625rem;
+  --container-132_5: 33.125rem;
+  --container-142_5: 35.625rem;
+  --container-242_5: 60.625rem;
+  --container-292_5: 73.125rem;
+
+  --max-height-35: 8.75rem;
+  --max-height-70: 17.5rem;
+  --max-height-90: 22.5rem;
+  --max-height-300: 18.75rem;
+  --max-height-550: 34.375rem;
+
+  --min-width-75: 18.75rem;
+  --min-width-22_5: 5.625rem;
+  --min-width-42_5: 10.625rem;
+  --min-width-47_5: 11.875rem;
+
+  --z-index-1: 1;
+  --z-index-9: 9;
+  --z-index-99: 99;
+  --z-index-999: 999;
+  --z-index-9999: 9999;
+  --z-index-99999: 99999;
+  --z-index-999999: 999999;
+
+  --aspect-4\/3: 4 / 3;
+  --aspect-21\/9: 21 / 9;
+
+  --content-icon-copy: url('../images/icon/icon-copy-alt.svg');
+
+  --transition-property-width: width;
+  --transition-property-stroke: stroke;
+
+  --border-width-6: 6px;
+  --border-width-10: 10px;
+  --border-width-12: 12px;
+
+  --shadow-1: 0px 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-2: 0px 1px 4px rgba(0, 0, 0, 0.12);
+  --shadow-3: 0px 1px 5px rgba(0, 0, 0, 0.14);
+  --shadow-4: 0px 4px 10px rgba(0, 0, 0, 0.12);
+  --shadow-5: 0px 1px 1px rgba(0, 0, 0, 0.15);
+  --shadow-6: 0px 3px 15px rgba(0, 0, 0, 0.1);
+  --shadow-7: -5px 0 0 #313d4a, 5px 0 0 #313d4a;
+  --shadow-8:
+    1px 0 0 #313d4a, -1px 0 0 #313d4a, 0 1px 0 #313d4a, 0 -1px 0 #313d4a,
+    0 3px 13px rgb(0 0 0 / 8%);
+  --shadow-9: 0px 2px 3px rgba(183, 183, 183, 0.5);
+  --shadow-hover-primary: 0px 8px 16px 0px rgba(27, 128, 106, 0.24);
+  --shadow-hover-info: 0px 8px 16px 0px rgba(0, 108, 156, 0.24);
+  --shadow-hover-success: 0px 8px 16px 0px rgba(27, 128, 106, 0.24);
+  --shadow-hover-warning: 0px 8px 16px 0px rgba(183, 110, 0, 0.24);
+  --shadow-hover-error: 0px 8px 16px 0px rgba(183, 29, 24, 0.24);
+  --shadow-default: 0px 8px 16px 0px rgba(0, 0, 0, 0.24);
+  --shadow-card: 0px 1px 3px rgba(0, 0, 0, 0.12);
+  --shadow-card-2: 0px 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-switcher:
+    0px 2px 4px rgba(0, 0, 0, 0.2), inset 0px 2px 2px #ffffff,
+    inset 0px -1px 1px rgba(0, 0, 0, 0.1);
+  --shadow-switch-1: 0px 0px 5px rgba(0, 0, 0, 0.15);
+
+  --drop-shadow-1: 0px 1px 0px #e2e8f0;
+  --drop-shadow-2: 0px 1px 4px rgba(0, 0, 0, 0.12);
+  --drop-shadow-3: 0px 0px 4px rgba(0, 0, 0, 0.15);
+  --drop-shadow-4: 0px 0px 2px rgba(0, 0, 0, 0.2);
+  --drop-shadow-5: 0px 1px 5px rgba(0, 0, 0, 0.2);
+
+  --animate-linspin: linspin 1568.2353ms linear infinite;
+  --animate-easespin: easespin 5332ms cubic-bezier(0.4, 0, 0.2, 1) infinite both;
+  --animate-left-spin: left-spin 1333ms cubic-bezier(0.4, 0, 0.2, 1) infinite
+    both;
+  --animate-right-spin: right-spin 1333ms cubic-bezier(0.4, 0, 0.2, 1) infinite
+    both;
+  --animate-ping-once: ping 5s cubic-bezier(0, 0, 0.2, 1);
+  --animate-rotating: rotating 30s linear infinite;
+  --animate-topbottom: topbottom 60s infinite alternate linear;
+  --animate-bottomtop: bottomtop 60s infinite alternate linear;
+  --animate-spin-1_5: spin 1.5s linear infinite;
+  --animate-spin-2: spin 2s linear infinite;
+  --animate-spin-3: spin 3s linear infinite;
+
+  --radius-box-large: 0.884375rem;
+
+  @keyframes linspin {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes easespin {
+    12.5% {
+      transform: rotate(135deg);
+    }
+    25% {
+      transform: rotate(270deg);
+    }
+    37.5% {
+      transform: rotate(405deg);
+    }
+    50% {
+      transform: rotate(540deg);
+    }
+    62.5% {
+      transform: rotate(675deg);
+    }
+    75% {
+      transform: rotate(810deg);
+    }
+    87.5% {
+      transform: rotate(945deg);
+    }
+    100% {
+      transform: rotate(1080deg);
+    }
+  }
+  @keyframes left-spin {
+    0% {
+      transform: rotate(130deg);
+    }
+    50% {
+      transform: rotate(-5deg);
+    }
+    100% {
+      transform: rotate(130deg);
+    }
+  }
+  @keyframes right-spin {
+    0% {
+      transform: rotate(-130deg);
+    }
+    50% {
+      transform: rotate(5deg);
+    }
+    100% {
+      transform: rotate(-130deg);
+    }
+  }
+  @keyframes rotating {
+    0%,
+    100% {
+      transform: rotate(360deg);
+    }
+    50% {
+      transform: rotate(0deg);
+    }
+  }
+  @keyframes topbottom {
+    0%,
+    100% {
+      transform: translate3d(0, -100%, 0);
+    }
+    50% {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+  @keyframes bottomtop {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+    50% {
+      transform: translate3d(0, -100%, 0);
+    }
+  }
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
 
 /* default base styles for specific HTML elements */
 @layer base {

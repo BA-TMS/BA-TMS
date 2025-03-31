@@ -16,7 +16,7 @@ export default function Modal({ title, children }: ModalProps) {
                 {title}
               </h6>
             </header>
-            <div className="flex-grow overflow-auto">{children}</div>
+            <div className="grow overflow-auto">{children}</div>
           </section>
         </div>
       </div>

@@ -76,12 +76,12 @@ const ShipperReviewForm: React.FC = () => {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex flex-col justify-between flex-grow">
+      <div className="flex flex-col justify-between grow">
         <p className="mt-3.5 mb-5 body2 text-grey-800 dark:text-white">
           Confirm Shipper Details
         </p>
 
-        <div className="flex-grow overflow-auto">
+        <div className="grow overflow-auto">
           <div className="flex flex-col gap-4 md:flex-row">
             <div className="w-full md:w-1/4">
               <DataDisplay title="Status" text={formData['Status']} />

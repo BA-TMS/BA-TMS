@@ -219,7 +219,7 @@ const Dispatch = ({cargo}: CargoLoads) => {
 
       {/* DISPATCH TABLE */}
       <div className="col-span-12">
-        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+        <div className="rounded-xs border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="p-4 md:p-6 xl:p-7.5">
             <div className="flex items-start justify-between">
               <div>

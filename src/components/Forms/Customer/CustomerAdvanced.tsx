@@ -91,12 +91,12 @@ const AdvancedCustomerDetails: React.FC = () => {
     <div className="flex flex-col h-full">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col justify-between flex-grow"
+        className="flex flex-col justify-between grow"
       >
         <p className="mt-3.5 mb-5 body2 text-grey-800 dark:text-white">
           Set customer details
         </p>
-        <div className="flex-grow">
+        <div className="grow">
           <div className="flex flex-col gap-5 xl:flex-row">
             <div className="flex flex-col w-full xl:w-1/2">
               <TextInput control={control} name="Sales Rep" />

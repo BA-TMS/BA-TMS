@@ -86,7 +86,7 @@ export default function Drayage() {
           Show favorites
         </label>
         <div
-          className="relative z-20 w-32 rounded border border-stroke bg-transparent py-2.5 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+          className="relative z-20 w-32 rounded-sm border border-stroke bg-transparent py-2.5 px-5 outline-hidden transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
           style={{ float: 'left', marginRight: '1rem' }}
         >
           <ToggleButton
@@ -104,7 +104,7 @@ export default function Drayage() {
         </label>
         <div className="relative z-20 bg-white dark:bg-form-input">
           <select
-            className="relative z-20 w-48 rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+            className="relative z-20 w-48 rounded-sm border border-stroke bg-transparent py-3 px-5 outline-hidden transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
             value={steamShippingFilter}
             onChange={(e) => setSteamShippingFilter(e.target.value)}
           >
@@ -131,7 +131,7 @@ export default function Drayage() {
         </label>
         <div>
           <select
-            className="relative z-20 w-48 rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+            className="relative z-20 w-48 rounded-sm border border-stroke bg-transparent py-3 px-5 outline-hidden transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
             value={containerFilter}
             onChange={(e) => setContainerFilter(e.target.value)}
           >
@@ -157,7 +157,7 @@ export default function Drayage() {
         </label>
         <div>
           <select
-            className="relative z-20 w-48 rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+            className="relative z-20 w-48 rounded-sm border border-stroke bg-transparent py-3 px-5 outline-hidden transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
             value={terminalFilter}
             onChange={(e) => setTerminalFilter(e.target.value)}
           >

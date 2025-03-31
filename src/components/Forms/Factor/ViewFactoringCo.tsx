@@ -22,7 +22,7 @@ export const ViewFactoringCo = ({ data }: ViewFactorProps) => {
   if (!data) {
     return (
       <div className="flex flex-col h-full">
-        <div className="py-5 flex-grow">
+        <div className="py-5 grow">
           <p className="body2 text-error-dark text-center">
             Oops! Something went wrong- Could not find Factoring Company.
           </p>
@@ -43,12 +43,12 @@ export const ViewFactoringCo = ({ data }: ViewFactorProps) => {
 
   return (
     <div>
-      <div className="flex flex-col justify-between flex-grow">
+      <div className="flex flex-col justify-between grow">
         <p className="my-3.5 body2 text-grey-800 dark:text-white">
           View Factoring Company
         </p>
 
-        <div className="flex-grow">
+        <div className="grow">
           <div className="flex flex-col gap-4 md:flex-row">
             <div className="w-full md:w-1/4">
               <DataDisplay title="Status" text={data['status']} />
