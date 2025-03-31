@@ -24,14 +24,13 @@ export default async function Login({
             {Logo}
             <p className="body2 dark:text-black my-6">Not {user.email}?</p>
             <AuthButton></AuthButton>
-            <Link
-              href="/"
-              className="justify-center rounded-lg font-public font-bold text-center w-full h-auto disabled:text-grey-500 disabled:pointer-events-none border-bg-primary text-primary hover:bg-primary/25 px-5.5 py-2.75 text-button-lg bg-white border mt-3"
-            >
-              Continue
-            </Link>
           </header>
         </div>
+        {searchParams?.message && (
+          <p className="font-public font-normal text-text-sm text-danger text-center mt-2">
+            {searchParams.message}
+          </p>
+        )}
       </div>
     );
   }
