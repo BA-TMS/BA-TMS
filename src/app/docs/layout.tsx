@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Footer, Layout, Navbar } from 'nextra-theme-docs';
-import { getPageMap } from 'nextra/page-map';
+import { pageMap } from './pageMap';
 import 'nextra-theme-docs/style.css';
 
 export const metadata: Metadata = {
@@ -27,10 +27,9 @@ export default async function NextraLayout({
       <Layout
         // banner={null}
         navbar={navbar}
-        pageMap={await getPageMap()}
+        pageMap={pageMap}
         docsRepositoryBase="https://github.com/BA-TMS/BA-TMS/tree/develop/src/app/docs/"
         footer={footer}
-        // ... Your additional layout options
       >
         {children}
       </Layout>
