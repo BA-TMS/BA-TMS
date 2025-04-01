@@ -18,7 +18,10 @@ import type { MetaRecord } from 'nextra';
 // };
 
 const meta: MetaRecord = {
-  auth: { title: 'Getting Started', display: 'normal' },
+  auth: {
+    title: 'Getting Started',
+    display: 'normal',
+  },
 };
 
 // You can use JSX elements to change the look of titles in the sidebar, e.g. insert icons if needed

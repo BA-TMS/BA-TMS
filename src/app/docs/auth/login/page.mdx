@@ -1,22 +1,64 @@
 ---
-title: 'Login Page'
-description: 'This is the login page for our app.'
+title: 'Login'
+description: 'How to log in to TMS'
 ---
 
-## LOGIN
+## Login Procedure
 
-```js
-import { useState } from 'react';
+This document outlines the login process for accessing the application securely.
 
-export function Counter({ children }) {
-  const [count, setCount] = useState(0);
-  return (
-    <button onClick={() => setCount((prev) => prev + 1)}>
-      {children}
-      {count}
-    </button>
-  );
-}
+### Prerequisites
 
-<Counter>**Clicks**: </Counter>;
-```
+- A registered account with a valid email and password
+
+### Login Steps
+
+1. **Navigate to the Login Page**
+
+   - Open the app or visit the web portal at [http://localhost:3000/login](http://localhost:3000/login)
+
+   ![Login Page](/assets/screenshots/loginPage.png)
+
+2. **Enter Credentials**
+
+   - Input your registered email address
+   - Enter your password
+
+3. **Submit the Login Form**
+
+   - Click the **Login** button.
+
+4. **Authentication Process**
+
+   - The system verifies credentials
+   - If correct, access is granted
+   - If incorrect, an error message is displayed
+
+5. **Successful Login**
+
+   - You will be redirected to the dashboard
+
+### Password Recovery
+
+If you forget your password:
+
+1. Click **Forgot Password?** on the login page, which will take you to the forgot password page
+   ![Forgot Password Page](/assets/screenshots/forgotPassword.png)
+2. Enter your email
+3. Check your email for a password reset link.  
+   **NOTE: Do not change your web browser when checking email**
+4. Click the link to go to the reset password page and set a new password
+   ![Reset Password Page](/assets/screenshots/resetPassword.png)
+5. You will be issued a session token and redirected to the dashboard upon successful password reset
+6. Use this password to log in to the next session
+
+### Common Login Issues & Solutions
+
+| Issue                  | Possible Cause                     | Solution                          |
+| ---------------------- | ---------------------------------- | --------------------------------- |
+| Invalid email/password | Typo or incorrect credentials      | Double-check and re-enter details |
+| Account locked         | Multiple failed login attempts     | Wait or reset password            |
+| Session expired        | Long inactivity                    | Re-login to continue              |
+| Continuous loading     | Account not linked to organization | Contact support                   |
+
+For support at this time, contact Lane, eventually we could do something like a contact **support@a2zport.com**
