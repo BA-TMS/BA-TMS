@@ -3,24 +3,23 @@ export const pageMap = [
   { data: {} },
   {
     // content/about
-    name: 'about',
-    route: '/login',
+    name: 'docs',
+    route: '/docs',
     title: 'Getting Started',
+
     children: [
       // content/about/_meta.js
       { data: {} },
       {
-        // content/about/index.mdx
-        name: 'index',
-        route: '/about',
-        title: 'Index',
+        name: 'signup',
+        route: '/docs/signup',
+        title: 'Sign Up',
         frontMatter: {},
       },
       {
-        // content/about/legal.md
-        name: 'legal',
-        route: '/about/legal',
-        title: 'Legal',
+        name: 'login',
+        route: '/docs/login',
+        title: 'Log In',
         frontMatter: {},
       },
     ],
