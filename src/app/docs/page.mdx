@@ -1,17 +1,40 @@
-## Welcome
+---
+title: 'About TMS'
+description: ''
+---
 
-```js
-import { useState } from 'react';
+## About TMS
 
-export function Counter({ children }) {
-  const [count, setCount] = useState(0);
-  return (
-    <button onClick={() => setCount((prev) => prev + 1)}>
-      {children}
-      {count}
-    </button>
-  );
-}
+TMS is a dispatch and transportation management system (TMS).
 
-<Counter>**Clicks**: </Counter>;
-```
+It helps trucking companies and freight brokers manage loads, dispatching, tracking, and invoicing.
+
+### What Problem Does It Solve?
+
+Traditional manual dispatching using spreadsheets or phone calls is inefficient.
+
+A2Z-TMS automates the process:
+
+✅ Assigns loads to drivers seamlessly.  
+✅ Provides real-time tracking.  
+✅ Manages invoices and payments.
+
+### Core Features
+
+**Load Management**
+
+- Admin can create, update, and delete loads.
+- Each load has: pickup/drop-off location, weight, cost, status (Pending, In Transit, Delivered).
+- Loads are assigned to drivers or carriers.
+
+**Dispatch & Tracking**
+
+- Dispatchers can assign loads to drivers.
+- Drivers receive notifications via SMS/email.
+- Live tracking via Google Maps API (real-time location updates).
+
+**Billing & Invoicing**
+
+- Generate invoices based on completed loads.
+- Track payments and due amounts.
+- _(Future Scope: Integrate with QuickBooks/Xero)._
