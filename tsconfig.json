@@ -18,10 +18,12 @@
         "name": "next"
       }
     ],
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
       "@ui/*": ["./src/components/UI_Elements/*"],
-      "@util/*": ["./util/*"]
+      "@util/*": ["./util/*"],
+      "@context/*": ["./src/context/*"]
     }
   },
   "include": [
