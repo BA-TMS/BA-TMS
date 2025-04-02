@@ -186,7 +186,7 @@ const AccountForm = () => {
             <div className="flex justify-end">
               <button
                 type="submit"
-                disabled={isSaving}
+                disabled={isSubmitting}
                 className="w-1/4 rounded-sm bg-primary p-3 font-medium text-gray hover:bg-opacity-80"
               >
                 {isSubmitting ? 'Saving' : 'Save'}

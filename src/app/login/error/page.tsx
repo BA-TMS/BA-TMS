@@ -1,6 +1,6 @@
 import { createSupabaseServerClient } from '@util/supabase/server';
 import AuthButton from '@ui/Buttons/Authentication/AuthButton';
-import { Logo } from '@/assets/Logo';
+import { Logo } from '@/assets/logo';
 
 // TODO- customize this, use for other login errors
 
