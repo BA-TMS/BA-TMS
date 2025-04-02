@@ -3,7 +3,7 @@
 import { useEffect, useContext, useRef, useState } from 'react';
 import { Provider } from 'react-redux';
 import { makeStore, AppStore } from '@/store/store';
-import { UserContext } from '@/context/userContextProvider';
+import { UserContext } from '../../context/userContextProvider';
 import Loader from '@/components/UI_Elements/PageLoader';
 import { fetchLoads } from '@/store/slices/loadSlice';
 import { fetchBrokers } from '@/store/slices/brokerSlice';

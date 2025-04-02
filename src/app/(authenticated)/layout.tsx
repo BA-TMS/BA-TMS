@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Loader from '@/components/UI_Elements/PageLoader';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import Header from '@/components/Header/Header';
-import { UserContextProvider } from '@/context/userContextProvider';
+import { UserContextProvider } from '../../context/userContextProvider';
 import StoreProvider from './StoreProvider';
 
 export default function Template({ children }: { children: React.ReactNode }) {
