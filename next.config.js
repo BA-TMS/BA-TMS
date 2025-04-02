@@ -1,9 +1,13 @@
-/** @type {import('next').NextConfig} */
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const path = require('path');
 
 const nextConfig = {
+  webpack: (config) => {
+    config.resolve.modules.push(path.resolve('./src'));
+    return config;
+  },
   async redirects() {
     return [
-      // redirect / to dashboard
       {
         source: '/',
         destination: '/dispatch',
