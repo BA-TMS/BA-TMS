@@ -1,3 +1,7 @@
-export default () => {
-    return <>preferences/notes/page.tsx</>;
-  };
+'use client';
+
+const NotesPage = () => {
+  return <>preferences/notes/page.tsx</>;
+};
+
+export default NotesPage;

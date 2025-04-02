@@ -1,5 +1,9 @@
-'use client'
+'use client';
 
 import { redirect, usePathname } from 'next/navigation';
 
-export default () => redirect(`${usePathname()}/account`);
+const PreferencesPage = () => {
+  redirect(`${usePathname()}/account`);
+};
+
+export default PreferencesPage;

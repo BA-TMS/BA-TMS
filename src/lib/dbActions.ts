@@ -5,7 +5,7 @@ import prisma from '@util/prisma/client';
 import { PrismaClient, DriverType } from '@prisma/client';
 import { DriverFormData } from '@/types/driverTypes';
 import { BilleeFormData } from '@/types/billeeTypes';
-import { TrailerFormData } from '@/types/trailerTypes';
+// import { TrailerFormData } from '@/types/trailerTypes';
 import { AccountPreferences } from '@/types/accountTypes';
 
 // This file contains different server actions for interracting with the database via Prisma client
@@ -205,18 +205,18 @@ export async function addThirdParty({ billee }: { billee: BilleeFormData }) {
   return resp;
 }
 
-export async function addTrailer({ trailer }: { trailer: TrailerFormData }) {
-  const resp = await prisma.trailer.create({
-    data: {
-      licensePlate: trailer['License Plate'],
-      plateExpiry: trailer['Plate Expiry'],
-      inspectionExpiry: trailer['Inspection Expiry'],
-      type: trailer['Trailer Type'],
-      status: trailer['Status'],
-    },
-  });
-  return resp;
-}
+// export async function addTrailer({ trailer }: { trailer: TrailerFormData }) {
+//   const resp = await prisma.trailer.create({
+//     data: {
+//       licensePlate: trailer['License Plate'],
+//       plateExpiry: trailer['Plate Expiry'],
+//       inspectionExpiry: trailer['Inspection Expiry'],
+//       type: trailer['Trailer Type'],
+//       status: trailer['Status'],
+//     },
+//   });
+//   return resp;
+// }
 
 /** Update row */
 

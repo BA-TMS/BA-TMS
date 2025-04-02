@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { LogoutIcon } from '@/assets/Icons';
+import { LogoutIcon } from '@/assets/icons';
 import { createClient } from '@util/supabase/client';
 import { useRouter } from 'next/navigation';
 import User01 from '@/assets/User01.jpg'; // replace with user uploaded image

@@ -1,6 +1,6 @@
 'use client';
 
-import { Logo } from '@/assets/Logo';
+import { Logo } from '@/assets/logo';
 import Link from 'next/link';
 import { ContextProvider } from '@/context/modalContext';
 

@@ -10,33 +10,31 @@ import TextInput from '@/components/UI_Elements/Form/TextInput';
 import Button from '@/components/UI_Elements/Buttons/Button';
 import { setPassword } from '../actions';
 
-// this is a welcome page for invited users to set their auth password
-
-// error messages for yup-password validation- passwords need to match
+// Initialize password validation rules
 yup.setLocale({
   string: {
-    minLowercase: 'Password must contain at least 1 lower case character.',
-    minUppercase: 'Password must contain at least 1 upper case character.',
+    minLowercase: 'Password must contain at least 1 lowercase character.',
+    minUppercase: 'Password must contain at least 1 uppercase character.',
     minNumbers: 'Password must contain at least 1 number.',
     minSymbols: 'Password must contain at least 1 special character.',
     min: 'Password must be at least 8 characters.',
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } as any,
-  // per docs- when using typescript, append `as any` to the end of this object to avoid type errors.
+  } as any, // Using `as any` to avoid TypeScript errors per yup documentation
 });
 
+// Define password schema
 const passwordSchema = yup.object().shape({
   Password: yup.string().password().required('Password is required.'),
   'Confirm Password': yup
     .string()
     .password()
-    .required('Password is required.')
+    .required('Password confirmation is required.')
     .oneOf([yup.ref('Password')], 'Passwords must match.'),
 });
 
 type Password = yup.InferType<typeof passwordSchema>;
 
-export const WelcomeUser = () => {
+const WelcomeUser = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [urlParams, setUrlParams] = useState<URLSearchParams | null>(null);
 
@@ -50,7 +48,6 @@ export const WelcomeUser = () => {
   const {
     control,
     handleSubmit,
-    // reset,
     setError,
     formState: { errors },
   } = useForm<Password>({
@@ -61,21 +58,24 @@ export const WelcomeUser = () => {
     resolver: yupResolver(passwordSchema),
   });
 
-  const onSubmit = (data: Password) => {
+  const onSubmit = async (data: Password) => {
     setIsSubmitting(true);
-    // set error if there is no refresh token
-    if (refreshToken === null) {
-      const errorMessage = urlParams?.get('error_description');
-      setError('root', { message: `${errorMessage}` });
+
+    // Handle missing refresh token
+    if (!refreshToken) {
+      const errorMessage =
+        urlParams?.get('error_description') || 'Invalid request';
+      setError('root', { message: errorMessage });
       setIsSubmitting(false);
       return;
     }
 
     try {
-      setPassword(data['Password'], refreshToken as string); // it should be a string at this point
+      await setPassword(data.Password, refreshToken);
     } catch (error) {
       setError('root', { message: `${error}` });
     }
+
     setTimeout(() => {
       setIsSubmitting(false);
     }, 1000);
@@ -86,8 +86,8 @@ export const WelcomeUser = () => {
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col h-full justify-between"
     >
-      <p className="mt-3.5 mb-5 body2 text-grey-800 text-center">
-        Set your password to continue sign up
+      <p className="mt-3.5 mb-5 text-center text-grey-800">
+        Set your password to continue sign-up
       </p>
 
       <div className="flex flex-col items-center w-full">
@@ -95,14 +95,13 @@ export const WelcomeUser = () => {
           <TextInput
             control={control}
             name="Password"
-            required={true}
+            required
             type="password"
           />
-
           <TextInput
             control={control}
             name="Confirm Password"
-            required={true}
+            required
             type="password"
           />
         </div>
@@ -110,21 +109,20 @@ export const WelcomeUser = () => {
 
       <div className="h-10 text-center">
         {errors.root && (
-          <p className="font-public font-normal text-text-sm text-error mb-2">
-            {errors.root.message}
-          </p>
+          <p className="text-sm text-error mb-2">{errors.root.message}</p>
         )}
       </div>
 
       <div className="py-4 gap-2 border-t border-grey-300 bg-white flex justify-end sticky bottom-0 z-10">
-        <div className="flex justify-end gap-2">
-          <Button type="submit" disabled={isSubmitting}>
-            Next
-          </Button>
-        </div>
+        <Button type="submit" disabled={isSubmitting}>
+          Next
+        </Button>
       </div>
     </form>
   );
 };
 
-export default WelcomeUser;
+// ✅ Default Export for Next.js Page Component
+export default function Page() {
+  return <WelcomeUser />;
+}

@@ -4,7 +4,7 @@ import DarkModeToggle from './DarkModeToggle';
 import DropdownNotification from './DropdownNotification';
 import DropdownUser from './DropdownUser';
 import Image from 'next/image';
-import { SearchIcon } from '@/assets/Icons/Layout';
+import { SearchIcon } from '@/assets/icons/layout';
 import USFlag from '/public/assets/icons/flags/Flag_US.svg';
 
 type HeaderProps = {

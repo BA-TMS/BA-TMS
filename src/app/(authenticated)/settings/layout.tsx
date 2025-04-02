@@ -24,19 +24,14 @@ const secondaryNavigation = [
 
 export default function SettingsLayout({
   children,
-  modal,
 }: {
   children: React.ReactNode;
-  modal: React.ReactNode;
 }) {
   return (
     <>
       <PageTitle pageTitle="Settings" />
       <NavTabs tabs={secondaryNavigation} />
-      <div className="mt-5 w-full ">
-        {children}
-        {modal}
-      </div>
+      <div className="mt-5 w-full">{children}</div>
     </>
   );
 }

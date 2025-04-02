@@ -56,7 +56,7 @@ export default function Drivers() {
     }
 
     // recursive function
-    function deepSearch(object: any, searchValue: string): boolean {
+    function deepSearch(object: unknown, searchValue: string): boolean {
       if (object === null || object === undefined) {
         return false;
       }

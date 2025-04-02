@@ -38,7 +38,8 @@ const PrefsLink = ({ children }: { children: string }) => {
   );
 };
 
-export default ({ children }: { children: React.ReactNode }) => {
+// ✅ Assign the component to a named function before exporting
+const PreferencesLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <nav className="flex gap-4">
@@ -54,3 +55,5 @@ export default ({ children }: { children: React.ReactNode }) => {
     </>
   );
 };
+
+export default PreferencesLayout;

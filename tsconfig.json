@@ -31,5 +31,10 @@
     ".next/types/**/*.ts",
     "src/components/custom-breadcrumbs"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  
+ 
+  "forceConsistentCasingInFileNames": true
+    
+  
 }

@@ -12,6 +12,18 @@ import {
   updateAccountPreferences,
 } from '@/lib/dbActions';
 
+type AccountPreferencesResponse = {
+  companyName?: string;
+  primaryContactName?: string;
+  telephone?: string;
+  tollFree?: string;
+  fei?: string;
+  currency?: string;
+  dateFormat?: string;
+  timeFormat?: string;
+  calendarFormat?: string;
+};
+
 const schema = yup.object({
   'Company Name': yup.string(),
   'Primary Contact Name': yup.string(),
@@ -36,23 +48,25 @@ const AccountForm = () => {
     setError,
     reset,
     control,
-    formState: { errors, isSaving, isSaveSuccessful },
+    formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<AccountPreferences>({
     defaultValues: async () => {
-      const prefs = await getAccountPreferences();
+      const prefs =
+        ((await getAccountPreferences()) as AccountPreferencesResponse) ?? {};
 
       return {
-        'Company Name': prefs.companyName,
-        'Primary Contact Name': prefs.primaryContactName,
-        Telephone: prefs.telephone,
-        'Toll Free': prefs.tollFree,
-        'FEI Number': prefs.fei,
-        Currency: prefs.currency,
-        'Date Format': prefs.dateFormat,
-        'Time Format': prefs.timeFormat,
-        'Calendar Format': prefs.calendarFormat,
+        'Company Name': prefs.companyName ?? '',
+        'Primary Contact Name': prefs.primaryContactName ?? '',
+        Telephone: prefs.telephone ?? '',
+        'Toll Free': prefs.tollFree ?? '',
+        'FEI Number': prefs.fei ?? '',
+        Currency: prefs.currency ?? '',
+        'Date Format': prefs.dateFormat ?? '',
+        'Time Format': prefs.timeFormat ?? '',
+        'Calendar Format': prefs.calendarFormat ?? '',
       };
     },
+
     resolver: yupResolver(schema),
   });
 
@@ -62,15 +76,18 @@ const AccountForm = () => {
     console.log(data);
     try {
       await updateAccountPreferences({
-        companyName: data['Company Name'],
-        primaryContactName: data['Primary Contact Name'],
-        telephone: data['Telephone'],
-        tollFree: data['Toll Free'],
-        fei: data['FEI Number'],
-        currency: data['Currency'],
-        dateFormat: data['Date Format'],
-        timeFormat: data['Time Format'],
-        calendarFormat: data['Calendar Format'],
+        companyName: data['Company Name'] ?? '',
+        primaryContactName: data['Primary Contact Name'] ?? '',
+        telephone: data['Telephone'] ?? '',
+        tollFree: data['Toll Free'] ?? '',
+        fei: data['FEI Number'] ?? '',
+        currency: data['Currency'] ?? '',
+        dateFormat: data['Date Format'] ?? '',
+        timeFormat: data['Time Format'] ?? '',
+        calendarFormat: data['Calendar Format'] ?? '',
+        id: '',
+        mileageSystem: '',
+        printSetting: '',
       });
       console.log('account preferences updated successfully');
       toggleOpen();
@@ -81,7 +98,7 @@ const AccountForm = () => {
   };
 
   useEffect(() => {
-    if (isSaveSuccessful) {
+    if (isSubmitSuccessful) {
       reset({
         'Company Name': '',
         'Primary Contact Name': '',
@@ -94,7 +111,7 @@ const AccountForm = () => {
         'Calendar Format': '',
       });
     }
-  }, [isSaveSuccessful, reset]);
+  }, [isSubmitSuccessful, reset]);
 
   return (
     <div className="flex flex-col gap-9">
@@ -117,22 +134,28 @@ const AccountForm = () => {
             <SelectInput
               control={control}
               name="Currency"
-              options={['American Dollars', 'Canadian Dollars']}
+              options={[
+                { label: 'American Dollars', value: 'USD' },
+                { label: 'Canadian Dollars', value: 'CAD' },
+              ]}
             />
             <SelectInput
               control={control}
               name="Date Format"
-              options={['m/d/Y']}
+              options={[{ label: 'm/d/Y', value: 'm/d/Y' }]}
             />
             <SelectInput
               control={control}
               name="Time Format"
-              options={['24 Hour (Military)', '12 Hour']}
+              options={[
+                { label: '24 Hour (Military)', value: '24h' },
+                { label: '12 Hour', value: '12h' },
+              ]}
             />
             <SelectInput
               control={control}
               name="Calendar Format"
-              options={['Yearly']}
+              options={[{ label: 'Yearly', value: 'yearly' }]}
             />
             <div className="flex">
               <div>Mileage System</div>
@@ -163,10 +186,10 @@ const AccountForm = () => {
             <div className="flex justify-end">
               <button
                 type="submit"
-                disabled={isSaving}
+                disabled={isSubmitting}
                 className="w-1/4 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-80"
               >
-                {isSaving ? 'Saving' : 'Save'}
+                {isSubmitting ? 'Saving' : 'Save'}
               </button>
             </div>
           </div>

@@ -53,8 +53,12 @@ export default function Signup() {
 
     try {
       await signUpAdmin(data);
-    } catch (error) {
-      setError(`${error.message}`); // not sure how to fix type error
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred');
+      }
       setIsSubmitting(false);
       return;
     }

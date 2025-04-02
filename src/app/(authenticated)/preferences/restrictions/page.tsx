@@ -1,3 +1,7 @@
-export default () => {
-    return <>preferences/restrictions/page.tsx</>;
-  };
+'use client';
+
+const RestrictionsPage = () => {
+  return <>preferences/restrictions/page.tsx</>;
+};
+
+export default RestrictionsPage;

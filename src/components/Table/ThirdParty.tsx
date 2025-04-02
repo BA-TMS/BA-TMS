@@ -66,12 +66,18 @@ export default function ThirdParty() {
           </p>
         </div>
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-          <FormModal>
+          <FormModal formTitle="Add Third Party Billee">
             <ThirdPartyForm />
           </FormModal>
         </div>
       </div>
-      <Table columns={columns} data={billee}></Table>
+      <Table
+        columns={columns}
+        data={billee}
+        update={(id: string) =>
+          console.log(`Update function called for ID: ${id}`)
+        }
+      ></Table>
     </div>
   );
 }

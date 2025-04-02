@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 'use client';
 import { useState } from 'react';
 //import AddButton from '@/components/Modals/AddButton';
@@ -11,23 +12,23 @@ type CargoLoad = {
   customerId: string;
   originId: string | null;
   destId: string | null;
-  status: string
-  carrier: {name: string};
-  driver: {name: string} | null;
-  customer: {name: string};
-  shipper: {name: string} | null;
-  consignee: {name: string} | null;
+  status: string;
+  carrier: { name: string };
+  driver: { name: string } | null;
+  customer: { name: string };
+  shipper: { name: string } | null;
+  consignee: { name: string } | null;
 };
 
 type CargoLoads = {
   cargo: CargoLoad[];
-}
+};
 
-const Dispatch = ({cargo}: CargoLoads) => {
+const Dispatch = ({ cargo }: CargoLoads) => {
   // Use-State variables
   // const [filteredCargo, setFilteredCargo] = useState<CargoLoads>(cargo);
-  const [filterText, setFilterText] = useState('');
-  const [modalOpen, setModalOpen] = useState(false); // Added line
+  const [, setFilterText] = useState('');
+  const [, setModalOpen] = useState(false); // Added line
 
   // function updateFilteredCargo(filter: string) {
   //   const filteredCargo = cargo.filter(
@@ -70,6 +71,11 @@ const Dispatch = ({cargo}: CargoLoads) => {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function updateFilteredCargo(arg0: string): void {
+    throw new Error('Function not implemented.');
+  }
+
   return (
     <>
       {/* HEADER & SEARCH BAR */}
@@ -103,7 +109,7 @@ const Dispatch = ({cargo}: CargoLoads) => {
             }}
           />
           <button
-            className={`custom-button effect1`}
+            className={'custom-button effect1'}
             style={{
               padding: '8px',
               borderRadius: '4px',
@@ -116,7 +122,7 @@ const Dispatch = ({cargo}: CargoLoads) => {
             Search
           </button>
           <button
-            className={`custom-button effect1`}
+            className={'custom-button effect1'}
             style={{
               padding: '8px',
               borderRadius: '4px',
@@ -146,7 +152,7 @@ const Dispatch = ({cargo}: CargoLoads) => {
         {/*<AddButton modalOpen={modalOpen} setModalOpen={setModalOpen} />{' '}*/}
         {/* Updated line */}
         <button
-          className={`custom-button effect1`}
+          className={'custom-button effect1'}
           style={{
             padding: '10px',
             borderRadius: '4px',
@@ -158,7 +164,7 @@ const Dispatch = ({cargo}: CargoLoads) => {
           Open Loads
         </button>
         <button
-          className={`custom-button effect1`}
+          className={'custom-button effect1'}
           style={{
             padding: '10px',
             borderRadius: '4px',

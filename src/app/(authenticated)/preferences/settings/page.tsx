@@ -1,3 +1,7 @@
-export default () => {
-    return <>preferences/settings/page.tsx</>;
-  };
+'use client';
+
+const SettingsPage = () => {
+  return <>preferences/settings/page.tsx</>;
+};
+
+export default SettingsPage;

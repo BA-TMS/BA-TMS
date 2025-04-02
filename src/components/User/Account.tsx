@@ -1,26 +1,38 @@
 'use client';
-
 import Image from 'next/image';
-import countryList from 'react-select-country-list';
 import { BsTelephone } from 'react-icons/bs';
 import { FaRegAddressBook, FaCity } from 'react-icons/fa';
 import { MdOutlineEmail } from 'react-icons/md';
-import { IoMdGlobe } from 'react-icons/io';
 
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
-//import { getCountries, getStatesOfCountry } from 'country-state-city';
 import { Country, State } from 'country-state-city';
 import * as Yup from 'yup';
 
-export default function Account() {
-  const [selectedCountry, setSelectedCountry] = useState(null);
-  const [selectedState, setSelectedState] = useState(null);
-  const [statesOptions, setStatesOptions] = useState<
-    { value: string; label: string }[]
-  >([]);
+interface FormData {
+  fullName: string;
+  emailAddress: string;
+  phoneNumber: string;
+  address: string;
+  country: { value: string; label: string } | null;
+  state: { value: string; label: string } | null;
+  city: string;
+  postalCode: string;
+  bio: string;
+}
 
-  const [formData, setFormData] = useState({
+interface SelectOption {
+  value: string;
+  label: string;
+}
+
+export default function Account() {
+  const [selectedCountry, setSelectedCountry] = useState<SelectOption | null>(
+    null
+  );
+  const [, setSelectedState] = useState<SelectOption | null>(null);
+  const [statesOptions, setStatesOptions] = useState<SelectOption[]>([]);
+  const [formData, setFormData] = useState<FormData>({
     fullName: '',
     emailAddress: '',
     phoneNumber: '',
@@ -50,33 +62,45 @@ export default function Account() {
     bio: Yup.string(),
   });
 
-  const countriesOptions = Country.getAllCountries().map((country) => ({
-    value: country.isoCode,
-    label: country.name,
-  }));
+  const countriesOptions = Country.getAllCountries().map(
+    (country): SelectOption => ({
+      value: country.isoCode,
+      label: country.name,
+    })
+  );
 
-  const handleCountryChange = (option) => {
+  const handleCountryChange = (option: SelectOption | null) => {
     setSelectedCountry(option);
     setFormData((prev) => ({ ...prev, country: option }));
+
+    if (!option) {
+      setStatesOptions([]);
+      setSelectedState(null);
+      setFormData((prev) => ({ ...prev, state: null }));
+      return;
+    }
+
     const states = State.getStatesOfCountry(option.value);
-    const stateOptions = states.map((state) => ({
-      value: state.isoCode,
-      label: state.name,
-    }));
+    const stateOptions = states.map(
+      (state): SelectOption => ({
+        value: state.isoCode,
+        label: state.name,
+      })
+    );
+
     setStatesOptions(stateOptions);
-    setSelectedState(null); // Reset state selection when country changes
-    setFormData((prev) => ({ ...prev, state: null })); // Also reset state in formData.
+    setSelectedState(null);
+    setFormData((prev) => ({ ...prev, state: null }));
   };
 
-  const handleStateChange = (option) => {
+  const handleStateChange = (option: SelectOption | null) => {
     setSelectedState(option);
     setFormData((prev) => ({ ...prev, state: option }));
   };
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData((prev) => {
       const updatedFormData = { ...prev, [field]: value };
-      // Save updated form data to local storage
       localStorage.setItem('formData', JSON.stringify(updatedFormData));
       console.log('Saved to local storage:', updatedFormData);
       return updatedFormData;
@@ -85,45 +109,29 @@ export default function Account() {
 
   useEffect(() => {
     const savedFormData = localStorage.getItem('formData');
-    console.log('Loaded from storage:', savedFormData);
     if (savedFormData) {
       const parsedData = JSON.parse(savedFormData);
-      //console.log('Loading form data from local storage');
       setFormData(parsedData);
     }
   }, []);
 
-  // Use formData to handle form submission and validation with Yup
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await accountSchema.validate(formData, { abortEarly: false });
-      // Save the form data to local storage
       localStorage.setItem('formData', JSON.stringify(formData));
       console.log('Form data submitted and saved to local storage:', formData);
-      // Proceed with form submission logic
     } catch (error) {
-      // Handle validation errors
-      console.error('Validation error:', error);
       if (error instanceof Yup.ValidationError) {
-        // Here you can handle errors, for example by setting state
         console.error('Validation errors:', error.errors);
+      } else {
+        console.error('Error submitting form:', error);
       }
     }
   };
 
-  // This code is to test if we're saving the data.
-  function PrintData() {
-    console.log('Account Schema Properties:');
-    console.log('Full Name:', accountSchema.fields.fullName.describe());
-    console.log('Email Address:', accountSchema.fields.emailAddress.describe());
-    console.log('Phone Number:', accountSchema.fields.phoneNumber.describe());
-    console.log('Address:', accountSchema.fields.address.describe());
-    console.log('Country:', accountSchema.fields.country.describe());
-    console.log('State:', accountSchema.fields.state.describe());
-    console.log('City:', accountSchema.fields.city.describe());
-    console.log('Postal Code:', accountSchema.fields.postalCode.describe());
-    console.log('Bio', accountSchema.fields.bio.describe());
+  function PrintData(): void {
+    throw new Error('Function not implemented.');
   }
 
   return (
