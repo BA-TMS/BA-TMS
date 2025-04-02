@@ -69,7 +69,7 @@ const DynamicSelect = <T extends Option>({
           {...field}
           name={name}
           id={name}
-          className="block px-3 py-3.5 w-full body2 text-grey-800 dark:text-white bg-transparent rounded-[7px] border border-grey-400 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer"
+          className="block px-3 py-3.5 w-full body2 text-grey-800 dark:text-white bg-transparent rounded-[7px] border border-grey-400 appearance-none focus:outline-hidden focus:ring-0 focus:border-primary peer"
         >
           <option value="">{`Select ${name}`}</option>
           {/* if not loading, map through fetched data */}

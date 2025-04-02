@@ -58,7 +58,7 @@ const Header = (props: HeaderProps) => {
             <input
               type="text"
               placeholder=""
-              className="w-full pl-9 pr-4 bg-transparent text-grey-600 dark:text-grey-300 body1 focus:outline-none"
+              className="w-full pl-9 pr-4 bg-transparent text-grey-600 dark:text-grey-300 body1 focus:outline-hidden"
             />
           </div>
         </form>

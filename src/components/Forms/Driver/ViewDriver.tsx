@@ -27,7 +27,7 @@ const ViewDriver = ({ data }: ViewDriverProps) => {
   if (!data) {
     return (
       <div className="flex flex-col h-full">
-        <div className="flex flex-col justify-between flex-grow">
+        <div className="flex flex-col justify-between grow">
           <p className="py-5 body2 text-error-dark text-center">
             Oops! Something went wrong - Could not find Driver.
           </p>
@@ -48,7 +48,7 @@ const ViewDriver = ({ data }: ViewDriverProps) => {
 
   return (
     <div className="pt-4 flex flex-col h-full">
-      <div className="flex flex-col flex-grow">
+      <div className="flex flex-col grow">
         {/* Driver One */}
         <div className="flex flex-col gap-4 md:flex-row">
           <div className="w-full md:w-1/4">

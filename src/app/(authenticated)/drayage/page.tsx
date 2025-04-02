@@ -77,12 +77,15 @@ export default function Drayage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Filters</h1>
-      <div className="flex flex-wrap gap-4 mb-4">
-        <div>
-          <label className="block text-sm font-medium text-black dark:text-white">
-            Show favorites
-          </label>
+      <h1 style={{ fontSize: '32px', fontWeight: 'bold' }}>Filters</h1>
+      <div className="mb-4.5" style={{ float: 'left', marginRight: '1rem' }}>
+        <label className="mb-2.5 block text-sm font-medium text-black dark:text-white">
+          Show favorites
+        </label>
+        <div
+          className="relative z-20 w-32 rounded-sm border border-stroke bg-transparent py-2.5 px-5 outline-hidden transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+          style={{ float: 'left', marginRight: '1rem' }}
+        >
           <ToggleButton
             labelText="Favorites"
             descriptionText="Toggle to show only favorites"
@@ -95,7 +98,7 @@ export default function Drayage() {
             Steam Shipping Line
           </label>
           <select
-            className="w-48 border rounded px-3 py-2"
+            className="relative z-20 w-48 rounded-sm border border-stroke bg-transparent py-3 px-5 outline-hidden transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
             value={steamShippingFilter}
             onChange={(e) => setSteamShippingFilter(e.target.value)}
           >
@@ -109,7 +112,7 @@ export default function Drayage() {
             Container Type
           </label>
           <select
-            className="w-48 border rounded px-3 py-2"
+            className="relative z-20 w-48 rounded-sm border border-stroke bg-transparent py-3 px-5 outline-hidden transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
             value={containerFilter}
             onChange={(e) => setContainerFilter(e.target.value)}
           >
@@ -123,7 +126,7 @@ export default function Drayage() {
             Terminal
           </label>
           <select
-            className="w-48 border rounded px-3 py-2"
+            className="relative z-20 w-48 rounded-sm border border-stroke bg-transparent py-3 px-5 outline-hidden transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
             value={terminalFilter}
             onChange={(e) => setTerminalFilter(e.target.value)}
           >

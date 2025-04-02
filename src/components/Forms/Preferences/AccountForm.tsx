@@ -115,7 +115,7 @@ const AccountForm = () => {
 
   return (
     <div className="flex flex-col gap-9">
-      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark w-full max-w-xl mx-auto overflow-y-auto max-h-screen">
+      <div className="rounded-xs border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark w-full max-w-xl mx-auto overflow-y-auto max-h-screen">
         <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
           <h3 className="font-medium text-black dark:text-white">
             Account Preferences
@@ -177,7 +177,7 @@ const AccountForm = () => {
             <label>Hide Logo</label>
             <br />
             Company Logo
-            <button className="rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-80">
+            <button className="rounded-sm bg-primary p-3 font-medium text-gray hover:bg-opacity-80">
               MANAGE COMPANY LOGO
             </button>
             {errors.root && (
@@ -186,8 +186,8 @@ const AccountForm = () => {
             <div className="flex justify-end">
               <button
                 type="submit"
-                disabled={isSubmitting}
-                className="w-1/4 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-80"
+                disabled={isSaving}
+                className="w-1/4 rounded-sm bg-primary p-3 font-medium text-gray hover:bg-opacity-80"
               >
                 {isSubmitting ? 'Saving' : 'Save'}
               </button>

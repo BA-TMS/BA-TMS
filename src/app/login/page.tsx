@@ -25,14 +25,13 @@ export default async function Login({
             {Logo}
             <p className="body2 dark:text-black my-6">Not {user.email}?</p>
             <AuthButton></AuthButton>
-            <Link
-              href="/"
-              className="justify-center rounded-lg font-public font-bold text-center w-full h-auto disabled:text-grey-500 disabled:pointer-events-none border-bg-primary text-primary hover:bg-primary/25 px-5.5 py-2.75 text-button-lg bg-white border mt-3"
-            >
-              Continue
-            </Link>
           </header>
         </div>
+        {searchParams?.message && (
+          <p className="font-public font-normal text-text-sm text-danger text-center mt-2">
+            {searchParams.message}
+          </p>
+        )}
       </div>
     );
   }
@@ -52,14 +51,14 @@ export default async function Login({
               type="text"
               name="email"
               id="email"
-              className="block px-2.5 pb-2.5 pt-4 w-full body2 dark:text-black bg-transparent rounded-lg border border-grey-400 appearance-none  focus:outline-none focus:ring-0 focus:border-primary peer"
+              className="block px-2.5 pb-2.5 pt-4 w-full body2 dark:text-black bg-transparent rounded-lg border border-grey-400 appearance-none  focus:outline-hidden focus:ring-0 focus:border-primary peer"
               placeholder=""
               autoComplete="email"
               required
             />
             <label
               htmlFor="email"
-              className="absolute body2 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:text-black px-2 peer-focus:px-2 peer-focus:text-primary  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
+              className="absolute body2 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:text-black px-2 peer-focus:px-2 peer-focus:text-primary  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:rtl:translate-x-1/4 peer-focus:rtl:left-auto start-1"
             >
               Email*
             </label>
@@ -70,14 +69,14 @@ export default async function Login({
               type="password"
               name="password"
               id="password"
-              className="block px-2.5 pb-2.5 pt-4 w-full body2 dark:text-black bg-transparent rounded-lg border border-grey-400 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer"
+              className="block px-2.5 pb-2.5 pt-4 w-full body2 dark:text-black bg-transparent rounded-lg border border-grey-400 appearance-none focus:outline-hidden focus:ring-0 focus:border-primary peer"
               placeholder=""
               autoComplete="current-password"
               required
             />
             <label
               htmlFor="password"
-              className="absolute body2 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:text-black px-2 peer-focus:px-2 peer-focus:text-primary  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
+              className="absolute body2 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:text-black px-2 peer-focus:px-2 peer-focus:text-primary  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:rtl:translate-x-1/4 peer-focus:rtl:left-auto start-1"
             >
               Password*
             </label>
