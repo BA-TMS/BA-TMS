@@ -1,6 +1,6 @@
 'use client';
 
-import { ContextProvider } from '../../../context/modalContext';
+import { ContextProvider } from '@/context/modalContext';
 
 export default function CustomerTemplage({
   children,

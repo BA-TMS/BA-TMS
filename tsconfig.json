@@ -23,7 +23,7 @@
       "@/*": ["./src/*"],
       "@ui/*": ["./src/components/UI_Elements/*"],
       "@util/*": ["./util/*"],
-      "@context/*": ["./src/context/*"]
+      "@context/*": ["src/context/*"]
     }
   },
   "include": [

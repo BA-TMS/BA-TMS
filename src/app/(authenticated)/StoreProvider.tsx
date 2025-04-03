@@ -3,7 +3,7 @@
 import { useEffect, useContext, useRef, useState } from 'react';
 import { Provider } from 'react-redux';
 import { makeStore, AppStore } from '@/store/store';
-import { UserContext } from '../../context/userContextProvider';
+
 import Loader from '@/components/UI_Elements/PageLoader';
 import { fetchLoads } from '@/store/slices/loadSlice';
 import { fetchBrokers } from '@/store/slices/brokerSlice';
@@ -18,6 +18,7 @@ import { fetchShippers } from '@/store/slices/shipperSlice';
 import { fetchTrailers } from '@/store/slices/trailerSlice';
 import { fetchTrucks } from '@/store/slices/truckSlice';
 import { redirect } from 'next/navigation';
+import { UserContext } from '@/context/userContextProvider';
 
 // client component to create store and share using provider
 
