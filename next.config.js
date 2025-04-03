@@ -1,9 +1,9 @@
-
+/** @type {import('next').NextConfig} */
 
 const nextConfig = {
- 
   async redirects() {
     return [
+      // redirect / to dashboard
       {
         source: '/',
         destination: '/dispatch',
@@ -13,4 +13,4 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
