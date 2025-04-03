@@ -4,7 +4,7 @@ import { useContext, useState, useEffect } from 'react';
 import { ModalContext } from '@/context/modalContext';
 import { useRouter } from 'next/navigation';
 import { DriverData } from '@/types/driverTypes';
-import Button from '@/components/UI_Elements/Buttons/Button';
+import Button from '@/components/UI_Elements/buttons/Button';
 import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 import AddressDisplay from '@/components/UI_Elements/Display/AddressDisplay';
 

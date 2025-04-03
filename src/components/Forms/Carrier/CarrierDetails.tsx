@@ -12,7 +12,7 @@ import SelectInput from '../../UI_Elements/Form/SelectInput';
 import { usStates } from '@/components/Forms/data/states';
 import { paymentTerms } from '../data/details';
 import { status } from '../data/details';
-import Button from '@/components/UI_Elements/Buttons/Button';
+import Button from '@/components/UI_Elements/buttons/Button';
 import { useRouter, usePathname } from 'next/navigation';
 import { carrierDataMap } from '@/types/carrierTypes';
 

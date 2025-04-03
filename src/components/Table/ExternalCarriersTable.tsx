@@ -7,7 +7,7 @@ import Table from '../UI_Elements/Table/Table';
 import TableSkeleton from '../UI_Elements/Table/TableSkeleton';
 import { TableSearch } from '../UI_Elements/Table/TableSearch';
 import TableHeaderBlank from '../UI_Elements/Table/TableHeaderBlank';
-import Button from '../UI_Elements/Buttons/Button';
+import Button from '../UI_Elements/buttons/Button';
 import { CarrierData } from '@/types/carrierTypes';
 import { RootState } from '@/store/store';
 import Link from 'next/link';

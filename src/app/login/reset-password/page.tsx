@@ -2,7 +2,7 @@
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import Button from '@/components/UI_Elements/Buttons/Button';
+import Button from '@/components/UI_Elements/buttons/Button';
 import { resetPassword } from '../actions';
 import Link from 'next/link';
 

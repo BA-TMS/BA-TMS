@@ -10,7 +10,7 @@ import TableSkeleton from '@ui/Table/TableSkeleton';
 import TableHeaderBlank from '@ui/Table/TableHeaderBlank';
 import Searchbar from '@/components/UI_Elements/Searchbar';
 import Dropdown from '@/components/UI_Elements/Input/Dropdown';
-import Button from '@/components/UI_Elements/Buttons/Button';
+import Button from '@/components/UI_Elements/buttons/Button';
 import { TeamMember } from '@/types/teamTypes';
 
 // this page will need some sort of protections

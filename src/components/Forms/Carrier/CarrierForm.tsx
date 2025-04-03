@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useContext } from 'react';
-import Button from '../../UI_Elements/Buttons/Button';
+import Button from '../../UI_Elements/buttons/Button';
 import { ModalContext } from '@/context/modalContext';
 import { UserContext } from '@/context/userContextProvider';
 import { createCarrier, updateCarrier } from '@/store/slices/carrierSlice';

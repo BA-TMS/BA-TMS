@@ -4,7 +4,7 @@ import { useContext } from 'react';
 import { ModalContext } from '@/context/modalContext';
 import { useRouter } from 'next/navigation';
 import { TruckData } from '@/types/truckTypes';
-import Button from '@/components/UI_Elements/Buttons/Button';
+import Button from '@/components/UI_Elements/buttons/Button';
 import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 
 // this component displays information about a specific truck

@@ -7,7 +7,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import TextInput from '../../UI_Elements/Form/TextInput';
 import DateSelect from '@/components/UI_Elements/Form/DateSelect';
-import Button from '@/components/UI_Elements/Buttons/Button';
+import Button from '@/components/UI_Elements/buttons/Button';
 import { useRouter, usePathname } from 'next/navigation';
 import { carrierInsDataMap } from '@/types/carrierTypes';
 

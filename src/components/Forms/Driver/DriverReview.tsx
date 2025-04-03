@@ -5,7 +5,7 @@ import { ModalContext } from '@/context/modalContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
 import { DriverData, DriverFormData } from '@/types/driverTypes';
-import Button from '@/components/UI_Elements/Buttons/Button';
+import Button from '@/components/UI_Elements/buttons/Button';
 import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 import AddressDisplay from '@/components/UI_Elements/Display/AddressDisplay';
 import { useRouter } from 'next/navigation';

@@ -4,7 +4,7 @@ import { useContext } from 'react';
 import { ModalContext } from '@/context/modalContext';
 import { useRouter } from 'next/navigation';
 import { NumData } from '@/types/otherNumTypes';
-import Button from '@/components/UI_Elements/Buttons/Button';
+import Button from '@/components/UI_Elements/buttons/Button';
 import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 import IconDisplay from '@/components/UI_Elements/Display/IconDisplay';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
