@@ -61,6 +61,6 @@
     "typescript": "^5",
     "typescript-eslint": "^7.1.0",
     "yarn": "^1.22.21"
-  },
-  "type": "module"
+  }
+  
 }
