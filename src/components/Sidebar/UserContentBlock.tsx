@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import User01 from '@/assets/User01.jpg';
+import User01 from '@/assets/user1.jpg';
 
 interface UserContentProps {
   firstName: string | null;

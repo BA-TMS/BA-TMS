@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { LogoutIcon } from '@/assets/icons';
 import { createClient } from '@util/supabase/client';
 import { useRouter } from 'next/navigation';
-import User01 from '@/assets/User01.jpg'; // replace with user uploaded image
+import User01 from '@/assets/user1.jpg'; // replace with user uploaded image
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
