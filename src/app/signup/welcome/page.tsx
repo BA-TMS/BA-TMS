@@ -7,7 +7,7 @@ YupPassword(yup);
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import TextInput from '@/components/UI_Elements/Form/TextInput';
-import Button from '@/components/UI_Elements/Buttons/Button';
+import Button from '@/components/UI_Elements/buttons/Button';
 import { setPassword } from '../actions';
 
 // Initialize password validation rules

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ModalContext } from '@/context/modalContext';
 import Table from '../UI_Elements/Table/Table';
 import TableSkeleton from '../UI_Elements/Table/TableSkeleton';
-import Button from '../UI_Elements/Buttons/Button';
+import Button from '../UI_Elements/buttons/Button';
 import { CustomTabs, TabData } from '../UI_Elements/Table/TableHeaderTabs';
 import { TableSearch } from '../UI_Elements/Table/TableSearch';
 import dayjs from 'dayjs';

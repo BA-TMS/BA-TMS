@@ -8,7 +8,7 @@ import TableHeaderBlank from '../UI_Elements/Table/TableHeaderBlank';
 import Table from '../UI_Elements/Table/Table';
 import TableSkeleton from '../UI_Elements/Table/TableSkeleton';
 import { TableSearch } from '../UI_Elements/Table/TableSearch';
-import Button from '@/components/UI_Elements/Buttons/Button';
+import Button from '@/components/UI_Elements/buttons/Button';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { NumData } from '@/types/otherNumTypes';

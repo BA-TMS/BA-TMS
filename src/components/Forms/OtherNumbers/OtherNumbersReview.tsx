@@ -6,7 +6,7 @@ import { AppDispatch, RootState } from '@/store/store';
 import { ModalContext } from '@/context/modalContext';
 import { UserContext } from '@/context/userContextProvider';
 import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
-import Button from '@/components/UI_Elements/Buttons/Button';
+import Button from '@/components/UI_Elements/buttons/Button';
 import { useRouter } from 'next/navigation';
 import { NumData, NumFormData } from '@/types/otherNumTypes';
 import { createOtherNum, updateOtherNum } from '@/store/slices/otherNumSlice';

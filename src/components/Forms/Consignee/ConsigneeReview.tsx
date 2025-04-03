@@ -7,7 +7,7 @@ import { ModalContext } from '@/context/modalContext';
 import { UserContext } from '@/context/userContextProvider';
 import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 import AddressDisplay from '@/components/UI_Elements/Display/AddressDisplay';
-import Button from '@/components/UI_Elements/Buttons/Button';
+import Button from '@/components/UI_Elements/buttons/Button';
 import { useRouter } from 'next/navigation';
 import { ConsigneeData, ConsigneeFormData } from '@/types/consigneeTypes';
 import {

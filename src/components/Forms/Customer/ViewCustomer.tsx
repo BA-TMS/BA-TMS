@@ -3,7 +3,7 @@
 import { useContext } from 'react';
 import { ModalContext } from '@/context/modalContext';
 import { CustomerData } from '@/types/customerTypes';
-import Button from '@/components/UI_Elements/Buttons/Button';
+import Button from '@/components/UI_Elements/buttons/Button';
 import DataDisplay from '@/components/UI_Elements/Display/DataDisplay';
 import { useRouter } from 'next/navigation';
 import AddressDisplay from '@/components/UI_Elements/Display/AddressDisplay';

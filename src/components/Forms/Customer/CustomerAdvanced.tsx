@@ -10,7 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import TextInput from '../../UI_Elements/Form/TextInput';
 import SelectInput from '../../UI_Elements/Form/SelectInput';
 import { currency, paymentTerms } from '../data/details';
-import Button from '@/components/UI_Elements/Buttons/Button';
+import Button from '@/components/UI_Elements/buttons/Button';
 import { useRouter, usePathname } from 'next/navigation';
 
 // this component uses yup and react-hook-form to submit form values to a context

@@ -3,7 +3,7 @@
 const nextConfig = {
   async redirects() {
     return [
-      // redirect / to dashboard
+      
       {
         source: '/',
         destination: '/dispatch',
